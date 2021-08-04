@@ -1,0 +1,39 @@
+
+function my_function:
+    trigger:
+        print "hello there"
+        wait 0 seconds
+        print "general kenobi"
+        print 66
+
+function test_method:
+    trigger:
+        assert java version
+        print the java version
+        print null
+        print "hello"
+        stop
+        print "never printed"
+
+function testing_variable:
+    trigger:
+        set {test} to "variable value"
+        assert {test}
+        assert {test} is "variable value"
+        assert none is none
+        assert false is false
+        assert true is not false
+        print {test}
+
+function testing_map:
+    trigger:
+        set {test} to a new map
+        assert {test}
+        set "name" in {test} to "Jeremy"
+        print "name" in {test}
+        set "thing" in {test} to "name" in {test}
+        assert "thing" in {test} is "Jeremy"
+        set ("thing" in {test}) to ("Frog")
+        assert ("thing" in {test}) is "Frog"
+        print "thing" in {test}
+
