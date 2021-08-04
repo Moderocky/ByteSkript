@@ -18,6 +18,7 @@ public final class ElementTree {
     }
     
     public void preCompile(Context context) { // Pre-compilation is (outer -> inner)
+        context.setCompileCurrent(this);
         try {
             if (compile) current.preCompile(context, match);
         } catch (Throwable ex) {
@@ -29,6 +30,7 @@ public final class ElementTree {
     }
     
     public void compile(Context context) { // Post-compilation is (inner -> outer)
+        context.setCompileCurrent(this);
         for (ElementTree tree : nested) {
             tree.compile(context);
         }

@@ -21,15 +21,12 @@ public class BooleanLiteral extends SimpleExpression {
     }
     
     @Override
-    public void compile(Context context, Pattern.Match match) {
+    public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        method.writeCode(WriteInstruction.push(match.matcher().group().equals("true")));
-        try {
-            method.writeCode(WriteInstruction.invokeStatic(Boolean.class.getMethod("valueOf", boolean.class)));
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        final boolean value = match.matcher().group().equals("true");
+        method.writeCode(WriteInstruction.push(value));
+        method.writeCode(WriteInstruction.invokeStatic(Boolean.class.getMethod("valueOf", boolean.class)));
     }
     
     @Override

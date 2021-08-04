@@ -11,10 +11,12 @@ import mx.kenzie.skript.api.SyntaxElement;
 import mx.kenzie.skript.api.syntax.Section;
 import mx.kenzie.skript.compiler.structure.Function;
 import mx.kenzie.skript.compiler.structure.PreVariable;
+import mx.kenzie.skript.compiler.structure.ProgrammaticSplitTree;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Context {
     
@@ -36,6 +38,10 @@ public abstract class Context {
     public abstract LanguageElement getExpected();
     
     public abstract Collection<Type> getAvailableTypes();
+    
+    public abstract Map<String, Type> getTypeMap();
+    
+    public abstract Type getType();
     
     public abstract Type getType(String name);
     
@@ -69,17 +75,36 @@ public abstract class Context {
     
     public abstract PreVariable getVariable(int slot);
     
+    public abstract void emptyVariables();
+    
     public abstract int slotOf(PreVariable variable);
     
     public abstract boolean hasVariable(String name);
     
     public abstract ElementTree getLine();
     
+    public abstract ElementTree getCompileCurrent();
+    
+    public abstract void setCompileCurrent(ElementTree element);
+    
+    public abstract void createTree(ProgrammaticSplitTree tree);
+    
+    public abstract ProgrammaticSplitTree getTree(SectionMeta meta);
+    
+    public abstract ProgrammaticSplitTree getCurrentTree();
+    
+    public abstract void removeTree(ProgrammaticSplitTree tree);
+    
     public void addSection(Section handler) {
         sections.add(0, new SectionMeta(handler));
     }
     
     public SectionMeta getSection() {
+        if (sections.isEmpty()) return null;
+        return sections.get(0);
+    }
+    
+    public SectionMeta getSection(int index) {
         if (sections.isEmpty()) return null;
         return sections.get(0);
     }
@@ -99,6 +124,12 @@ public abstract class Context {
     public abstract boolean hasFunction(String name);
     
     public abstract Function getFunction(String name);
+    
+    public Function getDefaultFunction(String name) {
+        final Function function = getFunction(name);
+        if (function == null) return new Function(name, getType());
+        return function;
+    }
     
     public abstract void registerFunction(Function function);
     

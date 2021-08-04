@@ -17,6 +17,7 @@ public abstract class Member extends Section {
     
     @Override
     public void onSectionExit(Context context) {
+        context.emptyVariables();
         context.setMethod(null);
         context.setField(null);
         context.setState(CompileState.ROOT);

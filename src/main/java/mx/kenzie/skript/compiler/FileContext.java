@@ -9,6 +9,7 @@ import mx.kenzie.skript.api.LanguageElement;
 import mx.kenzie.skript.api.SyntaxElement;
 import mx.kenzie.skript.compiler.structure.Function;
 import mx.kenzie.skript.compiler.structure.PreVariable;
+import mx.kenzie.skript.compiler.structure.ProgrammaticSplitTree;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -24,8 +25,10 @@ public class FileContext extends Context {
     SyntaxElement currentEffect;
     
     ElementTree line;
+    ElementTree current;
     protected final List<Function> functions = new ArrayList<>();
     protected final List<PreVariable> variables = new ArrayList<>();
+    protected final List<ProgrammaticSplitTree> trees = new ArrayList<>();
     
     protected final ClassBuilder writer;
     protected FieldBuilder field;
@@ -35,6 +38,7 @@ public class FileContext extends Context {
         this.type = type;
         this.state = CompileState.ROOT;
         this.writer = new ClassBuilder(type, SkriptLangSpec.JAVA_VERSION).addModifiers(Modifier.PUBLIC);
+//        writer.setComputation(1); // todo
     }
     
     public PostCompileClass[] compile() {
@@ -54,6 +58,11 @@ public class FileContext extends Context {
     @Override
     public Collection<Type> getAvailableTypes() {
         return types.values();
+    }
+    
+    @Override
+    public Map<String, Type> getTypeMap() {
+        return types;
     }
     
     @Override
@@ -158,8 +167,46 @@ public class FileContext extends Context {
     }
     
     @Override
+    public void emptyVariables() {
+        this.variables.clear();
+    }
+    
+    @Override
     public ElementTree getLine() {
         return line;
+    }
+    
+    @Override
+    public ElementTree getCompileCurrent() {
+        return current;
+    }
+    
+    @Override
+    public void setCompileCurrent(ElementTree element) {
+        this.current = element;
+    }
+    
+    @Override
+    public void createTree(ProgrammaticSplitTree tree) {
+        this.trees.add(0, tree);
+    }
+    
+    @Override
+    public ProgrammaticSplitTree getTree(SectionMeta meta) {
+        for (ProgrammaticSplitTree tree : trees) {
+            if (tree.owner() == meta) return tree;
+        }
+        return null;
+    }
+    
+    @Override
+    public ProgrammaticSplitTree getCurrentTree() {
+        return trees.isEmpty() ? null : trees.get(0);
+    }
+    
+    @Override
+    public void removeTree(ProgrammaticSplitTree tree) {
+        this.trees.remove(tree);
     }
     
     @Override
@@ -176,6 +223,11 @@ public class FileContext extends Context {
             if (function.name().equals(name)) return function;
         }
         return null;
+    }
+    
+    @Override
+    public Type getType() {
+        return type;
     }
     
     @Override

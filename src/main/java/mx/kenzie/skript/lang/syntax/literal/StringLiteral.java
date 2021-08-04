@@ -21,8 +21,8 @@ public class StringLiteral extends SimpleExpression {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return CommonTypes.INTEGER.equals(type) || CommonTypes.NUMBER.equals(type) || CommonTypes.OBJECT.equals(type);
+    public Type getReturnType() {
+        return CommonTypes.STRING;
     }
     
     @Override

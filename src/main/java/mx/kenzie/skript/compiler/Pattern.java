@@ -78,9 +78,11 @@ public class Pattern {
     }
     
     public Match match(final String thing, final Context context) {
+        int found = 0;
         for (java.util.regex.Pattern pattern : patternMap.keySet()) {
             final Matcher matcher = pattern.matcher(thing);
-            if (matcher.find()) return new Match(matcher, convert(context, patternMap.get(pattern)));
+            if (matcher.find()) return new Match(matcher, found, convert(context, patternMap.get(pattern)));
+            found++;
         }
         return null;
     }

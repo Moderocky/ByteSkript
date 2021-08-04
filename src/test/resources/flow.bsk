@@ -1,0 +1,34 @@
+
+on load:
+
+
+function if_flow:
+    trigger:
+        print "start if"
+        if "hello" is a string:
+            print "always met"
+        else if false:
+            print "never met"
+            assert false
+        else:
+            print "also never met"
+            assert false
+        print "end"
+
+function while_flow:
+    visibility: local // private func
+    syntax: do something // usable effect syntax
+    trigger:
+        print "start while"
+        set {a} to false
+        set {b} to true
+        while {b}:
+            print "blob"
+            exit section
+            wait 3 seconds
+            assert false
+            print "boo"
+        print "finish while"
+        return "ended"
+
+

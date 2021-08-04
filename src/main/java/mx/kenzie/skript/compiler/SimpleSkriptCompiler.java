@@ -6,6 +6,7 @@ import mx.kenzie.skript.api.Library;
 import mx.kenzie.skript.api.SyntaxElement;
 import mx.kenzie.skript.api.syntax.InnerModifyExpression;
 import mx.kenzie.skript.api.syntax.Section;
+import mx.kenzie.skript.compiler.structure.ProgrammaticSplitTree;
 import mx.kenzie.skript.error.ScriptParseError;
 
 import java.io.*;
@@ -76,6 +77,11 @@ public class SimpleSkriptCompiler extends SkriptCompiler {
     public PostCompileClass[] compile(String file, Type path) {
         final FileContext context = new FileContext(path);
         context.libraries.addAll(libraries);
+        for (Library library : libraries) {
+            for (Type type : library.getTypes()) {
+                context.registerType(type);
+            }
+        }
         final List<String> lines = file
             .replaceAll(SkriptLangSpec.BLOCK_COMMENT.pattern(), "")
             .replaceAll(SkriptLangSpec.LINE_COMMENT.pattern(), "")
@@ -143,6 +149,17 @@ public class SimpleSkriptCompiler extends SkriptCompiler {
         }
         if (effect == null)
             throw new ScriptParseError(context.lineNumber(), "No syntax match found for statement '" + statement + "'");
+        close_branch:
+        {
+            final SectionMeta meta = context.getSection();
+            if (meta == null) break close_branch;
+            final ProgrammaticSplitTree tree = context.getTree(meta);
+            if (tree == null) break close_branch;
+            if (tree.permit(effect.current())) break close_branch;
+            tree.close(context);
+        }
+        effect.preCompile(context);
+        effect.compile(context);
         if (storeSection) {
             final SyntaxElement element = effect.current();
             context.createUnit(element.getType());
@@ -150,8 +167,6 @@ public class SimpleSkriptCompiler extends SkriptCompiler {
                 context.addSection(section);
             }
         }
-        effect.preCompile(context);
-        effect.compile(context);
         context.currentEffect = null;
     }
     

@@ -22,6 +22,7 @@ public class CommonTypes {
     public static final Type DOUBLE = new Type(Double.class);
     public static final Type NUMBER = new Type(Number.class);
     public static final Type CLASS = new Type(Class.class);
+    public static final Type TYPE = new Type(java.lang.reflect.Type.class);
     public static final Type DURATION = new Type(Duration.class);
     public static final Type VOID = new Type(Void.class);
     

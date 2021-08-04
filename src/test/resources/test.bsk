@@ -8,7 +8,7 @@ function my_function:
 
 function test_method:
     trigger:
-        assert java version
+        assert java version is 52
         print the java version
         print null
         print "hello"
@@ -18,17 +18,17 @@ function test_method:
 function testing_variable:
     trigger:
         set {test} to "variable value"
-        assert {test}
+        assert {test} is set
         assert {test} is "variable value"
         assert none is none
-        assert false is false
+        assert false = false
         assert true is not false
         print {test}
 
 function testing_map:
     trigger:
         set {test} to a new map
-        assert {test}
+        assert {test} exists
         set "name" in {test} to "Jeremy"
         print "name" in {test}
         set "thing" in {test} to "name" in {test}
@@ -36,4 +36,25 @@ function testing_map:
         set ("thing" in {test}) to ("Frog")
         assert ("thing" in {test}) is "Frog"
         print "thing" in {test}
+        return {test}
 
+function to_be_run:
+    trigger:
+        print "was run"
+        return new map
+
+function run_function:
+    trigger:
+        print "call function"
+        assert "hello" is a string
+        set {map} to to_be_run()
+        set "key" in {map} to "Blob"
+        print "key" in {map}
+        return "bees"
+
+function dynamic_running:
+    trigger:
+        print "dynamic function"
+        set {map} to function "to_be_run"
+        assert {map} is a map
+        return "done"

@@ -10,21 +10,27 @@ import mx.kenzie.skript.api.Library;
 import mx.kenzie.skript.api.Property;
 import mx.kenzie.skript.api.SyntaxElement;
 import mx.kenzie.skript.lang.element.StandardElements;
-import mx.kenzie.skript.lang.syntax.code.*;
-import mx.kenzie.skript.lang.syntax.code.control.*;
-import mx.kenzie.skript.lang.syntax.code.list.ClearList;
-import mx.kenzie.skript.lang.syntax.code.list.IndexOfList;
-import mx.kenzie.skript.lang.syntax.code.list.ListCreator;
-import mx.kenzie.skript.lang.syntax.code.map.*;
-import mx.kenzie.skript.lang.syntax.code.relative.IsEqual;
-import mx.kenzie.skript.lang.syntax.code.relative.NotEqual;
-import mx.kenzie.skript.lang.syntax.code.timing.SecondsExpression;
+import mx.kenzie.skript.lang.syntax.comparison.Exists;
+import mx.kenzie.skript.lang.syntax.comparison.IsEqual;
+import mx.kenzie.skript.lang.syntax.comparison.IsOfType;
+import mx.kenzie.skript.lang.syntax.comparison.NotEqual;
+import mx.kenzie.skript.lang.syntax.control.*;
 import mx.kenzie.skript.lang.syntax.entry.Trigger;
+import mx.kenzie.skript.lang.syntax.flow.*;
+import mx.kenzie.skript.lang.syntax.function.DynamicFunctionExpression;
+import mx.kenzie.skript.lang.syntax.function.NoArgsFunctionExpression;
+import mx.kenzie.skript.lang.syntax.function.NoArgsFunctionMember;
+import mx.kenzie.skript.lang.syntax.generic.*;
+import mx.kenzie.skript.lang.syntax.list.ClearList;
+import mx.kenzie.skript.lang.syntax.list.IndexOfList;
+import mx.kenzie.skript.lang.syntax.list.ListCreator;
 import mx.kenzie.skript.lang.syntax.literal.BooleanLiteral;
 import mx.kenzie.skript.lang.syntax.literal.IntegerLiteral;
 import mx.kenzie.skript.lang.syntax.literal.NoneLiteral;
 import mx.kenzie.skript.lang.syntax.literal.StringLiteral;
-import mx.kenzie.skript.lang.syntax.member.NoArgsFunctionMember;
+import mx.kenzie.skript.lang.syntax.map.*;
+import mx.kenzie.skript.lang.syntax.timing.SecondsExpression;
+import mx.kenzie.skript.lang.syntax.timing.WaitEffect;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -46,6 +52,7 @@ public final class SkriptLangSpec implements LanguageDefinition, Library {
     
     final Type[] types = {
         CommonTypes.CLASS,
+        CommonTypes.TYPE,
         CommonTypes.INTEGER,
         CommonTypes.DOUBLE,
         CommonTypes.NUMBER,
@@ -58,6 +65,9 @@ public final class SkriptLangSpec implements LanguageDefinition, Library {
         CommonTypes.REFERENT,
         CommonTypes.LIST,
         CommonTypes.MAP,
+        CommonTypes.THROWABLE,
+        CommonTypes.ERROR,
+        CommonTypes.EXECUTABLE,
         CommonTypes.METHOD,
         CommonTypes.FIELD
     };
@@ -77,12 +87,18 @@ public final class SkriptLangSpec implements LanguageDefinition, Library {
             new StopEffect(),
             new WaitEffect(),
             new ReturnEffect(),
+            new WhileSection(),
+            new IfSection(),
+            new ElseIfSection(),
+            new ElseSection(),
             new SetVariableEffect(),
             new SetEffect(),
             new AddEffect(),
             new DeleteEffect(),
             new RemoveEffect(),
             new AssertEffect(),
+            new RunEffect(),
+            new BreakEffect(),
             new ClearList(),
             new ClearMap()
         ));
@@ -91,10 +107,14 @@ public final class SkriptLangSpec implements LanguageDefinition, Library {
             new BracketExpression(),
             new BooleanLiteral(),
             new VariableExpression(),
+            new IsOfType(),
+            new Exists(),
             new NotEqual(),
             new IsEqual(),
             new StringLiteral(),
+            new NoArgsFunctionExpression(),
             new JavaVersionExpression(),
+            new DynamicFunctionExpression(),
             new SecondsExpression(),
             new IntegerLiteral(),
             new MapCreator(),
@@ -102,7 +122,8 @@ public final class SkriptLangSpec implements LanguageDefinition, Library {
             new IndexOfList(),
             new KeyInMap(),
             new KeysOfMap(),
-            new ValuesOfMap()
+            new ValuesOfMap(),
+            new TypeExpression()
         ));
     }
     
