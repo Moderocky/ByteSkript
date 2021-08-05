@@ -16,10 +16,10 @@ public class IfElseTree extends ProgrammaticSplitTree {
     private Label next;
     private final MultiLabel end;
     
-    public IfElseTree(SectionMeta owner) {
+    public IfElseTree(SectionMeta owner, MultiLabel end) {
         this.owner = owner;
         this.open = true;
-        this.end = new MultiLabel();
+        this.end = end;
     }
     
     public MultiLabel getEnd() {
@@ -68,13 +68,4 @@ public class IfElseTree extends ProgrammaticSplitTree {
         return open;
     }
     
-    @Override
-    public String toString() {
-        return "IfElseTree{" +
-            "owner=" + owner.handler().name() +
-            ", open=" + open +
-            ", next=" + next +
-            ", end=" + end +
-            '}';
-    }
 }

@@ -31,7 +31,16 @@ public class ScriptCompileError extends Error {
     }
     
     @Override
+    public String toString() {
+        String s = getClass().getSimpleName();
+        String message = getLocalizedMessage();
+        return ((message != null) ? (s + ": " + message) : s) + " (Line " + line + ")";
+    }
+    
+    @Override
     public synchronized Throwable fillInStackTrace() {
-        return super.fillInStackTrace();
+        if (fill)
+            return super.fillInStackTrace();
+        return this;
     }
 }

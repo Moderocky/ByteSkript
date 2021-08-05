@@ -21,7 +21,7 @@ public class ElseIfSection extends Section {
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
-        if (!(context.getTree(context.getSection()) instanceof IfElseTree tree))
+        if (!(context.getTree(context.getSection(1)) instanceof IfElseTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Else-if used without preceding if-section.");
         context.setState(CompileState.CODE_BODY);
         final MethodBuilder method = context.getMethod();
@@ -57,6 +57,11 @@ public class ElseIfSection extends Section {
             visitor.visitJumpInsn(167, end);
             visitor.visitLabel(label);
         });
+    }
+    
+    @Override
+    public void compileInline(Context context, Pattern.Match match) throws Throwable {
+        throw new ScriptCompileError(context.lineNumber(), "'Else-if' must be used as section-header.");
     }
     
 }

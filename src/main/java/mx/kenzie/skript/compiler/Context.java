@@ -10,6 +10,7 @@ import mx.kenzie.skript.api.Library;
 import mx.kenzie.skript.api.SyntaxElement;
 import mx.kenzie.skript.api.syntax.Section;
 import mx.kenzie.skript.compiler.structure.Function;
+import mx.kenzie.skript.compiler.structure.MultiLabel;
 import mx.kenzie.skript.compiler.structure.PreVariable;
 import mx.kenzie.skript.compiler.structure.ProgrammaticSplitTree;
 
@@ -93,10 +94,23 @@ public abstract class Context {
     
     public abstract ProgrammaticSplitTree getCurrentTree();
     
+    public abstract void closeAllTrees();
+    
     public abstract void removeTree(ProgrammaticSplitTree tree);
+    
+    public abstract boolean isSectionHeader();
+    
+    public MultiLabel getSectionBreak() {
+        return getCurrentTree().getEnd();
+    }
     
     public void addSection(Section handler) {
         sections.add(0, new SectionMeta(handler));
+    }
+    
+    public void appendSection(Section handler) {
+        if (sections.isEmpty()) addSection(handler);
+        else sections.get(0).getHandlers().add(handler);
     }
     
     public SectionMeta getSection() {
@@ -106,7 +120,7 @@ public abstract class Context {
     
     public SectionMeta getSection(int index) {
         if (sections.isEmpty()) return null;
-        return sections.get(0);
+        return sections.get(index);
     }
     
     public Section getParent() {
@@ -117,8 +131,11 @@ public abstract class Context {
     public void destroySection() {
         if (sections.isEmpty()) return;
         final SectionMeta meta = sections.remove(0);
-        if (meta.handler() == null) return;
-        meta.handler().onSectionExit(this);
+        final Section[] handlers = meta.getHandlers().toArray(new Section[0]);
+        for (int i = handlers.length - 1; i >= 0; i--) {
+            final Section section = handlers[i];
+            section.onSectionExit(this);
+        }
     }
     
     public abstract boolean hasFunction(String name);

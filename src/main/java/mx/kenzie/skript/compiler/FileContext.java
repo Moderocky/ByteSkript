@@ -21,6 +21,7 @@ public class FileContext extends Context {
     protected String indentUnit;
     int indent;
     int lineNumber;
+    boolean sectionHeader;
     LanguageElement expected;
     SyntaxElement currentEffect;
     
@@ -205,8 +206,20 @@ public class FileContext extends Context {
     }
     
     @Override
+    public void closeAllTrees() {
+        for (ProgrammaticSplitTree tree : trees.toArray(new ProgrammaticSplitTree[0])) {
+            tree.close(this);
+        }
+    }
+    
+    @Override
     public void removeTree(ProgrammaticSplitTree tree) {
         this.trees.remove(tree);
+    }
+    
+    @Override
+    public boolean isSectionHeader() {
+        return sectionHeader;
     }
     
     @Override

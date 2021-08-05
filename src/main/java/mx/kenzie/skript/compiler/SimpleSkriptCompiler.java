@@ -158,16 +158,22 @@ public class SimpleSkriptCompiler extends SkriptCompiler {
             if (tree.permit(effect.current())) break close_branch;
             tree.close(context);
         }
-        effect.preCompile(context);
-        effect.compile(context);
+        final SyntaxElement element = effect.current();
         if (storeSection) {
-            final SyntaxElement element = effect.current();
+            context.sectionHeader = true;
             context.createUnit(element.getType());
             if (element instanceof Section section) {
                 context.addSection(section);
             }
+        } else {
+            if (element instanceof Section section) {
+                context.appendSection(section);
+            }
         }
+        effect.preCompile(context);
+        effect.compile(context);
         context.currentEffect = null;
+        context.sectionHeader = false;
     }
     
     protected ElementTree assembleStatement(final String statement, final FileContext context) {

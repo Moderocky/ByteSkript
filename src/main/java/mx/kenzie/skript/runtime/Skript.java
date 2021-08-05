@@ -8,8 +8,12 @@ import mx.kenzie.skript.compiler.SimpleSkriptCompiler;
 import mx.kenzie.skript.compiler.SkriptCompiler;
 import mx.kenzie.skript.error.ScriptCompileError;
 import mx.kenzie.skript.error.ScriptLoadError;
+import mx.kenzie.skript.runtime.threading.OperationController;
+import mx.kenzie.skript.runtime.threading.SkriptThreadProvider;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,11 +27,12 @@ import java.util.concurrent.TimeUnit;
 
 public final class Skript {
     
-    static final ThreadGroup THREAD_GROUP = new ThreadGroup("skript");
+    public static final ThreadGroup THREAD_GROUP = new ThreadGroup("skript");
     final ScheduledExecutorService scheduler;
     final SkriptThreadProvider factory;
     final Thread mainThread;
     final SkriptCompiler compiler;
+    final List<OperationController> processes;
     RuntimeClassLoader loader;
     
     public Skript() {
@@ -40,15 +45,44 @@ public final class Skript {
         this.mainThread = main;
         this.scheduler = new ScheduledThreadPoolExecutor(4, factory);
         this.loader = loader;
+        this.processes = new ArrayList<>();
     }
     
     public Skript(Thread main, ClassLoader parent) {
         this(new SkriptThreadProvider(), new SimpleSkriptCompiler(), main, new RuntimeClassLoader(parent));
     }
     
+    //region Script Control
+    public Collection<OperationController> getProcesses() {
+        return processes;
+    }
+    
+    private OperationController createController() {
+        return new OperationController(this, factory); // todo
+    }
+    
+    @Deprecated
+    public Thread runScript(final Method method, final Object... params) {
+        final OperationController controller = createController();
+        final Runnable runnable = () -> {
+            System.out.println("a"); // todo
+            try {
+                method.invoke(null, params);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            System.out.println("b"); // todo
+            controller.kill();
+        };
+        return factory.newThread(controller, runnable, true);
+    }
+    //endregion
+    
     //region Control
+    @Deprecated
     public void start(final RuntimeClassLoader loader) {
         if (loader != null) throw new IllegalStateException("Skript instance is already running.");
+        this.loader = loader;
     }
     
     public boolean running() {
@@ -63,6 +97,7 @@ public final class Skript {
     }
     //endregion
     
+    //region Libraries
     public boolean registerLibrary(Library library) {
         return compiler.addLibrary(library);
     }
@@ -70,6 +105,7 @@ public final class Skript {
     public boolean unregisterLibrary(Library library) {
         return compiler.removeLibrary(library);
     }
+    //endregion
     
     //region Script Compiling
     public Collection<File> compileScripts(final File root, final File outputDirectory)
@@ -190,8 +226,8 @@ public final class Skript {
     //endregion
     
     //region Timings
-    public Thread allocateProcess(final Runnable runnable, boolean inheritLocals) {
-        return factory.newThread(runnable, inheritLocals);
+    public Thread allocateProcess(final OperationController controller, final Runnable runnable, boolean inheritLocals) {
+        return factory.newThread(controller, runnable, inheritLocals);
     }
     
     public Thread getMainThread() {

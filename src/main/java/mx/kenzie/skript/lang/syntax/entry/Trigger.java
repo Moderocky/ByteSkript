@@ -10,6 +10,7 @@ import mx.kenzie.skript.compiler.CompileState;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
+import mx.kenzie.skript.compiler.structure.TriggerTree;
 import mx.kenzie.skript.lang.element.StandardElements;
 
 public class Trigger extends Section {
@@ -25,6 +26,7 @@ public class Trigger extends Section {
     
     @Override
     public void compile(Context context, Pattern.Match match) {
+        context.createTree(new TriggerTree(context.getSection(1)));
         context.setState(CompileState.CODE_BODY);
     }
     
@@ -37,6 +39,7 @@ public class Trigger extends Section {
     public void onSectionExit(Context context) {
         final MethodBuilder method = context.getMethod();
         assert method != null;
+        context.closeAllTrees();
         method.writeCode(WriteInstruction.pushNull());
         method.writeCode(WriteInstruction.returnObject());
         context.setState(CompileState.MEMBER_BODY);

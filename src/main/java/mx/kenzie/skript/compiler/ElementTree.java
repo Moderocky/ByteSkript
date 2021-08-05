@@ -1,6 +1,7 @@
 package mx.kenzie.skript.compiler;
 
 import mx.kenzie.skript.api.SyntaxElement;
+import mx.kenzie.skript.api.syntax.Section;
 import mx.kenzie.skript.error.ScriptCompileError;
 
 import java.util.Objects;
@@ -20,7 +21,9 @@ public final class ElementTree {
     public void preCompile(Context context) { // Pre-compilation is (outer -> inner)
         context.setCompileCurrent(this);
         try {
-            if (compile) current.preCompile(context, match);
+            if (compile && current instanceof Section section && !context.isSectionHeader())
+                section.preCompileInline(context, match);
+            else if (compile) current.preCompile(context, match);
         } catch (Throwable ex) {
             throw new ScriptCompileError(context.lineNumber(), "Failure during pre-compilation of '" + current.name() + "'", ex);
         }
@@ -35,7 +38,9 @@ public final class ElementTree {
             tree.compile(context);
         }
         try {
-            if (compile) current.compile(context, match);
+            if (compile && current instanceof Section section && !context.isSectionHeader())
+                section.compileInline(context, match);
+            else if (compile) current.compile(context, match);
         } catch (Throwable ex) {
             throw new ScriptCompileError(context.lineNumber(), "Failure during compilation of '" + current.name() + "'", ex);
         }

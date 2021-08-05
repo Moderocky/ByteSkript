@@ -37,7 +37,7 @@ public class DynamicFunctionExpression extends SimpleExpression {
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         assert match.meta() instanceof Integer;
-        if ((int) match.meta() == 0) compileNoArgs(context, match);
+        if ((int) match.meta() == 1) compileNoArgs(context, match);
         else compileWithArgs(context, match);
     }
     

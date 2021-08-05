@@ -9,11 +9,10 @@ import java.util.List;
 public class MultiLabel {
     
     protected final List<Label> uses = new ArrayList<>();
-    public String name;
     
     public Label use() {
         final Label label;
-        uses.add(label = new Label());
+        this.uses.add(label = new Label());
         return label;
     }
     

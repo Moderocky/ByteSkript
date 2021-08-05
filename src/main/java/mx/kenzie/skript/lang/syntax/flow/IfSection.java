@@ -9,7 +9,8 @@ import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
 import mx.kenzie.skript.compiler.structure.IfElseTree;
-import mx.kenzie.skript.error.ScriptCompileError;
+import mx.kenzie.skript.compiler.structure.MultiLabel;
+import mx.kenzie.skript.compiler.structure.ProgrammaticSplitTree;
 import mx.kenzie.skript.lang.element.StandardElements;
 import org.objectweb.asm.Label;
 
@@ -21,15 +22,25 @@ public class IfSection extends Section {
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
-        final IfElseTree tree = new IfElseTree(context.getSection());
+        final IfElseTree tree = new IfElseTree(context.getSection(1), new MultiLabel());
         context.createTree(tree);
-        context.setState(CompileState.CODE_BODY);
         final MethodBuilder method = context.getMethod();
         assert method != null;
         final Label next = new Label();
         tree.setNext(next);
         method.writeCode(WriteInstruction.invokeVirtual(Boolean.class.getMethod("booleanValue")));
         method.writeCode((writer, visitor) -> visitor.visitJumpInsn(153, next));
+        context.setState(CompileState.CODE_BODY);
+    }
+    
+    @Override
+    public void compileInline(Context context, Pattern.Match match) throws Throwable {
+        final MethodBuilder method = context.getMethod();
+        assert method != null;
+        final Label next = context.getCurrentTree().getNext();
+        method.writeCode(WriteInstruction.invokeVirtual(Boolean.class.getMethod("booleanValue")));
+        method.writeCode((writer, visitor) -> visitor.visitJumpInsn(153, next));
+        context.setState(CompileState.CODE_BODY);
     }
     
     @Override
@@ -47,16 +58,19 @@ public class IfSection extends Section {
     
     @Override
     public void onSectionExit(Context context) {
-        if (!(context.getTree(context.getSection()) instanceof IfElseTree tree))
-            throw new ScriptCompileError(context.lineNumber(), "Unable to balance if/else flow tree.");
-        context.setState(CompileState.CODE_BODY);
-        final MethodBuilder method = context.getMethod();
-        final Label label = tree.getNext();
-        final Label end = tree.getEnd().use();
-        method.writeCode((writer, visitor) -> {
-            visitor.visitJumpInsn(167, end);
-            visitor.visitLabel(label);
-        });
+        final ProgrammaticSplitTree current = context.getCurrentTree();
+        if (current instanceof IfElseTree tree) {
+//            if (!(context.getCurrentTree() instanceof IfElseTree tree))
+//                throw new ScriptCompileError(context.lineNumber(), "Unable to balance if/else flow tree.");
+            context.setState(CompileState.CODE_BODY);
+            final MethodBuilder method = context.getMethod();
+            final Label label = tree.getNext();
+            final Label end = tree.getEnd().use();
+            method.writeCode((writer, visitor) -> {
+                visitor.visitJumpInsn(167, end);
+                visitor.visitLabel(label);
+            });
+        }
     }
     
 }

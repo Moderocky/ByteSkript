@@ -20,7 +20,7 @@ public class ElseSection extends Section {
     
     @Override
     public void compile(Context context, Pattern.Match match) {
-        if (!(context.getTree(context.getSection()) instanceof IfElseTree tree))
+        if (!(context.getTree(context.getSection(1)) instanceof IfElseTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Else used without preceding if-section.");
         final MethodBuilder method = context.getMethod();
         assert method != null;
@@ -48,6 +48,11 @@ public class ElseSection extends Section {
             throw new ScriptCompileError(context.lineNumber(), "Unable to balance if/else flow tree.");
         context.setState(CompileState.CODE_BODY);
         tree.close(context);
+    }
+    
+    @Override
+    public void compileInline(Context context, Pattern.Match match) throws Throwable {
+        throw new ScriptCompileError(context.lineNumber(), "'Else' must be used as section-header.");
     }
     
 }

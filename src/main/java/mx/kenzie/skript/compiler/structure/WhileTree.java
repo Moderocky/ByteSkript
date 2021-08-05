@@ -68,10 +68,4 @@ public class WhileTree extends ProgrammaticSplitTree {
         return open;
     }
     
-    @Override
-    public String toString() {
-        return "WhileTree{" +
-            "owner=" + owner.handler().name() +
-            ", open=" + open + '}';
-    }
 }

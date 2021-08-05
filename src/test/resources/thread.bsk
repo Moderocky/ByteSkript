@@ -1,0 +1,14 @@
+
+function test:
+    trigger:
+        print "start if"
+        if "hello" is a string:
+            print "always met"
+        else if false:
+            print "never met"
+            assert false
+        else:
+            print "also never met"
+            assert false
+        print "end"
+        return true

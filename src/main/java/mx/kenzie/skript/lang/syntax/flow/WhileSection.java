@@ -21,6 +21,17 @@ public class WhileSection extends Section {
     
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
+        final WhileTree tree = new WhileTree(context.getSection(1));
+        context.createTree(tree);
+        final MethodBuilder method = context.getMethod();
+        assert method != null;
+        final Label top = new Label();
+        tree.setTop(top);
+        method.writeCode((writer, visitor) -> visitor.visitLabel(top));
+    }
+    
+    @Override
+    public void preCompileInline(Context context, Pattern.Match match) throws Throwable {
         final WhileTree tree = new WhileTree(context.getSection());
         context.createTree(tree);
         final MethodBuilder method = context.getMethod();
@@ -31,8 +42,18 @@ public class WhileSection extends Section {
     }
     
     @Override
+    public void compileInline(Context context, Pattern.Match match) throws Throwable {
+        final MethodBuilder method = context.getMethod();
+        assert method != null;
+        final Label next = context.getCurrentTree().getNext();
+        method.writeCode(WriteInstruction.invokeVirtual(Boolean.class.getMethod("booleanValue")));
+        method.writeCode((writer, visitor) -> visitor.visitJumpInsn(153, next));
+        context.setState(CompileState.CODE_BODY);
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
-        if (!(context.getTree(context.getSection()) instanceof WhileTree tree))
+        if (!(context.getTree(context.getSection(1)) instanceof WhileTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Illegal mid-statement flow break.");
         context.setState(CompileState.CODE_BODY);
         final MethodBuilder method = context.getMethod();
@@ -40,6 +61,7 @@ public class WhileSection extends Section {
         final Label end = tree.getEnd().use();
         method.writeCode(WriteInstruction.invokeVirtual(Boolean.class.getMethod("booleanValue")));
         method.writeCode((writer, visitor) -> visitor.visitJumpInsn(153, end));
+        context.setState(CompileState.CODE_BODY);
     }
     
     @Override

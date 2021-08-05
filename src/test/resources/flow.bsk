@@ -1,7 +1,4 @@
 
-on load:
-
-
 function if_flow:
     trigger:
         print "start if"
@@ -16,8 +13,6 @@ function if_flow:
         print "end"
 
 function while_flow:
-    visibility: local // private func
-    syntax: do something // usable effect syntax
     trigger:
         print "start while"
         set {a} to false
@@ -31,4 +26,15 @@ function while_flow:
         print "finish while"
         return "ended"
 
-
+function inline_headers:
+    trigger:
+        print "1"
+        if true:
+            assert true
+            if false
+            assert false
+            print "w"
+        print "x"
+        if false
+        print "3"
+        print "4"
