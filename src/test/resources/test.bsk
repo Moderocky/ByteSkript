@@ -27,6 +27,7 @@ function testing_variable:
 
 function testing_map:
     trigger:
+        print {bean}
         set {test} to a new map
         assert {test} exists
         set "name" in {test} to "Jeremy"

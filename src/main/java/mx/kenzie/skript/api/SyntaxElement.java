@@ -9,11 +9,14 @@ import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.InlineController;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.structure.PreVariable;
+import mx.kenzie.skript.error.ScriptRuntimeError;
+import mx.kenzie.skript.runtime.threading.ScriptThread;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public interface SyntaxElement {
     
@@ -57,6 +60,25 @@ public interface SyntaxElement {
         
         public static final Handlers EMPTY = new Handlers();
         
+    }
+    
+    default boolean isDelay() {
+        return false;
+    }
+    
+    default boolean requiresMainThread() {
+        return false;
+    }
+    
+    default void addSkipInstruction(Context context, Consumer<Context> consumer) {
+        context.addSkipInstruction(consumer);
+    }
+    
+    default void runOnMainThread(final Runnable runnable) {
+        final Thread current = Thread.currentThread();
+        if (!(current instanceof ScriptThread thread))
+            throw new ScriptRuntimeError("Cannot join main thread from non-script thread.");
+        thread.controller.addInstruction(runnable);
     }
     
     default void writeCall(final MethodBuilder builder, final Method method, final Context context) {

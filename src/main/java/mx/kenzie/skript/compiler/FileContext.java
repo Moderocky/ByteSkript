@@ -13,6 +13,7 @@ import mx.kenzie.skript.compiler.structure.ProgrammaticSplitTree;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class FileContext extends Context {
     
@@ -21,9 +22,11 @@ public class FileContext extends Context {
     protected String indentUnit;
     int indent;
     int lineNumber;
+    int lambdaIndex;
     boolean sectionHeader;
     LanguageElement expected;
     SyntaxElement currentEffect;
+    final List<Consumer<Context>> endOfLine = new ArrayList<>();
     
     ElementTree line;
     ElementTree current;
@@ -173,6 +176,11 @@ public class FileContext extends Context {
     }
     
     @Override
+    public int getVariableCount() {
+        return variables.size();
+    }
+    
+    @Override
     public ElementTree getLine() {
         return line;
     }
@@ -215,6 +223,26 @@ public class FileContext extends Context {
     @Override
     public void removeTree(ProgrammaticSplitTree tree) {
         this.trees.remove(tree);
+    }
+    
+    @Override
+    public void addInnerClass(Type type, int modifiers) {
+        this.getBuilder().addInnerClass(type, modifiers);
+    }
+    
+    @Override
+    public int getLambdaIndex() {
+        return lambdaIndex;
+    }
+    
+    @Override
+    public void increaseLambdaIndex() {
+        this.lambdaIndex++;
+    }
+    
+    @Override
+    public void addSkipInstruction(Consumer<Context> consumer) {
+        this.endOfLine.add(consumer);
     }
     
     @Override

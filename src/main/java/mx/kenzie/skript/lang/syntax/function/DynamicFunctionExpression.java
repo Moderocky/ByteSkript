@@ -8,7 +8,7 @@ import mx.kenzie.skript.compiler.*;
 import mx.kenzie.skript.error.ScriptCompileError;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.lang.syntax.literal.StringLiteral;
-import mx.kenzie.skript.runtime.Bootstrapper;
+import mx.kenzie.skript.runtime.internal.Bootstrapper;
 import org.objectweb.asm.Handle;
 
 public class DynamicFunctionExpression extends SimpleExpression {
@@ -37,7 +37,7 @@ public class DynamicFunctionExpression extends SimpleExpression {
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         assert match.meta() instanceof Integer;
-        if ((int) match.meta() == 1) compileNoArgs(context, match);
+        if ((int) match.meta() == 0) compileNoArgs(context, match);
         else compileWithArgs(context, match);
     }
     

@@ -65,13 +65,11 @@ public final class Skript {
     public Thread runScript(final Method method, final Object... params) {
         final OperationController controller = createController();
         final Runnable runnable = () -> {
-            System.out.println("a"); // todo
             try {
                 method.invoke(null, params);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
-            System.out.println("b"); // todo
             controller.kill();
         };
         return factory.newThread(controller, runnable, true);

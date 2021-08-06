@@ -1,4 +1,4 @@
-package mx.kenzie.skript.runtime;
+package mx.kenzie.skript.runtime.internal;
 
 import mx.kenzie.foundation.Type;
 import mx.kenzie.skript.error.ScriptBootstrapError;

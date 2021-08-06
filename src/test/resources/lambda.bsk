@@ -1,0 +1,12 @@
+
+function lambda_test:
+    trigger:
+        print "start if"
+        set {boo} to "blob"
+        run a new runnable:
+            print "first runnable"
+            print {boo}
+        set {thing} to a new runnable:
+            print "second runnable"
+        run {thing}
+

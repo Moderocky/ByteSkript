@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public abstract class Context {
     
@@ -78,6 +79,8 @@ public abstract class Context {
     
     public abstract void emptyVariables();
     
+    public abstract int getVariableCount();
+    
     public abstract int slotOf(PreVariable variable);
     
     public abstract boolean hasVariable(String name);
@@ -97,6 +100,14 @@ public abstract class Context {
     public abstract void closeAllTrees();
     
     public abstract void removeTree(ProgrammaticSplitTree tree);
+    
+    public abstract void addInnerClass(Type type, int modifiers);
+    
+    public abstract int getLambdaIndex();
+    
+    public abstract void increaseLambdaIndex();
+    
+    public abstract void addSkipInstruction(Consumer<Context> consumer);
     
     public abstract boolean isSectionHeader();
     

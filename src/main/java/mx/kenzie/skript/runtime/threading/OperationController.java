@@ -7,6 +7,7 @@ public class OperationController {
     protected final AirlockQueue queue;
     protected final SkriptThreadProvider provider;
     protected final Skript skript;
+    protected boolean state;
     
     public OperationController(final Skript skript, final SkriptThreadProvider provider) {
         this.queue = new AirlockQueue();
@@ -15,9 +16,23 @@ public class OperationController {
         this.skript.getProcesses().add(this);
     }
     
+    public synchronized void swap() {
+        this.state = state ^ true;
+    }
+    
     public synchronized void addInstruction(final Runnable runnable) {
         synchronized (this.queue) {
             this.queue.add(runnable);
+        }
+        while (true) {
+            synchronized (this.queue) {
+                try {
+                    if (queue.isEmpty()) break;
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
         }
     }
     

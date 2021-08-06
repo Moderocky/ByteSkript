@@ -13,6 +13,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 
 public class SimpleSkriptCompiler extends SkriptCompiler {
@@ -158,20 +159,29 @@ public class SimpleSkriptCompiler extends SkriptCompiler {
             if (tree.permit(effect.current())) break close_branch;
             tree.close(context);
         }
-        final SyntaxElement element = effect.current();
         if (storeSection) {
             context.sectionHeader = true;
-            context.createUnit(element.getType());
-            if (element instanceof Section section) {
-                context.addSection(section);
+            for (SyntaxElement element : effect.list()) {
+                if (element instanceof Section section) {
+                    context.createUnit(element.getType());
+                    context.addSection(section);
+                    break;
+                }
             }
         } else {
-            if (element instanceof Section section) {
-                context.appendSection(section);
+            for (SyntaxElement element : effect.list()) {
+                if (element instanceof Section section) {
+                    context.appendSection(section);
+                    break;
+                }
             }
         }
         effect.preCompile(context);
         effect.compile(context);
+        for (Consumer<Context> consumer : context.endOfLine) {
+            consumer.accept(context);
+        }
+        context.endOfLine.clear();
         context.currentEffect = null;
         context.sectionHeader = false;
     }

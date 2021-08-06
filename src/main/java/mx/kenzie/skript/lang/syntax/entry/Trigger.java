@@ -28,6 +28,8 @@ public class Trigger extends Section {
     public void compile(Context context, Pattern.Match match) {
         context.createTree(new TriggerTree(context.getSection(1)));
         context.setState(CompileState.CODE_BODY);
+        final MethodBuilder method = context.getMethod();
+        method.writeCode(prepareVariables(context));
     }
     
     @Override
@@ -44,4 +46,14 @@ public class Trigger extends Section {
         method.writeCode(WriteInstruction.returnObject());
         context.setState(CompileState.MEMBER_BODY);
     }
+    
+    private WriteInstruction prepareVariables(Context context) {
+        return (writer, visitor) -> {
+            for (int i = 0; i < context.getVariableCount(); i++) {
+                visitor.visitInsn(1);
+                visitor.visitVarInsn(58, i);
+            }
+        };
+    }
+    
 }

@@ -112,6 +112,7 @@ public final class SkriptLangSpec implements LanguageDefinition, Library {
             new NotEqual(),
             new IsEqual(),
             new StringLiteral(),
+            new RunnableSection(),
             new NoArgsFunctionExpression(),
             new JavaVersionExpression(),
             new DynamicFunctionExpression(),

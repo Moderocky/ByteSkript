@@ -12,7 +12,7 @@ public record ExampleController(Skript skript) implements Runnable {
             for (OperationController process : skript.getProcesses()) {
                 final AirlockQueue queue;
                 synchronized (queue = process.getQueue()) {
-                    if (process.empty()) continue;
+                    if (queue.isEmpty()) continue;
                     for (Runnable runnable : queue) {
                         runnable.run();
                     }

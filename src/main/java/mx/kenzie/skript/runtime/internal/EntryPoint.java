@@ -1,4 +1,4 @@
-package mx.kenzie.skript.runtime.threading;
+package mx.kenzie.skript.runtime.internal;
 
 public abstract class EntryPoint {
     

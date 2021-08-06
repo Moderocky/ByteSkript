@@ -4,6 +4,9 @@ import mx.kenzie.skript.api.SyntaxElement;
 import mx.kenzie.skript.api.syntax.Section;
 import mx.kenzie.skript.error.ScriptCompileError;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 public final class ElementTree {
@@ -48,6 +51,15 @@ public final class ElementTree {
     
     public SyntaxElement current() {
         return current;
+    }
+    
+    public Collection<SyntaxElement> list() {
+        final List<SyntaxElement> list = new ArrayList<>();
+        list.add(current);
+        for (ElementTree tree : nested) {
+            list.addAll(tree.list());
+        }
+        return list;
     }
     
     public Pattern.Match match() {
