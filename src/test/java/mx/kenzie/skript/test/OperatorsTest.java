@@ -10,27 +10,31 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 
-public class ThreadingTest {
+public class OperatorsTest {
     
     private static final Skript skript = new Skript();
     private static Script script;
     
     @BeforeClass
     public static void start() throws Throwable {
-        final PostCompileClass cls = skript.compileScript(FlowTest.class.getClassLoader()
-            .getResourceAsStream("thread.bsk"), "skript.threading");
+        final PostCompileClass cls = skript.compileScript(OperatorsTest.class.getClassLoader()
+            .getResourceAsStream("maths.bsk"), "skript.maths");
         debug(cls);
         script = skript.loadScript(cls);
     }
     
-    public static void main(String[] args) throws Throwable {
-        start();
-        final Method function = script.getFunction("test");
+    @Test
+    public void basic() throws Throwable {
+        final Method function = script.getFunction("basic");
         assert function != null;
-        final Thread thread = skript.runScript(function);
-        thread.start();
-        new ExampleController(skript).run();
-        System.out.println("hi");
+        function.invoke(null);
+    }
+    
+    @Test
+    public void looping() throws Throwable {
+        final Method function = script.getFunction("looping");
+        assert function != null;
+        function.invoke(null);
     }
     
     private static void debug(final PostCompileClass source) throws Throwable {

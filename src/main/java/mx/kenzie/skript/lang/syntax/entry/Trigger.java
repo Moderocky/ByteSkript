@@ -10,6 +10,7 @@ import mx.kenzie.skript.compiler.CompileState;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
+import mx.kenzie.skript.compiler.structure.PreVariable;
 import mx.kenzie.skript.compiler.structure.TriggerTree;
 import mx.kenzie.skript.lang.element.StandardElements;
 
@@ -49,9 +50,13 @@ public class Trigger extends Section {
     
     private WriteInstruction prepareVariables(Context context) {
         return (writer, visitor) -> {
-            for (int i = 0; i < context.getVariableCount(); i++) {
-                visitor.visitInsn(1);
-                visitor.visitVarInsn(58, i);
+            int i = 0;
+            for (PreVariable variable : context.getVariables()) {
+                if (!variable.parameter) {
+                    visitor.visitInsn(1);
+                    visitor.visitVarInsn(58, i);
+                }
+                i++;
             }
         };
     }

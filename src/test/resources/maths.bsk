@@ -1,0 +1,24 @@
+
+function looping:
+    trigger:
+        set {a} to 0
+        while {a} is less than 10:
+            set {a} to {a} + 1
+            exit section if {a} is 5
+            assert {a} is less than 5
+        assert {a} is 5
+
+function basic:
+    trigger:
+        set {a} to 2 + 2
+        set {b} to 6 - {a}
+        set {c} to {a} / {b}
+        set {d} to {c} * {c}
+        set {e} to square root of {d}
+        assert {a} is 4
+        assert {b} is 2
+        assert {c} is 2
+        assert {d} is 4
+        assert {e} is 2
+        assert "hello " + "there" is "hello there"
+

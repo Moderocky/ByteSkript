@@ -203,7 +203,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler {
             for (int i = 0; i < types.length; i++) {
                 final String input = inputs[i];
                 final Type type = types[i];
-                final ElementTree sub = assembleExpression(input, type, context);
+                final ElementTree sub = assembleExpression(input.trim(), type, context);
                 if (sub == null) {
                     context.currentEffect = null;
                     continue outer;
@@ -214,7 +214,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler {
             break;
         }
         if (current == null)
-            throw new ScriptParseError(context.lineNumber(), "No syntax match found for '" + statement + "'");
+            throw new ScriptParseError(context.lineNumber(), "No syntax match found for line '" + statement + "'");
         return current;
     }
     
@@ -234,7 +234,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler {
             for (int i = 0; i < types.length; i++) {
                 final String input = inputs[i];
                 final Type type = types[i];
-                final ElementTree sub = assembleExpression(input, type, context);
+                final ElementTree sub = assembleExpression(input.trim(), type, context);
                 if (sub == null) continue outer;
                 elements.add(sub);
             }
@@ -245,8 +245,8 @@ public class SimpleSkriptCompiler extends SkriptCompiler {
             }
             break;
         }
-        if (current == null)
-            throw new ScriptParseError(context.lineNumber(), "No syntax match found for '" + expression + "'");
+//        if (current == null)
+//            throw new ScriptParseError(context.lineNumber(), "No syntax match found for '" + expression + "'");
         return current;
     }
     

@@ -74,11 +74,14 @@ public interface SyntaxElement {
         context.addSkipInstruction(consumer);
     }
     
-    default void runOnMainThread(final Runnable runnable) {
+    static void runOnMainThread(final Instruction<?> runnable) throws Throwable {
         final Thread current = Thread.currentThread();
         if (!(current instanceof ScriptThread thread))
             throw new ScriptRuntimeError("Cannot join main thread from non-script thread.");
         thread.controller.addInstruction(runnable);
+        synchronized (thread.controller) {
+            thread.controller.wait();
+        }
     }
     
     default void writeCall(final MethodBuilder builder, final Method method, final Context context) {

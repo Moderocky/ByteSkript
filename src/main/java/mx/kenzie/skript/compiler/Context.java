@@ -81,6 +81,8 @@ public abstract class Context {
     
     public abstract int getVariableCount();
     
+    public abstract Collection<PreVariable> getVariables();
+    
     public abstract int slotOf(PreVariable variable);
     
     public abstract boolean hasVariable(String name);

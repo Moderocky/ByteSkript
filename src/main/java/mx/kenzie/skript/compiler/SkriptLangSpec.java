@@ -10,16 +10,11 @@ import mx.kenzie.skript.api.Library;
 import mx.kenzie.skript.api.Property;
 import mx.kenzie.skript.api.SyntaxElement;
 import mx.kenzie.skript.lang.element.StandardElements;
-import mx.kenzie.skript.lang.syntax.comparison.Exists;
-import mx.kenzie.skript.lang.syntax.comparison.IsEqual;
-import mx.kenzie.skript.lang.syntax.comparison.IsOfType;
-import mx.kenzie.skript.lang.syntax.comparison.NotEqual;
+import mx.kenzie.skript.lang.syntax.comparison.*;
 import mx.kenzie.skript.lang.syntax.control.*;
 import mx.kenzie.skript.lang.syntax.entry.Trigger;
 import mx.kenzie.skript.lang.syntax.flow.*;
-import mx.kenzie.skript.lang.syntax.function.DynamicFunctionExpression;
-import mx.kenzie.skript.lang.syntax.function.NoArgsFunctionExpression;
-import mx.kenzie.skript.lang.syntax.function.NoArgsFunctionMember;
+import mx.kenzie.skript.lang.syntax.function.*;
 import mx.kenzie.skript.lang.syntax.generic.*;
 import mx.kenzie.skript.lang.syntax.list.ClearList;
 import mx.kenzie.skript.lang.syntax.list.IndexOfList;
@@ -29,6 +24,7 @@ import mx.kenzie.skript.lang.syntax.literal.IntegerLiteral;
 import mx.kenzie.skript.lang.syntax.literal.NoneLiteral;
 import mx.kenzie.skript.lang.syntax.literal.StringLiteral;
 import mx.kenzie.skript.lang.syntax.map.*;
+import mx.kenzie.skript.lang.syntax.maths.*;
 import mx.kenzie.skript.lang.syntax.timing.SecondsExpression;
 import mx.kenzie.skript.lang.syntax.timing.WaitEffect;
 
@@ -77,6 +73,7 @@ public final class SkriptLangSpec implements LanguageDefinition, Library {
             syntax.put(value, new ArrayList<>());
         }
         syntax.get(CompileState.ROOT).addAll(Arrays.asList(
+            new FunctionMember(),
             new NoArgsFunctionMember()
         ));
         syntax.get(CompileState.MEMBER_BODY).addAll(Arrays.asList(
@@ -98,6 +95,7 @@ public final class SkriptLangSpec implements LanguageDefinition, Library {
             new RemoveEffect(),
             new AssertEffect(),
             new RunEffect(),
+            new BreakIfEffect(),
             new BreakEffect(),
             new ClearList(),
             new ClearMap()
@@ -109,12 +107,23 @@ public final class SkriptLangSpec implements LanguageDefinition, Library {
             new VariableExpression(),
             new IsOfType(),
             new Exists(),
+            new GTEQ(),
+            new LTEQ(),
+            new GT(),
+            new LT(),
             new NotEqual(),
             new IsEqual(),
             new StringLiteral(),
             new RunnableSection(),
+            new SystemInputExpression(),
+            new FunctionExpression(),
             new NoArgsFunctionExpression(),
             new JavaVersionExpression(),
+            new MultiplyExpression(),
+            new DivideExpression(),
+            new SquareRootExpression(),
+            new AddExpression(),
+            new SubtractExpression(),
             new DynamicFunctionExpression(),
             new SecondsExpression(),
             new IntegerLiteral(),

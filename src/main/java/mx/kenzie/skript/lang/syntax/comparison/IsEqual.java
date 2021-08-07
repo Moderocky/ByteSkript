@@ -6,14 +6,14 @@ import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.skript.api.syntax.RelationalExpression;
 import mx.kenzie.skript.compiler.*;
 import mx.kenzie.skript.lang.element.StandardElements;
+import mx.kenzie.skript.runtime.internal.OperatorHandler;
 
 import java.lang.reflect.Method;
-import java.util.Objects;
 
 public class IsEqual extends RelationalExpression {
     
     public IsEqual() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% (is|are|=|==) %Object%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% (is|is equal to|are|=|==) %Object%");
     }
     
     @Override
@@ -30,9 +30,8 @@ public class IsEqual extends RelationalExpression {
         try {
             final MethodBuilder method = context.getMethod();
             assert method != null;
-            final Method target = Objects.class.getDeclaredMethod("equals", Object.class, Object.class);
+            final Method target = OperatorHandler.class.getDeclaredMethod("equals", Object.class, Object.class);
             method.writeCode(WriteInstruction.invokeStatic(target));
-            method.writeCode(WriteInstruction.invokeStatic(Boolean.class.getMethod("valueOf", boolean.class)));
             context.setState(CompileState.STATEMENT);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();

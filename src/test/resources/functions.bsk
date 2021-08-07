@@ -1,0 +1,17 @@
+
+function input:
+    trigger:
+        set {a} to test_single(1)
+        set {b} to test_double({a}, 5)
+        assert {b} is 7
+
+function test_single(thing):
+    trigger:
+        assert {thing} is 1
+        return {thing} + 1
+
+function test_double(thing, plus):
+    trigger:
+        assert {thing} is test_single(1)
+        assert {thing} is 2
+        return {thing} + {plus}

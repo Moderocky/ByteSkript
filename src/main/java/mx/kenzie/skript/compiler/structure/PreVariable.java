@@ -2,7 +2,13 @@ package mx.kenzie.skript.compiler.structure;
 
 import mx.kenzie.foundation.WriteInstruction;
 
-public record PreVariable(String name) {
+public final class PreVariable {
+    private final String name;
+    public boolean parameter;
+    
+    public PreVariable(String name) {
+        this.name = name;
+    }
     
     public WriteInstruction load(final int slot) {
         return WriteInstruction.loadObject(slot);
@@ -18,8 +24,8 @@ public record PreVariable(String name) {
             "name=" + name + ']';
     }
     
-    @Override
-    public boolean equals(Object o) {
-        return (this == o);
+    public String name() {
+        return name;
     }
+    
 }

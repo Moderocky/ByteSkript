@@ -153,6 +153,11 @@ public class FileContext extends Context {
     }
     
     @Override
+    public List<PreVariable> getVariables() {
+        return variables;
+    }
+    
+    @Override
     public PreVariable getVariable(int slot) {
         return variables.get(slot);
     }

@@ -1,15 +1,13 @@
 package mx.kenzie.skript.runtime.threading;
 
-import java.util.concurrent.SynchronousQueue;
+import mx.kenzie.skript.api.Instruction;
 
-public class AirlockQueue extends SynchronousQueue<Runnable> {
+import java.util.ArrayList;
+
+public class AirlockQueue extends ArrayList<Instruction<?>> {
     
     public AirlockQueue() {
         super();
-    }
-    
-    public AirlockQueue(boolean fair) {
-        super(fair);
     }
     
 }
