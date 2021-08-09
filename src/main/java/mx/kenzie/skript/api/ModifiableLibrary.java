@@ -3,14 +3,21 @@ package mx.kenzie.skript.api;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
 import mx.kenzie.foundation.language.PostCompileClass;
+import mx.kenzie.skript.api.note.EventValue;
+import mx.kenzie.skript.api.syntax.EventHolder;
+import mx.kenzie.skript.compiler.CompileState;
 import mx.kenzie.skript.compiler.Context;
+import mx.kenzie.skript.error.ScriptCompileError;
+import mx.kenzie.skript.lang.handler.StandardHandlers;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 public class ModifiableLibrary implements Library {
     
     protected final Map<State, List<SyntaxElement>> syntax = new HashMap<>();
-    protected final List<Property> properties = new ArrayList<>();
+    protected final List<PropertyHandler> properties = new ArrayList<>();
     protected final List<Type> types = new ArrayList<>();
     protected final String name;
     
@@ -18,10 +25,74 @@ public class ModifiableLibrary implements Library {
         this.name = name;
     }
     
+    public void registerSyntax(State state, SyntaxElement... elements) {
+        for (SyntaxElement element : elements) {
+            this.registerSyntax(state, element);
+        }
+    }
+    
     public void registerSyntax(State state, SyntaxElement element) {
         this.syntax.putIfAbsent(state, new ArrayList<>());
         this.syntax.get(state).add(element);
-        if (element instanceof final Property property && !properties.contains(property)) properties.add(property);
+    }
+    
+    public void registerEvents(EventHolder... events) {
+        for (EventHolder event : events) {
+            this.registerEvent(event);
+        }
+    }
+    
+    public void registerEvent(EventHolder event) {
+        this.registerSyntax(CompileState.ROOT, event);
+        this.registerValues(event);
+    }
+    
+    protected void registerValues(EventHolder event) {
+        for (Method method : event.eventClass().getMethods()) {
+            final EventValue value = method.getAnnotation(EventValue.class);
+            if (value == null) continue;
+            if (method.getParameterTypes().length == 0 && method.getReturnType() != void.class) {
+                this.registerProperty(value.value(), StandardHandlers.GET, method);
+            } else if (method.getParameterTypes().length == 1 && method.getReturnType() == void.class) {
+                this.registerProperty(value.value(), StandardHandlers.SET, method);
+            } else {
+                throw new ScriptCompileError(-1, "Unable to extract event value handler from '" + method + "'");
+            }
+        }
+    }
+    
+    public void registerProperty(String name, HandlerType type, Method handler) {
+        final Type holder;
+        final Type value;
+        if (type.expectInputs()) {
+            final Class<?>[] classes = handler.getParameterTypes();
+            assert classes.length > 0;
+            value = new Type(classes[classes.length - 1]);
+        } else if (type.expectReturn()) {
+            value = new Type(handler.getReturnType());
+        } else {
+            value = new Type(void.class);
+        }
+        if (Modifier.isStatic(handler.getModifiers())) {
+            final Class<?>[] classes = handler.getParameterTypes();
+            assert classes.length > 0;
+            holder = new Type(classes[0]);
+        } else {
+            holder = new Type(handler.getDeclaringClass());
+        }
+        this.properties.add(new PropertyHandler(name, type, holder, value, handler));
+    }
+    
+    public void registerTypes(Class<?>... classes) {
+        for (Class<?> aClass : classes) {
+            this.registerType(aClass);
+        }
+    }
+    
+    public void registerTypes(Type... types) {
+        for (Type type : types) {
+            if (!this.types.contains(type)) this.types.add(type);
+        }
     }
     
     public Type registerType(Class<?> cls) {
@@ -53,7 +124,7 @@ public class ModifiableLibrary implements Library {
     }
     
     @Override
-    public Collection<Property> getProperties() {
+    public Collection<PropertyHandler> getProperties() {
         return properties;
     }
     

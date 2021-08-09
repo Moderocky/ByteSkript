@@ -1,6 +1,7 @@
 package mx.kenzie.skript.compiler;
 
 import mx.kenzie.foundation.Type;
+import mx.kenzie.skript.api.Event;
 import mx.kenzie.skript.api.Referent;
 import mx.kenzie.skript.runtime.type.Executable;
 
@@ -25,6 +26,7 @@ public class CommonTypes {
     public static final Type TYPE = new Type(java.lang.reflect.Type.class);
     public static final Type DURATION = new Type(Duration.class);
     public static final Type VOID = new Type(Void.class);
+    public static final Type EVENT = new Type(Event.class);
     
     public static final Type THROWABLE = new Type(Throwable.class);
     public static final Type ERROR = new Type(Error.class);

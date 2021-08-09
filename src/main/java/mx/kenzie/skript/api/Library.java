@@ -13,7 +13,7 @@ public interface Library {
     
     Collection<SyntaxElement> getHandlers(final State state, final LanguageElement expected, final Context context);
     
-    Collection<Property> getProperties();
+    Collection<PropertyHandler> getProperties();
     
     SyntaxElement[] getSyntax();
     

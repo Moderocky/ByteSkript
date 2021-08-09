@@ -3,23 +3,23 @@ package mx.kenzie.skript.runtime;
 import mx.kenzie.foundation.RuntimeClassLoader;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.language.PostCompileClass;
+import mx.kenzie.skript.api.Event;
 import mx.kenzie.skript.api.Library;
 import mx.kenzie.skript.compiler.SimpleSkriptCompiler;
 import mx.kenzie.skript.compiler.SkriptCompiler;
 import mx.kenzie.skript.error.ScriptCompileError;
 import mx.kenzie.skript.error.ScriptLoadError;
+import mx.kenzie.skript.runtime.internal.EventHandler;
 import mx.kenzie.skript.runtime.threading.OperationController;
+import mx.kenzie.skript.runtime.threading.ScriptRunner;
+import mx.kenzie.skript.runtime.threading.ScriptThread;
 import mx.kenzie.skript.runtime.threading.SkriptThreadProvider;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -33,10 +33,15 @@ public final class Skript {
     final Thread mainThread;
     final SkriptCompiler compiler;
     final List<OperationController> processes;
+    final Map<Class<? extends Event>, EventHandler> events;
     RuntimeClassLoader loader;
     
     public Skript() {
         this(new SkriptThreadProvider(), new SimpleSkriptCompiler(), Thread.currentThread(), new RuntimeClassLoader(Skript.class.getClassLoader()));
+    }
+    
+    public Skript(Thread main, ClassLoader parent) {
+        this(new SkriptThreadProvider(), new SimpleSkriptCompiler(), main, new RuntimeClassLoader(parent));
     }
     
     public Skript(SkriptThreadProvider threadProvider, SkriptCompiler compiler, Thread main, RuntimeClassLoader loader) {
@@ -46,10 +51,7 @@ public final class Skript {
         this.scheduler = new ScheduledThreadPoolExecutor(4, factory);
         this.loader = loader;
         this.processes = new ArrayList<>();
-    }
-    
-    public Skript(Thread main, ClassLoader parent) {
-        this(new SkriptThreadProvider(), new SimpleSkriptCompiler(), main, new RuntimeClassLoader(parent));
+        this.events = new HashMap<>();
     }
     
     //region Script Control
@@ -61,18 +63,33 @@ public final class Skript {
         return new OperationController(this, factory); // todo
     }
     
-    @Deprecated
-    public Thread runScript(final Method method, final Object... params) {
+    public Thread runScript(final ScriptRunner runner) {
+        return runScript(runner, null);
+    }
+    
+    public Thread runScript(final ScriptRunner runner, final Event event) {
         final OperationController controller = createController();
-        final Runnable runnable = () -> {
-            try {
-                method.invoke(null, params);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            controller.kill();
-        };
-        return factory.newThread(controller, runnable, true);
+        final ScriptThread thread = (ScriptThread) factory.newThread(controller, runner, true);
+        thread.initiator = runner.owner();
+        thread.event = event;
+        thread.start();
+        return thread;
+    }
+    
+    public boolean runEvent(final Event event) {
+        boolean run = false;
+        for (Map.Entry<Class<? extends Event>, EventHandler> entry : events.entrySet()) {
+            final Class<? extends Event> key = entry.getKey();
+            if (!key.isAssignableFrom(event.getClass())) continue;
+            run = true;
+            entry.getValue().run(this, event);
+        }
+        return run;
+    }
+    
+    public void registerEventHandler(final Class<? extends Event> event, final ScriptRunner runner) {
+        this.events.putIfAbsent(event, new EventHandler());
+        this.events.get(event).add(runner);
     }
     //endregion
     
@@ -179,7 +196,7 @@ public final class Skript {
     }
     
     public Script loadScript(final PostCompileClass datum) {
-        return new Script(null, loader.loadClass(datum.name(), datum.code()));
+        return new Script(this, null, loader.loadClass(datum.name(), datum.code()));
     }
     
     public Collection<Script> loadScripts(final PostCompileClass[] data) {
@@ -191,7 +208,7 @@ public final class Skript {
     }
     
     public Script loadScript(final byte[] bytecode, final String name) {
-        return new Script(null, loader.loadClass(name, bytecode));
+        return new Script(this, null, loader.loadClass(name, bytecode));
     }
     
     public Script loadScript(final byte[] bytecode) throws IOException {
@@ -200,7 +217,7 @@ public final class Skript {
     
     public Script loadScript(final InputStream stream, final String name)
         throws IOException {
-        return new Script(null, loader.loadClass(name, stream.readAllBytes()));
+        return new Script(this, null, loader.loadClass(name, stream.readAllBytes()));
     }
     
     public Script loadScript(final InputStream stream)
@@ -218,7 +235,7 @@ public final class Skript {
     public Script loadScript(final File source, final String name)
         throws IOException {
         try (InputStream stream = new FileInputStream(source)) {
-            return new Script(source, loader.loadClass(name, stream.readAllBytes()));
+            return new Script(this, source, loader.loadClass(name, stream.readAllBytes()));
         }
     }
     //endregion

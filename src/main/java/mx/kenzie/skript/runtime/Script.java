@@ -1,27 +1,30 @@
 package mx.kenzie.skript.runtime;
 
+import mx.kenzie.skript.lang.event.Load;
+import mx.kenzie.skript.runtime.data.EventData;
 import mx.kenzie.skript.runtime.data.Function;
 import mx.kenzie.skript.runtime.data.SourceData;
+import mx.kenzie.skript.runtime.internal.CompiledScript;
+import mx.kenzie.skript.runtime.internal.InvokingScriptRunner;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public final class Script {
     private final File sourceFile;
     private final Class<?>[] classes;
     private final String name;
     private final Map<String, Method> functions;
+    private final List<Method> events;
     private final Collection<SourceData> data;
     
-    public Script(File sourceFile, Class<?>... classes) {
+    public Script(Skript skript, File sourceFile, Class<?>... classes) {
         this.sourceFile = sourceFile;
         this.classes = classes;
         this.name = mainClass().getName();
         this.functions = new HashMap<>();
+        this.events = new ArrayList<>();
         this.data = new ArrayList<>();
         for (Method method : mainClass().getDeclaredMethods()) {
             source:
@@ -36,11 +39,28 @@ public final class Script {
                 if (function == null) break function;
                 this.functions.put(function.name(), method);
             }
+            event:
+            {
+                final EventData event = method.getAnnotation(EventData.class);
+                if (event == null) break event;
+                this.events.add(method);
+                skript.registerEventHandler(event.event(), new InvokingScriptRunner(mainClass(), method));
+            }
         }
+        forceLoad(mainClass());
+        skript.runEvent(new Load(this));
     }
     
-    public Class<?> mainClass() {
-        return classes[0];
+    public String getSimpleName() {
+        return mainClass().getSimpleName();
+    }
+    
+    public String getPath() {
+        return mainClass().getName();
+    }
+    
+    public Class<? extends CompiledScript> mainClass() {
+        return (Class<? extends CompiledScript>) classes[0];
     }
     
     public boolean hasSourceFile() {
@@ -67,6 +87,13 @@ public final class Script {
     public String toString() {
         return "Script[" +
             "name=" + name + ']';
+    }
+    
+    private void forceLoad(Class<?> cls) {
+        try {
+            Class.forName(cls.getName(), true, cls.getClassLoader());
+        } catch (ClassNotFoundException ignore) {
+        }
     }
     
     

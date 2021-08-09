@@ -43,8 +43,12 @@ public class Trigger extends Section {
         final MethodBuilder method = context.getMethod();
         assert method != null;
         context.closeAllTrees();
-        method.writeCode(WriteInstruction.pushNull());
-        method.writeCode(WriteInstruction.returnObject());
+        if (method.getErasure().returnType().equals(new Type(void.class))) {
+            method.writeCode(WriteInstruction.returnEmpty());
+        } else {
+            method.writeCode(WriteInstruction.pushNull());
+            method.writeCode(WriteInstruction.returnObject());
+        }
         context.setState(CompileState.MEMBER_BODY);
     }
     

@@ -1,15 +1,14 @@
 package mx.kenzie.skript.compiler;
 
-import mx.kenzie.foundation.ClassBuilder;
-import mx.kenzie.foundation.FieldBuilder;
-import mx.kenzie.foundation.MethodBuilder;
-import mx.kenzie.foundation.Type;
+import mx.kenzie.foundation.*;
 import mx.kenzie.foundation.language.PostCompileClass;
-import mx.kenzie.skript.api.LanguageElement;
-import mx.kenzie.skript.api.SyntaxElement;
+import mx.kenzie.skript.api.*;
 import mx.kenzie.skript.compiler.structure.Function;
 import mx.kenzie.skript.compiler.structure.PreVariable;
 import mx.kenzie.skript.compiler.structure.ProgrammaticSplitTree;
+import mx.kenzie.skript.compiler.structure.PropertyAccessGenerator;
+import mx.kenzie.skript.lang.handler.StandardHandlers;
+import mx.kenzie.skript.runtime.internal.CompiledScript;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -23,10 +22,13 @@ public class FileContext extends Context {
     int indent;
     int lineNumber;
     int lambdaIndex;
+    int indexShift;
     boolean sectionHeader;
     LanguageElement expected;
     SyntaxElement currentEffect;
+    private HandlerType mode = StandardHandlers.GET;
     final List<Consumer<Context>> endOfLine = new ArrayList<>();
+    final Map<HandlerType, List<PropertyAccessGenerator>> usedProperties = new HashMap<>();
     
     ElementTree line;
     ElementTree current;
@@ -41,11 +43,19 @@ public class FileContext extends Context {
     public FileContext(Type type) {
         this.type = type;
         this.state = CompileState.ROOT;
-        this.writer = new ClassBuilder(type, SkriptLangSpec.JAVA_VERSION).addModifiers(Modifier.PUBLIC);
+        this.writer = new ClassBuilder(type, SkriptLangSpec.JAVA_VERSION)
+            .addModifiers(Modifier.PUBLIC)
+            .addModifiers(Modifier.FINAL)
+            .setSuperclass(CompiledScript.class);
 //        writer.setComputation(1); // todo
     }
     
     public PostCompileClass[] compile() {
+        for (List<PropertyAccessGenerator> value : usedProperties.values()) {
+            for (PropertyAccessGenerator generator : value) {
+                generator.compile(this);
+            }
+        }
         final List<PostCompileClass> classes = new ArrayList<>();
         classes.add(new PostCompileClass(writer.compile(), writer.getName(), writer.getInternalName()));
         for (ClassBuilder builder : writer.getSuppressed()) {
@@ -253,6 +263,48 @@ public class FileContext extends Context {
     @Override
     public boolean isSectionHeader() {
         return sectionHeader;
+    }
+    
+    @Override
+    public int methodIndexShift() {
+        return indexShift++;
+    }
+    
+    @Override
+    public MethodErasure useHandle(String property, HandlerType type) {
+        this.usedProperties.putIfAbsent(type, new ArrayList<>());
+        final List<PropertyAccessGenerator> list = this.usedProperties.get(type);
+        for (Library library : this.libraries) {
+            sub:
+            for (PropertyHandler handler : library.getProperties()) {
+                if (!handler.name().equals(property)) continue;
+                if (!handler.type().equals(type)) continue;
+                int uses = 0;
+                for (PropertyAccessGenerator generator : list) {
+                    if (!generator.getName().equals(property)) continue;
+                    uses++;
+                    generator.addUse(handler.holder(), handler.method());
+                }
+                if (uses == 0) {
+                    final PropertyAccessGenerator generator = new PropertyAccessGenerator(type, property);
+                    generator.addUse(handler.holder(), handler.method());
+                    list.add(generator);
+                }
+            }
+        }
+        final Type ret = type.expectReturn() ? CommonTypes.OBJECT : new Type(void.class);
+        final Type[] params = type.expectInputs() ? new Type[]{CommonTypes.OBJECT, CommonTypes.OBJECT} : new Type[]{CommonTypes.OBJECT};
+        return new MethodErasure(ret, "property_" + type.name() + "$" + property, params);
+    }
+    
+    @Override
+    public void setHandlerMode(HandlerType type) {
+        this.mode = type;
+    }
+    
+    @Override
+    public HandlerType getHandlerMode() {
+        return mode;
     }
     
     @Override

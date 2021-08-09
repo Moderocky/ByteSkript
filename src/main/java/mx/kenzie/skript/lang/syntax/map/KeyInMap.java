@@ -1,5 +1,6 @@
 package mx.kenzie.skript.lang.syntax.map;
 
+import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.skript.api.Referent;
 import mx.kenzie.skript.api.syntax.RelationalExpression;
@@ -11,6 +12,7 @@ import mx.kenzie.skript.error.ScriptRuntimeError;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.lang.handler.StandardHandlers;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 public class KeyInMap extends RelationalExpression implements Referent {
@@ -42,13 +44,22 @@ public class KeyInMap extends RelationalExpression implements Referent {
         return super.allowAsInputFor(type) || CommonTypes.REFERENT.equals(type);
     }
     
+    @Override
+    public void compile(Context context, Pattern.Match match) throws Throwable {
+        final MethodBuilder method = context.getMethod();
+        assert method != null;
+        final Method target = handlers.get(context.getHandlerMode());
+        assert target != null;
+        this.writeCall(method, target, context);
+    }
+    
     public static Object get(Object key, Object target) {
         if (!(target instanceof Map map))
             throw new ScriptRuntimeError("The given collection must be a map.");
         return map.get(key);
     }
     
-    public static void set(Object key, Object target, Object value) {
+    public static void set(Object value, Object key, Object target) {
         if (!(target instanceof Map map))
             throw new ScriptRuntimeError("The given collection must be a map.");
         map.put(key, value);

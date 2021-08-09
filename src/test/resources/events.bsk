@@ -1,0 +1,13 @@
+
+
+on load:
+    trigger:
+
+on any load:
+    trigger:
+        set {class} to class of event
+        set {name} to name of {class}
+        print "The event class is: " + {name}
+        print "The loaded script is: " + event-name
+        print "The script's path is: " + event-script
+

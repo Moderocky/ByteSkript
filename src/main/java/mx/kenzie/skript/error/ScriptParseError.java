@@ -28,11 +28,11 @@ public class ScriptParseError extends Error {
         super(message, cause, enableSuppression, writableStackTrace);
         this.line = line;
     }
-    
-    @Override
-    public Throwable fillInStackTrace() {
-        // no need for stack trace
-        return this;
-    }
-    
+
+//    @Override
+//    public Throwable fillInStackTrace() {
+//        // no need for stack trace
+//        return this;
+//    }
+
 }

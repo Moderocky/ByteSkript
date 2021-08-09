@@ -146,10 +146,10 @@ public class SimpleSkriptCompiler extends SkriptCompiler {
             effect = assembleStatement(statement, context);
             context.line = effect;
         } catch (ScriptParseError error) {
-            throw new ScriptParseError(context.lineNumber(), "No syntax match found for statement '" + statement + "'", error);
+            throw new ScriptParseError(context.lineNumber(), "No syntax match found for line '" + statement + "'", error);
         }
         if (effect == null)
-            throw new ScriptParseError(context.lineNumber(), "No syntax match found for statement '" + statement + "'");
+            throw new ScriptParseError(context.lineNumber(), "No syntax match found for line '" + statement + "'");
         close_branch:
         {
             final SectionMeta meta = context.getSection();
@@ -214,7 +214,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler {
             break;
         }
         if (current == null)
-            throw new ScriptParseError(context.lineNumber(), "No syntax match found for line '" + statement + "'");
+            throw new ScriptParseError(context.lineNumber(), "No syntax match found for statement '" + statement + "'");
         return current;
     }
     

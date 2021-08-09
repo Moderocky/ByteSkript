@@ -52,6 +52,11 @@ public abstract class Element implements SyntaxElement {
     }
     
     @Override
+    public void setHandler(HandlerType type, Method method) {
+        this.handlers.put(type, method);
+    }
+    
+    @Override
     public Method getHandler(HandlerType type) {
         return handlers.get(type);
     }

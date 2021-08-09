@@ -16,8 +16,6 @@ import java.util.regex.Matcher;
 
 public class TypeExpression extends SimpleExpression {
     
-    private static final Matcher DUMMY = java.util.regex.Pattern.compile(" ").matcher(" ");
-    
     public TypeExpression() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "type");
     }

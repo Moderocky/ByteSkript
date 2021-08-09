@@ -42,6 +42,8 @@ public interface SyntaxElement {
     
     Method getHandler(HandlerType type);
     
+    void setHandler(HandlerType type, Method method);
+    
     default boolean allowAsInputFor(Type type) {
         return type.equals(CommonTypes.OBJECT) || type.equals(getReturnType());
     }
@@ -104,7 +106,7 @@ public interface SyntaxElement {
                 .getSimpleName(), method.getParameterTypes());
             if (!parent.hasMatching(erasure)) {
                 final MethodBuilder creator = parent.addMatching(erasure);
-                creator.setModifiers(Modifier.PRIVATE | Modifier.STATIC | 0x00001000);
+                creator.setModifiers(Modifier.PRIVATE | Modifier.STATIC | 0x00001000); // synthetic 0x00001000
                 creator.writeCode(SourceReader.getSource(method, null).toArray(new WriteInstruction[0]));
             }
             builder.writeCode(WriteInstruction.invokeStatic(parent.getType(), erasure));

@@ -50,8 +50,8 @@ public class IsOfType extends RelationalExpression {
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        final ElementTree tree = context.getCompileCurrent(); // CC is shifted to Type
-        if (tree.current() instanceof TypeExpression expression) {
+        final ElementTree tree = context.getCompileCurrent();
+        if (tree.nested()[1].current() instanceof TypeExpression expression) {
             final String string = match.groups()[1];
             final Type type = expression.getType(string, context);
             method.writeCode(WriteInstruction.instanceOf(type));

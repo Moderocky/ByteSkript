@@ -1,19 +1,19 @@
 package mx.kenzie.skript.compiler;
 
+import mx.kenzie.skript.api.HandlerType;
 import mx.kenzie.skript.api.SyntaxElement;
 import mx.kenzie.skript.api.syntax.Section;
 import mx.kenzie.skript.error.ScriptCompileError;
+import mx.kenzie.skript.lang.handler.StandardHandlers;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public final class ElementTree {
     private final SyntaxElement current;
     private final Pattern.Match match;
     private final ElementTree[] nested;
     public boolean compile = true;
+    public HandlerType type = StandardHandlers.GET;
     
     public ElementTree(SyntaxElement current, Pattern.Match match, ElementTree... nested) {
         this.current = current;
@@ -23,6 +23,8 @@ public final class ElementTree {
     
     public void preCompile(Context context) { // Pre-compilation is (outer -> inner)
         context.setCompileCurrent(this);
+        final HandlerType previous = context.getHandlerMode();
+        context.setHandlerMode(type);
         try {
             if (compile && current instanceof Section section && !context.isSectionHeader())
                 section.preCompileInline(context, match);
@@ -30,16 +32,19 @@ public final class ElementTree {
         } catch (Throwable ex) {
             throw new ScriptCompileError(context.lineNumber(), "Failure during pre-compilation of '" + current.name() + "'", ex);
         }
+        context.setHandlerMode(previous);
         for (ElementTree tree : nested) {
             tree.preCompile(context);
         }
     }
     
     public void compile(Context context) { // Post-compilation is (inner -> outer)
-        context.setCompileCurrent(this);
         for (ElementTree tree : nested) {
             tree.compile(context);
         }
+        context.setCompileCurrent(this);
+        final HandlerType previous = context.getHandlerMode();
+        context.setHandlerMode(type);
         try {
             if (compile && current instanceof Section section && !context.isSectionHeader())
                 section.compileInline(context, match);
@@ -47,6 +52,7 @@ public final class ElementTree {
         } catch (Throwable ex) {
             throw new ScriptCompileError(context.lineNumber(), "Failure during compilation of '" + current.name() + "'", ex);
         }
+        context.setHandlerMode(previous);
     }
     
     public SyntaxElement current() {
@@ -87,10 +93,9 @@ public final class ElementTree {
     
     @Override
     public String toString() {
-        return "ElementTree[" +
-            "current=" + current + ", " +
-            "match=" + match + ", " +
-            "nested=" + nested + ']';
+        return "ElementTree{" +
+            "current=" + current.getClass().getSimpleName() + ", " +
+            "nested=" + Arrays.toString(nested) + '}';
     }
     
     

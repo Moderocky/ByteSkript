@@ -19,8 +19,8 @@ public class BasicCompilationTest {
     public static void start() throws Throwable {
         final PostCompileClass cls = skript.compileScript(BasicCompilationTest.class.getClassLoader()
             .getResourceAsStream("test.bsk"), "skript.test");
-        script = skript.loadScript(cls);
         debug(cls);
+        script = skript.loadScript(cls);
     }
     
     @Test
@@ -56,13 +56,6 @@ public class BasicCompilationTest {
         final Method function = script.getFunction("run_function");
         assert function != null;
         assert "bees".equals(function.invoke(null));
-    }
-    
-    @Test
-    public void dynamic_running() throws Throwable {
-        final Method function = script.getFunction("dynamic_running");
-        assert function != null;
-        assert "done".equals(function.invoke(null));
     }
     
     private static void debug(final PostCompileClass source) throws Throwable {

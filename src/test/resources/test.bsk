@@ -52,10 +52,3 @@ function run_function:
         set "key" in {map} to "Blob"
         print "key" in {map}
         return "bees"
-
-function dynamic_running:
-    trigger:
-        print "dynamic function"
-        set {map} to function "to_be_run"
-        assert {map} is a map
-        return "done"

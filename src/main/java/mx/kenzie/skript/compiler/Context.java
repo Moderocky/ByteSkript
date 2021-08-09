@@ -1,10 +1,8 @@
 package mx.kenzie.skript.compiler;
 
-import mx.kenzie.foundation.ClassBuilder;
-import mx.kenzie.foundation.FieldBuilder;
-import mx.kenzie.foundation.MethodBuilder;
-import mx.kenzie.foundation.Type;
+import mx.kenzie.foundation.*;
 import mx.kenzie.foundation.compiler.State;
+import mx.kenzie.skript.api.HandlerType;
 import mx.kenzie.skript.api.LanguageElement;
 import mx.kenzie.skript.api.Library;
 import mx.kenzie.skript.api.SyntaxElement;
@@ -112,6 +110,14 @@ public abstract class Context {
     public abstract void addSkipInstruction(Consumer<Context> consumer);
     
     public abstract boolean isSectionHeader();
+    
+    public abstract int methodIndexShift();
+    
+    public abstract MethodErasure useHandle(String property, HandlerType type);
+    
+    public abstract void setHandlerMode(HandlerType type);
+    
+    public abstract HandlerType getHandlerMode();
     
     public MultiLabel getSectionBreak() {
         return getCurrentTree().getEnd();

@@ -32,7 +32,7 @@ public class Pattern {
     }
     
     protected void handle(final String string) {
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder().append("^");
         final List<String> types = new ArrayList<>();
         boolean escape = false;
         boolean input = false;
@@ -61,6 +61,7 @@ public class Pattern {
                 default -> current.append(c);
             }
         }
+        builder.append("$");
         final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(builder.toString());
         this.patternMap.put(pattern, types.toArray(new String[0]));
     }
