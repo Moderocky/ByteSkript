@@ -3,7 +3,12 @@ package mx.kenzie.skript.api;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
 import mx.kenzie.foundation.language.PostCompileClass;
-import mx.kenzie.skript.api.note.EventValue;
+import mx.kenzie.skript.api.automatic.GeneratedEffect;
+import mx.kenzie.skript.api.automatic.GeneratedEventHolder;
+import mx.kenzie.skript.api.automatic.GeneratedExpression;
+import mx.kenzie.skript.api.note.Event;
+import mx.kenzie.skript.api.note.Property;
+import mx.kenzie.skript.api.note.*;
 import mx.kenzie.skript.api.syntax.EventHolder;
 import mx.kenzie.skript.compiler.CompileState;
 import mx.kenzie.skript.compiler.Context;
@@ -34,6 +39,45 @@ public class ModifiableLibrary implements Library {
     public void registerSyntax(State state, SyntaxElement element) {
         this.syntax.putIfAbsent(state, new ArrayList<>());
         this.syntax.get(state).add(element);
+    }
+    
+    public void generateSyntaxFrom(Class<?> owner) {
+        type:
+        {
+            final SkriptType type = owner.getAnnotation(SkriptType.class);
+            if (type == null) break type;
+            this.registerType(owner);
+        }
+        event:
+        {
+            if (!mx.kenzie.skript.api.Event.class.isAssignableFrom(owner)) break event;
+            final Event event = owner.getAnnotation(Event.class);
+            if (event == null) break event;
+            final GeneratedEventHolder syntax = new GeneratedEventHolder(this, (Class<? extends mx.kenzie.skript.api.Event>) owner, event.value());
+            this.registerEvent(syntax);
+        }
+        for (Method method : owner.getDeclaredMethods()) {
+            effect:
+            {
+                final Effect effect = method.getAnnotation(Effect.class);
+                if (effect == null) break effect;
+                final GeneratedEffect syntax = new GeneratedEffect(this, method, effect.value());
+                this.registerSyntax(CompileState.CODE_BODY, syntax);
+            }
+            expression:
+            {
+                final Expression expression = method.getAnnotation(Expression.class);
+                if (expression == null) break expression;
+                final GeneratedExpression syntax = new GeneratedExpression(this, method, expression.value());
+                this.registerSyntax(CompileState.STATEMENT, syntax);
+            }
+            property:
+            {
+                final Property property = method.getAnnotation(Property.class);
+                if (property == null) break property;
+                this.registerProperty(property.value(), property.type(), method);
+            }
+        }
     }
     
     public void registerEvents(EventHolder... events) {

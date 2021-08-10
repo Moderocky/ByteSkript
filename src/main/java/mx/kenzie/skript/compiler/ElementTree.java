@@ -11,7 +11,7 @@ import java.util.*;
 public final class ElementTree {
     private final SyntaxElement current;
     private final Pattern.Match match;
-    private final ElementTree[] nested;
+    private ElementTree[] nested;
     public boolean compile = true;
     public HandlerType type = StandardHandlers.GET;
     
@@ -84,6 +84,14 @@ public final class ElementTree {
         return Objects.equals(this.current, that.current) &&
             Objects.equals(this.match, that.match) &&
             Objects.equals(this.nested, that.nested);
+    }
+    
+    public void emptyNest() {
+        this.nested = new ElementTree[0];
+    }
+    
+    public void replaceNest(ElementTree[] trees) {
+        this.nested = trees;
     }
     
     @Override

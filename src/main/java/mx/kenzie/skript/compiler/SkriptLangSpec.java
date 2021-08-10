@@ -18,6 +18,7 @@ import mx.kenzie.skript.lang.syntax.event.InitClassMember;
 import mx.kenzie.skript.lang.syntax.flow.*;
 import mx.kenzie.skript.lang.syntax.function.*;
 import mx.kenzie.skript.lang.syntax.generic.*;
+import mx.kenzie.skript.lang.syntax.io.IOHandlers;
 import mx.kenzie.skript.lang.syntax.list.ClearList;
 import mx.kenzie.skript.lang.syntax.list.IndexOfList;
 import mx.kenzie.skript.lang.syntax.list.ListCreator;
@@ -143,6 +144,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         registerEvents(
             new AnyLoadEvent()
         );
+        generateSyntaxFrom(IOHandlers.class);
         try {
             registerProperty("keys", StandardHandlers.GET, DataMap.class.getMethod("getKeys", Map.class));
             registerProperty("values", StandardHandlers.GET, DataMap.class.getMethod("getValues", Map.class));

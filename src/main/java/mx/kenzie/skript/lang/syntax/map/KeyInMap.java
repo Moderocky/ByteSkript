@@ -59,7 +59,7 @@ public class KeyInMap extends RelationalExpression implements Referent {
         return map.get(key);
     }
     
-    public static void set(Object value, Object key, Object target) {
+    public static void set(Object key, Object target, Object value) {
         if (!(target instanceof Map map))
             throw new ScriptRuntimeError("The given collection must be a map.");
         map.put(key, value);

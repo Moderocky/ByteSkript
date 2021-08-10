@@ -1,8 +1,10 @@
 package mx.kenzie.skript.lang.syntax.generic;
 
 import mx.kenzie.foundation.MethodErasure;
+import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.skript.api.HandlerType;
+import mx.kenzie.skript.api.Referent;
 import mx.kenzie.skript.api.syntax.RelationalExpression;
 import mx.kenzie.skript.compiler.CommonTypes;
 import mx.kenzie.skript.compiler.Context;
@@ -12,7 +14,7 @@ import mx.kenzie.skript.lang.element.StandardElements;
 
 import java.util.regex.Matcher;
 
-public class PropertyExpression extends RelationalExpression {
+public class PropertyExpression extends RelationalExpression implements Referent {
     protected final java.util.regex.Pattern[] patterns;
     
     public PropertyExpression() {
@@ -23,6 +25,11 @@ public class PropertyExpression extends RelationalExpression {
             java.util.regex.Pattern.compile("^(?<input>" + SkriptLangSpec.IDENTIFIER + ")-(?<name>" + SkriptLangSpec.IDENTIFIER + ")$")
             // third pattern only permitted for literals
         };
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return true;
     }
     
     @Override
@@ -60,6 +67,11 @@ public class PropertyExpression extends RelationalExpression {
             }
             default -> throw new IllegalStateException();
         }
+    }
+    
+    @Override
+    public Type getHolderType() {
+        return CommonTypes.OBJECT;
     }
     
     @Override

@@ -1,0 +1,17 @@
+
+
+function file:
+    trigger:
+        set {file} to a new file at "test.txt"
+        assert "" + {file} is "test.txt"
+        set the contents of {file} to "hello there"
+        assert the contents of {file} is "hello there"
+        set {writer} to writer of {file}
+        write "general kenobi" to {writer}
+        close {writer}
+        set {reader} to reader of {file}
+        set {line} to line of {reader}
+        assert {line} is "general kenobi"
+        close {reader}
+        delete {file}
+

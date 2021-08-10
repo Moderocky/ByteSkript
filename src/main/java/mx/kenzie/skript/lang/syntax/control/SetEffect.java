@@ -8,6 +8,8 @@ import mx.kenzie.skript.error.ScriptParseError;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.lang.handler.StandardHandlers;
 
+import java.util.Arrays;
+
 public class SetEffect extends ControlEffect {
     
     public SetEffect() {
@@ -28,16 +30,16 @@ public class SetEffect extends ControlEffect {
         if (!(inputs[0].current() instanceof Referent))
             throw new ScriptParseError(context.lineNumber(), "Syntax '" + inputs[0].current()
                 .name() + "' cannot be set.");
-        inputs[0].compile = false;
+        final ElementTree[] replacement = Arrays.copyOf(inputs[0].nested(), inputs[0].nested().length + 2);
+        replacement[replacement.length - 2] = inputs[1];
         inputs[0].type = StandardHandlers.SET;
+        inputs[0].emptyNest();
+        replacement[replacement.length - 1] = inputs[0];
+        tree.replaceNest(replacement);
     }
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
-        final ElementTree tree = context.getCompileCurrent();
-        final ElementTree[] inputs = tree.nested();
-        inputs[0].compile = true;
-        inputs[0].compile(context);
         context.setState(CompileState.CODE_BODY);
     }
     

@@ -44,7 +44,7 @@ public class PropertyAccessGenerator {
     
     public void compile(Context context) {
         final MethodBuilder method = context.getBuilder().addMethod("property_" + type.name() + "$" + name);
-        method.setModifiers(Modifier.PRIVATE | Modifier.STATIC | 0x00001000);
+        method.setModifiers(Modifier.PRIVATE | Modifier.STATIC | 0x00001000); // synth | 0x00001000
         if (this.type.expectReturn()) method.setReturnType(CommonTypes.OBJECT);
         else method.setReturnType(new Type(void.class));
         method.addParameter(CommonTypes.OBJECT); // holder
