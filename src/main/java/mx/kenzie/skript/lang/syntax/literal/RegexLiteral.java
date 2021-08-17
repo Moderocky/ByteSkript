@@ -10,13 +10,14 @@ import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
 import mx.kenzie.skript.lang.element.StandardElements;
 
+import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 
-public class StringLiteral extends Literal<String> {
+public class RegexLiteral extends Literal<java.util.regex.Pattern> {
     
-    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("^\"[^\"\\\\\\r\\n]*(?:\\\\.[^\"\\\\\\r\\n]*)*\"");
+    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("^\\/[^\\/\\\\\\r\\n]*(?:\\\\.[^\\/\\\\\\r\\n]*)*\\/\n");
     
-    public StringLiteral() {
+    public RegexLiteral() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "string literal");
     }
     
@@ -26,24 +27,26 @@ public class StringLiteral extends Literal<String> {
     }
     
     @Override
-    public void compile(Context context, Pattern.Match match) {
+    public void compile(Context context, Pattern.Match match) throws Throwable {
         final String string = match.matcher().group();
         assert string.length() > 1;
         final MethodBuilder method = context.getMethod();
         assert method != null;
         final String literal = string.substring(1, string.length() - 1);
         method.writeCode(WriteInstruction.loadConstant(literal));
+        final Method target = java.util.regex.Pattern.class.getMethod("compile", String.class);
+        this.writeCall(method, target, context);
     }
     
     @Override
-    public String parse(String input) {
-        return input.substring(1, input.length() - 1);
+    public java.util.regex.Pattern parse(String input) {
+        return java.util.regex.Pattern.compile(input.substring(1, input.length() - 1));
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        if (thing.charAt(0) != '"') return null;
-        if (thing.charAt(thing.length() - 1) != '"') return null;
+        if (thing.charAt(0) != '/') return null;
+        if (thing.charAt(thing.length() - 1) != '/') return null;
         final Matcher matcher = PATTERN.matcher(thing);
         if (matcher.find()) return new Pattern.Match(matcher);
         return null;

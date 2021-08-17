@@ -7,6 +7,7 @@ import mx.kenzie.skript.api.SyntaxElement;
 import mx.kenzie.skript.api.syntax.InnerModifyExpression;
 import mx.kenzie.skript.api.syntax.Section;
 import mx.kenzie.skript.compiler.structure.ProgrammaticSplitTree;
+import mx.kenzie.skript.compiler.structure.SectionMeta;
 import mx.kenzie.skript.error.ScriptParseError;
 
 import java.io.*;

@@ -9,6 +9,7 @@ import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
 import mx.kenzie.skript.compiler.structure.IfElseTree;
+import mx.kenzie.skript.compiler.structure.SectionMeta;
 import mx.kenzie.skript.error.ScriptCompileError;
 import mx.kenzie.skript.lang.element.StandardElements;
 import org.objectweb.asm.Label;
@@ -46,7 +47,7 @@ public class ElseIfSection extends Section {
     }
     
     @Override
-    public void onSectionExit(Context context) {
+    public void onSectionExit(Context context, SectionMeta meta) {
         if (!(context.getTree(context.getSection()) instanceof IfElseTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Unable to balance if/else flow tree.");
         context.setState(CompileState.CODE_BODY);

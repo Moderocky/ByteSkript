@@ -9,21 +9,26 @@ import org.junit.Test;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-public class EventTest {
+public class SectionsTest {
     
     private static final Skript skript = new Skript();
     private static Script script;
     
     @BeforeClass
     public static void start() throws Throwable {
-        final PostCompileClass cls = skript.compileScript(EventTest.class.getClassLoader()
-            .getResourceAsStream("events.bsk"), "skript.events");
+        final PostCompileClass cls = skript.compileScript(SectionsTest.class.getClassLoader()
+            .getResourceAsStream("sections.bsk"), "skript.sections");
         debug(cls);
         script = skript.loadScript(cls);
     }
     
     @Test
-    public void test() {
+    public void test() throws Throwable {
+        script.getFunction("relay_test").invoke(null);
+    }
+    
+    public static Object blob(String thing) {
+        return "hello " + thing;
     }
     
     private static void debug(final PostCompileClass source) throws Throwable {

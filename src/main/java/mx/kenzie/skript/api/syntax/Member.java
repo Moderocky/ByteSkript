@@ -4,6 +4,7 @@ import mx.kenzie.skript.api.LanguageElement;
 import mx.kenzie.skript.api.Library;
 import mx.kenzie.skript.compiler.CompileState;
 import mx.kenzie.skript.compiler.Context;
+import mx.kenzie.skript.compiler.structure.SectionMeta;
 
 public abstract class Member extends Section {
     public Member(Library provider, LanguageElement type, String... patterns) {
@@ -16,7 +17,7 @@ public abstract class Member extends Section {
     }
     
     @Override
-    public void onSectionExit(Context context) {
+    public void onSectionExit(Context context, SectionMeta meta) {
         context.emptyVariables();
         context.setMethod(null);
         context.setField(null);

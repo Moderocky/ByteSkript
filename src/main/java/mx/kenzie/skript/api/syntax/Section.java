@@ -5,6 +5,7 @@ import mx.kenzie.skript.api.LanguageElement;
 import mx.kenzie.skript.api.Library;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
+import mx.kenzie.skript.compiler.structure.SectionMeta;
 import mx.kenzie.skript.error.ScriptCompileError;
 
 public abstract class Section extends Element {
@@ -12,7 +13,8 @@ public abstract class Section extends Element {
         super(provider, type, patterns);
     }
     
-    public abstract void onSectionExit(Context context);
+    
+    public abstract void onSectionExit(Context context, SectionMeta meta);
     
     public void compileInline(Context context, Pattern.Match match) throws Throwable {
         throw new ScriptCompileError(context.lineNumber(), "'" + name() + "' must be used as a section-header.");

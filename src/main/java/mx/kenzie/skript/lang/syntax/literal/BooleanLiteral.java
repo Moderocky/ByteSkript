@@ -3,13 +3,13 @@ package mx.kenzie.skript.lang.syntax.literal;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
-import mx.kenzie.skript.api.syntax.SimpleExpression;
+import mx.kenzie.skript.api.syntax.Literal;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
 import mx.kenzie.skript.lang.element.StandardElements;
 
-public class BooleanLiteral extends SimpleExpression {
+public class BooleanLiteral extends Literal<Boolean> {
     
     public BooleanLiteral() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "true", "false");
@@ -27,6 +27,11 @@ public class BooleanLiteral extends SimpleExpression {
         final boolean value = match.matcher().group().equals("true");
         method.writeCode(WriteInstruction.push(value));
         method.writeCode(WriteInstruction.invokeStatic(Boolean.class.getMethod("valueOf", boolean.class)));
+    }
+    
+    @Override
+    public Boolean parse(String input) {
+        return input.equals("true");
     }
     
     @Override

@@ -5,7 +5,6 @@ import mx.kenzie.skript.runtime.Script;
 import mx.kenzie.skript.runtime.Skript;
 import mx.kenzie.skript.runtime.internal.InvokingScriptRunner;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;

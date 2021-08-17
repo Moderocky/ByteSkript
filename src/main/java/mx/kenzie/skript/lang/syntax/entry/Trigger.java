@@ -11,6 +11,7 @@ import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
 import mx.kenzie.skript.compiler.structure.PreVariable;
+import mx.kenzie.skript.compiler.structure.SectionMeta;
 import mx.kenzie.skript.compiler.structure.TriggerTree;
 import mx.kenzie.skript.lang.element.StandardElements;
 
@@ -39,7 +40,7 @@ public class Trigger extends Section {
     }
     
     @Override
-    public void onSectionExit(Context context) {
+    public void onSectionExit(Context context, SectionMeta meta) {
         final MethodBuilder method = context.getMethod();
         assert method != null;
         context.closeAllTrees();

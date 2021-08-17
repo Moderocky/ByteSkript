@@ -6,7 +6,7 @@ import mx.kenzie.skript.compiler.SkriptLangSpec;
 
 public enum StandardElements implements LanguageElement {
     METADATA,
-    PROPERTY,
+    NODE,
     SECTION,
     MEMBER,
     EFFECT,

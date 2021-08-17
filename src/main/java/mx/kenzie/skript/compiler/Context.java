@@ -7,10 +7,7 @@ import mx.kenzie.skript.api.LanguageElement;
 import mx.kenzie.skript.api.Library;
 import mx.kenzie.skript.api.SyntaxElement;
 import mx.kenzie.skript.api.syntax.Section;
-import mx.kenzie.skript.compiler.structure.Function;
-import mx.kenzie.skript.compiler.structure.MultiLabel;
-import mx.kenzie.skript.compiler.structure.PreVariable;
-import mx.kenzie.skript.compiler.structure.ProgrammaticSplitTree;
+import mx.kenzie.skript.compiler.structure.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -153,7 +150,7 @@ public abstract class Context {
         final Section[] handlers = meta.getHandlers().toArray(new Section[0]);
         for (int i = handlers.length - 1; i >= 0; i--) {
             final Section section = handlers[i];
-            section.onSectionExit(this);
+            section.onSectionExit(this, meta);
         }
     }
     

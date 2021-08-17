@@ -3,7 +3,6 @@ package mx.kenzie.skript.compiler.structure;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.skript.api.SyntaxElement;
 import mx.kenzie.skript.compiler.Context;
-import mx.kenzie.skript.compiler.SectionMeta;
 import mx.kenzie.skript.error.ScriptCompileError;
 import mx.kenzie.skript.lang.syntax.flow.ElseIfSection;
 import mx.kenzie.skript.lang.syntax.flow.ElseSection;

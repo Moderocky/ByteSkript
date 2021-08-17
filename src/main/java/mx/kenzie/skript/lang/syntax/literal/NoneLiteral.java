@@ -3,13 +3,13 @@ package mx.kenzie.skript.lang.syntax.literal;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
-import mx.kenzie.skript.api.syntax.SimpleExpression;
+import mx.kenzie.skript.api.syntax.Literal;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
 import mx.kenzie.skript.lang.element.StandardElements;
 
-public class NoneLiteral extends SimpleExpression {
+public class NoneLiteral extends Literal<Void> {
     
     public NoneLiteral() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "null", "none");
@@ -28,12 +28,14 @@ public class NoneLiteral extends SimpleExpression {
     }
     
     @Override
+    public Void parse(String input) {
+        return null;
+    }
+    
+    @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.equals("null") && !thing.equals("none")) return null;
         return super.match(thing, context);
     }
     
-    public static Object get() {
-        return null;
-    }
 }

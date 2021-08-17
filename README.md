@@ -32,6 +32,22 @@ function start:
             print "Sorry, we don't have any water. :("
 ```
 
+## Language Libraries
+
+Due to its fixed nature, the Skript language has always relied on third-party add-ons to add new syntax and functionality for specific areas.
+ByteSkript achieves this through libraries, which can register compile-time and run-time functionality.
+
+There are two provided syntax APIs, labelled `v1` and `v2`. Both are available and easily accessible, but may be suited to different tasks.
+
+### API v1
+The v1 syntax API offers complete control of syntax, including writing bytecode instructions, lookaheads, additions, etc.
+
+However, it also requires creating and individually registering (fairly complex) classes to add new syntax and language structures.
+
+### API v2
+The v2 syntax API allows adding very basic syntax, but the process is much quicker and cleaner.
+Syntax methods are given an annotation, and the class is registered to a library.
+
 ## Language Grammar
 
 ByteSkript comprises simple grammatical elements, using pre-designed variations called 'syntax' that make up a human-readable language.
@@ -45,3 +61,28 @@ Unlike original [Skript](https://github.com/SkriptLang/Skript/), this edition is
 |Entry|Inside Member|Data or metadata belonging to a member.|Trigger, Visibility, Syntax|
 |Effect|Inside Trigger|A runnable instruction, forming a single line of code.|Print, Set, Add, Return|
 |Expression|Inside Effect|An input for an effect or another expression.|Event, String, Number, Variable|
+
+### Basic Members
+
+The language contains two basic members: events and functions.
+Language libraries (add-ons) may add additional members.
+
+Events are special, pre-defined hooks that are automatically triggered when something happens. They allow 'listening' for certain criteria.
+
+Events start with `on ...:` and have a trigger to run code.
+
+```
+on any script load:
+    trigger:
+        print event-script + " has loaded!"
+```
+
+Functions are user-created code triggers. They can be called by any other code, and help to prevent repeating code-sections.
+
+```
+function add_five (number):
+    trigger:
+        print "hello"
+        set {thing} to {number} + 5
+        return {thing}
+```

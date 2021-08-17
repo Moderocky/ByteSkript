@@ -7,6 +7,7 @@ import mx.kenzie.skript.compiler.CommonTypes;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
+import mx.kenzie.skript.compiler.structure.SectionMeta;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.runtime.data.Function;
 
@@ -30,10 +31,10 @@ public class NoArgsFunctionMember extends TriggerHolder {
     }
     
     @Override
-    public void onSectionExit(Context context) {
+    public void onSectionExit(Context context, SectionMeta meta) {
         context.registerFunction(new mx.kenzie.skript.compiler.structure.Function(context.getMethod().getErasure()
             .name(), context.getType()));
-        super.onSectionExit(context);
+        super.onSectionExit(context, meta);
     }
     
     @Override

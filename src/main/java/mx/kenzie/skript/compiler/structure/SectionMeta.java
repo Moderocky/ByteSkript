@@ -1,4 +1,4 @@
-package mx.kenzie.skript.compiler;
+package mx.kenzie.skript.compiler.structure;
 
 import mx.kenzie.skript.api.syntax.Section;
 
@@ -7,10 +7,12 @@ import java.util.List;
 
 public final class SectionMeta {
     private final List<Section> handlers;
+    private final List<Object> data;
     
     public SectionMeta(Section handler) {
         this.handlers = new ArrayList<>();
         this.handlers.add(handler);
+        this.data = new ArrayList<>();
     }
     
     public Section handler() {
@@ -19,6 +21,10 @@ public final class SectionMeta {
     
     public List<Section> getHandlers() {
         return handlers;
+    }
+    
+    public List<Object> getData() {
+        return data;
     }
     
     @Override

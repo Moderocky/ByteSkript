@@ -1,0 +1,12 @@
+
+
+function relay:
+    java method target:
+        owner: "mx/kenzie/skript/test/SectionsTest"
+        name: "blob"
+        descriptor: "(Ljava/lang/String;)Ljava/lang/Object;"
+
+
+function relay_test:
+    trigger:
+        print relay("there")

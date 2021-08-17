@@ -6,11 +6,9 @@ import mx.kenzie.skript.runtime.Skript;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
-import java.nio.charset.StandardCharsets;
 
 public class FlowTest {
     

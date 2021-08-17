@@ -3,7 +3,7 @@ package mx.kenzie.skript.lang.syntax.literal;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
-import mx.kenzie.skript.api.syntax.SimpleExpression;
+import mx.kenzie.skript.api.syntax.Literal;
 import mx.kenzie.skript.compiler.CommonTypes;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
@@ -12,7 +12,7 @@ import mx.kenzie.skript.lang.element.StandardElements;
 
 import java.util.regex.Matcher;
 
-public class IntegerLiteral extends SimpleExpression {
+public class IntegerLiteral extends Literal<Integer> {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("^\\d+(?![\\d.#LFD])");
     private static final int LOW = 48, HIGH = 57;
@@ -39,6 +39,11 @@ public class IntegerLiteral extends SimpleExpression {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
+    }
+    
+    @Override
+    public Integer parse(String input) {
+        return Integer.valueOf(input);
     }
     
     @Override

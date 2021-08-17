@@ -8,6 +8,7 @@ import mx.kenzie.skript.compiler.CompileState;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
+import mx.kenzie.skript.compiler.structure.SectionMeta;
 import mx.kenzie.skript.compiler.structure.WhileTree;
 import mx.kenzie.skript.error.ScriptCompileError;
 import mx.kenzie.skript.lang.element.StandardElements;
@@ -78,7 +79,7 @@ public class WhileSection extends Section {
     }
     
     @Override
-    public void onSectionExit(Context context) {
+    public void onSectionExit(Context context, SectionMeta meta) {
         if (!(context.getTree(context.getSection()) instanceof WhileTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Unable to balance while flow tree.");
         context.setState(CompileState.CODE_BODY);

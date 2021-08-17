@@ -7,6 +7,7 @@ public enum CompileState implements State {
     MEMBER_BODY,
     CODE_BODY,
     STATEMENT,
+    ENTRY_VALUE,
     IMPORT_BODY,
     AREA_BODY,
     HEADER

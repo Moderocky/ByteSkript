@@ -3,10 +3,7 @@ package mx.kenzie.skript.compiler;
 import mx.kenzie.foundation.*;
 import mx.kenzie.foundation.language.PostCompileClass;
 import mx.kenzie.skript.api.*;
-import mx.kenzie.skript.compiler.structure.Function;
-import mx.kenzie.skript.compiler.structure.PreVariable;
-import mx.kenzie.skript.compiler.structure.ProgrammaticSplitTree;
-import mx.kenzie.skript.compiler.structure.PropertyAccessGenerator;
+import mx.kenzie.skript.compiler.structure.*;
 import mx.kenzie.skript.lang.handler.StandardHandlers;
 import mx.kenzie.skript.runtime.internal.CompiledScript;
 

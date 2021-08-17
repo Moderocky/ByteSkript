@@ -11,6 +11,7 @@ import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.lang.handler.StandardHandlers;
 import mx.kenzie.skript.lang.syntax.comparison.*;
 import mx.kenzie.skript.lang.syntax.control.*;
+import mx.kenzie.skript.lang.syntax.entry.JavaRelay;
 import mx.kenzie.skript.lang.syntax.entry.Trigger;
 import mx.kenzie.skript.lang.syntax.event.AnyLoadEvent;
 import mx.kenzie.skript.lang.syntax.event.CurrentEventExpression;
@@ -145,6 +146,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new AnyLoadEvent()
         );
         generateSyntaxFrom(IOHandlers.class);
+        generateSyntaxFrom(JavaRelay.class);
         try {
             registerProperty("keys", StandardHandlers.GET, DataMap.class.getMethod("getKeys", Map.class));
             registerProperty("values", StandardHandlers.GET, DataMap.class.getMethod("getValues", Map.class));

@@ -11,6 +11,7 @@ import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.structure.ExtractionTree;
 import mx.kenzie.skript.compiler.structure.MultiLabel;
 import mx.kenzie.skript.compiler.structure.ProgrammaticSplitTree;
+import mx.kenzie.skript.compiler.structure.SectionMeta;
 import mx.kenzie.skript.error.ScriptCompileError;
 import org.objectweb.asm.Label;
 
@@ -27,7 +28,7 @@ public abstract class ExtractedSection extends Section {
     }
     
     @Override
-    public void onSectionExit(Context context) {
+    public void onSectionExit(Context context, SectionMeta meta) {
         final ProgrammaticSplitTree current = context.getCurrentTree();
         if (!(current instanceof ExtractionTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Unable to close section flow tree.");

@@ -2,7 +2,6 @@ package mx.kenzie.skript.compiler.structure;
 
 import mx.kenzie.skript.api.SyntaxElement;
 import mx.kenzie.skript.compiler.Context;
-import mx.kenzie.skript.compiler.SectionMeta;
 
 public class TriggerTree extends ProgrammaticSplitTree {
     

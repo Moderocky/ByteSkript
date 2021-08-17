@@ -11,6 +11,7 @@ import mx.kenzie.skript.compiler.SkriptLangSpec;
 import mx.kenzie.skript.compiler.structure.IfElseTree;
 import mx.kenzie.skript.compiler.structure.MultiLabel;
 import mx.kenzie.skript.compiler.structure.ProgrammaticSplitTree;
+import mx.kenzie.skript.compiler.structure.SectionMeta;
 import mx.kenzie.skript.lang.element.StandardElements;
 import org.objectweb.asm.Label;
 
@@ -57,7 +58,7 @@ public class IfSection extends Section {
     }
     
     @Override
-    public void onSectionExit(Context context) {
+    public void onSectionExit(Context context, SectionMeta meta) {
         final ProgrammaticSplitTree current = context.getCurrentTree();
         if (current instanceof IfElseTree tree) {
 //            if (!(context.getCurrentTree() instanceof IfElseTree tree))

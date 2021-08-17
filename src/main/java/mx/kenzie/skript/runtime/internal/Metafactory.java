@@ -10,5 +10,13 @@ public class Metafactory {
         return new ConstantCallSite(handle);
     }
     
+    public static CallSite joinStrings(MethodHandles.Lookup caller) throws Exception {
+        final MethodType type = MethodType.methodType(String.class, String[].class);
+        final MethodHandle handle = caller
+            .findStatic(OperatorHandler.class, "concat", type)
+            .withVarargs(true);
+        return new ConstantCallSite(handle);
+    }
+    
     
 }

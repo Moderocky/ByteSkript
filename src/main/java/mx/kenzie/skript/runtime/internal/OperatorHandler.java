@@ -6,6 +6,14 @@ import java.util.Objects;
 
 public class OperatorHandler {
     
+    public static String concat(String... strings) {
+        final StringBuilder builder = new StringBuilder();
+        for (String string : strings) {
+            builder.append(string);
+        }
+        return builder.toString();
+    }
+    
     //region Calculations
     public static Object add(Object a, Object b) {
         if (!(a instanceof Number x) || !(b instanceof Number y)) {
