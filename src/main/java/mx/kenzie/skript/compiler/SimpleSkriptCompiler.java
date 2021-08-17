@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 
-public class SimpleSkriptCompiler extends SkriptCompiler {
+public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser {
     
     final List<Library> libraries = new ArrayList<>();
     
@@ -117,37 +117,27 @@ public class SimpleSkriptCompiler extends SkriptCompiler {
     
     private final java.util.regex.Pattern unitMatch = java.util.regex.Pattern.compile("(?<=^)[\\t ]+(?=\\S)");
     
+    
     protected void compileLine(final String line, final FileContext context) {
-        final int expected = context.indent();
-        if (expected > 0 && context.indentUnit() == null) {
-            final Matcher matcher = unitMatch.matcher(line);
-            matcher.find();
-            final String unit = matcher.group();
-            context.setIndentUnit(unit);
+        final ElementTree tree = parseLine(line, context);
+        if (tree == null) return;
+        tree.preCompile(context);
+        tree.compile(context);
+        for (Consumer<Context> consumer : context.endOfLine) {
+            consumer.accept(context);
         }
-        final int actual = trueIndent(line, context.indentUnit());
-        if (actual < expected) {
-            for (int i = 0; i < (expected - actual); i++) {
-                context.destroySection();
-                context.destroyUnit();
-                context.indent--;
-            }
-        } else if (actual != expected) throw new ScriptParseError(context.lineNumber(), "Wrong indent.");
-        final String statement = line.trim();
-        if (statement.isBlank()) return;
-        if (line.endsWith(":")) {
-            this.compileStatement(statement.substring(0, statement.length() - 1), context, true);
-            context.indent++;
-        } else this.compileStatement(statement, context, false);
+        context.endOfLine.clear();
+        context.currentEffect = null;
+        context.sectionHeader = false;
     }
     
-    protected void compileStatement(final String statement, final FileContext context, boolean storeSection) {
+    protected ElementTree parseStatement(final String statement, final FileContext context, boolean storeSection) {
         final ElementTree effect;
         try {
             effect = assembleStatement(statement, context);
             context.line = effect;
         } catch (ScriptParseError error) {
-            throw new ScriptParseError(context.lineNumber(), "No syntax match found for line '" + statement + "'", error);
+            throw new ScriptParseError(context.lineNumber(), "Error while parsing statement '" + statement + "'", error);
         }
         if (effect == null)
             throw new ScriptParseError(context.lineNumber(), "No syntax match found for line '" + statement + "'");
@@ -177,17 +167,35 @@ public class SimpleSkriptCompiler extends SkriptCompiler {
                 }
             }
         }
-        effect.preCompile(context);
-        effect.compile(context);
-        for (Consumer<Context> consumer : context.endOfLine) {
-            consumer.accept(context);
-        }
-        context.endOfLine.clear();
-        context.currentEffect = null;
-        context.sectionHeader = false;
+        return effect;
     }
     
-    protected ElementTree assembleStatement(final String statement, final FileContext context) {
+    public ElementTree parseLine(final String line, final FileContext context) {
+        final int expected = context.indent();
+        if (expected > 0 && context.indentUnit() == null) {
+            final Matcher matcher = unitMatch.matcher(line);
+            matcher.find();
+            final String unit = matcher.group();
+            context.setIndentUnit(unit);
+        }
+        final int actual = trueIndent(line, context.indentUnit());
+        if (actual < expected) {
+            for (int i = 0; i < (expected - actual); i++) {
+                context.destroySection();
+                context.destroyUnit();
+                context.indent--;
+            }
+        } else if (actual != expected) throw new ScriptParseError(context.lineNumber(), "Wrong indent.");
+        final String statement = line.trim();
+        if (statement.isBlank()) return null;
+        if (line.endsWith(":")) {
+            final ElementTree tree = this.parseStatement(statement.substring(0, statement.length() - 1), context, true);
+            context.indent++;
+            return tree;
+        } else return this.parseStatement(statement, context, false);
+    }
+    
+    public ElementTree assembleStatement(final String statement, final FileContext context) {
         final List<ElementTree> elements = new ArrayList<>();
         ElementTree current = null;
         outer:
@@ -219,7 +227,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler {
         return current;
     }
     
-    protected ElementTree assembleExpression(String expression, final Type expected, final FileContext context) {
+    public ElementTree assembleExpression(String expression, final Type expected, final FileContext context) {
         final List<ElementTree> elements = new ArrayList<>();
         ElementTree current = null;
         outer:
