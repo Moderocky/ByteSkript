@@ -1,6 +1,7 @@
 package mx.kenzie.skript.runtime.internal;
 
 import mx.kenzie.skript.api.Event;
+import mx.kenzie.skript.runtime.Script;
 import mx.kenzie.skript.runtime.Skript;
 import mx.kenzie.skript.runtime.threading.ScriptRunner;
 
@@ -14,6 +15,13 @@ public class EventHandler {
     public void run(final Skript skript, final Event event) {
         for (ScriptRunner trigger : triggers) {
             skript.runScript(trigger, event);
+        }
+    }
+    
+    public void run(final Skript skript, final Event event, final Script script) {
+        for (ScriptRunner trigger : triggers) {
+            if (trigger.owner() == script.mainClass())
+                skript.runScript(trigger, event);
         }
     }
     

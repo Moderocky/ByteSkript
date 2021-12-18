@@ -29,7 +29,7 @@ public class AddEffect extends ControlEffect {
         if (target == null)
             throw new ScriptParseError(context.lineNumber(), "Syntax '" + inputs[1].current()
                 .name() + "' cannot be added to.");
-        inputs[1].compile = false;
+//        inputs[1].compile = false; //todo
     }
     
     @Override

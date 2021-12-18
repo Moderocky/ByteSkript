@@ -2,6 +2,7 @@ package mx.kenzie.skript.runtime.internal;
 
 import mx.kenzie.skript.error.ScriptRuntimeError;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -14,6 +15,11 @@ public class OperatorHandler {
             builder.append(string);
         }
         return builder.toString();
+    }
+    
+    public static Object addObject(Object value, Object to) {
+        if (to instanceof Collection collection) return collection.add(value);
+        return null;
     }
     
     //region Calculations

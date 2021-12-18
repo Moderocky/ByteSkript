@@ -9,11 +9,6 @@ public record InvokingScriptRunner(Class<? extends CompiledScript> owner, Method
                                    Object... parameters) implements ScriptRunner {
     
     @Override
-    public Class<? extends CompiledScript> owner() {
-        return null;
-    }
-    
-    @Override
     public void start() {
         try {
             method.invoke(null, parameters);

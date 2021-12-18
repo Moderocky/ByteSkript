@@ -22,4 +22,24 @@ public class Load extends Event {
         return script.getPath();
     }
     
+    public static class LoadThis extends Event {
+        
+        protected final Script script;
+        
+        public LoadThis(Script script) {
+            this.script = script;
+        }
+        
+        @EventValue("name")
+        public String getName() {
+            return script.getSimpleName();
+        }
+        
+        @EventValue("script")
+        public String getPath() {
+            return script.getPath();
+        }
+        
+    }
+    
 }

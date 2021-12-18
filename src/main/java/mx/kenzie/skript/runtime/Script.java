@@ -48,6 +48,7 @@ public final class Script {
             }
         }
         forceLoad(mainClass());
+        skript.runEvent(new Load.LoadThis(this), this);
         skript.runEvent(new Load(this));
     }
     

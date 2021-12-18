@@ -33,8 +33,10 @@ import mx.kenzie.skript.lang.syntax.map.MapCreator;
 import mx.kenzie.skript.lang.syntax.maths.*;
 import mx.kenzie.skript.lang.syntax.timing.SecondsExpression;
 import mx.kenzie.skript.lang.syntax.timing.WaitEffect;
+import mx.kenzie.skript.runtime.type.DataList;
 import mx.kenzie.skript.runtime.type.DataMap;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -153,6 +155,8 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         try {
             registerProperty("keys", StandardHandlers.GET, DataMap.class.getMethod("getKeys", Map.class));
             registerProperty("values", StandardHandlers.GET, DataMap.class.getMethod("getValues", Map.class));
+            registerProperty("size", StandardHandlers.GET, DataMap.class.getMethod("getSize", Map.class));
+            registerProperty("size", StandardHandlers.GET, DataList.class.getMethod("getSize", Collection.class));
             registerProperty("class", StandardHandlers.GET, Object.class.getMethod("getClass"));
             registerProperty("name", StandardHandlers.GET, Class.class.getMethod("getSimpleName"));
             registerProperty("path", StandardHandlers.GET, Class.class.getMethod("getName"));

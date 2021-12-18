@@ -1,15 +1,12 @@
 package mx.kenzie.skript.test;
 
 import mx.kenzie.foundation.language.PostCompileClass;
-import mx.kenzie.skript.lang.event.Load;
 import mx.kenzie.skript.runtime.Script;
 import mx.kenzie.skript.runtime.Skript;
-import mx.kenzie.skript.runtime.internal.InvokingScriptRunner;
 import org.junit.BeforeClass;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
 
 public class MainTest {
     
@@ -25,14 +22,7 @@ public class MainTest {
             .getResourceAsStream("main.bsk"), "skript.main");
         debug(cls);
         script = skript.loadScript(cls);
-//        final Method function = script.getFunction("test");
-//        assert function != null;
-//        final Thread thread = skript.runScript(new InvokingScriptRunner(script.mainClass(), function));
-//        thread.start();
-//        new ExampleController(skript).run();
-    
         new ExampleController(skript).run();
-
         System.out.println("hi");
     }
     

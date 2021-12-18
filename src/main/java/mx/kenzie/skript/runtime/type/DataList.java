@@ -16,4 +16,8 @@ public class DataList extends ArrayList<Object> implements Serializable {
         super(c);
     }
     
+    public static Integer getSize(Collection target) {
+        return target.size();
+    }
+    
 }

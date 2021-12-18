@@ -18,7 +18,7 @@ public class BasicCompilationTest {
     @BeforeClass
     public static void start() throws Throwable {
         final PostCompileClass cls = skript.compileScript(BasicCompilationTest.class.getClassLoader()
-            .getResourceAsStream("test.bsk"), "skript.test");
+            .getResourceAsStream("map.bsk"), "skript.test");
         debug(cls);
         script = skript.loadScript(cls);
     }

@@ -87,6 +87,17 @@ public final class Skript {
         return run;
     }
     
+    public boolean runEvent(final Event event, final Script script) {
+        boolean run = false;
+        for (Map.Entry<Class<? extends Event>, EventHandler> entry : events.entrySet()) {
+            final Class<? extends Event> key = entry.getKey();
+            if (!key.isAssignableFrom(event.getClass())) continue;
+            run = true;
+            entry.getValue().run(this, event, script);
+        }
+        return run;
+    }
+    
     public void registerEventHandler(final Class<? extends Event> event, final ScriptRunner runner) {
         this.events.putIfAbsent(event, new EventHandler());
         this.events.get(event).add(runner);

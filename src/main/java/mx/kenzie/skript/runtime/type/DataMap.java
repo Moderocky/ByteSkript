@@ -14,4 +14,8 @@ public class DataMap extends HashMap<Object, Object> implements Serializable {
         return new DataList(target.values());
     }
     
+    public static Integer getSize(Map target) {
+        return target.size();
+    }
+    
 }

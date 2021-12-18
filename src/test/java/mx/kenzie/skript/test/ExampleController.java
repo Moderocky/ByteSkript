@@ -5,7 +5,14 @@ import mx.kenzie.skript.runtime.Skript;
 import mx.kenzie.skript.runtime.threading.AirlockQueue;
 import mx.kenzie.skript.runtime.threading.OperationController;
 
-public record ExampleController(Skript skript) implements Runnable {
+import java.util.Objects;
+
+public final class ExampleController extends Thread implements Runnable {
+    private final Skript skript;
+    
+    public ExampleController(Skript skript) {
+        this.skript = skript;
+    }
     
     @Override
     public void run() {
@@ -35,5 +42,29 @@ public record ExampleController(Skript skript) implements Runnable {
             }
         }
     }
+    
+    public Skript skript() {
+        return skript;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (ExampleController) obj;
+        return Objects.equals(this.skript, that.skript);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(skript);
+    }
+    
+    @Override
+    public String toString() {
+        return "ExampleController[" +
+            "skript=" + skript + ']';
+    }
+    
     
 }

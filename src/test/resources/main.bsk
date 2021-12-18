@@ -1,8 +1,6 @@
 
 on load:
     trigger:
-        if event-script is not the current script:
-            return
         print "Hello, welcome to ByteSkript!"
         print "What's your name?"
         set {name} to system input
@@ -21,7 +19,36 @@ on load:
         print "Simple maths is also supported."
         set {var} to 1 + 1
         print "1 + 1 = " + {var}
+        run common_types()
+        wait 1 second
+        run io_stuff()
+
+function common_types:
+    trigger:
         print "The current script is called " + the current script
+        wait 1 second
+        print "Lists are supported as a variable type."
+        set {list} to a new list
+        print "Our list is empty, what do you want to add to it?"
+        add system input to {list}
+        print "Great! I added a cabbage."
+        add "Cabbage" to {list}
+        print "Our list now contains: " + {list}
+        set {size} to size of {list}
+        print "That's " + {size} + " things!!!"
+
+function io_stuff:
+    trigger:
+        print "Simple I/O things are also supported."
+        set {file} to a new file at "test.txt"
+        print "I've made a new file called " + {file}
+        print "What would you like to write in it?"
+        set the contents of {file} to system input
+        print "Great! Our file now says: " + the contents of {file}
+        wait 1 second
+        print "I don't like our file anymore... :("
+        delete {file}
+        print "I deleted it."
 
 function return_values:
     trigger:

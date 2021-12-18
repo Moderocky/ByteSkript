@@ -13,7 +13,7 @@ public class LoadEvent extends EventHolder {
     
     @Override
     public Class<? extends Event> eventClass() {
-        return Load.class;
+        return Load.LoadThis.class;
     }
     
 }

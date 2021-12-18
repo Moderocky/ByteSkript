@@ -11,8 +11,11 @@ import mx.kenzie.skript.compiler.SkriptLangSpec;
 import mx.kenzie.skript.compiler.structure.PreVariable;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.lang.handler.StandardHandlers;
+import mx.kenzie.skript.runtime.internal.OperatorHandler;
 
 import java.util.regex.Matcher;
+
+import static mx.kenzie.skript.lang.handler.StandardHandlers.SET;
 
 public class VariableExpression extends SimpleExpression implements Referent {
     
@@ -20,6 +23,11 @@ public class VariableExpression extends SimpleExpression implements Referent {
     
     public VariableExpression() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "variable");
+        try {
+            handlers.put(StandardHandlers.ADD, OperatorHandler.class.getMethod("addObject", Object.class, Object.class));
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
     
     @Override
@@ -40,6 +48,21 @@ public class VariableExpression extends SimpleExpression implements Referent {
     public Type getHolderType() {
         return CommonTypes.VOID;
     }
+
+//    @Override
+//    public void preCompile(Context context, Pattern.Match match) throws Throwable {
+//        final MethodBuilder method = context.getMethod();
+//        assert method != null;
+//        super.preCompile(context, match);
+//        final String name = match.matcher().group("name");
+//        final PreVariable variable = context.getVariable(name);
+//        final int slot = context.slotOf(variable);
+//         if (context.getHandlerMode().equals(StandardHandlers.ADD)) {
+//            method.writeCode(variable.load(slot));
+//        } else if (context.getHandlerMode().equals(StandardHandlers.REMOVE)) {
+//            method.writeCode(variable.load(slot));
+//        }
+//    }
     
     @Override
     public void compile(Context context, Pattern.Match match) {
@@ -48,7 +71,7 @@ public class VariableExpression extends SimpleExpression implements Referent {
         final String name = match.matcher().group("name");
         final PreVariable variable = context.getVariable(name);
         final int slot = context.slotOf(variable);
-        if (context.getHandlerMode().equals(StandardHandlers.SET)) {
+        if (context.getHandlerMode().equals(SET)) {
             method.writeCode(variable.store(slot));
         } else if (context.getHandlerMode().equals(StandardHandlers.GET)) {
             method.writeCode(variable.load(slot));
