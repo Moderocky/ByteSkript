@@ -2,6 +2,7 @@
 
 on load:
     trigger:
+        print "Loaded."
 
 on any load:
     trigger:

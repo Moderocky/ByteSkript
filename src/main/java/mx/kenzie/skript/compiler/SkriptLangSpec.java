@@ -15,7 +15,7 @@ import mx.kenzie.skript.lang.syntax.entry.JavaRelay;
 import mx.kenzie.skript.lang.syntax.entry.Trigger;
 import mx.kenzie.skript.lang.syntax.event.AnyLoadEvent;
 import mx.kenzie.skript.lang.syntax.event.CurrentEventExpression;
-import mx.kenzie.skript.lang.syntax.event.InitClassMember;
+import mx.kenzie.skript.lang.syntax.event.LoadEvent;
 import mx.kenzie.skript.lang.syntax.flow.*;
 import mx.kenzie.skript.lang.syntax.function.*;
 import mx.kenzie.skript.lang.syntax.generic.*;
@@ -80,7 +80,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             CommonTypes.FIELD
         );
         registerSyntax(CompileState.ROOT,
-            new InitClassMember(),
+//            new InitClassMember(),
             new FunctionMember(),
             new NoArgsFunctionMember()
         );
@@ -120,11 +120,13 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new LT(),
             new NotEqual(),
             new IsEqual(),
+            new Contains(),
             new StringLiteral(),
             new RunnableSection(),
             new PropertyExpression(),
             new SystemInputExpression(),
             new FunctionExpression(),
+            new CurrentScriptExpression(),
             new CurrentEventExpression(),
             new NoArgsFunctionExpression(),
             new JavaVersionExpression(),
@@ -143,6 +145,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new TypeExpression()
         );
         registerEvents(
+            new LoadEvent(),
             new AnyLoadEvent()
         );
         generateSyntaxFrom(IOHandlers.class);

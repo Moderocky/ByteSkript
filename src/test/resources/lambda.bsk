@@ -1,7 +1,7 @@
 
 function lambda_test:
     trigger:
-        print "start if"
+        print "start lambdas"
         set {boo} to "blob"
         run a new runnable:
             print "first runnable"

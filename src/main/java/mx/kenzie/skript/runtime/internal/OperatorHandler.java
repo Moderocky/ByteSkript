@@ -2,6 +2,8 @@ package mx.kenzie.skript.runtime.internal;
 
 import mx.kenzie.skript.error.ScriptRuntimeError;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class OperatorHandler {
@@ -180,6 +182,14 @@ public class OperatorHandler {
         if (Objects.equals(a, b)) return true;
         if (!(a instanceof Number x) || !(b instanceof Number y)) return false;
         return Double.compare(x.doubleValue(), y.doubleValue()) == 0;
+    }
+    
+    public static Boolean contains(Object a, Object b) {
+        if (a == null) return false;
+        if (b == null) return false;
+        if (a instanceof List<?> list) return list.contains(b);
+        if (a instanceof Map<?, ?> map) return map.containsKey(b) || map.containsValue(b);
+        return (a + "").contains(b + "");
     }
     //endregion
     

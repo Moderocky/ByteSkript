@@ -43,7 +43,7 @@ public class FunctionExpression extends SimpleExpression {
         method.writeCode(function.invoke(details.arguments));
     }
     
-    private static record FunctionDetails(String name, int arguments) {
+    private record FunctionDetails(String name, int arguments) {
     }
     
     private Pattern.Match createMatch(String thing, Context context) {

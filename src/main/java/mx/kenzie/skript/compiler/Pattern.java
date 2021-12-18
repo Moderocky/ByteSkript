@@ -112,7 +112,7 @@ public class Pattern {
         return types;
     }
     
-    public static record Match(Matcher matcher, Object meta, Type... expected) {
+    public record Match(Matcher matcher, Object meta, Type... expected) {
         
         public Match(Matcher matcher, Type... expected) {
             this(matcher, null, expected);
