@@ -18,7 +18,10 @@ on load:
         set {var} to system input
         print "Thank you for writing '" + {var} + "' :)"
         wait 1 second
-
+        print "Simple maths is also supported."
+        set {var} to 1 + 1
+        print "1 + 1 = " + {var}
+        print "The current script is called " + the current script
 
 function return_values:
     trigger:
