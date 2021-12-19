@@ -7,6 +7,7 @@ import mx.kenzie.skript.compiler.structure.*;
 import mx.kenzie.skript.lang.handler.StandardHandlers;
 import mx.kenzie.skript.runtime.internal.CompiledScript;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.function.Consumer;
@@ -44,7 +45,23 @@ public class FileContext extends Context {
             .addModifiers(Modifier.PUBLIC)
             .addModifiers(Modifier.FINAL)
             .setSuperclass(CompiledScript.class);
+        this.addSkriptFunctions();
 //        writer.setComputation(1); // todo
+    }
+    
+    private void addSkriptFunctions() {
+        try {
+            final Class<?> skript = Class.forName("skript");
+            final Type owner = new Type(skript);
+            for (final Method method : Class.forName("skript").getMethods()) {
+                if (method.getReturnType() != Object.class) continue;
+                if (!Modifier.isPublic(method.getModifiers())) continue;
+                if (!Modifier.isStatic(method.getModifiers())) continue;
+                this.functions.add(new Function(method.getName(), owner));
+            }
+        } catch (Throwable ex) {
+            throw new RuntimeException("Unable to load Skript functions.", ex);
+        }
     }
     
     public PostCompileClass[] compile() {

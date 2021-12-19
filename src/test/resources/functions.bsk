@@ -60,3 +60,9 @@ function external:
         assert {var} is 2
         set {var} to external_target(6) from skript/lambda
         assert {var} is 6
+
+
+function skript_default:
+    trigger:
+        set {var} to getClass("skript")
+        assert {var} is not null

@@ -3,7 +3,6 @@ package mx.kenzie.skript.test;
 import mx.kenzie.foundation.language.PostCompileClass;
 import mx.kenzie.skript.runtime.Script;
 import mx.kenzie.skript.runtime.Skript;
-import mx.kenzie.skript.runtime.internal.InvokingScriptRunner;
 import mx.kenzie.skript.runtime.internal.Member;
 import org.junit.BeforeClass;
 
@@ -21,16 +20,14 @@ public class ThreadingTest {
             .getResourceAsStream("thread.bsk"), "skript.threading");
         debug(cls);
         script = skript.loadScript(cls);
+        final Member function = script.getFunction("test");
+        assert function != null;
+        new ExampleController(skript).run();
     }
     
     public static void main(String[] args) throws Throwable {
         start();
-        final Member function = script.getFunction("test");
-        assert function != null;
-        final Thread thread = skript.runScript(new InvokingScriptRunner(script.mainClass(), function));
-        thread.start();
-        new ExampleController(skript).run();
-        System.out.println("hi");
+        System.out.println("Finished");
     }
     
     private static void debug(final PostCompileClass source) throws Throwable {

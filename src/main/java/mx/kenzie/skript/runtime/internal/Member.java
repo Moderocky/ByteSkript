@@ -5,6 +5,7 @@ import mx.kenzie.mirror.Mirror;
 import mx.kenzie.skript.api.Instruction;
 import mx.kenzie.skript.runtime.Script;
 import mx.kenzie.skript.runtime.Skript;
+import mx.kenzie.skript.runtime.threading.ScriptRunner;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -34,6 +35,21 @@ public class Member {
     
     public Object invoke(Object... arguments) {
         return invoker.invoke(arguments);
+    }
+    
+    public Object run(Skript skript, Object... arguments) {
+        final ScriptRunner runner = new ScriptRunner() {
+            @Override
+            public Class<? extends CompiledScript> owner() {
+                return script.mainClass();
+            }
+            
+            @Override
+            public void start() {
+                invoker.invoke(arguments);
+            }
+        };
+        return skript.runScript(runner);
     }
     
     public void verify() {

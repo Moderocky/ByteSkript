@@ -47,6 +47,13 @@ public class FunctionsTest {
         function.invoke();
     }
     
+    @Test
+    public void skript_default() throws Throwable {
+        final Member function = script.getFunction("skript_default");
+        assert function != null;
+        function.invoke();
+    }
+    
     private static void debug(final PostCompileClass source) throws Throwable {
         try (OutputStream stream =
                  new FileOutputStream(source.name() + ".class")) {
