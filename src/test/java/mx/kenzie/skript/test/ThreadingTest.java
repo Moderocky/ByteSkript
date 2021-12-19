@@ -4,6 +4,7 @@ import mx.kenzie.foundation.language.PostCompileClass;
 import mx.kenzie.skript.runtime.Script;
 import mx.kenzie.skript.runtime.Skript;
 import mx.kenzie.skript.runtime.internal.InvokingScriptRunner;
+import mx.kenzie.skript.runtime.internal.Member;
 import org.junit.BeforeClass;
 
 import java.io.FileOutputStream;
@@ -25,7 +26,7 @@ public class ThreadingTest {
     
     public static void main(String[] args) throws Throwable {
         start();
-        final Method function = script.getFunction("test");
+        final Member function = script.getFunction("test");
         assert function != null;
         final Thread thread = skript.runScript(new InvokingScriptRunner(script.mainClass(), function));
         thread.start();

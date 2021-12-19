@@ -3,6 +3,7 @@ package mx.kenzie.skript.test;
 import mx.kenzie.foundation.language.PostCompileClass;
 import mx.kenzie.skript.runtime.Script;
 import mx.kenzie.skript.runtime.Skript;
+import mx.kenzie.skript.runtime.internal.Member;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -25,23 +26,23 @@ public class FlowTest {
     
     @Test
     public void test_method() throws Throwable {
-        final Method function = script.getFunction("if_flow");
+        final Member function = script.getFunction("if_flow");
         assert function != null;
-        function.invoke(null);
+        function.invoke();
     }
     
     @Test
     public void while_flow() throws Throwable {
-        final Method function = script.getFunction("while_flow");
+        final Member function = script.getFunction("while_flow");
         assert function != null;
-        function.invoke(null);
+        function.invoke();
     }
     
     @Test
     public void inline_headers() throws Throwable {
-        final Method function = script.getFunction("inline_headers");
+        final Member function = script.getFunction("inline_headers");
         assert function != null;
-        function.invoke(null);
+        function.invoke();
     }
     
     private static void debug(final PostCompileClass source) throws Throwable {

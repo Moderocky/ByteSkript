@@ -11,6 +11,7 @@ import mx.kenzie.skript.compiler.InlineController;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.structure.PreVariable;
 import mx.kenzie.skript.error.ScriptRuntimeError;
+import mx.kenzie.skript.runtime.Skript;
 import mx.kenzie.skript.runtime.threading.ScriptThread;
 
 import java.lang.reflect.Method;
@@ -89,6 +90,14 @@ public interface SyntaxElement {
         synchronized (thread.controller) {
             thread.controller.wait();
         }
+    }
+    
+    static void runOnAsyncThread(final Runnable runnable) {
+        Skript.runOnAsyncThread(runnable);
+    }
+    
+    static void runOnAsyncThread(final Instruction<?> runnable) {
+        Skript.runOnAsyncThread(runnable);
     }
     
     default void writeCall(final MethodBuilder builder, final Method method, final Context context) {

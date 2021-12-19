@@ -3,6 +3,7 @@ package mx.kenzie.skript.test;
 import mx.kenzie.foundation.language.PostCompileClass;
 import mx.kenzie.skript.runtime.Script;
 import mx.kenzie.skript.runtime.Skript;
+import mx.kenzie.skript.runtime.internal.Member;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -25,9 +26,9 @@ public class IOTest {
     
     @Test
     public void file() throws Throwable {
-        final Method function = script.getFunction("file");
+        final Member function = script.getFunction("file");
         assert function != null;
-        function.invoke(null);
+        function.invoke();
     }
     
     private static void debug(final PostCompileClass source) throws Throwable {

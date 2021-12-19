@@ -12,10 +12,10 @@ import mx.kenzie.skript.lang.handler.StandardHandlers;
 import java.lang.reflect.Method;
 import java.time.Duration;
 
-public class SecondsExpression extends SimpleExpression {
+public class MilliSecondsExpression extends SimpleExpression {
     
-    public SecondsExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Number% second[s]");
+    public MilliSecondsExpression() {
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Integer% milli[ ]second[s]");
         try {
             handlers.put(StandardHandlers.FIND, this.getClass().getMethod("find", Object.class));
         } catch (NoSuchMethodException e) {
@@ -30,7 +30,7 @@ public class SecondsExpression extends SimpleExpression {
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        if (!thing.endsWith(" seconds") && !thing.endsWith(" second")) return null;
+        if (!thing.endsWith("seconds") && !thing.endsWith("second")) return null;
         return super.match(thing, context);
     }
     
@@ -50,7 +50,7 @@ public class SecondsExpression extends SimpleExpression {
             throw new ScriptRuntimeError("Timespan expression requires number.");
         } else {
             final Number number = (Number) object;
-            return Duration.ofSeconds(number.longValue());
+            return Duration.ofMillis(number.longValue());
         }
     }
     

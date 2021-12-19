@@ -22,6 +22,30 @@ on load:
         run common_types()
         wait 1 second
         run io_stuff()
+        run section_things(true)
+        wait 2 seconds
+        exit the program
+
+function section_things(boolean):
+    trigger:
+        print "ByteSkript has various types of section."
+        if {boolean} is true:
+            print "This line is inside an if-section!"
+        else:
+            print "This line will never be run."
+        wait 1 second
+        set {runner} to a new runnable:
+            print "This line comes from a runnable!"
+            print "It was created earlier, but is being run now."
+            wait 100 milliseconds
+            print "Timings are supported in runnables too."
+        print "Special runnables are also supported."
+        run {runner} async
+        run a new runnable async:
+            print "This runnable is being run at the same time!"
+
+
+
 
 function common_types:
     trigger:

@@ -13,6 +13,7 @@ import mx.kenzie.skript.lang.syntax.comparison.*;
 import mx.kenzie.skript.lang.syntax.control.*;
 import mx.kenzie.skript.lang.syntax.entry.JavaRelay;
 import mx.kenzie.skript.lang.syntax.entry.Trigger;
+import mx.kenzie.skript.lang.syntax.entry.Verify;
 import mx.kenzie.skript.lang.syntax.event.AnyLoadEvent;
 import mx.kenzie.skript.lang.syntax.event.CurrentEventExpression;
 import mx.kenzie.skript.lang.syntax.event.LoadEvent;
@@ -31,6 +32,7 @@ import mx.kenzie.skript.lang.syntax.map.ClearMap;
 import mx.kenzie.skript.lang.syntax.map.KeyInMap;
 import mx.kenzie.skript.lang.syntax.map.MapCreator;
 import mx.kenzie.skript.lang.syntax.maths.*;
+import mx.kenzie.skript.lang.syntax.timing.MilliSecondsExpression;
 import mx.kenzie.skript.lang.syntax.timing.SecondsExpression;
 import mx.kenzie.skript.lang.syntax.timing.WaitEffect;
 import mx.kenzie.skript.runtime.type.DataList;
@@ -87,6 +89,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new NoArgsFunctionMember()
         );
         registerSyntax(CompileState.MEMBER_BODY,
+            new Verify(),
             new Trigger()
         );
         registerSyntax(CompileState.CODE_BODY,
@@ -103,6 +106,8 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new DeleteEffect(),
             new RemoveEffect(),
             new AssertEffect(),
+            new ExitEffect(),
+            new RunAsyncEffect(),
             new RunEffect(),
             new BreakIfEffect(),
             new BreakEffect(),
@@ -138,6 +143,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new AddExpression(),
             new SubtractExpression(),
             new DynamicFunctionExpression(),
+            new MilliSecondsExpression(),
             new SecondsExpression(),
             new IntegerLiteral(),
             new MapCreator(),

@@ -16,7 +16,7 @@ public class SkriptThreadProvider implements ThreadFactory {
     
     @Override
     public Thread newThread(Runnable r) {
-        return newThread(null, r, true);
+        return newThread(new OperationController(Skript.currentInstance(), this), r, true);
     }
     
     public Thread.UncaughtExceptionHandler getHandler() {

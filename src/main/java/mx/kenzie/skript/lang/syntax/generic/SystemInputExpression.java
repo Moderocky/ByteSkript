@@ -51,16 +51,12 @@ public class SystemInputExpression extends SimpleExpression {
             
             @Override
             public void run() throws Throwable {
-//                value = read();
+                value = new BufferedReader(new InputStreamReader(System.in)).readLine();
             }
             
             @Override
             public String get() {
-                try {
-                    return read();
-                } catch (Throwable e) {
-                    return "";
-                }
+                return value;
             }
         };
         SyntaxElement.runOnMainThread(instruction);

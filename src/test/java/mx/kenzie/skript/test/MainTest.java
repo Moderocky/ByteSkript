@@ -23,7 +23,7 @@ public class MainTest {
         debug(cls);
         script = skript.loadScript(cls);
         new ExampleController(skript).run();
-        System.out.println("hi");
+        System.out.println("Finished.");
     }
     
     private static void debug(final PostCompileClass source) throws Throwable {

@@ -3,6 +3,7 @@ package mx.kenzie.skript.test;
 import mx.kenzie.foundation.language.PostCompileClass;
 import mx.kenzie.skript.runtime.Script;
 import mx.kenzie.skript.runtime.Skript;
+import mx.kenzie.skript.runtime.internal.Member;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -25,16 +26,16 @@ public class OperatorsTest {
     
     @Test
     public void basic() throws Throwable {
-        final Method function = script.getFunction("basic");
+        final Member function = script.getFunction("basic");
         assert function != null;
-        function.invoke(null);
+        function.invoke();
     }
     
     @Test
     public void looping() throws Throwable {
-        final Method function = script.getFunction("looping");
+        final Member function = script.getFunction("looping");
         assert function != null;
-        function.invoke(null);
+        function.invoke();
     }
     
     private static void debug(final PostCompileClass source) throws Throwable {

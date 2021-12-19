@@ -1,9 +1,10 @@
 package mx.kenzie.skript.runtime;
 
-import mx.kenzie.foundation.RuntimeClassLoader;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.language.PostCompileClass;
+import mx.kenzie.mirror.Mirror;
 import mx.kenzie.skript.api.Event;
+import mx.kenzie.skript.api.Instruction;
 import mx.kenzie.skript.api.Library;
 import mx.kenzie.skript.compiler.SimpleSkriptCompiler;
 import mx.kenzie.skript.compiler.SkriptCompiler;
@@ -20,39 +21,64 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public final class Skript {
     
     public static final ThreadGroup THREAD_GROUP = new ThreadGroup("skript");
+    private static Skript skript;
+    private static ExecutorService executor;
+    static SkriptThreadProvider factory;
     final ScheduledExecutorService scheduler;
-    final SkriptThreadProvider factory;
     final Thread mainThread;
     final SkriptCompiler compiler;
     final List<OperationController> processes;
     final Map<Class<? extends Event>, EventHandler> events;
-    RuntimeClassLoader loader;
+    final SkriptMirror mirror = new SkriptMirror(Skript.class);
+    
+    static class SkriptMirror extends Mirror<Object> {
+        protected SkriptMirror(Object target) {
+            super(target);
+        }
+        
+        @Override
+        public Class<?> loadClass(String name, byte[] bytecode) {
+            return super.loadClass(name, bytecode);
+        }
+    }
     
     public Skript() {
-        this(new SkriptThreadProvider(), new SimpleSkriptCompiler(), Thread.currentThread(), new RuntimeClassLoader(Skript.class.getClassLoader()));
+        this(new SkriptThreadProvider(), new SimpleSkriptCompiler(), Thread.currentThread());
     }
     
     public Skript(Thread main, ClassLoader parent) {
-        this(new SkriptThreadProvider(), new SimpleSkriptCompiler(), main, new RuntimeClassLoader(parent));
+        this(new SkriptThreadProvider(), new SimpleSkriptCompiler(), main);
     }
     
-    public Skript(SkriptThreadProvider threadProvider, SkriptCompiler compiler, Thread main, RuntimeClassLoader loader) {
+    public Skript(SkriptThreadProvider threadProvider, SkriptCompiler compiler, Thread main) {
         this.compiler = compiler;
-        this.factory = threadProvider;
+        factory = threadProvider;
+        executor = Executors.newCachedThreadPool(factory);
         this.mainThread = main;
         this.scheduler = new ScheduledThreadPoolExecutor(4, factory);
-        this.loader = loader;
         this.processes = new ArrayList<>();
         this.events = new HashMap<>();
+        skript = this;
     }
+    
+    public static Skript currentInstance() {
+        return skript;
+    }
+    
+    //region Thread Control
+    public static void runOnAsyncThread(final Instruction<?> runnable) {
+        executor.submit(runnable::runSafely);
+    }
+    
+    public static void runOnAsyncThread(final Runnable runnable) {
+        executor.submit(runnable);
+    }
+    //endregion
     
     //region Script Control
     public Collection<OperationController> getProcesses() {
@@ -106,20 +132,18 @@ public final class Skript {
     
     //region Control
     @Deprecated
-    public void start(final RuntimeClassLoader loader) {
-        if (loader != null) throw new IllegalStateException("Skript instance is already running.");
-        this.loader = loader;
+    public void start() {
+        throw new IllegalStateException("Skript instance is already running.");
     }
     
     public boolean running() {
-        return loader != null;
+        return mirror != null;
     }
     
     @SuppressWarnings("all")
     public void stop() {
-        if (loader == null) throw new IllegalStateException("Skript instance is not running.");
+        if (mirror == null) throw new IllegalStateException("Skript instance is not running.");
         THREAD_GROUP.stop();
-        loader = null;
     }
     //endregion
     
@@ -207,7 +231,7 @@ public final class Skript {
     }
     
     public Script loadScript(final PostCompileClass datum) {
-        return new Script(this, null, loader.loadClass(datum.name(), datum.code()));
+        return new Script(this, null, mirror.loadClass(datum.name(), datum.code()));
     }
     
     public Collection<Script> loadScripts(final PostCompileClass[] data) {
@@ -219,7 +243,7 @@ public final class Skript {
     }
     
     public Script loadScript(final byte[] bytecode, final String name) {
-        return new Script(this, null, loader.loadClass(name, bytecode));
+        return new Script(this, null, mirror.loadClass(name, bytecode));
     }
     
     public Script loadScript(final byte[] bytecode) throws IOException {
@@ -228,7 +252,7 @@ public final class Skript {
     
     public Script loadScript(final InputStream stream, final String name)
         throws IOException {
-        return new Script(this, null, loader.loadClass(name, stream.readAllBytes()));
+        return new Script(this, null, mirror.loadClass(name, stream.readAllBytes()));
     }
     
     public Script loadScript(final InputStream stream)
@@ -246,7 +270,7 @@ public final class Skript {
     public Script loadScript(final File source, final String name)
         throws IOException {
         try (InputStream stream = new FileInputStream(source)) {
-            return new Script(this, source, loader.loadClass(name, stream.readAllBytes()));
+            return new Script(this, source, mirror.loadClass(name, stream.readAllBytes()));
         }
     }
     //endregion

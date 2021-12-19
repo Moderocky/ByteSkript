@@ -24,7 +24,7 @@ public class SectionsTest {
     
     @Test
     public void test() throws Throwable {
-        script.getFunction("relay_test").invoke(null);
+        script.getFunction("relay_test").invoke();
     }
     
     public static Object blob(String thing) {

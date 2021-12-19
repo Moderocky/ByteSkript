@@ -3,6 +3,7 @@ package mx.kenzie.skript.test;
 import mx.kenzie.foundation.language.PostCompileClass;
 import mx.kenzie.skript.runtime.Script;
 import mx.kenzie.skript.runtime.Skript;
+import mx.kenzie.skript.runtime.internal.Member;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -25,37 +26,37 @@ public class BasicCompilationTest {
     
     @Test
     public void test_method() throws Throwable {
-        final Method function = script.getFunction("test_method");
+        final Member function = script.getFunction("test_method");
         assert function != null;
-        function.invoke(null);
+        function.invoke();
     }
     
     @Test
     public void my_function() throws Throwable {
-        final Method function = script.getFunction("my_function");
+        final Member function = script.getFunction("my_function");
         assert function != null;
-        function.invoke(null);
+        function.invoke();
     }
     
     @Test
     public void testing_variable() throws Throwable {
-        final Method function = script.getFunction("testing_variable");
+        final Member function = script.getFunction("testing_variable");
         assert function != null;
-        function.invoke(null);
+        function.invoke();
     }
     
     @Test
     public void testing_map() throws Throwable {
-        final Method function = script.getFunction("testing_map");
+        final Member function = script.getFunction("testing_map");
         assert function != null;
-        function.invoke(null);
+        function.invoke();
     }
     
     @Test
     public void run_function() throws Throwable {
-        final Method function = script.getFunction("run_function");
+        final Member function = script.getFunction("run_function");
         assert function != null;
-        assert "bees".equals(function.invoke(null));
+        assert "bees".equals(function.invoke());
     }
     
     private static void debug(final PostCompileClass source) throws Throwable {

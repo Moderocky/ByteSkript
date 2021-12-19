@@ -1,4 +1,12 @@
 
+function attempt_verification:
+    verify:
+        assert 1 is 1
+        assert 1 is not 2
+    trigger:
+        set {a} to 1
+        assert {a} is 1
+
 function input:
     trigger:
         set {a} to test_single(1)
