@@ -2,29 +2,30 @@ package mx.kenzie.skript.lang.syntax.function;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
+import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.skript.api.syntax.SimpleExpression;
 import mx.kenzie.skript.compiler.CommonTypes;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
-import mx.kenzie.skript.compiler.structure.Function;
 import mx.kenzie.skript.lang.element.StandardElements;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 
-public class FunctionExpression extends SimpleExpression {
+public class ExternalFunctionExpression extends SimpleExpression {
     
-    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")\\((?<params>.*)\\)");
+    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")\\((?<params>.*)\\) from (?<location>.+)");
     
-    public FunctionExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "function(...)");
+    public ExternalFunctionExpression() {
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "function(...) from ...");
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        if (!thing.endsWith(")")) return null;
+        if (!thing.contains(") from ")) return null;
         if (!thing.contains("(")) return null;
         return createMatch(thing, context);
     }
@@ -39,11 +40,14 @@ public class FunctionExpression extends SimpleExpression {
         final MethodBuilder method = context.getMethod();
         assert method != null;
         final FunctionDetails details = ((FunctionDetails) match.meta());
-        final Function function = context.getDefaultFunction(details.name);
-        method.writeCode(function.invoke(details.arguments));
+        assert details != null;
+        final Type[] parameters = new Type[details.arguments];
+        Arrays.fill(parameters, CommonTypes.OBJECT);
+        final Type location = new Type(details.location);
+        method.writeCode(WriteInstruction.invokeStatic(location, CommonTypes.OBJECT, details.name, parameters));
     }
     
-    private record FunctionDetails(String name, int arguments) {
+    private record FunctionDetails(String name, int arguments, String location) {
     }
     
     private Pattern.Match createMatch(String thing, Context context) {
@@ -51,17 +55,19 @@ public class FunctionExpression extends SimpleExpression {
         if (!matcher.find()) return null;
         final String name = matcher.group("name");
         final String params = matcher.group("params");
+        final String location = matcher.group("location");
+        if (location.contains("\"")) return null;
         final int count = getParams(params);
-        final Matcher dummy = java.util.regex.Pattern.compile(buildDummyPattern(name, count)).matcher(thing);
+        final Matcher dummy = java.util.regex.Pattern.compile(buildDummyPattern(name, count, location)).matcher(thing);
         dummy.find();
         final List<Type> types = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             types.add(CommonTypes.OBJECT);
         }
-        return new Pattern.Match(dummy, new FunctionDetails(name, count), types.toArray(new Type[0]));
+        return new Pattern.Match(dummy, new FunctionDetails(name, count, location), types.toArray(new Type[0]));
     }
     
-    private String buildDummyPattern(String name, int params) {
+    private String buildDummyPattern(String name, int params, String location) {
         final StringBuilder builder = new StringBuilder()
             .append(name).append("\\(");
         if (params > 0) {
@@ -70,7 +76,7 @@ public class FunctionExpression extends SimpleExpression {
                 builder.append("(.+)");
             }
         }
-        return builder.append("\\)").toString();
+        return builder.append("\\) from ").append(location).toString();
     }
     
     private int getParams(String params) {

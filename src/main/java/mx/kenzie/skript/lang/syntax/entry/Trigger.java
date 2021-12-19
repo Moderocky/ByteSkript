@@ -28,10 +28,11 @@ public class Trigger extends Section {
     
     @Override
     public void compile(Context context, Pattern.Match match) {
-        context.createTree(new TriggerTree(context.getSection(1)));
+        final TriggerTree tree = new TriggerTree(context.getSection(1), context.getVariables());
+        context.createTree(tree);
         context.setState(CompileState.CODE_BODY);
         final MethodBuilder method = context.getMethod();
-        method.writeCode(prepareVariables(context));
+        method.writeCode(prepareVariables(tree));
     }
     
     @Override
@@ -50,10 +51,11 @@ public class Trigger extends Section {
             method.writeCode(WriteInstruction.pushNull());
             method.writeCode(WriteInstruction.returnObject());
         }
+        context.emptyVariables();
         context.setState(CompileState.MEMBER_BODY);
     }
     
-    private WriteInstruction prepareVariables(Context context) {
+    private WriteInstruction prepareVariables(TriggerTree context) {
         return (writer, visitor) -> {
             int i = 0;
             for (PreVariable variable : context.getVariables()) {

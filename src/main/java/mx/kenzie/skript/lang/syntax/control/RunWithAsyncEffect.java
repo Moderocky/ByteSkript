@@ -14,15 +14,16 @@ import mx.kenzie.skript.runtime.internal.Member;
 
 import java.lang.reflect.Method;
 
-public class RunAsyncEffect extends ControlEffect {
+public class RunWithAsyncEffect extends ControlEffect {
     
-    public RunAsyncEffect() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "run %Executable% (async[hronously]|in [the ]background)");
+    public RunWithAsyncEffect() {
+        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "run %Executable% with %Object% (async[hronously]|in [the ]background)");
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.startsWith("run ")) return null;
+        if (!thing.contains(" with ")) return null;
         if (!thing.contains(" async") && !thing.contains("background")) return null;
         return super.match(thing, context);
     }
@@ -31,7 +32,7 @@ public class RunAsyncEffect extends ControlEffect {
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        final Method target = Member.class.getMethod("runAsync", Object.class);
+        final Method target = Member.class.getMethod("runAsync", Object.class, Object.class);
         this.writeCall(method, target, context);
         method.writeCode(WriteInstruction.pop());
         context.setState(CompileState.CODE_BODY);

@@ -2,18 +2,12 @@ package mx.kenzie.skript.lang.syntax.generic;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
-import mx.kenzie.skript.api.note.ForceExtract;
-import mx.kenzie.skript.api.note.ForceInline;
 import mx.kenzie.skript.api.syntax.Effect;
 import mx.kenzie.skript.compiler.CompileState;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
-import mx.kenzie.skript.error.ScriptAssertionError;
 import mx.kenzie.skript.lang.element.StandardElements;
-import mx.kenzie.skript.lang.handler.StandardHandlers;
-
-import java.lang.reflect.Method;
 
 public class ExitEffect extends Effect {
     

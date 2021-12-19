@@ -7,6 +7,8 @@ import mx.kenzie.skript.runtime.Script;
 import mx.kenzie.skript.runtime.Skript;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.concurrent.Future;
 
 public class Member {
@@ -39,6 +41,22 @@ public class Member {
         verifier.invoke(new Object[parameters]);
     }
     
+    public static Object runAsync(Object thing, Object args) {
+        final Object[] arguments;
+        if (args instanceof Collection<?> collection) arguments = collection.toArray();
+        else if (args instanceof Object[] array) arguments = array;
+        else arguments = new Object[]{args};
+        Skript.runOnAsyncThread((Instruction<?>) () -> {
+            if (thing instanceof Method method)
+                method.invoke(null, arguments);
+            else if (thing instanceof Member method)
+                method.invoke(arguments);
+            else if (thing instanceof MethodAccessor<?> method)
+                method.invoke(arguments);
+        });
+        return null;
+    }
+    
     public static Object runAsync(Object thing) {
         Skript.runOnAsyncThread((Instruction<?>) () -> {
             if (thing instanceof Method method)
@@ -53,6 +71,16 @@ public class Member {
                 future.get();
         });
         return null;
+    }
+    
+    public static MethodAccessor<Object> getFunction(Object owner, String name, Number arguments) {
+        final Class<?>[] parameters = new Class[arguments.intValue()];
+        Arrays.fill(parameters, Object.class);
+        return Mirror.of(owner).method(name, parameters);
+    }
+    
+    public static MethodAccessor<Object> getFunction(Object owner, String name) {
+        return Mirror.of(owner).method(name);
     }
     
 }

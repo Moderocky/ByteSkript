@@ -19,6 +19,7 @@ public class IndexOfList extends RelationalExpression implements Referent {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "index %Number% in [list ]%List%");
         try {
             handlers.put(StandardHandlers.GET, IndexOfList.class.getMethod("get", Object.class, Object.class));
+            handlers.put(StandardHandlers.FIND, IndexOfList.class.getMethod("get", Object.class, Object.class));
             handlers.put(StandardHandlers.SET, IndexOfList.class.getMethod("set", Object.class, Object.class, Object.class));
             handlers.put(StandardHandlers.DELETE, IndexOfList.class.getMethod("delete", Object.class, Object.class));
         } catch (NoSuchMethodException e) {

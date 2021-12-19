@@ -1,4 +1,13 @@
 
+function external_target:
+    trigger:
+        return 2
+
+
+function external_target(number):
+    trigger:
+        return {number}
+
 function lambda_test:
     trigger:
         print "start lambdas"

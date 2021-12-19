@@ -31,14 +31,15 @@ public class Verify extends Section {
     @Override
     public void compile(Context context, Pattern.Match match) {
         final MethodBuilder target = context.getMethod();
-        context.createTree(new VerifyTree(context.getSection(1), target));
+        final VerifyTree tree = new VerifyTree(context.getSection(1), target, context.getVariables());
+        context.createTree(tree);
         context.setState(CompileState.CODE_BODY);
         final MethodBuilder method = context.getBuilder()
             .addMethod(target.getErasure().name() + "_verify")
             .addModifiers(Modifier.STATIC)
             .addParameter(target.getErasure().parameterTypes())
             .setReturnType(Object.class);
-        method.writeCode(prepareVariables(context));
+        method.writeCode(prepareVariables(tree));
         context.setMethod(method);
     }
     
@@ -58,10 +59,11 @@ public class Verify extends Section {
             method.writeCode(WriteInstruction.pushNull());
             method.writeCode(WriteInstruction.returnObject());
         }
+        context.emptyVariables();
         context.setState(CompileState.MEMBER_BODY);
     }
     
-    private WriteInstruction prepareVariables(Context context) {
+    private WriteInstruction prepareVariables(VerifyTree context) {
         return (writer, visitor) -> {
             int i = 0;
             for (PreVariable variable : context.getVariables()) {

@@ -12,9 +12,9 @@ import mx.kenzie.skript.lang.handler.StandardHandlers;
 import java.lang.reflect.Method;
 import java.time.Duration;
 
-public class MilliSecondsExpression extends SimpleExpression {
+public class MillisecondsExpression extends SimpleExpression {
     
-    public MilliSecondsExpression() {
+    public MillisecondsExpression() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Integer% milli[ ]second[s]");
         try {
             handlers.put(StandardHandlers.FIND, this.getClass().getMethod("find", Object.class));

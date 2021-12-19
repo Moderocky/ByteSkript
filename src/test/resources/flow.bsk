@@ -3,14 +3,16 @@ function if_flow:
     trigger:
         print "start if"
         if "hello" is a string:
-            print "always met"
+            set {var} to true
+            assert true
         else if false:
-            print "never met"
+            set {var} to false
             assert false
         else:
-            print "also never met"
+            set {var} to false
             assert false
-        print "end"
+        assert {var} is true
+        print "end if"
 
 function while_flow:
     trigger:
@@ -18,23 +20,54 @@ function while_flow:
         set {a} to false
         set {b} to true
         while {b}:
-            print "blob"
             exit section
+            print "blob"
             wait 3 seconds
             assert false
             print "boo"
         print "finish while"
         return "ended"
 
+function test_run:
+    trigger:
+        print "start deferred"
+        set {var} to a new runnable:
+            assert 1 is 1
+        run {var}
+        run {var} in the background
+        run defer({var})
+        set {x} to 2
+        set {thing} to a new runnable:
+            assert {x} is 2
+        set {x} to 4
+        run {thing}
+        run {thing} in the background
+        assert {x} is 4
+        set {method} to the function "reflective" with 1 arg
+        run {method} with (2, 66) in the background
+        print "end deferred"
+
+function reflective (number):
+    trigger:
+        assert 2 is {number}
+
+function defer (runnable):
+    trigger:
+        run {runnable}
+
 function inline_headers:
     trigger:
-        print "1"
+        print "start inline"
         if true:
             assert true
             if false
             assert false
             print "w"
-        print "x"
+        print "end inline"
         if false
         print "3"
         print "4"
+
+function closer: // to check the inlines closed in the previous function
+    trigger:
+        return null

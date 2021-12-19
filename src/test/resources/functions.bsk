@@ -23,3 +23,40 @@ function test_double(thing, plus):
         assert {thing} is test_single(1)
         assert {thing} is 2
         return {thing} + {plus}
+
+function reflection:
+    trigger:
+        set {array} to (1, 2, 3)
+        set {var} to function "reflect_target" with 3 arguments
+        run {var} with (1, 2, 3)
+        run {var} with {array}
+        set {var} to function "reflect_target"
+        run {var}
+        set {list} to a new list
+        set {func} to function "reflect_target" with 1 arguments
+        run {func} with a new array ({list})
+        assert index 0 in {list} is 1
+        print "finished reflection test"
+
+function reflect_target:
+    trigger:
+        assert 1 is 1
+        print "no arguments"
+
+function reflect_target (a, b, c):
+    trigger:
+        assert {a} is 1
+        assert {b} is 2
+        print "with arguments"
+
+function reflect_target (list):
+    trigger:
+        add 1 to {list}
+        print "single argument"
+
+function external:
+    trigger:
+        set {var} to external_target() from skript/lambda
+        assert {var} is 2
+        set {var} to external_target(6) from skript/lambda
+        assert {var} is 6

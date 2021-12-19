@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
 
 public class FlowTest {
     
@@ -41,6 +40,13 @@ public class FlowTest {
     @Test
     public void inline_headers() throws Throwable {
         final Member function = script.getFunction("inline_headers");
+        assert function != null;
+        function.invoke();
+    }
+    
+    @Test
+    public void test_run() throws Throwable {
+        final Member function = script.getFunction("test_run");
         assert function != null;
         function.invoke();
     }

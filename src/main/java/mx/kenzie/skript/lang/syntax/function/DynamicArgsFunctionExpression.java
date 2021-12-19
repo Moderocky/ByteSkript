@@ -11,11 +11,11 @@ import mx.kenzie.skript.compiler.SkriptLangSpec;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.runtime.internal.Member;
 
-public class DynamicFunctionExpression extends SimpleExpression {
+public class DynamicArgsFunctionExpression extends SimpleExpression {
     
-    public DynamicFunctionExpression() {
+    public DynamicArgsFunctionExpression() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION,
-            "[the ]function %String%");
+            "[the ]function %String% with %Number% arg[ument][s]");
     }
     
     @Override
@@ -32,7 +32,7 @@ public class DynamicFunctionExpression extends SimpleExpression {
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        method.writeCode(WriteInstruction.invokeStatic(Member.class.getMethod("getFunction", Object.class, String.class)));
+        method.writeCode(WriteInstruction.invokeStatic(Member.class.getMethod("getFunction", Object.class, String.class, Number.class)));
     }
     
 }

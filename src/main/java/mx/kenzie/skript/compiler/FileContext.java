@@ -30,7 +30,7 @@ public class FileContext extends Context {
     ElementTree line;
     ElementTree current;
     protected final List<Function> functions = new ArrayList<>();
-    protected final List<PreVariable> variables = new ArrayList<>();
+    protected List<PreVariable> variables = new ArrayList<>();
     protected final List<ProgrammaticSplitTree> trees = new ArrayList<>();
     
     protected final ClassBuilder writer;
@@ -184,7 +184,7 @@ public class FileContext extends Context {
     
     @Override
     public void emptyVariables() {
-        this.variables.clear();
+        this.variables = new ArrayList<>();
     }
     
     @Override
@@ -227,9 +227,10 @@ public class FileContext extends Context {
     
     @Override
     public void closeAllTrees() {
-        for (ProgrammaticSplitTree tree : trees.toArray(new ProgrammaticSplitTree[0])) {
+        for (ProgrammaticSplitTree tree : trees) {
             tree.close(this);
         }
+        trees.clear();
     }
     
     @Override

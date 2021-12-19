@@ -22,6 +22,7 @@ import mx.kenzie.skript.lang.syntax.function.*;
 import mx.kenzie.skript.lang.syntax.generic.*;
 import mx.kenzie.skript.lang.syntax.io.IOHandlers;
 import mx.kenzie.skript.lang.syntax.list.ClearList;
+import mx.kenzie.skript.lang.syntax.list.ImplicitArrayCreator;
 import mx.kenzie.skript.lang.syntax.list.IndexOfList;
 import mx.kenzie.skript.lang.syntax.list.ListCreator;
 import mx.kenzie.skript.lang.syntax.literal.BooleanLiteral;
@@ -32,7 +33,7 @@ import mx.kenzie.skript.lang.syntax.map.ClearMap;
 import mx.kenzie.skript.lang.syntax.map.KeyInMap;
 import mx.kenzie.skript.lang.syntax.map.MapCreator;
 import mx.kenzie.skript.lang.syntax.maths.*;
-import mx.kenzie.skript.lang.syntax.timing.MilliSecondsExpression;
+import mx.kenzie.skript.lang.syntax.timing.MillisecondsExpression;
 import mx.kenzie.skript.lang.syntax.timing.SecondsExpression;
 import mx.kenzie.skript.lang.syntax.timing.WaitEffect;
 import mx.kenzie.skript.runtime.type.DataList;
@@ -107,6 +108,8 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new RemoveEffect(),
             new AssertEffect(),
             new ExitEffect(),
+            new RunWithAsyncEffect(),
+            new RunWithEffect(),
             new RunAsyncEffect(),
             new RunEffect(),
             new BreakIfEffect(),
@@ -116,9 +119,11 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         );
         registerSyntax(CompileState.STATEMENT,
             new NoneLiteral(),
+            new ImplicitArrayCreator(),
             new BracketExpression(),
             new BooleanLiteral(),
             new VariableExpression(),
+            new IsArray(),
             new IsOfType(),
             new Exists(),
             new GTEQ(),
@@ -132,6 +137,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new RunnableSection(),
             new PropertyExpression(),
             new SystemInputExpression(),
+            new ExternalFunctionExpression(),
             new FunctionExpression(),
             new CurrentScriptExpression(),
             new CurrentEventExpression(),
@@ -142,8 +148,9 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new SquareRootExpression(),
             new AddExpression(),
             new SubtractExpression(),
+            new DynamicArgsFunctionExpression(),
             new DynamicFunctionExpression(),
-            new MilliSecondsExpression(),
+            new MillisecondsExpression(),
             new SecondsExpression(),
             new IntegerLiteral(),
             new MapCreator(),

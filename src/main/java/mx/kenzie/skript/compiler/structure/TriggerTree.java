@@ -3,14 +3,22 @@ package mx.kenzie.skript.compiler.structure;
 import mx.kenzie.skript.api.SyntaxElement;
 import mx.kenzie.skript.compiler.Context;
 
+import java.util.Collection;
+
 public class TriggerTree extends ProgrammaticSplitTree {
     
     private final SectionMeta owner;
     private final MultiLabel end;
+    private final Collection<PreVariable> variables;
     
-    public TriggerTree(SectionMeta owner) {
+    public TriggerTree(SectionMeta owner, Collection<PreVariable> variables) {
         this.owner = owner;
         this.end = new MultiLabel();
+        this.variables = variables;
+    }
+    
+    public Collection<PreVariable> getVariables() {
+        return variables;
     }
     
     @Override

@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
 
 public class FunctionsTest {
     
@@ -20,13 +19,30 @@ public class FunctionsTest {
     public static void start() throws Throwable {
         final PostCompileClass cls = skript.compileScript(FunctionsTest.class.getClassLoader()
             .getResourceAsStream("functions.bsk"), "skript.functions");
+        final PostCompileClass second = skript.compileScript(FunctionsTest.class.getClassLoader()
+            .getResourceAsStream("lambda.bsk"), "skript.lambda");
         debug(cls);
         script = skript.loadScript(cls);
+        skript.loadScript(second);
     }
     
     @Test
     public void input() throws Throwable {
         final Member function = script.getFunction("input");
+        assert function != null;
+        function.invoke();
+    }
+    
+    @Test
+    public void reflection() throws Throwable {
+        final Member function = script.getFunction("reflection");
+        assert function != null;
+        function.invoke();
+    }
+    
+    @Test
+    public void external() throws Throwable {
+        final Member function = script.getFunction("external");
         assert function != null;
         function.invoke();
     }

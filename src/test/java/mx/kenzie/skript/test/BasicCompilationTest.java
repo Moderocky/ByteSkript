@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
 
 public class BasicCompilationTest {
     
@@ -19,7 +18,7 @@ public class BasicCompilationTest {
     @BeforeClass
     public static void start() throws Throwable {
         final PostCompileClass cls = skript.compileScript(BasicCompilationTest.class.getClassLoader()
-            .getResourceAsStream("map.bsk"), "skript.test");
+            .getResourceAsStream("test.bsk"), "skript.test");
         debug(cls);
         script = skript.loadScript(cls);
     }
