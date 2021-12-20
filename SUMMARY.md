@@ -5,7 +5,8 @@
 ## Structures
 
 * [Members](structures/members/README.md)
-  * [Function](structures/members/function.md)
+  * [Functions](structures/members/functions.md)
+  * [Events](structures/members/events.md)
 * [Entries](structures/entries.md)
 * [Sections](structures/sections.md)
 * [Effects](structures/effects.md)
