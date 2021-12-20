@@ -3,6 +3,7 @@ package mx.kenzie.skript.runtime.internal;
 import mx.kenzie.mirror.MethodAccessor;
 import mx.kenzie.mirror.Mirror;
 import mx.kenzie.skript.api.Instruction;
+import mx.kenzie.skript.error.ScriptRuntimeError;
 import mx.kenzie.skript.runtime.Script;
 import mx.kenzie.skript.runtime.Skript;
 import mx.kenzie.skript.runtime.threading.ScriptRunner;
@@ -89,14 +90,49 @@ public class Member {
         return null;
     }
     
-    public static MethodAccessor<Object> getFunction(Object owner, String name, Number arguments) {
+    public static MethodAccessor<Object> findFunction(Object owner, String name, Number arguments) {
         final Class<?>[] parameters = new Class[arguments.intValue()];
         Arrays.fill(parameters, Object.class);
         return Mirror.of(owner).method(name, parameters);
     }
     
-    public static MethodAccessor<Object> getFunction(Object owner, String name) {
+    public static MethodAccessor<Object> findFunction(Object owner, String name) {
         return Mirror.of(owner).method(name);
+    }
+    
+    public static MethodAccessor<Object> getFunction(Object source, String pattern) {
+        final String clean = pattern.trim();
+        final Object owner;
+        final int arguments;
+        final String name;
+        if (clean.contains("(")) {
+            final String params = clean.substring(clean.indexOf('(') + 1, clean.indexOf(')')).trim();
+            if (params.isEmpty()) arguments = 0;
+            else arguments = count(params);
+            name = clean.substring(0, clean.indexOf('(')).trim();
+        } else {
+            arguments = 0;
+            if (clean.contains(" ")) name = clean.substring(0, clean.indexOf(' ')).trim();
+            else name = clean.trim();
+        }
+        if (clean.contains(" from ")) {
+            final String result = clean.substring(clean.indexOf(" from ") + 6).trim();
+            try {
+                owner = Class.forName(result.replace('/', '.'));
+            } catch (ClassNotFoundException ex) {
+                throw new ScriptRuntimeError("Unable to find script '" + result + "'", ex);
+            }
+        } else owner = source;
+        return findFunction(owner, name, arguments);
+    }
+    
+    private static int count(String pattern) {
+        int count = 0;
+        for (String s : pattern.split(",")) {
+            if (s.isEmpty() || s.isBlank()) continue;
+            count++;
+        }
+        return count;
     }
     
 }

@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 
 public class FunctionExpression extends SimpleExpression {
     
-    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")\\((?<params>.*)\\)");
+    static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")\\((?<params>.*)\\)");
     
     public FunctionExpression() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "function(...)");

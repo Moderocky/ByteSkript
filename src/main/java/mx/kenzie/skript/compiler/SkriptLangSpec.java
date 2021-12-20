@@ -148,7 +148,6 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new SquareRootExpression(),
             new AddExpression(),
             new SubtractExpression(),
-            new DynamicArgsFunctionExpression(),
             new DynamicFunctionExpression(),
             new MillisecondsExpression(),
             new SecondsExpression(),

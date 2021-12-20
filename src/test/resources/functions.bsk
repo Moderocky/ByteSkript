@@ -27,13 +27,13 @@ function test_double(thing, plus):
 function reflection:
     trigger:
         set {array} to (1, 2, 3)
-        set {var} to function "reflect_target" with 3 arguments
+        set {var} to function "reflect_target(a, b, c)"
         run {var} with (1, 2, 3)
         run {var} with {array}
         set {var} to function "reflect_target"
         run {var}
         set {list} to a new list
-        set {func} to function "reflect_target" with 1 arguments
+        set {func} to function "reflect_target (obj)"
         run {func} with a new array ({list})
         assert index 0 in {list} is 1
         print "finished reflection test"

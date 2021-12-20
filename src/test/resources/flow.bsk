@@ -43,7 +43,7 @@ function test_run:
         run {thing}
         run {thing} in the background
         assert {x} is 4
-        set {method} to the function "reflective" with 1 arg
+        set {method} to the function "reflective(a)"
         run {method} with (2, 66) in the background
         print "end deferred"
 
