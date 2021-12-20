@@ -20,6 +20,7 @@ public final class MainFileLoader {
     public static void main(String[] args) throws IOException {
         if (!FOLDER.exists()) FOLDER.mkdirs();
         final Collection<Script> scripts = SKRIPT.compileLoadScripts(FOLDER);
+        new SimpleThrottleController(SKRIPT).run();
         SCRIPTS.addAll(scripts);
     }
     
