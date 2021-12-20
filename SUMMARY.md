@@ -1,3 +1,3 @@
 # Table of contents
 
-* [Home](README.md)
+* [Introduction to ByteSkript](README.md)
