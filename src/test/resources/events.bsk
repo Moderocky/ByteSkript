@@ -1,5 +1,3 @@
-
-
 on load:
     trigger:
         print "Loaded."
@@ -12,3 +10,6 @@ on any load:
         print "The loaded script is: " + event-name
         print "The script's path is: " + event-script
 
+on any load:
+    trigger:
+        print "Done."

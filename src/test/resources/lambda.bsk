@@ -18,4 +18,16 @@ function lambda_test:
         set {thing} to a new runnable:
             print "second runnable"
         run {thing}
+        set {blob} to return_test()
+        run {blob}
+        set {supplier} to a new supplier:
+            return 6
+        set {var} to result of {supplier}
+        assert {var} is 6
+        print result of a new supplier:
+            return "supplied value"
 
+function return_test:
+    trigger:
+        return a new runnable:
+            print "hello"

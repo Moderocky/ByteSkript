@@ -134,7 +134,9 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new IsEqual(),
             new Contains(),
             new StringLiteral(),
+            new SupplierSection(),
             new RunnableSection(),
+            new ResultOfExpression(), // todo must try before property
             new PropertyExpression(),
             new SystemInputExpression(),
             new ExternalFunctionExpression(),

@@ -23,7 +23,7 @@ public class SectionsTest {
     }
     
     @Test
-    public void test() throws Throwable {
+    public void relay_test() throws Throwable {
         script.getFunction("relay_test").invoke();
     }
     

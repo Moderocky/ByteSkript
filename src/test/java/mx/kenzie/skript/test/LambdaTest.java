@@ -10,14 +10,14 @@ import org.junit.Test;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-public class ExtractionTest {
+public class LambdaTest {
     
     private static final Skript skript = new Skript();
     private static Script script;
     
     @BeforeClass
     public static void start() throws Throwable {
-        final PostCompileClass cls = skript.compileScript(ExtractionTest.class.getClassLoader()
+        final PostCompileClass cls = skript.compileScript(LambdaTest.class.getClassLoader()
             .getResourceAsStream("lambda.bsk"), "skript.lambda");
         debug(cls);
         script = skript.loadScript(cls);

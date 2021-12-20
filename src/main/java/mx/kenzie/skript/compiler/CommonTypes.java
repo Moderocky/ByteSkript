@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class CommonTypes {
     
@@ -35,6 +36,7 @@ public class CommonTypes {
     public static final Type MAP = new Type(Map.class);
     public static final Type REFERENT = new Type(Referent.class);
     public static final Type RUNNABLE = new Type(Runnable.class);
+    public static final Type SUPPLIER = new Type(Supplier.class);
     public static final Type EXECUTABLE = new Type(Executable.class);
     
     public static final Type METHOD = new Type(Method.class);

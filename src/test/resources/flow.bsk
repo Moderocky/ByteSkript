@@ -12,6 +12,20 @@ function if_flow:
             set {var} to false
             assert false
         assert {var} is true
+        if "hello" is a string:
+            assert true
+            if 1 is a string // jump to else
+            assert false
+        else:
+            assert true
+        if "hello" is a string:
+            assert true
+            if 1 is a string // jump to else-if
+            assert false
+        else if true: // always run
+            assert true
+        else: // never run
+            assert false
         print "end if"
 
 function while_flow:

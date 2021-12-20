@@ -24,7 +24,7 @@ public class FlowTest {
     }
     
     @Test
-    public void test_method() throws Throwable {
+    public void if_flow() throws Throwable {
         final Member function = script.getFunction("if_flow");
         assert function != null;
         function.invoke();

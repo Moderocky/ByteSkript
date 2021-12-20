@@ -36,7 +36,14 @@ function reflection:
         set {func} to function "reflect_target (obj)"
         run {func} with a new array ({list})
         assert index 0 in {list} is 1
+        set {func} to function "reflect_get"
+        set {value} to result of {func}
+        assert {value} is 2
         print "finished reflection test"
+
+function reflect_get:
+    trigger:
+        return 2
 
 function reflect_target:
     trigger:
