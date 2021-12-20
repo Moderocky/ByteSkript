@@ -59,7 +59,7 @@ public class BasicCompilationTest {
     }
     
     private static void debug(final PostCompileClass source) throws Throwable {
-        try (OutputStream stream =
+        try (final OutputStream stream =
                  new FileOutputStream(source.name() + ".class")) {
             stream.write(source.code());
         }

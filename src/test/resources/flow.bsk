@@ -26,7 +26,35 @@ function if_flow:
             assert true
         else: // never run
             assert false
+        if 1 is 1:
+            assert true
+            break section
+            assert false
+        if 1 is 1:
+            assert true
+            break section if 1 is 2
+            assert true
+            break section if 1 is 1
+            assert false
         print "end if"
+
+function loop_flow:
+    trigger:
+        print "start loop"
+        set {var} to 0
+        loop 3 times:
+            set {var} to {var} + 1
+        assert {var} is 3
+        loop {var} times:
+            set {var} to {var} + 1
+        assert {var} is 6
+        loop 0 times:
+            assert false
+        loop 4 times:
+            assert true
+            break section
+            assert false
+        print "end loop"
 
 function while_flow:
     trigger:
@@ -39,6 +67,8 @@ function while_flow:
             wait 3 seconds
             assert false
             print "boo"
+        while false:
+            assert false
         print "finish while"
         return "ended"
 

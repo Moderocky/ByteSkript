@@ -1,4 +1,4 @@
-package mx.kenzie.skript.lang.syntax.flow;
+package mx.kenzie.skript.lang.syntax.flow.lambda;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.MethodErasure;
@@ -20,15 +20,15 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Modifier;
 
-public class RunnableSection extends ExtractedSection {
+public class SupplierSection extends ExtractedSection {
     
-    public RunnableSection() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[a ]new runnable");
+    public SupplierSection() {
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[a ]new supplier");
     }
     
     @Override
     public Type getReturnType() {
-        return CommonTypes.RUNNABLE;
+        return CommonTypes.SUPPLIER;
     }
     
     @Override
@@ -38,13 +38,13 @@ public class RunnableSection extends ExtractedSection {
     
     @Override
     public boolean allowAsInputFor(Type type) {
-        return CommonTypes.OBJECT.equals(type) || CommonTypes.RUNNABLE.equals(type) || CommonTypes.EXECUTABLE.equals(type);
+        return CommonTypes.OBJECT.equals(type) || CommonTypes.SUPPLIER.equals(type) || CommonTypes.EXECUTABLE.equals(type);
     }
     
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         if (!context.isSectionHeader())
-            throw new ScriptCompileError(context.lineNumber(), "Runnable has no body section.");
+            throw new ScriptCompileError(context.lineNumber(), "Supplier has no body section.");
     }
     
     @Override
@@ -59,17 +59,17 @@ public class RunnableSection extends ExtractedSection {
         final String name = "lambda$L" + index;
         final MethodBuilder child = context.getBuilder().addMethod(name)
             .setModifiers(Modifier.PUBLIC | Modifier.STATIC | 0x00001000)
-            .setReturnType(new Type(void.class));
+            .setReturnType(CommonTypes.OBJECT);
         for (int i = 0; i < load; i++) {
             child.addParameter(CommonTypes.OBJECT);
             method.writeCode(WriteInstruction.loadObject(i));
         }
         final MethodErasure target = child.getErasure();
-        final MethodErasure creator = new MethodErasure(CommonTypes.RUNNABLE, "run", child.getErasure()
+        final MethodErasure creator = new MethodErasure(CommonTypes.SUPPLIER, "get", child.getErasure()
             .parameterTypes());
         final MethodErasure bootstrap = new MethodErasure(LambdaMetafactory.class.getMethod("metafactory", MethodHandles.Lookup.class, String.class, MethodType.class, MethodType.class, MethodHandle.class, MethodType.class));
         this.addSkipInstruction(context, c -> c.setMethod(child));
-        method.writeCode((writer, visitor) -> visitor.visitInvokeDynamicInsn("run", creator.getDescriptor(), new Handle(Opcodes.H_INVOKESTATIC, "java/lang/invoke/LambdaMetafactory", bootstrap.name(), bootstrap.getDescriptor(), false), org.objectweb.asm.Type.getType("()V"), new Handle(6, internal, target.name(), target.getDescriptor(), false), org.objectweb.asm.Type.getType("()V")));
+        method.writeCode((writer, visitor) -> visitor.visitInvokeDynamicInsn("get", creator.getDescriptor(), new Handle(Opcodes.H_INVOKESTATIC, "java/lang/invoke/LambdaMetafactory", bootstrap.name(), bootstrap.getDescriptor(), false), org.objectweb.asm.Type.getType("()Ljava/lang/Object;"), new Handle(6, internal, target.name(), target.getDescriptor(), false), org.objectweb.asm.Type.getType("()Ljava/lang/Object;")));
     }
     
     

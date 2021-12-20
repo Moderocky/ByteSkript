@@ -17,7 +17,17 @@ import mx.kenzie.skript.lang.syntax.entry.Verify;
 import mx.kenzie.skript.lang.syntax.event.AnyLoadEvent;
 import mx.kenzie.skript.lang.syntax.event.CurrentEventExpression;
 import mx.kenzie.skript.lang.syntax.event.LoadEvent;
-import mx.kenzie.skript.lang.syntax.flow.*;
+import mx.kenzie.skript.lang.syntax.flow.BreakEffect;
+import mx.kenzie.skript.lang.syntax.flow.BreakIfEffect;
+import mx.kenzie.skript.lang.syntax.flow.ReturnEffect;
+import mx.kenzie.skript.lang.syntax.flow.StopEffect;
+import mx.kenzie.skript.lang.syntax.flow.conditional.ElseIfSection;
+import mx.kenzie.skript.lang.syntax.flow.conditional.ElseSection;
+import mx.kenzie.skript.lang.syntax.flow.conditional.IfSection;
+import mx.kenzie.skript.lang.syntax.flow.lambda.RunnableSection;
+import mx.kenzie.skript.lang.syntax.flow.lambda.SupplierSection;
+import mx.kenzie.skript.lang.syntax.flow.loop.LoopTimesSection;
+import mx.kenzie.skript.lang.syntax.flow.loop.WhileSection;
 import mx.kenzie.skript.lang.syntax.function.*;
 import mx.kenzie.skript.lang.syntax.generic.*;
 import mx.kenzie.skript.lang.syntax.io.IOHandlers;
@@ -99,6 +109,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new WaitEffect(),
             new ReturnEffect(),
             new WhileSection(),
+            new LoopTimesSection(),
             new IfSection(),
             new ElseIfSection(),
             new ElseSection(),

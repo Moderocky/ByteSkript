@@ -31,6 +31,13 @@ public class FlowTest {
     }
     
     @Test
+    public void loop_flow() throws Throwable {
+        final Member function = script.getFunction("loop_flow");
+        assert function != null;
+        function.invoke();
+    }
+    
+    @Test
     public void while_flow() throws Throwable {
         final Member function = script.getFunction("while_flow");
         assert function != null;

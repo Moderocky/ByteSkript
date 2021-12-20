@@ -19,7 +19,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 import static mx.kenzie.foundation.WriteInstruction.*;
@@ -129,11 +128,9 @@ public interface SyntaxElement {
             builder.writeCode(invokeStatic(context.getType(), target));
         } else if (inline != null) {
             final InlineController controller = new InlineController(context);
-            final Map<Integer, PreVariable> map = controller.getSpecial();
             for (int i = method.getParameterTypes().length - 1; i >= 0; i--) {
                 final PreVariable var = new PreVariable("$unspec_" + i);
                 context.forceUnspecVariable(var);
-                map.put(i, var);
                 final int slot = context.slotOf(var);
                 builder.writeCode(WriteInstruction.storeObject(slot));
             }

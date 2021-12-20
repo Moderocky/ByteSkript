@@ -5,9 +5,11 @@ import mx.kenzie.foundation.WriteInstruction;
 public final class PreVariable {
     private final String name;
     public boolean parameter;
+    public boolean internal;
     
     public PreVariable(String name) {
-        this.name = name;
+        if (name == null) this.name = "EMPTY";
+        else this.name = name;
     }
     
     public WriteInstruction load(final int slot) {
@@ -16,6 +18,10 @@ public final class PreVariable {
     
     public WriteInstruction store(final int slot) {
         return WriteInstruction.storeObject(slot);
+    }
+    
+    public boolean skipPreset() {
+        return parameter || internal;
     }
     
     @Override

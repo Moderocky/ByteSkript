@@ -9,7 +9,7 @@ import mx.kenzie.skript.api.syntax.ControlEffect;
 import mx.kenzie.skript.compiler.*;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.lang.handler.StandardHandlers;
-import mx.kenzie.skript.lang.syntax.flow.RunnableSection;
+import mx.kenzie.skript.lang.syntax.flow.lambda.RunnableSection;
 import mx.kenzie.skript.lang.syntax.generic.VariableExpression;
 import mx.kenzie.skript.runtime.internal.Member;
 

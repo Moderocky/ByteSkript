@@ -59,7 +59,7 @@ public class Trigger extends Section {
         return (writer, visitor) -> {
             int i = 0;
             for (PreVariable variable : context.getVariables()) {
-                if (!variable.parameter) {
+                if (!variable.skipPreset()) {
                     visitor.visitInsn(1);
                     visitor.visitVarInsn(58, i);
                 }

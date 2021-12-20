@@ -8,35 +8,30 @@ import mx.kenzie.skript.lang.syntax.flow.conditional.ElseIfSection;
 import mx.kenzie.skript.lang.syntax.flow.conditional.ElseSection;
 import org.objectweb.asm.Label;
 
-public class ExtractionTree extends ProgrammaticSplitTree {
+public class LoopTree extends ProgrammaticSplitTree {
     
     private final SectionMeta owner;
     private boolean open;
-    private Label next;
-    private final MethodBuilder parent;
+    private Label top;
     private final MultiLabel end;
+    public int slot;
     
-    public ExtractionTree(SectionMeta owner, MethodBuilder parent, MultiLabel end) {
+    public LoopTree(SectionMeta owner) {
         this.owner = owner;
-        this.parent = parent;
         this.open = true;
-        this.end = end;
-    }
-    
-    public MethodBuilder getParent() {
-        return parent;
+        this.end = new MultiLabel();
     }
     
     public MultiLabel getEnd() {
         return end;
     }
     
-    public Label getNext() {
-        return next;
+    public Label getTop() {
+        return top;
     }
     
-    public void setNext(Label next) {
-        this.next = next;
+    public void setTop(Label next) {
+        this.top = next;
     }
     
     @Override
@@ -58,7 +53,7 @@ public class ExtractionTree extends ProgrammaticSplitTree {
     public void close(Context context) {
         this.open = false;
         final MethodBuilder method = context.getMethod();
-        if (method == null) throw new ScriptCompileError(context.lineNumber(), "Extraction tree left unclosed.");
+        if (method == null) throw new ScriptCompileError(context.lineNumber(), "Loop block left unclosed.");
         method.writeCode(end.instruction());
         context.removeTree(this);
     }
