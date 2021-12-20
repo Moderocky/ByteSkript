@@ -1,0 +1,4 @@
+
+on load:
+    trigger:
+        print "Hello!"

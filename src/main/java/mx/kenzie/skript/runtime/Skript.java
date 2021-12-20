@@ -222,12 +222,34 @@ public final class Skript {
         final List<File> files = getFiles(new ArrayList<>(), root.toPath());
         final List<Script> scripts = new ArrayList<>();
         for (File file : files) {
-            try (InputStream a = new FileInputStream(file); InputStream b = new FileInputStream(file)) {
-                final String name = getClassName(a);
-                scripts.add(loadScript(b, name));
+            try (InputStream namer = new FileInputStream(file); InputStream stream = new FileInputStream(file)) {
+                final String name = getClassName(namer);
+                scripts.add(loadScript(stream, name));
             }
         }
         return scripts;
+    }
+    
+    public Collection<Script> compileLoadScripts(final File root) throws IOException {
+        if (!root.exists()) throw new ScriptLoadError("Root folder does not exist.");
+        if (!root.isDirectory()) throw new ScriptLoadError("Root must be a folder.");
+        final List<File> files = getFiles(new ArrayList<>(), root.toPath());
+        final List<Script> scripts = new ArrayList<>();
+        for (File file : files) {
+            try (InputStream stream = new FileInputStream(file)) {
+                final String name = getClassName(file, root);
+                scripts.add(loadScript(compileScript(stream, name)));
+            }
+        }
+        return scripts;
+    }
+    
+    private String getClassName(final File file, final File root) {
+        final String source = root.getName();
+        String path = source + "." + file.getAbsolutePath().replace(root.getAbsolutePath() + File.separatorChar, "");
+        path = path.replace(File.separatorChar, '.');
+        path = path.substring(0, path.lastIndexOf('.'));
+        return path;
     }
     
     public Script loadScript(final PostCompileClass datum) {
@@ -263,7 +285,7 @@ public final class Skript {
     public Script loadScript(final File source)
         throws IOException {
         try (InputStream stream = new FileInputStream(source)) {
-            return loadScript(stream);
+            return loadScript(stream, source.getName()); // todo
         }
     }
     
