@@ -6,7 +6,7 @@ description: Root-level constructs in a script file.
 
 Members are root-level constructs in a script file, with no indentation before them.
 
-Almost all members will contain some indented children (known as [entries](entries.md).)
+Almost all members will contain some indented children (known as [entries](../entries.md).)
 
 Some members are known as **absolute** if they have no variable data in their syntax. An example of this would be the `on load:` event, which has no alterations.
 
