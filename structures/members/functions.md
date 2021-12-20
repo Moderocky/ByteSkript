@@ -2,7 +2,7 @@
 description: Actionable and accessible members in a script.
 ---
 
-# Function
+# Functions
 
 Functions are a useful way to structure and re-use code, similar to Java methods. They are used to provide a lot of Skript's behaviour and functionality.
 
@@ -50,7 +50,7 @@ function example_function (number_1, number_2):
 
 ### Function Use
 
-Functions can be run directly in code, in the `run` [effect](../effects.md).
+Functions can be run directly in code, in the `run` [effect](../effects/).
 
 ```clike
 run example_function
