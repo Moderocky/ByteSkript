@@ -21,3 +21,7 @@
   * [Flow Control Effects](structures/effects/flow-control-effects.md)
   * [Generic Effects](structures/effects/generic-effects.md)
 * [Expressions](structures/expressions.md)
+
+## namespaces
+
+* [Skript](namespaces/skript.md)
