@@ -1,4 +1,4 @@
-package mx.kenzie.skript.lang.syntax.control;
+package mx.kenzie.skript.lang.syntax.generic;
 
 import mx.kenzie.foundation.Type;
 import mx.kenzie.skript.api.syntax.InnerModifyExpression;

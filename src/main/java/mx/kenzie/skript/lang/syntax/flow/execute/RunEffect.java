@@ -1,4 +1,4 @@
-package mx.kenzie.skript.lang.syntax.control;
+package mx.kenzie.skript.lang.syntax.flow.execute;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
@@ -6,53 +6,59 @@ import mx.kenzie.mirror.MethodAccessor;
 import mx.kenzie.skript.api.HandlerType;
 import mx.kenzie.skript.api.note.ForceExtract;
 import mx.kenzie.skript.api.syntax.ControlEffect;
-import mx.kenzie.skript.compiler.CompileState;
-import mx.kenzie.skript.compiler.Context;
-import mx.kenzie.skript.compiler.Pattern;
-import mx.kenzie.skript.compiler.SkriptLangSpec;
+import mx.kenzie.skript.compiler.*;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.lang.handler.StandardHandlers;
+import mx.kenzie.skript.lang.syntax.flow.lambda.RunnableSection;
+import mx.kenzie.skript.lang.syntax.generic.VariableExpression;
 import mx.kenzie.skript.runtime.internal.Member;
 
 import java.lang.reflect.Method;
-import java.util.Collection;
+import java.util.concurrent.Future;
 
-public class RunWithEffect extends ControlEffect {
+public class RunEffect extends ControlEffect {
     
-    public RunWithEffect() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "run %Executable% with %Object%");
+    public RunEffect() {
+        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "run %Executable%");
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.startsWith("run ")) return null;
-        if (!thing.contains(" with ")) return null;
         return super.match(thing, context);
     }
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
+        final ElementTree tree = context.getLine().nested()[0];
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        final Method target = RunWithEffect.class.getMethod("run", Object.class, Object.class);
-        this.writeCall(method, target, context);
+        if (tree.current() instanceof VariableExpression) {
+            final Method target = RunEffect.class.getMethod("run", Object.class);
+            this.writeCall(method, target, context);
+        } else if (tree.current() instanceof RunnableSection) {
+            final Method target = Runnable.class.getMethod("run");
+            method.writeCode(WriteInstruction.invokeInterface(target));
+            context.setState(CompileState.CODE_BODY);
+            return;
+        }
         method.writeCode(WriteInstruction.pop());
         context.setState(CompileState.CODE_BODY);
     }
     
     @ForceExtract
-    public static Object run(Object thing, Object args)
+    public static Object run(Object thing)
         throws Throwable {
-        final Object[] arguments;
-        if (args instanceof Collection<?> collection) arguments = collection.toArray();
-        else if (args instanceof Object[] array) arguments = array;
-        else arguments = new Object[]{args};
         if (thing instanceof Method method)
-            return method.invoke(null, arguments);
+            return method.invoke(null);
         else if (thing instanceof MethodAccessor<?> runnable)
-            runnable.invoke(arguments);
+            runnable.invoke();
         else if (thing instanceof Member runnable)
-            runnable.invoke(arguments);
+            runnable.invoke();
+        else if (thing instanceof Runnable runnable)
+            runnable.run();
+        else if (thing instanceof Future future)
+            return future.get();
         return null;
     }
     
