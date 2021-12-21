@@ -6,14 +6,13 @@ import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
 import mx.kenzie.skript.api.syntax.Section;
 import mx.kenzie.skript.api.syntax.TriggerHolder;
-import mx.kenzie.skript.compiler.CompileState;
-import mx.kenzie.skript.compiler.Context;
-import mx.kenzie.skript.compiler.Pattern;
-import mx.kenzie.skript.compiler.SkriptLangSpec;
+import mx.kenzie.skript.compiler.*;
 import mx.kenzie.skript.compiler.structure.PreVariable;
 import mx.kenzie.skript.compiler.structure.SectionMeta;
 import mx.kenzie.skript.compiler.structure.TriggerTree;
 import mx.kenzie.skript.lang.element.StandardElements;
+import mx.kenzie.skript.runtime.type.AtomicVariable;
+import org.objectweb.asm.Opcodes;
 
 public class Trigger extends Section {
     
@@ -55,13 +54,35 @@ public class Trigger extends Section {
         context.setState(CompileState.MEMBER_BODY);
     }
     
+    private final WriteInstruction wrap = WriteInstruction
+        .invokeStatic(new Type(AtomicVariable.class), new Type(AtomicVariable.class), "wrap", CommonTypes.OBJECT);
+    private final WriteInstruction unwrap = WriteInstruction
+        .invokeStatic(new Type(AtomicVariable.class), CommonTypes.OBJECT, "unwrap", CommonTypes.OBJECT);
+    
     private WriteInstruction prepareVariables(TriggerTree context) {
         return (writer, visitor) -> {
             int i = 0;
             for (PreVariable variable : context.getVariables()) {
                 if (!variable.skipPreset()) {
-                    visitor.visitInsn(1);
-                    visitor.visitVarInsn(58, i);
+                    if (variable.atomic) {
+                        visitor.visitInsn(1); // push null
+                        wrap.accept(writer, visitor);
+                        visitor.visitVarInsn(58, i); // astore
+                    } else {
+                        visitor.visitInsn(1); // push null
+                        visitor.visitVarInsn(58, i); // astore
+                    }
+                }
+                if (variable.parameter) {
+                    if (variable.atomic) {
+                        visitor.visitVarInsn(Opcodes.ALOAD, i);
+                        wrap.accept(writer, visitor);
+                        visitor.visitVarInsn(Opcodes.ASTORE, i);
+                    } else {
+                        visitor.visitVarInsn(Opcodes.ALOAD, i);
+                        unwrap.accept(writer, visitor);
+                        visitor.visitVarInsn(Opcodes.ASTORE, i);
+                    }
                 }
                 i++;
             }

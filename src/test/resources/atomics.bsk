@@ -1,0 +1,54 @@
+
+
+function basic_use:
+    trigger:
+        set {@var} to 6
+        assert {@var} is 6
+        assert {var} is null
+        set {@var} to {@var} + 1
+        assert {@var} is 7
+
+function passed_use:
+    trigger:
+        set {@var} to 6
+        assert {@var} is 6
+        run a new runnable:
+            assert {@var} is 6
+            set {@var} to {@var} + 1
+            assert {@var} is 7
+        assert {@var} is 7
+
+function as_simple_parameter:
+    trigger:
+        set {@var} to 6
+        assert {@var} is 6
+        run test_param_normal({@var}) // @var is atomic-unwrapped
+        assert {@var} is 6
+
+function as_atomic_parameter:
+    trigger:
+        set {@var} to 6
+        assert {@var} is 6
+        run test_param_atomic({@var})
+        assert {@var} is 7
+
+function reverse_case:
+    trigger:
+        set {var} to 6
+        assert {var} is 6
+        run test_param_atomic({var}) // var is atomic-wrapped
+        assert {var} is 6
+        run test_param_normal({var}) // var is unchanged
+        assert {var} is 6
+
+function test_param_normal (var):
+    trigger:
+        assert {var} is 6
+        set {var} to {var} + 1
+        assert {var} is 7
+
+function test_param_atomic (@var):
+    trigger:
+        assert {@var} is 6
+        set {@var} to {@var} + 1
+        assert {@var} is 7

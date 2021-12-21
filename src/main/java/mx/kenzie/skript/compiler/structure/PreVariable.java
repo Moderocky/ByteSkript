@@ -6,6 +6,7 @@ public final class PreVariable {
     private final String name;
     public boolean parameter;
     public boolean internal;
+    public boolean atomic;
     
     public PreVariable(String name) {
         if (name == null) this.name = "EMPTY";

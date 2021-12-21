@@ -4,10 +4,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.skript.api.syntax.SimpleExpression;
-import mx.kenzie.skript.compiler.CommonTypes;
-import mx.kenzie.skript.compiler.Context;
-import mx.kenzie.skript.compiler.Pattern;
-import mx.kenzie.skript.compiler.SkriptLangSpec;
+import mx.kenzie.skript.compiler.*;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.runtime.internal.Member;
 
@@ -25,6 +22,9 @@ public class DynamicFunctionExpression extends SimpleExpression {
     
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
+        for (final ElementTree tree : context.getCompileCurrent().nested()) {
+            tree.takeAtomic = true;
+        }
         context.getMethod().writeCode(WriteInstruction.loadClassConstant(context.getBuilder().getType()));
     }
     

@@ -135,6 +135,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new ImplicitArrayCreator(),
             new BracketExpression(),
             new BooleanLiteral(),
+            new AtomicVariableExpression(),
             new VariableExpression(),
             new IsArray(),
             new IsOfType(),

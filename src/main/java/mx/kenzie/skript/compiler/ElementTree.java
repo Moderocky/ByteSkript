@@ -13,6 +13,7 @@ public final class ElementTree {
     private final Pattern.Match match;
     private ElementTree[] nested;
     public boolean compile = true;
+    public boolean takeAtomic = false;
     public HandlerType type = StandardHandlers.GET;
     
     public ElementTree(SyntaxElement current, Pattern.Match match, ElementTree... nested) {

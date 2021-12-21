@@ -37,8 +37,10 @@ public class VariableExpression extends SimpleExpression implements Referent {
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        if (!thing.startsWith("{") || !thing.endsWith("}")) return null;
         if (thing.length() < 3) return null;
+        if (thing.charAt(0) != '{') return null;
+        if (thing.charAt(1) == '@') return null;
+        if (!thing.endsWith("}")) return null;
         final Matcher matcher = PATTERN.matcher(thing);
         if (!matcher.find()) return null;
         return new Pattern.Match(matcher);

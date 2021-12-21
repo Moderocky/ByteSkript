@@ -7,7 +7,9 @@ import mx.kenzie.skript.compiler.CommonTypes;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
+import mx.kenzie.skript.compiler.structure.PreVariable;
 import mx.kenzie.skript.compiler.structure.SectionMeta;
+import mx.kenzie.skript.error.ScriptParseError;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.runtime.data.Function;
 
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 public class FunctionMember extends TriggerHolder {
-    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("function (?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ") ?\\((?<params>" + SkriptLangSpec.IDENTIFIER.pattern() + "(?:, " + SkriptLangSpec.IDENTIFIER.pattern() + ")*)\\)");
+    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("function (?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ") ?\\((?<params>@?" + SkriptLangSpec.IDENTIFIER.pattern() + "(?:, @?" + SkriptLangSpec.IDENTIFIER.pattern() + ")*)\\)");
     
     public FunctionMember() {
         super(SkriptLangSpec.LIBRARY, StandardElements.MEMBER, "function(...)");
@@ -67,7 +69,11 @@ public class FunctionMember extends TriggerHolder {
         final String[] strings = string.split(",");
         final List<Type> types = new ArrayList<>();
         for (String s : strings) {
-            context.getVariable(s.trim()).parameter = true;
+            final String name = s.trim();
+            if (name.isEmpty()) throw new ScriptParseError(context.lineNumber(), "Empty function parameter.");
+            final PreVariable variable = context.getVariable(name);
+            variable.parameter = true;
+            if (name.charAt(0) == '@') variable.atomic = true;
             types.add(CommonTypes.OBJECT);
         }
         return types.toArray(new Type[0]);
