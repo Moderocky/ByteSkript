@@ -54,6 +54,14 @@ function loop_flow:
             assert true
             break section
             assert false
+        set {list} to a new list
+        add "hello" to {list}
+        loop {item} in {list}:
+            assert {item} is "hello"
+        loop {item} in (1, 2, 3):
+            assert {item} is less than 5
+        loop {item} in 1:
+            assert {item} is 1
         print "end loop"
 
 function while_flow:

@@ -26,6 +26,7 @@ import mx.kenzie.skript.lang.syntax.flow.conditional.ElseSection;
 import mx.kenzie.skript.lang.syntax.flow.conditional.IfSection;
 import mx.kenzie.skript.lang.syntax.flow.lambda.RunnableSection;
 import mx.kenzie.skript.lang.syntax.flow.lambda.SupplierSection;
+import mx.kenzie.skript.lang.syntax.flow.loop.LoopInSection;
 import mx.kenzie.skript.lang.syntax.flow.loop.LoopTimesSection;
 import mx.kenzie.skript.lang.syntax.flow.loop.WhileSection;
 import mx.kenzie.skript.lang.syntax.function.*;
@@ -110,6 +111,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new ReturnEffect(),
             new WhileSection(),
             new LoopTimesSection(),
+            new LoopInSection(),
             new IfSection(),
             new ElseIfSection(),
             new ElseSection(),

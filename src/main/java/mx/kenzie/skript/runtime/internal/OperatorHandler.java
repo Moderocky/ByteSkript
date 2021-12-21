@@ -2,10 +2,7 @@ package mx.kenzie.skript.runtime.internal;
 
 import mx.kenzie.skript.error.ScriptRuntimeError;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class OperatorHandler {
     
@@ -20,6 +17,14 @@ public class OperatorHandler {
     public static Object addObject(Object value, Object to) {
         if (to instanceof Collection collection) return collection.add(value);
         return null;
+    }
+    
+    public static Iterator<?> acquireIterator(Object thing) {
+        if (thing instanceof Iterable<?> iterable) return iterable.iterator();
+        if (thing instanceof Object[] array) return Arrays.asList(array).iterator();
+        if (thing instanceof Map<?, ?> map) return map.values().iterator();
+        if (thing == null) return Collections.emptyIterator();
+        return Collections.singletonList(thing).iterator();
     }
     
     //region Calculations
