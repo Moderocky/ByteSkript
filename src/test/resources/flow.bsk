@@ -36,6 +36,12 @@ function if_flow:
             assert true
             break section if 1 is 1
             assert false
+        if 1 is 1:
+            assert true
+            break section
+            assert false
+        else:
+            assert false
         print "end if"
 
 function loop_flow:
@@ -53,6 +59,11 @@ function loop_flow:
         loop 4 times:
             assert true
             break section
+            assert false
+        loop 4 times:
+            assert true
+            if true:
+                break loop
             assert false
         set {list} to a new list
         add "hello" to {list}
