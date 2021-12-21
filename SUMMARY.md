@@ -13,7 +13,7 @@
   * [Java Method Relay](structures/entries/java-method-relay.md)
 * [Sections](structures/sections/README.md)
   * [Lambda](structures/sections/lambda.md)
-  * [While](structures/sections/while.md)
+  * [Loop](structures/sections/loop.md)
   * [Conditional If/Else](structures/sections/conditional-if-else.md)
 * [Effects](structures/effects/README.md)
   * [If](structures/effects/if.md)
