@@ -198,7 +198,8 @@ public class OperatorHandler {
     public static Boolean contains(Object a, Object b) {
         if (a == null) return false;
         if (b == null) return false;
-        if (a instanceof List<?> list) return list.contains(b);
+        if (a instanceof Collection<?> list) return list.contains(b);
+        if (a instanceof Object[] array) return Arrays.asList(array).contains(b);
         if (a instanceof Map<?, ?> map) return map.containsKey(b) || map.containsValue(b);
         return (a + "").contains(b + "");
     }

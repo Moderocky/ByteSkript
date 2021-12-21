@@ -48,4 +48,20 @@ public class Exists extends RelationalExpression {
         return CommonTypes.BOOLEAN;
     }
     
+    @Override
+    public String description() {
+        return """
+            Check an object exists (isn't 'null')""";
+    }
+    
+    @Override
+    public String[] examples() {
+        return new String[]{
+            "assert \"hello\" exists",
+            """
+                if {var} exists:
+                    print {var}"""
+        };
+    }
+    
 }

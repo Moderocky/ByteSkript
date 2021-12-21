@@ -24,4 +24,21 @@ public class LT extends RelationalExpression {
         return CommonTypes.BOOLEAN;
     }
     
+    @Override
+    public String description() {
+        return """
+            Check whether the first number is less than the second.""";
+    }
+    
+    @Override
+    public String[] examples() {
+        return new String[]{
+            "assert 4 is less than 5",
+            """
+                if {var} < 6:
+                    print "hello"
+                    """
+        };
+    }
+    
 }

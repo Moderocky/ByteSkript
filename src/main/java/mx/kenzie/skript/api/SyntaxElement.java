@@ -43,6 +43,14 @@ public interface SyntaxElement {
     
     String name();
     
+    default String description() {
+        return null;
+    }
+    
+    default String[] examples() {
+        return null;
+    }
+    
     boolean hasHandler(HandlerType type);
     
     Method getHandler(HandlerType type);

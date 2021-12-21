@@ -24,4 +24,21 @@ public class LTEQ extends RelationalExpression {
         return CommonTypes.BOOLEAN;
     }
     
+    @Override
+    public String description() {
+        return """
+            Check whether the first number is greater than the second.""";
+    }
+    
+    @Override
+    public String[] examples() {
+        return new String[]{
+            "assert 4 is less than or equal to 4",
+            """
+                if {var} <= 6:
+                    print "hello"
+                    """
+        };
+    }
+    
 }

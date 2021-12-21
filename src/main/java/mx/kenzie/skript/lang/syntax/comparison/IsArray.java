@@ -67,4 +67,21 @@ public class IsArray extends RelationalExpression {
         return CommonTypes.BOOLEAN;
     }
     
+    @Override
+    public String description() {
+        return """
+            Check whether an object is an array.""";
+    }
+    
+    @Override
+    public String[] examples() {
+        return new String[]{
+            "assert (1, 2) is an array",
+            """
+                if {var} is an array:
+                    print "hello"
+                    """
+        };
+    }
+    
 }

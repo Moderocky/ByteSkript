@@ -24,4 +24,21 @@ public class GTEQ extends RelationalExpression {
         return CommonTypes.BOOLEAN;
     }
     
+    @Override
+    public String description() {
+        return """
+            Check whether the first number is greater than or equal to the second.""";
+    }
+    
+    @Override
+    public String[] examples() {
+        return new String[]{
+            "assert 4 is greater than or equal to 3",
+            """
+                if {var} >= 6:
+                    print "hello"
+                    """
+        };
+    }
+    
 }

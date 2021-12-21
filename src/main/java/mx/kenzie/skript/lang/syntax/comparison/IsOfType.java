@@ -69,4 +69,15 @@ public class IsOfType extends RelationalExpression {
         return CommonTypes.BOOLEAN;
     }
     
+    @Override
+    public String[] examples() {
+        return new String[]{
+            "assert 1 is a number",
+            """
+                if {var} is a string:
+                    print {var}
+                    """
+        };
+    }
+    
 }

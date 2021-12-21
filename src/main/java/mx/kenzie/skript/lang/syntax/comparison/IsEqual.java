@@ -43,4 +43,15 @@ public class IsEqual extends RelationalExpression {
         return CommonTypes.BOOLEAN;
     }
     
+    @Override
+    public String[] examples() {
+        return new String[]{
+            "assert 1 is 1",
+            """
+                if {var} = 6:
+                    print "hello"
+                    """
+        };
+    }
+    
 }

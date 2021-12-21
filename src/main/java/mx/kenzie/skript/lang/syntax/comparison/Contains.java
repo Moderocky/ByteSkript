@@ -27,7 +27,7 @@ public class Contains extends RelationalExpression {
         try {
             final MethodBuilder method = context.getMethod();
             assert method != null;
-            final Method target = OperatorHandler.class.getDeclaredMethod("equals", Object.class, Object.class);
+            final Method target = OperatorHandler.class.getDeclaredMethod("contains", Object.class, Object.class);
             method.writeCode(WriteInstruction.invokeStatic(target));
             context.setState(CompileState.STATEMENT);
         } catch (NoSuchMethodException e) {
@@ -40,4 +40,21 @@ public class Contains extends RelationalExpression {
         return CommonTypes.BOOLEAN;
     }
     
+    @Override
+    public String description() {
+        return """
+            Check whether the first object contains the second.
+            Applies to strings, lists and other collection types.""";
+    }
+    
+    @Override
+    public String[] examples() {
+        return new String[]{
+            "assert \"hello\" contains \"h\"",
+            """
+                if {list} contains 3:
+                    print "hello"
+                    """
+        };
+    }
 }
