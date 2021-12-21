@@ -1,8 +1,9 @@
 ---
 description: A short introduction to ByteSkript, its uses, goals and applications.
+coverY: 0
 ---
 
-# Introduction to ByteSkript
+# 🎶 Introduction to ByteSkript
 
 ## Overview
 
