@@ -45,9 +45,7 @@ import mx.kenzie.skript.lang.syntax.map.ClearMap;
 import mx.kenzie.skript.lang.syntax.map.KeyInMap;
 import mx.kenzie.skript.lang.syntax.map.MapCreator;
 import mx.kenzie.skript.lang.syntax.maths.*;
-import mx.kenzie.skript.lang.syntax.timing.MillisecondsExpression;
-import mx.kenzie.skript.lang.syntax.timing.SecondsExpression;
-import mx.kenzie.skript.lang.syntax.timing.WaitEffect;
+import mx.kenzie.skript.lang.syntax.timing.*;
 import mx.kenzie.skript.runtime.type.DataList;
 import mx.kenzie.skript.runtime.type.DataMap;
 
@@ -108,6 +106,8 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         registerSyntax(CompileState.CODE_BODY,
             new PrintEffect(),
             new StopEffect(),
+            new SleepEffect(),
+            new WakeEffect(),
             new WaitEffect(),
             new ReturnEffect(),
             new WhileSection(),
@@ -152,6 +152,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new StringLiteral(),
             new SupplierSection(),
             new RunnableSection(),
+            new ThreadExpression(),
             new ResultOfExpression(), // must try before property
             new PropertyExpression(),
             new SystemInputExpression(),

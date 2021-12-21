@@ -139,3 +139,18 @@ function inline_headers:
 function closer: // to check the inlines closed in the previous function
     trigger:
         return null
+
+function sleep_flow:
+    trigger:
+        set {thread} to the current process
+        print "starting sleep"
+        set {var} to a new runnable:
+            print "waiting"
+            wait 10 milliseconds
+            wake {thread}
+            print "woken"
+        assert true
+        run {var} in the background
+        print "going to sleep"
+        sleep
+        print "done"

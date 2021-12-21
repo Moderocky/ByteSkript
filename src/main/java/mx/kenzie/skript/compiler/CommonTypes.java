@@ -28,6 +28,7 @@ public class CommonTypes {
     public static final Type DURATION = new Type(Duration.class);
     public static final Type VOID = new Type(Void.class);
     public static final Type EVENT = new Type(Event.class);
+    public static final Type THREAD = new Type(Thread.class);
     
     public static final Type THROWABLE = new Type(Throwable.class);
     public static final Type ERROR = new Type(Error.class);

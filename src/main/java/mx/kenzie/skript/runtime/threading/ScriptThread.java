@@ -9,6 +9,7 @@ public class ScriptThread extends Thread {
     public final OperationController controller;
     public Class<? extends CompiledScript> initiator;
     public Event event;
+    public final Object lock = new Object();
     
     public ScriptThread(final OperationController controller, ThreadGroup group, Runnable target, String name, long stackSize, boolean inheritThreadLocals) {
         super(group, target, name, stackSize, inheritThreadLocals);

@@ -24,6 +24,13 @@ public class FlowTest {
     }
     
     @Test
+    public void sleep_flow() throws Throwable {
+        final Member function = script.getFunction("sleep_flow");
+        assert function != null;
+        function.run(skript);
+    }
+    
+    @Test
     public void if_flow() throws Throwable {
         final Member function = script.getFunction("if_flow");
         assert function != null;

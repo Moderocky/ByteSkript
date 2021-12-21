@@ -1,36 +1,36 @@
-package mx.kenzie.skript.lang.syntax.generic;
+package mx.kenzie.skript.lang.syntax.timing;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
-import mx.kenzie.skript.api.syntax.Element;
+import mx.kenzie.skript.api.syntax.SimpleExpression;
 import mx.kenzie.skript.compiler.CommonTypes;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
 import mx.kenzie.skript.lang.element.StandardElements;
 
-public class JavaMethodHandle extends Element {
+public class ThreadExpression extends SimpleExpression {
     
-    public JavaMethodHandle() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "java method handle");
+    public ThreadExpression() {
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the ][current ](process|thread)");
     }
     
     @Override
     public Type getReturnType() {
-        return CommonTypes.INTEGER;
+        return CommonTypes.THREAD;
     }
     
     @Override
     public boolean allowAsInputFor(Type type) {
-        return CommonTypes.INTEGER.equals(type) || CommonTypes.NUMBER.equals(type) || CommonTypes.OBJECT.equals(type);
+        return super.allowAsInputFor(type) || CommonTypes.OBJECT.equals(type) || CommonTypes.THREAD.equals(type);
     }
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        method.writeCode(WriteInstruction.loadConstant(SkriptLangSpec.JAVA_VERSION.version));
-        method.writeCode(WriteInstruction.invokeStatic(Integer.class.getMethod("valueOf", int.class)));
+        method.writeCode(WriteInstruction.invokeStatic(Thread.class.getMethod("currentThread")));
     }
+    
 }

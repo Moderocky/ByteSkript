@@ -1,4 +1,4 @@
-package mx.kenzie.skript.lang.syntax.generic;
+package mx.kenzie.skript.lang.syntax.flow;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;

@@ -75,6 +75,10 @@ public final class Skript {
         executor.submit(runnable::runSafely);
     }
     
+    public static Future<?> getOnAsyncThread(final Instruction<?> runnable) {
+        return executor.submit(runnable::get);
+    }
+    
     public static void runOnAsyncThread(final Runnable runnable) {
         executor.submit(runnable);
     }
