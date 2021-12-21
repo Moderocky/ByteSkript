@@ -16,5 +16,7 @@
   * [Loop](structures/sections/loop.md)
   * [Conditional If/Else](structures/sections/conditional-if-else.md)
 * [Effects](structures/effects/README.md)
-  * [If](structures/effects/if.md)
+  * [Value Control Effects](structures/effects/value-control-effects.md)
+  * [Conditional Effects](structures/effects/conditional-effects.md)
+  * [Flow Control Effects](structures/effects/flow-control-effects.md)
 * [Expressions](structures/expressions.md)
