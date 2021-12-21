@@ -17,10 +17,7 @@ import mx.kenzie.skript.lang.syntax.entry.Verify;
 import mx.kenzie.skript.lang.syntax.event.AnyLoadEvent;
 import mx.kenzie.skript.lang.syntax.event.CurrentEventExpression;
 import mx.kenzie.skript.lang.syntax.event.LoadEvent;
-import mx.kenzie.skript.lang.syntax.flow.BreakEffect;
-import mx.kenzie.skript.lang.syntax.flow.BreakIfEffect;
-import mx.kenzie.skript.lang.syntax.flow.ReturnEffect;
-import mx.kenzie.skript.lang.syntax.flow.StopEffect;
+import mx.kenzie.skript.lang.syntax.flow.*;
 import mx.kenzie.skript.lang.syntax.flow.conditional.ElseIfSection;
 import mx.kenzie.skript.lang.syntax.flow.conditional.ElseSection;
 import mx.kenzie.skript.lang.syntax.flow.conditional.IfSection;
@@ -125,6 +122,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new RunWithEffect(),
             new RunAsyncEffect(),
             new RunEffect(),
+            new ContinueEffect(),
             new BreakIfEffect(),
             new BreakEffect(),
             new ClearList(),

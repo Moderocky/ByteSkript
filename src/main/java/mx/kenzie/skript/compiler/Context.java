@@ -90,6 +90,8 @@ public abstract class Context {
     
     public abstract void createTree(ProgrammaticSplitTree tree);
     
+    public abstract <Tree extends ProgrammaticSplitTree> Tree findTree(Class<Tree> type);
+    
     public abstract ProgrammaticSplitTree getTree(SectionMeta meta);
     
     public abstract ProgrammaticSplitTree getCurrentTree();

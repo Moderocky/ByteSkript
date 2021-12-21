@@ -62,6 +62,11 @@ function loop_flow:
             assert {item} is less than 5
         loop {item} in 1:
             assert {item} is 1
+        loop {item} in (1, 2, 3, 2):
+            assert {item} is less than 5
+            if {item} is greater than 2:
+                continue loop
+            assert {item} is less than 3
         print "end loop"
 
 function while_flow:
