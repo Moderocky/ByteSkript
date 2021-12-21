@@ -10,20 +10,21 @@ import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
 import mx.kenzie.skript.lang.element.StandardElements;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 
-public class IntegerLiteral extends Literal<Integer> {
+public class FloatLiteral extends Literal<Float> {
     
-    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("^-?\\d+(?![\\d.#LlFfDd])");
+    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("^-?\\d+(?:\\.\\d+)?[Ff](?![\\d.#DLdl])");
     private static final int LOW = 48, HIGH = 57;
     
-    public IntegerLiteral() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "int literal");
+    public FloatLiteral() {
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "float literal");
     }
     
     @Override
     public boolean allowAsInputFor(Type type) {
-        return CommonTypes.INTEGER.equals(type) || CommonTypes.NUMBER.equals(type) || CommonTypes.OBJECT.equals(type);
+        return CommonTypes.NUMBER.equals(type) || CommonTypes.OBJECT.equals(type);
     }
     
     @Override
@@ -32,18 +33,19 @@ public class IntegerLiteral extends Literal<Integer> {
         assert string.length() > 0;
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        final Integer value = Integer.valueOf(match.matcher().group());
+        final Float value = parse(match.matcher().group());
         method.writeCode(WriteInstruction.loadConstant(value));
         try {
-            method.writeCode(WriteInstruction.invokeStatic(Integer.class.getMethod("valueOf", int.class)));
+            method.writeCode(WriteInstruction.invokeStatic(Float.class.getMethod("valueOf", float.class)));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
     }
     
     @Override
-    public Integer parse(String input) {
-        return Integer.valueOf(input);
+    public Float parse(String input) {
+        if (input.toUpperCase(Locale.ROOT).endsWith("F")) return Float.valueOf(input.substring(0, input.length() - 1));
+        return Float.valueOf(input);
     }
     
     @Override

@@ -5,17 +5,9 @@ import java.util.Collection;
 
 public final class skript {
     
-    public static Object abs(Object object) {
-        if (object == null) return 0;
-        if (object instanceof Byte number) return Math.abs(number);
-        if (object instanceof Short number) return Math.abs(number);
-        if (object instanceof Integer number) return Math.abs(number);
-        if (object instanceof Long number) return Math.abs(number);
-        if (object instanceof Float number) return Math.abs(number);
-        if (object instanceof Double number) return Math.abs(number);
-        throw new ScriptRuntimeError("Unable to abs(" + object + ") - not a number.");
-    }
+    //region Maths
     
+    //region Trigonometry
     public static Object acos(Object object) {
         if (object == null) return 90;
         if (object instanceof Number number) return Math.toDegrees(Math.acos(number.doubleValue()));
@@ -80,6 +72,18 @@ public final class skript {
         if (object instanceof Number number) return Math.toDegrees(Math.tanh(number.doubleValue()));
         throw new ScriptRuntimeError("Unable to tanh(" + object + ") - not a number.");
     }
+    //endregion
+    
+    public static Object abs(Object object) {
+        if (object == null) return 0;
+        if (object instanceof Byte number) return Math.abs(number);
+        if (object instanceof Short number) return Math.abs(number);
+        if (object instanceof Integer number) return Math.abs(number);
+        if (object instanceof Long number) return Math.abs(number);
+        if (object instanceof Float number) return Math.abs(number);
+        if (object instanceof Double number) return Math.abs(number);
+        throw new ScriptRuntimeError("Unable to abs(" + object + ") - not a number.");
+    }
     
     public static Object sqrt(Object object) {
         if (object == null) return 0;
@@ -98,6 +102,12 @@ public final class skript {
             result = (result + value / result) * 0.5;
         }
         return result;
+    }
+    
+    public static Object ceil(Object object) {
+        if (object == null) return 0;
+        if (object instanceof Number number) return Math.ceil(number.doubleValue());
+        throw new ScriptRuntimeError("Unable to ceil(" + object + ") - not a number.");
     }
     
     public static Object floor(Object object) {
@@ -124,12 +134,33 @@ public final class skript {
         if (object instanceof Number number) return Math.log(number.doubleValue());
         throw new ScriptRuntimeError("Unable to log(" + object + ") - not a number.");
     }
+    //endregion
     
+    //region System
     public static Object getClass(Object name) throws Throwable {
         return Class.forName(name + "");
     }
     
-    public static Object javaMethod(Object owner, Object name, Object parameters) {
+    public static Object currentTimeMillis() {
+        return System.currentTimeMillis();
+    }
+    
+    public static Object lineSeparator() {
+        return System.lineSeparator();
+    }
+    
+    public static Object nanoTime() {
+        return System.nanoTime();
+    }
+    
+    public static Object hashcode(Object object) {
+        if (object == null) return 0;
+        return object.hashCode();
+    }
+    //endregion
+    
+    //region Method Handles
+    public static Object getJavaMethod(Object owner, Object name, Object parameters) {
         final Class<?>[] arguments;
         if (parameters instanceof Object[] array) {
             arguments = new Class[array.length];
@@ -149,8 +180,22 @@ public final class skript {
         return Mirror.of(owner).method(name + "", arguments);
     }
     
-    public static Object javaMethod(Object owner, Object name) {
+    public static Object getJavaMethod(Object owner, Object name) {
         return Mirror.of(owner).method(name + "");
     }
+    
+    public static Object hasJavaField(Object owner, Object name) {
+        return Mirror.of(owner).field(name + "") != null;
+    }
+    
+    public static Object getJavaField(Object owner, Object name) {
+        return Mirror.of(owner).field(name + "").get();
+    }
+    
+    public static Object setJavaField(Object owner, Object name, Object value) {
+        Mirror.of(owner).field(name + "").set(value);
+        return null;
+    }
+    //endregion
     
 }

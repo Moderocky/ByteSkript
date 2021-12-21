@@ -37,10 +37,7 @@ import mx.kenzie.skript.lang.syntax.list.ClearList;
 import mx.kenzie.skript.lang.syntax.list.ImplicitArrayCreator;
 import mx.kenzie.skript.lang.syntax.list.IndexOfList;
 import mx.kenzie.skript.lang.syntax.list.ListCreator;
-import mx.kenzie.skript.lang.syntax.literal.BooleanLiteral;
-import mx.kenzie.skript.lang.syntax.literal.IntegerLiteral;
-import mx.kenzie.skript.lang.syntax.literal.NoneLiteral;
-import mx.kenzie.skript.lang.syntax.literal.StringLiteral;
+import mx.kenzie.skript.lang.syntax.literal.*;
 import mx.kenzie.skript.lang.syntax.map.ClearMap;
 import mx.kenzie.skript.lang.syntax.map.KeyInMap;
 import mx.kenzie.skript.lang.syntax.map.MapCreator;
@@ -172,6 +169,10 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new MillisecondsExpression(),
             new SecondsExpression(),
             new IntegerLiteral(),
+            new LongLiteral(),
+            new FloatLiteral(),
+            new DoubleLiteral(),
+            new DoubleLiteral(),
             new MapCreator(),
             new ListCreator(),
             new IndexOfList(),

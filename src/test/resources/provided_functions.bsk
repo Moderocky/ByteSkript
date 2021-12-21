@@ -1,0 +1,49 @@
+
+function handles:
+    trigger:
+        set {system} to getClass("java.lang.System")
+        set {object} to getClass("java.lang.Object")
+        assert hasJavaField({system}, "out") is true
+        set {out} to getJavaField({system}, "out")
+        assert {out} exists
+        set {method} to getJavaMethod({out}, "println", {object})
+        assert {method} exists
+        run {method} with "Called reflectively."
+        print "finished handles"
+
+function maths:
+    trigger:
+        assert 10 exists
+        assert 10L exists
+        assert 10.0 exists
+        assert 10.0F exists
+        set {three} to 1 - 4
+        assert abs({three}) is 3
+        assert sin(40) > 40
+        assert cos(40) < 0
+        assert tan(40) < 0
+        assert asin(0) is 0
+        assert acos(0) is 90
+        assert atan(0) is 0
+        assert sinh(40) > 6
+        assert cosh(40) > 6
+        assert tanh(40) > 57
+        assert atan2(5, 6) is 45
+        assert sqrt(25) is 5
+        assert newtonRoot(25, 0) >= 5
+        assert floor(5) is 5
+        assert ceil(5) is 5
+        assert round(5) is 5
+        assert ln(-3) < 1
+        assert log(3) > 1
+        print "finished maths"
+
+function generic:
+    trigger:
+        assert getClass("java.lang.String") is a class
+        assert currentTimeMillis() is a number
+        assert currentTimeMillis() is greater than 0
+        assert nanoTime() is a number
+        assert lineSeparator() is a string
+        assert hashcode("hello") is a number
+        print "finished generic"
