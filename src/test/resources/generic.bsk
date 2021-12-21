@@ -1,4 +1,11 @@
 
+function test_system:
+    trigger:
+        set system property "blob" to "hello"
+        set {var} to system property "blob"
+        assert {var} is "hello"
+        delete system property "blob"
+
 function my_function:
     trigger:
         print "hello there"

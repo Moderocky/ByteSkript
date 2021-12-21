@@ -19,7 +19,7 @@ import org.objectweb.asm.Opcodes;
 
 import java.util.Iterator;
 
-public class LoopInSection extends Section { // TODO
+public class LoopInSection extends Section {
     
     public LoopInSection() {
         super(SkriptLangSpec.LIBRARY, StandardElements.SECTION, "loop %Object% in %Object%");
@@ -107,7 +107,7 @@ public class LoopInSection extends Section { // TODO
     }
     
     @Override
-    public void onSectionExit(Context context, SectionMeta meta) { // todo
+    public void onSectionExit(Context context, SectionMeta meta) {
         if (!(context.getTree(context.getSection()) instanceof LoopTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Unable to balance loop flow tree.");
         context.setState(CompileState.CODE_BODY);

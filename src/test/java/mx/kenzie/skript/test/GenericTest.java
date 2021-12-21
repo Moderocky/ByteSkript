@@ -10,17 +10,24 @@ import org.junit.Test;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-public class BasicCompilationTest {
+public class GenericTest {
     
     private static final Skript skript = new Skript();
     private static Script script;
     
     @BeforeClass
     public static void start() throws Throwable {
-        final PostCompileClass cls = skript.compileScript(BasicCompilationTest.class.getClassLoader()
-            .getResourceAsStream("test.bsk"), "skript.test");
+        final PostCompileClass cls = skript.compileScript(GenericTest.class.getClassLoader()
+            .getResourceAsStream("generic.bsk"), "skript.test");
         debug(cls);
         script = skript.loadScript(cls);
+    }
+    
+    @Test
+    public void test_system() throws Throwable {
+        final Member function = script.getFunction("test_system");
+        assert function != null;
+        function.invoke();
     }
     
     @Test
