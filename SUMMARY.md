@@ -19,4 +19,5 @@
   * [Value Control Effects](structures/effects/value-control-effects.md)
   * [Conditional Effects](structures/effects/if.md)
   * [Flow Control Effects](structures/effects/flow-control-effects.md)
+  * [Generic Effects](structures/effects/generic-effects.md)
 * [Expressions](structures/expressions.md)

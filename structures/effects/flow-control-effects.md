@@ -257,3 +257,29 @@ function is_true(value):
             return "yes"
         return // gives back 'null'
 ```
+
+### Assert
+
+```clike
+assert %Boolean%
+assert 1 is 1
+assert 1 is not 2
+assert "hello" is a string
+```
+
+The assertion effect is designed for testing and verifying assumptions about code. If the value given is **false**, an error will be thrown that stops the current execution.
+
+If the value is true the assertion will pass silently and no error will be thrown.
+
+```clike
+function broadcast (value):
+    trigger:
+        assert {value} is a string
+        print {value}
+```
+
+This is designed to be used with the [verifier](../entries/verifier.md) entry for functions.
+
+{% hint style="info" %}
+This is used during the test phase when building Skript to check that syntaxes work as expected.
+{% endhint %}
