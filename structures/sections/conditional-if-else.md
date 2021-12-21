@@ -19,7 +19,7 @@ else:
 
 ### If Block
 
-These must **always** start with an [if](../effects/conditional-effects.md) effect as the section header.
+These must **always** start with an [if](../effects/if.md) effect as the section header.
 
 ```clike
 if "hello" is a string: // the (... is a string) expression = true

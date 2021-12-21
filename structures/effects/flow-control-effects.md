@@ -149,3 +149,111 @@ loop {word} in {list}: // jumps back up to here
     print "never reached"
 print "finished"
 ```
+
+### Exit Program
+
+```clike
+exit [the] program
+```
+
+Terminates the JVM process with exit code 0.
+
+```clike
+if {should_end} is true:
+    exit program
+```
+
+### Return Value
+
+```clike
+return %Object%
+return true
+return {var}
+return 1 + 1
+```
+
+Returns a value from the current function or supplier.
+
+```clike
+function my_func:
+    trigger:
+        return "hello"
+```
+
+Nothing below the return instruction will be run.
+
+```clike
+function my_func:
+    trigger:
+        print "is run"
+        return "hello"
+        print "never run"
+```
+
+The return can be used in conditional sections.
+
+```clike
+function my_func:
+    trigger:
+        if 1 is 1:
+            return "hello"
+```
+
+Multiple returns can be used based on different conditions.
+
+```clike
+function my_func:
+    trigger:
+        if 1 is 2:
+            return "no"
+        else:
+            return "yes"
+```
+
+The return value is received by the executor.
+
+```clike
+function my_func:
+    trigger:
+        print is_true(true) // "yes"
+        print is_true(55) // "no"
+
+function is_true(value):
+    trigger:
+        if {value} is true:
+            return "yes"
+        return "no"
+```
+
+### Stop
+
+```clike
+(stop|return)
+return
+stop
+```
+
+This is the equivalent to the return effect but with no value. The code tree is simply ended.
+
+```clike
+function my_func:
+    trigger:
+        if 1 is 1:
+            return
+        print "yes"
+```
+
+If the caller was expecting a value, it will be given the empty `null` value.
+
+```clike
+function my_func:
+    trigger:
+        print is_true(true) // "yes"
+        print is_true(55) // null
+
+function is_true(value):
+    trigger:
+        if {value} is true:
+            return "yes"
+        return // gives back 'null'
+```
