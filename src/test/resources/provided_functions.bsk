@@ -1,12 +1,12 @@
 
 function handles:
     trigger:
-        set {system} to getClass("java.lang.System")
-        set {object} to getClass("java.lang.Object")
-        assert hasJavaField({system}, "out") is true
-        set {out} to getJavaField({system}, "out")
+        set {system} to get_class("java.lang.System")
+        set {object} to get_class("java.lang.Object")
+        assert has_java_field({system}, "out") is true
+        set {out} to get_java_field({system}, "out")
         assert {out} exists
-        set {method} to getJavaMethod({out}, "println", {object})
+        set {method} to get_java_method({out}, "println", {object})
         assert {method} exists
         run {method} with "Called reflectively."
         print "finished handles"
@@ -19,20 +19,44 @@ function maths:
         assert 10.0F exists
         set {three} to 1 - 4
         assert abs({three}) is 3
-        assert sin(40) > 40
-        assert cos(40) < 0
-        assert tan(40) < 0
+        assert sin(30) < 0.5
+        assert round(sin(90)) is 1
+        assert sin(40) > 0.6
+        assert sin(40) < 0.65
+        assert cos(0) is 1
+        assert round(cos(90)) is 0
+        assert cos(40) > 0.76
+        assert cos(40) < 0.77
+        assert round(tan(0)) is 0
+        assert tan(40) < 0.84
+        assert tan(40) > 0.83
+        assert tan(20) < 0.37
+        assert tan(20) > 0.36
         assert asin(0) is 0
+        assert round(asin(0.5)) is 30
         assert acos(0) is 90
+        assert round(acos(0.5)) is 60
+        assert acos(0.3) > 72.5
+        assert acos(0.3) < 72.6
         assert atan(0) is 0
-        assert sinh(40) > 6
-        assert cosh(40) > 6
-        assert tanh(40) > 57
-        assert atan2(5, 6) is 45
+        assert atan(0.5) > 26.5
+        assert atan(0.5) < 26.6
+        assert sinh(30) > 31
+        assert sinh(30) < 32
+        assert cosh(40) > 71.8
+        assert cosh(40) < 71.9
+        assert tanh(40) > 34.5
+        assert tanh(40) < 34.6
+        assert round(atan2(5, 5)) is 45
+        assert atan2(5, 6) > 50.1
+        assert atan2(5, 6) < 50.2
         assert sqrt(25) is 5
-        assert newtonRoot(25, 0) >= 5
+        assert newton_root(25, 0) >= 5
+        assert floor(5.9) is 5
         assert floor(5) is 5
-        assert ceil(5) is 5
+        assert ceil(4.1) is 5
+        assert ceil(5.0) is 5
+        assert round(4.5) is 5
         assert round(5) is 5
         assert ln(-3) < 1
         assert log(3) > 1
@@ -40,10 +64,12 @@ function maths:
 
 function generic:
     trigger:
-        assert getClass("java.lang.String") is a class
-        assert currentTimeMillis() is a number
-        assert currentTimeMillis() is greater than 0
-        assert nanoTime() is a number
-        assert lineSeparator() is a string
+        assert get_class("java.lang.String") is a class
+        assert current_time_millis() is a number
+        assert current_time_millis() is greater than 0
+        assert nano_time() is a number
+        assert line_separator() is a string
         assert hashcode("hello") is a number
+        assert strict_equals(1, 1) is true
+        assert strict_equals("cc", "c" + "c") is false
         print "finished generic"

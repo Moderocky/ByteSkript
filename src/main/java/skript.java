@@ -32,47 +32,59 @@ public final class skript {
         else if (object instanceof Number number) x = number.doubleValue();
         else throw new ScriptRuntimeError("Unable to atan2(" + object + ") - not a number.");
         if (second == null) y = 0;
-        else if (object instanceof Number number) y = number.doubleValue();
-        else throw new ScriptRuntimeError("Unable to atan2(" + object + ") - not a number.");
+        else if (second instanceof Number number) y = number.doubleValue();
+        else throw new ScriptRuntimeError("Unable to atan2(" + second + ") - not a number.");
         return Math.toDegrees(Math.atan2(y, x));
     }
     
     public static Object cos(Object object) {
         if (object == null) return 1;
-        if (object instanceof Number number) return Math.toDegrees(Math.cos(number.doubleValue()));
+        if (object instanceof Number number) return Math.cos(Math.toRadians(number.doubleValue()));
         throw new ScriptRuntimeError("Unable to cos(" + object + ") - not a number.");
     }
     
     public static Object cosh(Object object) {
         if (object == null) return 1;
-        if (object instanceof Number number) return Math.toDegrees(Math.cosh(number.doubleValue()));
+        if (object instanceof Number number) return Math.toDegrees(Math.cosh(Math.toRadians(number.doubleValue())));
         throw new ScriptRuntimeError("Unable to cosh(" + object + ") - not a number.");
     }
     
     public static Object sin(Object object) {
         if (object == null) return 0;
-        if (object instanceof Number number) return Math.toDegrees(Math.sin(number.doubleValue()));
+        if (object instanceof Number number) return Math.sin(Math.toRadians(number.doubleValue()));
         throw new ScriptRuntimeError("Unable to sin(" + object + ") - not a number.");
     }
     
     public static Object sinh(Object object) {
         if (object == null) return 0;
-        if (object instanceof Number number) return Math.toDegrees(Math.sinh(number.doubleValue()));
+        if (object instanceof Number number) return Math.toDegrees(Math.sinh(Math.toRadians(number.doubleValue())));
         throw new ScriptRuntimeError("Unable to sinh(" + object + ") - not a number.");
     }
     
     public static Object tan(Object object) {
         if (object == null) return 0;
-        if (object instanceof Number number) return Math.toDegrees(Math.tan(number.doubleValue()));
+        if (object instanceof Number number) return Math.tan(Math.toRadians(number.doubleValue()));
         throw new ScriptRuntimeError("Unable to tan(" + object + ") - not a number.");
     }
     
     public static Object tanh(Object object) {
         if (object == null) return 0;
-        if (object instanceof Number number) return Math.toDegrees(Math.tanh(number.doubleValue()));
+        if (object instanceof Number number) return Math.toDegrees(Math.tanh(Math.toRadians(number.doubleValue())));
         throw new ScriptRuntimeError("Unable to tanh(" + object + ") - not a number.");
     }
     //endregion
+    
+    public static Object to_degrees(Object object) {
+        if (object == null) return 0;
+        if (object instanceof Number number) return Math.toDegrees(number.doubleValue());
+        throw new ScriptRuntimeError("Unable to to_degrees(" + object + ") - not a number.");
+    }
+    
+    public static Object to_radians(Object object) {
+        if (object == null) return 0;
+        if (object instanceof Number number) return Math.toRadians(number.doubleValue());
+        throw new ScriptRuntimeError("Unable to to_radians(" + object + ") - not a number.");
+    }
     
     public static Object abs(Object object) {
         if (object == null) return 0;
@@ -91,7 +103,7 @@ public final class skript {
         throw new ScriptRuntimeError("Unable to sqrt(" + object + ") - not a number.");
     }
     
-    public static Object newtonRoot(Object object, Object accuracy) {
+    public static Object newton_root(Object object, Object accuracy) {
         if (object == null) return 0;
         final int times = (accuracy instanceof Number number) ? number.intValue() : 1;
         if (!(object instanceof Number number))
@@ -136,20 +148,20 @@ public final class skript {
     }
     //endregion
     
-    //region System
-    public static Object getClass(Object name) throws Throwable {
+    //region Generic
+    public static Object get_class(Object name) throws Throwable {
         return Class.forName(name + "");
     }
     
-    public static Object currentTimeMillis() {
+    public static Object current_time_millis() {
         return System.currentTimeMillis();
     }
     
-    public static Object lineSeparator() {
+    public static Object line_separator() {
         return System.lineSeparator();
     }
     
-    public static Object nanoTime() {
+    public static Object nano_time() {
         return System.nanoTime();
     }
     
@@ -157,10 +169,14 @@ public final class skript {
         if (object == null) return 0;
         return object.hashCode();
     }
+    
+    public static Object strict_equals(Object a, Object b) {
+        return a == b;
+    }
     //endregion
     
     //region Method Handles
-    public static Object getJavaMethod(Object owner, Object name, Object parameters) {
+    public static Object get_java_method(Object owner, Object name, Object parameters) {
         final Class<?>[] arguments;
         if (parameters instanceof Object[] array) {
             arguments = new Class[array.length];
@@ -180,19 +196,19 @@ public final class skript {
         return Mirror.of(owner).method(name + "", arguments);
     }
     
-    public static Object getJavaMethod(Object owner, Object name) {
+    public static Object get_java_method(Object owner, Object name) {
         return Mirror.of(owner).method(name + "");
     }
     
-    public static Object hasJavaField(Object owner, Object name) {
+    public static Object has_java_field(Object owner, Object name) {
         return Mirror.of(owner).field(name + "") != null;
     }
     
-    public static Object getJavaField(Object owner, Object name) {
+    public static Object get_java_field(Object owner, Object name) {
         return Mirror.of(owner).field(name + "").get();
     }
     
-    public static Object setJavaField(Object owner, Object name, Object value) {
+    public static Object set_java_field(Object owner, Object name, Object value) {
         Mirror.of(owner).field(name + "").set(value);
         return null;
     }

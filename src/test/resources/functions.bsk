@@ -70,5 +70,5 @@ function external:
 
 function skript_default:
     trigger:
-        set {var} to getClass("skript")
+        set {var} to get_class("skript")
         assert {var} is not null
