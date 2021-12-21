@@ -1,5 +1,6 @@
 import mx.kenzie.mirror.Mirror;
 import mx.kenzie.skript.error.ScriptRuntimeError;
+import mx.kenzie.skript.runtime.type.AtomicVariable;
 
 import java.util.Collection;
 
@@ -149,6 +150,11 @@ public final class skript {
     //endregion
     
     //region Generic
+    public static Object get_atomic_literal(Object atomic) { // todo returning atomics
+        if (atomic instanceof AtomicVariable) return atomic;
+        else return AtomicVariable.wrap(atomic);
+    }
+    
     public static Object get_class(Object name) throws Throwable {
         return Class.forName(name + "");
     }
