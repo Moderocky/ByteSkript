@@ -7,10 +7,7 @@ import mx.kenzie.skript.runtime.internal.Member;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-
-public class OperatorsTest {
+public class OperatorsTest extends SkriptTest {
     
     private static final Skript skript = new Skript();
     private static Script script;
@@ -19,7 +16,6 @@ public class OperatorsTest {
     public static void start() throws Throwable {
         final PostCompileClass cls = skript.compileScript(OperatorsTest.class.getClassLoader()
             .getResourceAsStream("maths.bsk"), "skript.maths");
-        debug(cls);
         script = skript.loadScript(cls);
     }
     
@@ -35,13 +31,6 @@ public class OperatorsTest {
         final Member function = script.getFunction("looping");
         assert function != null;
         function.invoke();
-    }
-    
-    private static void debug(final PostCompileClass source) throws Throwable {
-        try (OutputStream stream =
-                 new FileOutputStream(source.name() + ".class")) {
-            stream.write(source.code());
-        }
     }
     
 }

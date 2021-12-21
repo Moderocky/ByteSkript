@@ -7,10 +7,7 @@ import mx.kenzie.skript.runtime.internal.Member;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-
-public class GenericTest {
+public class GenericTest extends SkriptTest {
     
     private static final Skript skript = new Skript();
     private static Script script;
@@ -19,7 +16,6 @@ public class GenericTest {
     public static void start() throws Throwable {
         final PostCompileClass cls = skript.compileScript(GenericTest.class.getClassLoader()
             .getResourceAsStream("generic.bsk"), "skript.test");
-        debug(cls);
         script = skript.loadScript(cls);
     }
     
@@ -63,13 +59,6 @@ public class GenericTest {
         final Member function = script.getFunction("run_function");
         assert function != null;
         assert "bees".equals(function.invoke());
-    }
-    
-    private static void debug(final PostCompileClass source) throws Throwable {
-        try (final OutputStream stream =
-                 new FileOutputStream(source.name() + ".class")) {
-            stream.write(source.code());
-        }
     }
     
 }

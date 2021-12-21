@@ -6,10 +6,7 @@ import mx.kenzie.skript.runtime.Skript;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-
-public class SectionsTest {
+public class SectionsTest extends SkriptTest {
     
     private static final Skript skript = new Skript();
     private static Script script;
@@ -18,7 +15,6 @@ public class SectionsTest {
     public static void start() throws Throwable {
         final PostCompileClass cls = skript.compileScript(SectionsTest.class.getClassLoader()
             .getResourceAsStream("sections.bsk"), "skript.sections");
-        debug(cls);
         script = skript.loadScript(cls);
     }
     
@@ -29,13 +25,6 @@ public class SectionsTest {
     
     public static Object blob(String thing) {
         return "hello " + thing;
-    }
-    
-    private static void debug(final PostCompileClass source) throws Throwable {
-        try (OutputStream stream =
-                 new FileOutputStream(source.name() + ".class")) {
-            stream.write(source.code());
-        }
     }
     
 }

@@ -6,10 +6,7 @@ import mx.kenzie.skript.runtime.Skript;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-
-public class EventTest {
+public class EventTest extends SkriptTest {
     
     private static final Skript skript = new Skript();
     private static Script script;
@@ -18,19 +15,11 @@ public class EventTest {
     public static void start() throws Throwable {
         final PostCompileClass cls = skript.compileScript(EventTest.class.getClassLoader()
             .getResourceAsStream("events.bsk"), "skript.events");
-        debug(cls);
         script = skript.loadScript(cls);
     }
     
     @Test
     public void test() {
-    }
-    
-    private static void debug(final PostCompileClass source) throws Throwable {
-        try (OutputStream stream =
-                 new FileOutputStream(source.name() + ".class")) {
-            stream.write(source.code());
-        }
     }
     
 }

@@ -7,10 +7,7 @@ import mx.kenzie.skript.runtime.internal.Member;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-
-public class FunctionsTest {
+public class FunctionsTest extends SkriptTest {
     
     private static final Skript skript = new Skript();
     private static Script script;
@@ -21,7 +18,6 @@ public class FunctionsTest {
             .getResourceAsStream("functions.bsk"), "skript.functions");
         final PostCompileClass second = skript.compileScript(FunctionsTest.class.getClassLoader()
             .getResourceAsStream("lambda.bsk"), "skript.lambda");
-        debug(cls);
         script = skript.loadScript(cls);
         skript.loadScript(second);
     }
@@ -52,13 +48,6 @@ public class FunctionsTest {
         final Member function = script.getFunction("skript_default");
         assert function != null;
         function.invoke();
-    }
-    
-    private static void debug(final PostCompileClass source) throws Throwable {
-        try (OutputStream stream =
-                 new FileOutputStream(source.name() + ".class")) {
-            stream.write(source.code());
-        }
     }
     
 }

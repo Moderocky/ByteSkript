@@ -7,10 +7,7 @@ import mx.kenzie.skript.runtime.internal.Member;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-
-public class IOTest {
+public class IOTest extends SkriptTest {
     
     private static final Skript skript = new Skript();
     private static Script script;
@@ -19,7 +16,6 @@ public class IOTest {
     public static void start() throws Throwable {
         final PostCompileClass cls = skript.compileScript(IOTest.class.getClassLoader()
             .getResourceAsStream("io.bsk"), "skript.io");
-        debug(cls);
         script = skript.loadScript(cls);
     }
     
@@ -28,13 +24,6 @@ public class IOTest {
         final Member function = script.getFunction("file");
         assert function != null;
         function.invoke();
-    }
-    
-    private static void debug(final PostCompileClass source) throws Throwable {
-        try (OutputStream stream =
-                 new FileOutputStream(source.name() + ".class")) {
-            stream.write(source.code());
-        }
     }
     
 }
