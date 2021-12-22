@@ -11,7 +11,7 @@ coverY: 0
 
 An experimental language based on Skript (with no pre-eminent DSL dependencies) compiled to JVM bytecode.
 
-### Visit the [documentation](https://moderocky.gitbook.io/byteskript/) and wiki [here](https://moderocky.gitbook.io/byteskript/).
+Visit the documentation and wiki [here](https://moderocky.gitbook.io/byteskript/).
 
 ByteSkript draws heavily from the original [Skript](https://github.com/SkriptLang/Skript/) language design, with some minor structural adaptations to strengthen the language grammar, and to remove some unnecessary programming jargon. ByteSkript also aims to increase interoperability with existing JVM languages.
 

@@ -22,6 +22,8 @@
   * [Generic Effects](structures/effects/generic-effects.md)
 * [Expressions](structures/expressions/README.md)
   * [Variables](structures/expressions/variables.md)
+  * [Simple Expressions](structures/expressions/simple-expressions.md)
+  * [I/O Expressions](structures/expressions/i-o-expressions.md)
 
 ## namespaces
 
