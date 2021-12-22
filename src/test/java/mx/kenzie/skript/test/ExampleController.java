@@ -1,7 +1,7 @@
 package mx.kenzie.skript.test;
 
-import mx.kenzie.skript.api.Instruction;
 import mx.kenzie.skript.runtime.Skript;
+import mx.kenzie.skript.runtime.internal.Instruction;
 import mx.kenzie.skript.runtime.threading.AirlockQueue;
 import mx.kenzie.skript.runtime.threading.OperationController;
 

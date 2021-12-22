@@ -1,4 +1,4 @@
-package mx.kenzie.skript.lang.syntax.io;
+package mx.kenzie.skript.runtime.internal;
 
 import mx.kenzie.skript.api.note.Effect;
 import mx.kenzie.skript.api.note.Expression;

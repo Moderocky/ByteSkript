@@ -1,4 +1,4 @@
-package mx.kenzie.skript.lang.event;
+package mx.kenzie.skript.runtime.event;
 
 import mx.kenzie.skript.api.Event;
 import mx.kenzie.skript.api.note.EventValue;

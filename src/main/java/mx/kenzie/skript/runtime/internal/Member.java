@@ -2,7 +2,6 @@ package mx.kenzie.skript.runtime.internal;
 
 import mx.kenzie.mirror.MethodAccessor;
 import mx.kenzie.mirror.Mirror;
-import mx.kenzie.skript.api.Instruction;
 import mx.kenzie.skript.error.ScriptRuntimeError;
 import mx.kenzie.skript.runtime.Script;
 import mx.kenzie.skript.runtime.Skript;

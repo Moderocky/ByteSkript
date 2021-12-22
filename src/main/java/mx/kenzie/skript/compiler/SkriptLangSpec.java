@@ -32,7 +32,6 @@ import mx.kenzie.skript.lang.syntax.flow.loop.LoopTimesSection;
 import mx.kenzie.skript.lang.syntax.flow.loop.WhileSection;
 import mx.kenzie.skript.lang.syntax.function.*;
 import mx.kenzie.skript.lang.syntax.generic.*;
-import mx.kenzie.skript.lang.syntax.io.IOHandlers;
 import mx.kenzie.skript.lang.syntax.list.ClearList;
 import mx.kenzie.skript.lang.syntax.list.ImplicitArrayCreator;
 import mx.kenzie.skript.lang.syntax.list.IndexOfList;
@@ -43,6 +42,7 @@ import mx.kenzie.skript.lang.syntax.map.KeyInMap;
 import mx.kenzie.skript.lang.syntax.map.MapCreator;
 import mx.kenzie.skript.lang.syntax.maths.*;
 import mx.kenzie.skript.lang.syntax.timing.*;
+import mx.kenzie.skript.runtime.internal.IOHandlers;
 import mx.kenzie.skript.runtime.type.DataList;
 import mx.kenzie.skript.runtime.type.DataMap;
 

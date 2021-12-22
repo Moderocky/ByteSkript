@@ -3,7 +3,7 @@ package mx.kenzie.skript.lang.syntax.event;
 import mx.kenzie.skript.api.Event;
 import mx.kenzie.skript.api.syntax.EventHolder;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
-import mx.kenzie.skript.lang.event.Load;
+import mx.kenzie.skript.runtime.event.Load;
 
 public class AnyLoadEvent extends EventHolder {
     

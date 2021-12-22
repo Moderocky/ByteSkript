@@ -1,10 +1,10 @@
 package mx.kenzie.skript.runtime;
 
 import mx.kenzie.skript.error.ScriptLoadError;
-import mx.kenzie.skript.lang.event.Load;
 import mx.kenzie.skript.runtime.data.EventData;
 import mx.kenzie.skript.runtime.data.Function;
 import mx.kenzie.skript.runtime.data.SourceData;
+import mx.kenzie.skript.runtime.event.Load;
 import mx.kenzie.skript.runtime.internal.CompiledScript;
 import mx.kenzie.skript.runtime.internal.InvokingScriptRunner;
 import mx.kenzie.skript.runtime.internal.Member;

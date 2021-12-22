@@ -4,13 +4,13 @@ import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.language.PostCompileClass;
 import mx.kenzie.mirror.Mirror;
 import mx.kenzie.skript.api.Event;
-import mx.kenzie.skript.api.Instruction;
 import mx.kenzie.skript.api.Library;
-import mx.kenzie.skript.compiler.SimpleSkriptCompiler;
 import mx.kenzie.skript.compiler.SkriptCompiler;
 import mx.kenzie.skript.error.ScriptCompileError;
 import mx.kenzie.skript.error.ScriptLoadError;
 import mx.kenzie.skript.runtime.internal.EventHandler;
+import mx.kenzie.skript.runtime.internal.Instruction;
+import mx.kenzie.skript.runtime.internal.ModifiableCompiler;
 import mx.kenzie.skript.runtime.threading.OperationController;
 import mx.kenzie.skript.runtime.threading.ScriptRunner;
 import mx.kenzie.skript.runtime.threading.ScriptThread;
@@ -31,7 +31,7 @@ public final class Skript {
     static SkriptThreadProvider factory;
     final ScheduledExecutorService scheduler;
     final Thread mainThread;
-    final SkriptCompiler compiler;
+    final ModifiableCompiler compiler;
     final List<OperationController> processes;
     final Map<Class<? extends Event>, EventHandler> events;
     final SkriptMirror mirror = new SkriptMirror(Skript.class);
@@ -47,15 +47,19 @@ public final class Skript {
         }
     }
     
+    public Skript(ModifiableCompiler compiler) {
+        this(new SkriptThreadProvider(), compiler, Thread.currentThread());
+    }
+    
     public Skript() {
-        this(new SkriptThreadProvider(), new SimpleSkriptCompiler(), Thread.currentThread());
+        this(new SkriptThreadProvider(), SkriptCompiler.createBasic(), Thread.currentThread());
     }
     
     public Skript(Thread main, ClassLoader parent) {
-        this(new SkriptThreadProvider(), new SimpleSkriptCompiler(), main);
+        this(new SkriptThreadProvider(), SkriptCompiler.createBasic(), main);
     }
     
-    public Skript(SkriptThreadProvider threadProvider, SkriptCompiler compiler, Thread main) {
+    public Skript(SkriptThreadProvider threadProvider, ModifiableCompiler compiler, Thread main) {
         this.compiler = compiler;
         factory = threadProvider;
         executor = Executors.newCachedThreadPool(factory);
@@ -169,8 +173,8 @@ public final class Skript {
         final List<File> files = getFiles(new ArrayList<>(), root.toPath());
         final List<File> outputs = new ArrayList<>();
         final int length = root.getAbsolutePath().length();
-        for (File file : files) {
-            try (InputStream input = new FileInputStream(file)) {
+        for (final File file : files) {
+            try (final InputStream input = new FileInputStream(file)) {
                 final String name = createClassName(file.getName(), file.getAbsolutePath().substring(length));
                 outputs.addAll(compileComplexScript(input, name, outputDirectory));
             }
@@ -198,6 +202,22 @@ public final class Skript {
             outputs.add(target);
         }
         return outputs;
+    }
+    
+    public PostCompileClass[] compileScripts(final File root) throws IOException {
+        if (!root.exists()) throw new ScriptLoadError("Root folder does not exist.");
+        if (!root.isDirectory()) throw new ScriptLoadError("Root must be a folder.");
+        final List<File> files = getFiles(new ArrayList<>(), root.toPath());
+        final List<PostCompileClass> scripts = new ArrayList<>();
+        for (final File file : files) {
+            if (file == null) continue;
+            if (!file.getName().endsWith(".bsk")) continue;
+            try (final InputStream stream = new FileInputStream(file)) {
+                final String name = this.getClassName(file, root);
+                scripts.add(compileScript(stream, name));
+            }
+        }
+        return scripts.toArray(new PostCompileClass[0]);
     }
     
     public PostCompileClass[] compileComplexScript(final InputStream stream, final String name) {
@@ -254,6 +274,10 @@ public final class Skript {
         path = path.replace(File.separatorChar, '.');
         path = path.substring(0, path.lastIndexOf('.'));
         return path;
+    }
+    
+    public Script loadScript(final Class<?> loaded) {
+        return new Script(this, null, loaded);
     }
     
     public Script loadScript(final PostCompileClass datum) {
@@ -343,8 +367,9 @@ public final class Skript {
     
     private static String createClassName(String name, String path) {
         final int index = name.lastIndexOf('.');
-        if (index == -1) return path;
-        return path.substring(0, index - 1).replace(File.pathSeparator, ".");
+        if (path.startsWith(File.separator)) path = path.substring(1);
+        if (index == -1) return path.replace(File.separatorChar, '.');
+        return path.substring(0, index).replace(File.separatorChar, '.');
     }
     
     private static List<File> getFiles(List<File> files, Path root) {

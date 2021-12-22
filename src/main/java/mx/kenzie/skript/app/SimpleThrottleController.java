@@ -1,7 +1,7 @@
 package mx.kenzie.skript.app;
 
-import mx.kenzie.skript.api.Instruction;
 import mx.kenzie.skript.runtime.Skript;
+import mx.kenzie.skript.runtime.internal.Instruction;
 import mx.kenzie.skript.runtime.threading.AirlockQueue;
 import mx.kenzie.skript.runtime.threading.OperationController;
 
@@ -15,7 +15,7 @@ public final class SimpleThrottleController extends Thread implements Runnable {
     @Override
     public void run() {
         while (true) {
-            for (OperationController process : skript.getProcesses()) {
+            for (final OperationController process : skript.getProcesses()) {
                 final AirlockQueue queue;
                 synchronized (queue = process.getQueue()) {
                     if (queue.isEmpty()) continue;

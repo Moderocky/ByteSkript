@@ -1,4 +1,4 @@
-package mx.kenzie.skript.api;
+package mx.kenzie.skript.runtime.internal;
 
 public interface Instruction<Type> {
     

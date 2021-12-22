@@ -4,10 +4,15 @@ import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.language.Compiler;
 import mx.kenzie.foundation.language.PostCompileClass;
 import mx.kenzie.skript.api.Library;
+import mx.kenzie.skript.runtime.internal.ModifiableCompiler;
 
 import java.io.InputStream;
 
-public abstract class SkriptCompiler implements Compiler<SkriptLangSpec> {
+public abstract class SkriptCompiler implements Compiler<SkriptLangSpec>, ModifiableCompiler {
+    
+    public static SkriptCompiler createBasic() {
+        return new SimpleSkriptCompiler();
+    }
     
     @Override
     public SkriptLangSpec getLanguage() {

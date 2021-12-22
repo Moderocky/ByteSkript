@@ -1,7 +1,7 @@
 package mx.kenzie.skript.runtime.threading;
 
-import mx.kenzie.skript.api.Instruction;
 import mx.kenzie.skript.runtime.Skript;
+import mx.kenzie.skript.runtime.internal.Instruction;
 
 public class OperationController {
     

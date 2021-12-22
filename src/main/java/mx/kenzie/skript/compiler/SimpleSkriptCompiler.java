@@ -79,16 +79,12 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     public PostCompileClass[] compile(String file, Type path) {
         final FileContext context = new FileContext(path);
         context.libraries.addAll(libraries);
-        for (Library library : libraries) {
-            for (Type type : library.getTypes()) {
+        for (final Library library : libraries) {
+            for (final Type type : library.getTypes()) {
                 context.registerType(type);
             }
         }
-        final List<String> lines = file
-            .replaceAll(SkriptLangSpec.BLOCK_COMMENT.pattern(), "")
-            .replaceAll(SkriptLangSpec.LINE_COMMENT.pattern(), "")
-            .replaceAll(SkriptLangSpec.DEAD_SPACE.pattern(), "")
-            .lines().toList();
+        final List<String> lines = this.removeComments(file);
         for (String line : lines) {
             context.lineNumber++;
             context.line = null;
@@ -102,6 +98,33 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             context.destroySection();
         }
         return context.compile();
+    }
+    
+    private List<String> removeComments(final String string) {
+        final List<String> original = string.lines().toList(); // stream of sadness :(
+        final List<String> lines = new ArrayList<>();
+        final String regex = "\\s+$";
+        boolean inComment = false;
+        for (final String old : original) {
+            String line = old;
+            if (inComment) {
+                if (line.contains("*/")) {
+                    line = line.substring(line.indexOf("*/") + 2); // keep last part of line
+                    inComment = false;
+                } else {
+                    line = ""; // inside a commented block
+                }
+            } else {
+                if (line.contains("//")) line = line.substring(0, line.indexOf("//")); // keep first part of line
+                if (line.contains("/*")) {
+                    inComment = true;
+                    line = line.substring(0, line.indexOf("/*")); // first part of line not in comment
+                }
+            }
+            line = line.replaceAll(regex, ""); // trim trailing whitespace
+            lines.add(line);
+        }
+        return lines;
     }
     
     @Override
