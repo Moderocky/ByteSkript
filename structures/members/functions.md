@@ -57,7 +57,7 @@ run example_function
 run example_function(1, 2)
 ```
 
-If the result of a function is needed, it can be used as an [expression](../expressions.md).
+If the result of a function is needed, it can be used as an [expression](../expressions/).
 
 ```clike
 set {var} to example_function(1, 2)

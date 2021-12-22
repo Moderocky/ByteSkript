@@ -19,6 +19,7 @@ These functions provide basic utilities, mostly related to the JDK `System` clas
 | Function                        | Description                                                                                                                           |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | `get_class(name)`               | Returns the `Class` object with the provided name, or nothing if it doesn't exist.                                                    |
+| `get_atomic_literal(object)`    | Returns the given atomic variable as a regular object to be stored in a value variable.                                               |
 | `current_time_millis()`         | Returns the current time in milliseconds as a `Long`. Useful for comparing time passed.                                               |
 | `line_separator()`              | Returns the system's line-separator character (`\n` or `\r\n` etc.)                                                                   |
 | `nano_time()`                   | Returns the system nanosecond time as a `Long`. Useful for comparing time passed.                                                     |
