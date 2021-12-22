@@ -15,7 +15,7 @@ function my_function:
 
 function test_method:
     trigger:
-        assert java version is 52
+        assert java version is 61
         print the java version
         print null
         print "hello"

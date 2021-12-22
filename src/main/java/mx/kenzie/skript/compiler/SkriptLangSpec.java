@@ -57,7 +57,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
     public static final Pattern BLOCK_COMMENT = Pattern.compile("/\\*[\\s\\S]*?\\*/");
     public static final Pattern DEAD_SPACE = Pattern.compile("(?<=\\S)[\\t\\f\\v ]+(?=(\\R|$))");
     public static final Pattern IDENTIFIER = Pattern.compile("\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*");
-    public static final JavaVersion JAVA_VERSION = JavaVersion.JAVA_8;
+    public static final JavaVersion JAVA_VERSION = JavaVersion.JAVA_17;
     
     static final SkriptLangSpec INSTANCE = new SkriptLangSpec();
     public static final LanguageDefinition LANG = INSTANCE;
