@@ -1,5 +1,6 @@
 import mx.kenzie.mirror.Mirror;
 import mx.kenzie.skript.error.ScriptRuntimeError;
+import mx.kenzie.skript.runtime.threading.ScriptThread;
 import mx.kenzie.skript.runtime.type.AtomicVariable;
 
 import java.util.Collection;
@@ -241,6 +242,40 @@ public final class skript {
     
     public static Object set_java_field(Object owner, Object name, Object value) {
         Mirror.of(unwrap(owner)).field(unwrap(name) + "").set(unwrap(value));
+        return null;
+    }
+    //endregion
+    
+    //region Thread Handlers
+    public static Object clear_threadlocals() {
+        if (!(Thread.currentThread() instanceof ScriptThread source)) return null;
+        source.variables.clear();
+        return null;
+    }
+    
+    public static Object get_threadlocal(Object thread, Object name) {
+        final String key = unwrap(name) + "";
+        if (!(unwrap(thread) instanceof ScriptThread target)) return null;
+        return target.variables.get(key);
+    }
+    
+    public static Object copy_threadlocals_to(Object object) {
+        if (object == null) return null;
+        if (!(Thread.currentThread() instanceof ScriptThread source))
+            throw new ScriptRuntimeError("Code is not being run on a script thread - thread variables are unavailable here.");
+        if (!(unwrap(object) instanceof ScriptThread target))
+            throw new ScriptRuntimeError("Target is not a script thread - thread variables are unavailable here.");
+        target.variables.putAll(source.variables);
+        return null;
+    }
+    
+    public static Object copy_threadlocals_from(Object object) {
+        if (object == null) return null;
+        if (!(Thread.currentThread() instanceof ScriptThread target))
+            throw new ScriptRuntimeError("Code is not being run on a script thread - thread variables are unavailable here.");
+        if (!(unwrap(object) instanceof ScriptThread source))
+            throw new ScriptRuntimeError("Source is not a script thread - thread variables are unavailable here.");
+        target.variables.putAll(source.variables);
         return null;
     }
     //endregion

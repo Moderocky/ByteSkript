@@ -1,0 +1,74 @@
+
+function basic_variables:
+    trigger:
+        set {var} to 1
+        assert {var} is 1
+        set {var} to {var} + 1
+        assert {var} is 2
+        assert {var} exists
+        delete {var}
+        assert {var} is null
+        stop current thread
+
+function atomic_variables:
+    trigger:
+        set {@var} to 6
+        assert {@var} is 6
+        set {runnable} to a new runnable:
+            assert {@var} is 6
+            set {@var} to {@var} + 3
+            assert {@var} is 9
+        assert {@var} is 6
+        run {runnable}
+        assert {@var} is 9
+        assert {@var} exists
+        delete {@var}
+        assert {@var} is null
+        stop current thread
+
+function thread_variables:
+    trigger:
+        set {thread} to the current thread
+        set {_var} to 1
+        assert {_var} is 1
+        set {_var} to {_var} + 1
+        assert {_var} is 2
+        assert {_var} exists
+        assert {_blob} is null
+        run a new runnable:
+            assert {_var} is 2
+        run a new runnable in the background:
+            assert {_var} is null
+            wait 5 ms
+            wake {thread}
+        sleep
+        run a new runnable in the background:
+            run copy_threadlocals_from({thread})
+            assert {_var} is 2
+            wait 5 ms
+            wake {thread}
+        sleep
+        delete {_var}
+        assert {_var} is null
+        stop current thread
+
+function global_variables:
+    trigger:
+        set {thread} to the current thread
+        set {!var} to 1
+        assert {!var} is 1
+        set {!var} to {!var} + 1
+        assert {!var} is 2
+        assert {!var} exists
+        set {!blob} to 3
+        assert {!blob} is 3
+        delete {!blob}
+        assert {!blob} is null
+        run a new runnable:
+            assert {!var} is 2
+        run a new runnable in the background:
+            assert {!var} is 2
+            wait 5 ms
+            wake {thread}
+        sleep
+        stop current thread

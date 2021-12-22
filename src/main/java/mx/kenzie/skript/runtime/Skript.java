@@ -9,6 +9,7 @@ import mx.kenzie.skript.compiler.SkriptCompiler;
 import mx.kenzie.skript.error.ScriptCompileError;
 import mx.kenzie.skript.error.ScriptLoadError;
 import mx.kenzie.skript.runtime.internal.EventHandler;
+import mx.kenzie.skript.runtime.internal.GlobalVariableMap;
 import mx.kenzie.skript.runtime.internal.Instruction;
 import mx.kenzie.skript.runtime.internal.ModifiableCompiler;
 import mx.kenzie.skript.runtime.threading.OperationController;
@@ -35,6 +36,7 @@ public final class Skript {
     final List<OperationController> processes;
     final Map<Class<? extends Event>, EventHandler> events;
     final SkriptMirror mirror = new SkriptMirror(Skript.class);
+    static final GlobalVariableMap VARIABLES = new GlobalVariableMap();
     
     static class SkriptMirror extends Mirror<Object> {
         protected SkriptMirror(Object target) {
@@ -70,6 +72,10 @@ public final class Skript {
         skript = this;
     }
     
+    public static GlobalVariableMap getVariables() {
+        return VARIABLES;
+    }
+    
     public static Skript currentInstance() {
         return skript;
     }
@@ -97,17 +103,27 @@ public final class Skript {
         return new OperationController(this, factory); // todo
     }
     
-    public Thread runScript(final ScriptRunner runner) {
+    public Future<?> runScript(final ScriptRunner runner) {
         return runScript(runner, null);
     }
     
-    public Thread runScript(final ScriptRunner runner, final Event event) {
-        final OperationController controller = createController();
-        final ScriptThread thread = (ScriptThread) factory.newThread(controller, runner, true);
-        thread.initiator = runner.owner();
-        thread.event = event;
-        thread.start();
-        return thread;
+    public Future<?> runScript(final ScriptRunner runner, final Event event) {
+//        final OperationController controller = createController();
+//        final ScriptThread thread = (ScriptThread) factory.newThread(controller, runner, true);
+//        thread.initiator = runner.owner();
+//        thread.event = event;
+//        thread.start();
+//        return thread;
+        return executor.submit(() -> {
+            final ScriptThread thread = (ScriptThread) Thread.currentThread();
+            thread.variables.clear();
+            thread.initiator = runner.owner();
+            thread.event = event;
+            try {
+                runner.run();
+            } catch (ThreadDeath ignore) {
+            }
+        });
     }
     
     public boolean runEvent(final Event event) {

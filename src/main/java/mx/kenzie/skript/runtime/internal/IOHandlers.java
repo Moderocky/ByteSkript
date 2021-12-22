@@ -102,7 +102,7 @@ public class IOHandlers {
     }
     
     @ForceBridge
-    @Effect("delete[ file] %File%")
+    @Effect("delete file %File%")
     public static void delete(File file) {
         file.delete();
     }

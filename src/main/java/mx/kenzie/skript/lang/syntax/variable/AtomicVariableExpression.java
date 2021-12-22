@@ -1,24 +1,22 @@
-package mx.kenzie.skript.lang.syntax.generic;
+package mx.kenzie.skript.lang.syntax.variable;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.skript.api.Referent;
-import mx.kenzie.skript.api.syntax.SimpleExpression;
 import mx.kenzie.skript.compiler.*;
 import mx.kenzie.skript.compiler.structure.PreVariable;
-import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.lang.handler.StandardHandlers;
 import mx.kenzie.skript.runtime.type.AtomicVariable;
 
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 
-public class AtomicVariableExpression extends SimpleExpression implements Referent {
+public class AtomicVariableExpression extends VariableExpression implements Referent {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("\\{(?<name>@" + SkriptLangSpec.IDENTIFIER + ")\\}");
     
     public AtomicVariableExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "variable");
+        super();
         try {
             handlers.put(StandardHandlers.GET, AtomicVariable.class.getMethod("get", Object.class));
             handlers.put(StandardHandlers.FIND, AtomicVariable.class.getMethod("get", Object.class));

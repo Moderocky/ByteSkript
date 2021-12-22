@@ -13,5 +13,5 @@ function file:
         set {line} to line of {reader}
         assert {line} is "general kenobi"
         close {reader}
-        delete {file}
+        delete file {file}
 

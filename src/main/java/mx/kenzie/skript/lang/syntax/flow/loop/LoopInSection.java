@@ -12,7 +12,7 @@ import mx.kenzie.skript.error.ScriptCompileError;
 import mx.kenzie.skript.error.ScriptParseError;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.lang.handler.StandardHandlers;
-import mx.kenzie.skript.lang.syntax.generic.VariableExpression;
+import mx.kenzie.skript.lang.syntax.variable.VariableExpression;
 import mx.kenzie.skript.runtime.internal.OperatorHandler;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;

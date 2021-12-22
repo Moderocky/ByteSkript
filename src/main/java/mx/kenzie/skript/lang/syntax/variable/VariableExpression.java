@@ -1,7 +1,8 @@
-package mx.kenzie.skript.lang.syntax.generic;
+package mx.kenzie.skript.lang.syntax.variable;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
+import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.skript.api.Referent;
 import mx.kenzie.skript.api.syntax.SimpleExpression;
 import mx.kenzie.skript.compiler.CommonTypes;
@@ -40,6 +41,8 @@ public class VariableExpression extends SimpleExpression implements Referent {
         if (thing.length() < 3) return null;
         if (thing.charAt(0) != '{') return null;
         if (thing.charAt(1) == '@') return null;
+        if (thing.charAt(1) == '_') return null;
+        if (thing.charAt(1) == '!') return null;
         if (!thing.endsWith("}")) return null;
         final Matcher matcher = PATTERN.matcher(thing);
         if (!matcher.find()) return null;
@@ -77,6 +80,9 @@ public class VariableExpression extends SimpleExpression implements Referent {
             method.writeCode(variable.store(slot));
         } else if (context.getHandlerMode().equals(StandardHandlers.GET)) {
             method.writeCode(variable.load(slot));
+        } else if (context.getHandlerMode().equals(StandardHandlers.DELETE)) {
+            method.writeCode(WriteInstruction.pushNull());
+            method.writeCode(variable.store(slot));
         }
     }
     

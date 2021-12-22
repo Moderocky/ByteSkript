@@ -42,6 +42,10 @@ import mx.kenzie.skript.lang.syntax.map.KeyInMap;
 import mx.kenzie.skript.lang.syntax.map.MapCreator;
 import mx.kenzie.skript.lang.syntax.maths.*;
 import mx.kenzie.skript.lang.syntax.timing.*;
+import mx.kenzie.skript.lang.syntax.variable.AtomicVariableExpression;
+import mx.kenzie.skript.lang.syntax.variable.GlobalVariableExpression;
+import mx.kenzie.skript.lang.syntax.variable.ThreadVariableExpression;
+import mx.kenzie.skript.lang.syntax.variable.VariableExpression;
 import mx.kenzie.skript.runtime.internal.IOHandlers;
 import mx.kenzie.skript.runtime.type.DataList;
 import mx.kenzie.skript.runtime.type.DataMap;
@@ -119,6 +123,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new RemoveEffect(),
             new AssertEffect(),
             new ExitEffect(),
+            new ExitThreadEffect(),
             new RunWithAsyncEffect(),
             new RunWithEffect(),
             new RunAsyncEffect(),
@@ -135,7 +140,9 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new ImplicitArrayCreator(),
             new BracketExpression(),
             new BooleanLiteral(),
+            new ThreadVariableExpression(),
             new AtomicVariableExpression(),
+            new GlobalVariableExpression(),
             new VariableExpression(),
             new IsArray(),
             new IsOfType(),

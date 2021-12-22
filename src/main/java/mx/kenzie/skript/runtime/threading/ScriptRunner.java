@@ -9,6 +9,7 @@ public interface ScriptRunner extends Runnable {
         this.start();
         final ScriptThread thread = (ScriptThread) Thread.currentThread();
         thread.controller.kill();
+        thread.variables.clear();
     }
     
     Class<? extends CompiledScript> owner();

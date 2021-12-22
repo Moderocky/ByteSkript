@@ -15,7 +15,7 @@ import java.time.Duration;
 public class MillisecondsExpression extends SimpleExpression {
     
     public MillisecondsExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Integer% milli[ ]second[s]");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Integer% m[illi[ ]]s[econd[s]]");
         try {
             handlers.put(StandardHandlers.FIND, this.getClass().getMethod("find", Object.class));
         } catch (NoSuchMethodException e) {
@@ -30,7 +30,6 @@ public class MillisecondsExpression extends SimpleExpression {
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        if (!thing.endsWith("seconds") && !thing.endsWith("second")) return null;
         return super.match(thing, context);
     }
     

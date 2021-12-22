@@ -37,7 +37,7 @@ public class Member {
         return invoker.invoke(arguments);
     }
     
-    public Object run(Skript skript, Object... arguments) {
+    public Future<?> run(Skript skript, Object... arguments) {
         final ScriptRunner runner = new ScriptRunner() {
             @Override
             public Class<? extends CompiledScript> owner() {

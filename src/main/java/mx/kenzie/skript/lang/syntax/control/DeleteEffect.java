@@ -8,6 +8,7 @@ import mx.kenzie.skript.compiler.*;
 import mx.kenzie.skript.error.ScriptParseError;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.lang.handler.StandardHandlers;
+import mx.kenzie.skript.lang.syntax.variable.VariableExpression;
 
 import java.lang.reflect.Method;
 
@@ -19,7 +20,7 @@ public class DeleteEffect extends ControlEffect {
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        if (thing.startsWith("delete {")) return null;
+        if (!thing.startsWith("delete ")) return null;
         return super.match(thing, context);
     }
     
@@ -28,6 +29,9 @@ public class DeleteEffect extends ControlEffect {
         final ElementTree tree = context.getLine();
         final ElementTree[] inputs = tree.nested();
         assert inputs.length == 1;
+        inputs[0].type = StandardHandlers.DELETE;
+        if (inputs[0].current() instanceof VariableExpression)
+            return; // variables have to handle their own deletion
         if (!(inputs[0].current() instanceof final Referent referent))
             throw new ScriptParseError(context.lineNumber(), "Syntax '" + inputs[0].current()
                 .name() + "' cannot be deleted.");
@@ -44,10 +48,12 @@ public class DeleteEffect extends ControlEffect {
         assert method != null;
         final ElementTree tree = context.getLine();
         final ElementTree[] inputs = tree.nested();
-        final Referent referent = (Referent) inputs[0].current();
-        final Method target = referent.getHandler(StandardHandlers.DELETE);
-        assert target != null;
-        this.writeCall(method, target, context);
+        if (!(inputs[0].current() instanceof VariableExpression)) { // variables have to handle their own deletion
+            final Referent referent = (Referent) inputs[0].current();
+            final Method target = referent.getHandler(StandardHandlers.DELETE);
+            assert target != null;
+            this.writeCall(method, target, context);
+        }
         context.setState(CompileState.CODE_BODY);
     }
     
