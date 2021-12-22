@@ -336,4 +336,98 @@ assert "hello" is a string
 assert get_class("java.lang.Object") is object
 ```
 
-####
+### Collections
+
+A set of expressions relating to collection types (lists, maps, arrays, etc.)
+
+#### Implicit Array Creator
+
+`(%Object%, %Object%, ...)`
+
+Creates an unmodifiable array with the given arguments in. Useful for creating in-line collections for loops and function calls.
+
+{% hint style="info" %}
+An array is a special type of collection with a **fixed size**.
+{% endhint %}
+
+Returns an array.
+
+```clike
+set {array} to (1, 2, 3)
+loop {number} in {array}:
+    print {number}
+```
+
+#### Explicit Array Creator
+
+`[a] new array of (%Object%, %Object%, ...)`
+
+Creates an unmodifiable array with the given arguments in. Useful for creating in-line collections for loops and function calls.
+
+{% hint style="info" %}
+An array is a special type of collection with a **fixed size**.
+{% endhint %}
+
+Returns an array.
+
+```clike
+set {array} to a new array of (1, 2, 3)
+loop {number} in {array}:
+    print {number}
+```
+
+#### New List
+
+`[a] new list`
+
+Creates a modifiable list. This can hold any type of object.
+
+{% hint style="info" %}
+An array is a special type of collection with a **fixed size**.
+{% endhint %}
+
+Returns a list.
+
+```clike
+set {list} to a new list
+add 1 to {list}
+add "hello" to {list}
+loop {thing} in {list}:
+    print {thing}
+```
+
+#### Index of List
+
+`index %Number% in [list] %List%`
+
+Returns the value at the given index of the list. If this index is greater than the size of the list (- 1) an error will be thrown.
+
+{% hint style="info" %}
+List indices start at **zero**.
+{% endhint %}
+
+Returns an object.
+
+```clike
+set {list} to a new list
+add 1 to {list}
+add "hello" to {list}
+assert index 0 of {list} is 1
+assert index 1 of {list} is "hello"
+```
+
+#### Size of Collection
+
+`the size of %Object%`
+
+Returns the size of the list, map, array, etc.
+
+Returns a number.
+
+```clike
+set {list} to a new list
+add 1 to {list}
+add "hello" to {list}
+assert size of {list} is 2
+```
+
