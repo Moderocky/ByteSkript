@@ -11,7 +11,7 @@ coverY: 0
 
 An experimental language based on Skript (with no pre-eminent DSL dependencies) compiled to JVM bytecode.
 
-Visit the documentation and wiki [here](https://moderocky.gitbook.io/byteskript/).
+### Visit the [documentation](https://moderocky.gitbook.io/byteskript/) and wiki [here](https://moderocky.gitbook.io/byteskript/).
 
 ByteSkript draws heavily from the original [Skript](https://github.com/SkriptLang/Skript/) language design, with some minor structural adaptations to strengthen the language grammar, and to remove some unnecessary programming jargon. ByteSkript also aims to increase interoperability with existing JVM languages.
 
@@ -36,6 +36,53 @@ For clarity: SkriptLang's Skript implementation will be referred to as 'original
 3. No alteration to language fundamentals.
 
 Skript is designed to be beginner-friendly. Ideally, a user with no experience should be able to read Skript code and understand its function. All instructions are written in basic English, avoiding niche programming terms and symbols wherever possible.
+
+## Using ByteSkript
+
+ByteSkript provides **three** different executable Jar files for different purposes.
+
+Running these for the first time will create special folders in the run directory.
+
+| Name         | Purpose                                                                                                                                                                                                            |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `skript/`    | <p>This is where you can write your script files, with the extension <code>.bsk</code>.<br>All <code>.bsk</code> files in this directory and its subfolders will be compiled/loaded.</p>                           |
+| `resources/` | <p>This is where you can put non-script files that you need in your output jar.<br>This is only used by the jar builder.</p>                                                                                       |
+| `compiled/`  | <p>If you are compiling your scripts to <code>.class</code> or <code>.jar</code> files, the output will go here.<br>This folder is never emptied, so make sure to delete any old versions before re-compiling.</p> |
+
+### SkriptLoader
+
+This is the simplest resource, used for loading (and running) user-created script files.
+
+Raw script files can be written and placed in the `skript/` folder. All scripts will be loaded internally, but no classes or jar files will be written.
+
+The `on [script] load` event will be triggered for each script as an entry point.
+
+{% hint style="success" %}
+The ByteSkript compilers, language specification and compile-time API are available in this resource, so advanced scripts may use dynamic loading to load extra skript code written at runtime!
+{% endhint %}
+
+### SkriptClassCompiler
+
+This resource is used for generating compiled JVM `.class` files for each script in the `skript/` folder. The classes produced by this are not directly executable, but may be useful for sharing and special loading.
+
+The compiled scripts will **not** be loaded or run.
+
+### SkriptJarBuilder
+
+This resource builds an executable jar containing all of the user-created scripts, resources and the ByteSkript runtime (`skript` namespace and functions.)
+
+\
+This output jar can be run with `java -jar JarName.jar` and is distributable - it does not need anything as a dependency.
+
+When executing this jar, all scripts will be loaded and the `on [script] load` event will be triggered for each script as an entry point.
+
+{% hint style="danger" %}
+The ByteSkript standard compiler and compile-time API are **not** added to the output jar.
+{% endhint %}
+
+{% hint style="success" %}
+The dynamic function on-the-fly compiler **is** available in this jar, so dynamic function calls are available.
+{% endhint %}
 
 ## Language Libraries
 
