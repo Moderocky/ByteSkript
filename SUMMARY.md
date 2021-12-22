@@ -20,7 +20,8 @@
   * [Conditional Effects](structures/effects/if.md)
   * [Flow Control Effects](structures/effects/flow-control-effects.md)
   * [Generic Effects](structures/effects/generic-effects.md)
-* [Expressions](structures/expressions.md)
+* [Expressions](structures/expressions/README.md)
+  * [Variables](structures/expressions/variables.md)
 
 ## namespaces
 

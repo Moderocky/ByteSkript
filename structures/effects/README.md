@@ -10,7 +10,7 @@ Effects are the bread and butter of Skript code. Every code-line is an effect. E
 Effects are like **verbs** or **actions** - instructions to do something.
 {% endhint %}
 
-Most effects require some sort of input from [expressions](../expressions.md). Effects may be placed only in [entries](../entries/#long-form-entries).
+Most effects require some sort of input from [expressions](../expressions/). Effects may be placed only in [entries](../entries/#long-form-entries).
 
 ### Language Rules
 
