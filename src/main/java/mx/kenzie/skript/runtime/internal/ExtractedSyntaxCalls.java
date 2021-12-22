@@ -6,6 +6,8 @@ import mx.kenzie.skript.runtime.threading.ScriptThread;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Map;
 
 public class ExtractedSyntaxCalls {
     
@@ -50,4 +52,47 @@ public class ExtractedSyntaxCalls {
         Skript.runOnAsyncThread(runnable);
     }
     
+    public static Object getListValue(Object key, Object target) {
+        if (!(key instanceof Number number))
+            throw new ScriptRuntimeError("The given index must be a number.");
+        if (!(target instanceof List list))
+            throw new ScriptRuntimeError("The given collection must be a map.");
+        return list.get(number.intValue());
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static void setListValue(Object key, Object target, Object value) {
+        if (!(key instanceof Number number))
+            throw new ScriptRuntimeError("The given index must be a number.");
+        if (!(target instanceof List list))
+            throw new ScriptRuntimeError("The given collection must be a map.");
+        list.remove(number.intValue());
+        list.add(number.intValue(), value);
+    }
+    
+    public static void deleteListValue(Object key, Object target) {
+        if (!(key instanceof Number number))
+            throw new ScriptRuntimeError("The given index must be a number.");
+        if (!(target instanceof List list))
+            throw new ScriptRuntimeError("The given collection must be a map.");
+        list.remove(number.intValue());
+    }
+    
+    public static Object getMapValue(Object key, Object target) {
+        if (!(target instanceof Map map))
+            throw new ScriptRuntimeError("The given collection must be a map.");
+        return map.get(key);
+    }
+    
+    public static void setMapValue(Object key, Object target, Object value) {
+        if (!(target instanceof Map map))
+            throw new ScriptRuntimeError("The given collection must be a map.");
+        map.put(key, value);
+    }
+    
+    public static void deleteMapValue(Object key, Object target) {
+        if (!(target instanceof Map map))
+            throw new ScriptRuntimeError("The given collection must be a map.");
+        map.remove(key);
+    }
 }

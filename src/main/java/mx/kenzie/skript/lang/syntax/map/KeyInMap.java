@@ -8,21 +8,20 @@ import mx.kenzie.skript.compiler.CommonTypes;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
-import mx.kenzie.skript.error.ScriptRuntimeError;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.lang.handler.StandardHandlers;
+import mx.kenzie.skript.runtime.internal.ExtractedSyntaxCalls;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 
 public class KeyInMap extends RelationalExpression implements Referent {
     
     public KeyInMap() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[key ]%Object% in [map ]%Map%");
         try {
-            handlers.put(StandardHandlers.GET, KeyInMap.class.getMethod("get", Object.class, Object.class));
-            handlers.put(StandardHandlers.SET, KeyInMap.class.getMethod("set", Object.class, Object.class, Object.class));
-            handlers.put(StandardHandlers.DELETE, KeyInMap.class.getMethod("delete", Object.class, Object.class));
+            handlers.put(StandardHandlers.GET, ExtractedSyntaxCalls.class.getMethod("getMapValue", Object.class, Object.class));
+            handlers.put(StandardHandlers.SET, ExtractedSyntaxCalls.class.getMethod("setMapValue", Object.class, Object.class, Object.class));
+            handlers.put(StandardHandlers.DELETE, ExtractedSyntaxCalls.class.getMethod("deleteMapValue", Object.class, Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -51,24 +50,6 @@ public class KeyInMap extends RelationalExpression implements Referent {
         final Method target = handlers.get(context.getHandlerMode());
         assert target != null;
         this.writeCall(method, target, context);
-    }
-    
-    public static Object get(Object key, Object target) {
-        if (!(target instanceof Map map))
-            throw new ScriptRuntimeError("The given collection must be a map.");
-        return map.get(key);
-    }
-    
-    public static void set(Object key, Object target, Object value) {
-        if (!(target instanceof Map map))
-            throw new ScriptRuntimeError("The given collection must be a map.");
-        map.put(key, value);
-    }
-    
-    public static void delete(Object key, Object target) {
-        if (!(target instanceof Map map))
-            throw new ScriptRuntimeError("The given collection must be a map.");
-        map.remove(key);
     }
     
     

@@ -34,7 +34,7 @@ function reflection:
         run {var}
         set {list} to a new list
         set {func} to function "reflect_target (obj)"
-        run {func} with a new array ({list})
+        run {func} with a new array of ({list})
         assert index 0 in {list} is 1
         set {func} to function "reflect_get"
         set {value} to result of {func}

@@ -7,21 +7,19 @@ import mx.kenzie.skript.compiler.CommonTypes;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
 import mx.kenzie.skript.compiler.SkriptLangSpec;
-import mx.kenzie.skript.error.ScriptRuntimeError;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.lang.handler.StandardHandlers;
-
-import java.util.List;
+import mx.kenzie.skript.runtime.internal.ExtractedSyntaxCalls;
 
 public class IndexOfList extends RelationalExpression implements Referent {
     
     public IndexOfList() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "index %Number% in [list ]%List%");
         try {
-            handlers.put(StandardHandlers.GET, IndexOfList.class.getMethod("get", Object.class, Object.class));
-            handlers.put(StandardHandlers.FIND, IndexOfList.class.getMethod("get", Object.class, Object.class));
-            handlers.put(StandardHandlers.SET, IndexOfList.class.getMethod("set", Object.class, Object.class, Object.class));
-            handlers.put(StandardHandlers.DELETE, IndexOfList.class.getMethod("delete", Object.class, Object.class));
+            handlers.put(StandardHandlers.GET, ExtractedSyntaxCalls.class.getMethod("getListValue", Object.class, Object.class));
+            handlers.put(StandardHandlers.FIND, ExtractedSyntaxCalls.class.getMethod("getListValue", Object.class, Object.class));
+            handlers.put(StandardHandlers.SET, ExtractedSyntaxCalls.class.getMethod("setListValue", Object.class, Object.class, Object.class));
+            handlers.put(StandardHandlers.DELETE, ExtractedSyntaxCalls.class.getMethod("deleteListValue", Object.class, Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -37,32 +35,6 @@ public class IndexOfList extends RelationalExpression implements Referent {
     @Override
     public Type getHolderType() {
         return CommonTypes.LIST;
-    }
-    
-    public static Object get(Object key, Object target) {
-        if (!(key instanceof Number number))
-            throw new ScriptRuntimeError("The given index must be a number.");
-        if (!(target instanceof List list))
-            throw new ScriptRuntimeError("The given collection must be a map.");
-        return list.get(number.intValue());
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static void set(Object key, Object target, Object value) {
-        if (!(key instanceof Number number))
-            throw new ScriptRuntimeError("The given index must be a number.");
-        if (!(target instanceof List list))
-            throw new ScriptRuntimeError("The given collection must be a map.");
-        list.remove(number.intValue());
-        list.add(number.intValue(), value);
-    }
-    
-    public static void delete(Object key, Object target) {
-        if (!(key instanceof Number number))
-            throw new ScriptRuntimeError("The given index must be a number.");
-        if (!(target instanceof List list))
-            throw new ScriptRuntimeError("The given collection must be a map.");
-        list.remove(number.intValue());
     }
     
     

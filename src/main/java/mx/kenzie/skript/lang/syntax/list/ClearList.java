@@ -1,5 +1,6 @@
 package mx.kenzie.skript.lang.syntax.list;
 
+import mx.kenzie.skript.api.note.ForceExtract;
 import mx.kenzie.skript.api.syntax.Effect;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
@@ -26,6 +27,7 @@ public class ClearList extends Effect {
         return super.match(thing, context);
     }
     
+    @ForceExtract
     public static void run(Object object) {
         if (object instanceof Collection list) list.clear();
     }

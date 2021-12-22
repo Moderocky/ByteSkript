@@ -3,6 +3,7 @@ function handles:
     trigger:
         set {system} to get_class("java.lang.System")
         set {object} to get_class("java.lang.Object")
+        assert {object} is object
         assert has_java_field({system}, "out") is true
         set {out} to get_java_field({system}, "out")
         assert {out} exists

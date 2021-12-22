@@ -27,11 +27,11 @@ public class TypeExpression extends SimpleExpression {
     
     @Override
     public boolean allowAsInputFor(Type type) {
-        return CommonTypes.CLASS.equals(type) || CommonTypes.TYPE.equals(type);
+        return CommonTypes.CLASS.equals(type) || CommonTypes.TYPE.equals(type) || CommonTypes.OBJECT.equals(type);
     }
     
     public Type getType(String string, Context context) {
-        for (Map.Entry<String, Type> entry : context.getTypeMap().entrySet()) {
+        for (final Map.Entry<String, Type> entry : context.getTypeMap().entrySet()) {
             if (!entry.getKey().toLowerCase(Locale.ROOT).equals(string.toLowerCase(Locale.ROOT))) continue;
             return entry.getValue();
         }
@@ -40,7 +40,7 @@ public class TypeExpression extends SimpleExpression {
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        for (Map.Entry<String, Type> entry : context.getTypeMap().entrySet()) {
+        for (final Map.Entry<String, Type> entry : context.getTypeMap().entrySet()) {
             if (!entry.getKey().toLowerCase(Locale.ROOT).equals(thing.toLowerCase(Locale.ROOT))) continue;
             final Matcher matcher = java.util.regex.Pattern.compile(thing).matcher(thing);
             matcher.find();

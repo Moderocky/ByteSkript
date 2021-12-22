@@ -15,10 +15,10 @@ import java.util.regex.Matcher;
 
 public class ImplicitArrayCreator extends SimpleExpression {
     
-    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?:(?:a )?new array )?\\((?<params>.+)\\)");
+    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?:(?:a )?new array of )?\\((?<params>.+)\\)");
     
     public ImplicitArrayCreator() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "new array (...)");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "new array of (...)");
     }
     
     @Override
@@ -49,8 +49,8 @@ public class ImplicitArrayCreator extends SimpleExpression {
     public Pattern.Match match(String thing, Context context) {
         if (thing.startsWith("(") && !thing.contains(",")) return null;
         if (!thing.startsWith("(")
-            && !thing.startsWith("a new array (")
-            && !thing.startsWith("new array (")
+            && !thing.startsWith("a new array of (")
+            && !thing.startsWith("new array of (")
         ) return null;
         if (!thing.endsWith(")")) return null;
         return createMatch(thing, context);
