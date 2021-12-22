@@ -12,10 +12,10 @@ import mx.kenzie.skript.lang.handler.StandardHandlers;
 import java.lang.reflect.Method;
 import java.time.Duration;
 
-public class SecondsExpression extends SimpleExpression {
+public class WeeksExpression extends SimpleExpression {
     
-    public SecondsExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Number% second[s]");
+    public WeeksExpression() {
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Number% week[s]");
         try {
             handlers.put(StandardHandlers.FIND, this.getClass().getMethod("find", Object.class));
         } catch (NoSuchMethodException e) {
@@ -45,12 +45,9 @@ public class SecondsExpression extends SimpleExpression {
     
     @ForceExtract
     public static Object find(Object object) {
-        if (!(object instanceof Number)) {
+        if (!(object instanceof Number number))
             throw new ScriptRuntimeError("Timespan expression requires number.");
-        } else {
-            final Number number = (Number) object;
-            return Duration.ofSeconds(number.longValue());
-        }
+        return Duration.ofDays(number.longValue() * 7);
     }
     
 }

@@ -72,3 +72,15 @@ function global_variables:
             wake {thread}
         sleep
         stop current thread
+
+on load:
+    trigger:
+        assert {_var} is null
+        set {_var} to 10
+        assert {_var} is 10
+
+on load:
+    trigger:
+        assert {_var} is null
+        set {_var} to 10
+        assert {_var} is 10

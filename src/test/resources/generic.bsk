@@ -1,4 +1,17 @@
 
+
+function generic_expressions:
+    trigger:
+        set {var} to "goodbye" ? "hello"
+        assert {var} is "goodbye"
+        set {var} to null ? "hello"
+        assert {var} is "hello"
+        set {var} to (if "hello" is a string then "a" otherwise "b")
+        assert {var} is "a"
+        set {var} to (false ? "a" : "b")
+        assert {var} is "b"
+
+
 function test_system:
     trigger:
         set system property "blob" to "hello"

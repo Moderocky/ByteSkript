@@ -20,6 +20,13 @@ public class GenericTest extends SkriptTest {
     }
     
     @Test
+    public void generic_expressions() throws Throwable {
+        final Member function = script.getFunction("generic_expressions");
+        assert function != null;
+        function.invoke();
+    }
+    
+    @Test
     public void test_system() throws Throwable {
         final Member function = script.getFunction("test_system");
         assert function != null;
