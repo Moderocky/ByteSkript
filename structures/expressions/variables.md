@@ -14,6 +14,8 @@ Some types of variable have special behaviour in certain situations, detailed be
 
 Most variables are **value** variables: these store a raw value. Value variables have the standard `{variable}` name pattern.
 
+Normal (value) variables are local to the current `trigger` section.
+
 Variables can be set and retrieved like a normal expression.
 
 ```clike
@@ -167,3 +169,132 @@ This would allow an atomic variable to be returned from a function secretly, but
 {% hint style="danger" %}
 This will be an `AtomicVariable` object and may be difficult to manipulate.
 {% endhint %}
+
+### Thread Local Variables
+
+Atomic variables use the `{_variable}` name pattern. They are **reference** variables.
+
+Thread local variables are accessible **anywhere** on the current process (thread). This includes other functions and lambdas. Thread local variables are **not** accessible from other threads.
+
+{% hint style="info" %}
+A thread/process is like a queue of instructions, executed in order. Using the `wait` or `sleep`effect will pause the thread.
+
+The `run ... in the background` effect can be used to create a different, branching process that will run at the same time as the current one.
+{% endhint %}
+
+In normal code, thread local variables function exactly the same as regular value variables.
+
+```clike
+set {_var} to 100
+set {_var} to {_var} - 1
+print {_var}
+if {_var} is 6:
+    set {_var} to 20
+```
+
+Remember: a variable named `{_var}` is **different** from a variable named `{var}`.
+
+```clike
+set {_var} to 1 // thread local
+set {var} to 2 // normal
+assert {var} is not {_var}
+```
+
+Thread local variables make it easy to pass data between triggers that are guaranteed to be executed in the same process.
+
+```clike
+function first:
+    trigger:
+        set {_var} to 10 // thread local
+        set {var} to 5 // normal (local to this trigger)
+        run second()
+
+function second:
+    trigger:
+        assert {var} is null
+        assert {_var} is 10 // value is kept from before call
+```
+
+Thread local variables are **atomic**, and any use alters the same copy of the variable.
+
+```clike
+function first:
+    trigger:
+        set {_var} to 10 // thread local
+        assert {_var} is 10
+        run second() // value is changed in this function
+        assert {_var} is 5
+
+function second:
+    trigger:
+        assert {_var} is 10
+        set {_var} to 5
+        assert {_var} is 5
+```
+
+Thread local variables can be accessed and changed from lambdas, unlike regular variables.
+
+```clike
+function my_function:
+    trigger:
+        set {_var} to 10 // thread local
+        set {thing} to a new runnable:
+            assert {_var} is 10
+            set {_var} to 5
+            assert {_var} is 5
+        assert {_var} is 10
+        run {thing} // value is changed by the runnable
+        assert {_var} is 5
+```
+
+However, lambdas or functions run in the background will **not** be able to access the value.
+
+This is because background processes are run on a **different** thread, so their thread-local `{_variables}` are different.
+
+```clike
+function my_function:
+    trigger:
+        set {_var} to 10 // thread local
+        set {thing} to a new runnable:
+            assert {_var} is null
+            set {_var} to 5 // does NOT update the other _var
+            assert {_var} is 5
+        assert {_var} is 10
+        run {thing} in the background // run on a DIFFERENT thread
+        assert {_var} is 10 // _var is unchanged
+```
+
+Events and other entry-points are triggered on a new thread, so there is no cross-contamination between processes.
+
+```clike
+on load:
+    trigger:
+        assert {_var} is null // not set yet
+        set {_var} to 10 // thread local
+        assert {_var} is 10
+
+on load: // different event trigger, so run on different thread
+    trigger:
+        assert {_var} is null // not set on THIS thread
+        set {_var} to 10 // thread local
+        assert {_var} is 10
+```
+
+The [skript namespace ](../../namespaces/skript.md#generic)has a special function to transfer thread-local variables to a different thread.
+
+Transferring these will **copy** the variables, so the original copy will not be updated by changes.
+
+```clike
+function my_function:
+    trigger:
+        set {thread} to the current process
+        set {_var} to 10 // thread local
+        set {thing} to a new runnable:
+            run copy_threadlocals_from({thread})
+            assert {_var} is 10 // copied from other _var
+            set {_var} to 5 // does NOT update the other _var
+            assert {_var} is 5
+        assert {_var} is 10
+        run {thing} in the background // run on a DIFFERENT thread
+        assert {_var} is 10 // _var is unchanged, the COPY was changed
+```
