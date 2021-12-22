@@ -170,11 +170,11 @@ This would allow an atomic variable to be returned from a function secretly, but
 This will be an `AtomicVariable` object and may be difficult to manipulate.
 {% endhint %}
 
-### Thread Local Variables
+### Thread-Local Variables
 
-Atomic variables use the `{_variable}` name pattern. They are **reference** variables.
+Thread-local variables use the `{_variable}` name pattern. They are **reference** variables.
 
-Thread local variables are accessible **anywhere** on the current process (thread). This includes other functions and lambdas. Thread local variables are **not** accessible from other threads.
+Thread-local variables are accessible **anywhere** on the current process (thread). This includes other functions and lambdas. Thread-local variables are **not** accessible from other threads.
 
 {% hint style="info" %}
 A thread/process is like a queue of instructions, executed in order. Using the `wait` or `sleep`effect will pause the thread.
@@ -182,7 +182,7 @@ A thread/process is like a queue of instructions, executed in order. Using the `
 The `run ... in the background` effect can be used to create a different, branching process that will run at the same time as the current one.
 {% endhint %}
 
-In normal code, thread local variables function exactly the same as regular value variables.
+In normal code, thread-local variables function exactly the same as regular value variables.
 
 ```clike
 set {_var} to 100
@@ -195,17 +195,17 @@ if {_var} is 6:
 Remember: a variable named `{_var}` is **different** from a variable named `{var}`.
 
 ```clike
-set {_var} to 1 // thread local
+set {_var} to 1 // thread-local
 set {var} to 2 // normal
 assert {var} is not {_var}
 ```
 
-Thread local variables make it easy to pass data between triggers that are guaranteed to be executed in the same process.
+Thread-local variables make it easy to pass data between triggers that are guaranteed to be executed in the same process.
 
 ```clike
 function first:
     trigger:
-        set {_var} to 10 // thread local
+        set {_var} to 10 // thread-local
         set {var} to 5 // normal (local to this trigger)
         run second()
 
@@ -215,12 +215,12 @@ function second:
         assert {_var} is 10 // value is kept from before call
 ```
 
-Thread local variables are **atomic**, and any use alters the same copy of the variable.
+Thread-local variables are **atomic**, and any use alters the same copy of the variable.
 
 ```clike
 function first:
     trigger:
-        set {_var} to 10 // thread local
+        set {_var} to 10 // thread-local
         assert {_var} is 10
         run second() // value is changed in this function
         assert {_var} is 5
@@ -232,12 +232,12 @@ function second:
         assert {_var} is 5
 ```
 
-Thread local variables can be accessed and changed from lambdas, unlike regular variables.
+Thread-local variables can be accessed and changed from lambdas, unlike regular variables.
 
 ```clike
 function my_function:
     trigger:
-        set {_var} to 10 // thread local
+        set {_var} to 10 // thread-local
         set {thing} to a new runnable:
             assert {_var} is 10
             set {_var} to 5
@@ -254,13 +254,14 @@ This is because background processes are run on a **different** thread, so their
 ```clike
 function my_function:
     trigger:
-        set {_var} to 10 // thread local
+        set {_var} to 10 // thread-local
         set {thing} to a new runnable:
             assert {_var} is null
             set {_var} to 5 // does NOT update the other _var
             assert {_var} is 5
         assert {_var} is 10
         run {thing} in the background // run on a DIFFERENT thread
+        wait 10 milliseconds // wait for other thread to finish
         assert {_var} is 10 // _var is unchanged
 ```
 
@@ -270,13 +271,13 @@ Events and other entry-points are triggered on a new thread, so there is no cros
 on load:
     trigger:
         assert {_var} is null // not set yet
-        set {_var} to 10 // thread local
+        set {_var} to 10 // thread-local
         assert {_var} is 10
 
 on load: // different event trigger, so run on different thread
     trigger:
         assert {_var} is null // not set on THIS thread
-        set {_var} to 10 // thread local
+        set {_var} to 10 // thread-local
         assert {_var} is 10
 ```
 
@@ -288,7 +289,7 @@ Transferring these will **copy** the variables, so the original copy will not be
 function my_function:
     trigger:
         set {thread} to the current process
-        set {_var} to 10 // thread local
+        set {_var} to 10 // thread-local
         set {thing} to a new runnable:
             run copy_threadlocals_from({thread})
             assert {_var} is 10 // copied from other _var
@@ -297,4 +298,80 @@ function my_function:
         assert {_var} is 10
         run {thing} in the background // run on a DIFFERENT thread
         assert {_var} is 10 // _var is unchanged, the COPY was changed
+```
+
+### Global Variables
+
+Global variables use the `{!variable}` name pattern. They are **reference** variables. These are most similar to the normal variables from [original Skript](https://github.com/SkriptLang/Skipt).
+
+Any copy of a global `{!variable}` anywhere on any process will access the same value.
+
+{% hint style="info" %}
+Unlike in original Skript, global variables are not persistent across restarts (by default.)
+{% endhint %}
+
+In normal code, globals variables function exactly the same as regular value variables.
+
+```clike
+set {!var} to 100
+set {!var} to {!var} - 1
+print {!var}
+if {!var} is 6:
+    set {!var} to 20
+```
+
+Remember: a variable named `{!var}` is **different** from a variable named `{var}`.
+
+```clike
+set {!var} to 1 // global
+set {var} to 2 // normal
+assert {var} is not {!var}
+```
+
+Global variables make it easy to pass data between triggers and entire scripts.
+
+```clike
+function first:
+    trigger:
+        set {!var} to 10 // thread-local
+        set {var} to 5 // normal (local to this trigger)
+        run second()
+
+function second:
+    trigger:
+        assert {var} is null
+        assert {!var} is 10 // value is kept from before call
+```
+
+Global variables are **atomic** and can be accessed and changed from other triggers, lambdas and different threads, unlike regular variables.
+
+```clike
+function my_function:
+    trigger:
+        set {!var} to 10 // thread-local
+        set {thing} to a new runnable:
+            assert {!var} is 10
+            set {!var} to 5
+            assert {!var} is 5
+        assert {!var} is 10
+        run {thing} in the background // value is changed by the runnable
+        wait 10 milliseconds // wait for other thread to finish
+        assert {!var} is 5
+```
+
+Global variables are accessible from **any** process.
+
+```clike
+on load:
+    trigger:
+        assert {!var} is null // not set yet
+        set {!var} to 10 // global
+        assert {!var} is 10
+
+on load: // different event trigger, so run on different thread
+    trigger:
+        wait 10 milliseconds // wait for previous trigger to finish
+        assert {!var} is 10 // set everywhere
+        set {!var} to 5 al
+        assert {!var} is 5
 ```
