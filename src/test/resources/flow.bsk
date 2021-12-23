@@ -143,14 +143,15 @@ function closer: // to check the inlines closed in the previous function
 function sleep_flow:
     trigger:
         set {thread} to the current process
-        print "starting sleep"
         set {var} to a new runnable:
-            print "waiting"
-            wait 10 milliseconds
+            wait 5 milliseconds
+            set {!thing} to true
             wake {thread}
-            print "woken"
         assert true
         run {var} in the background
-        print "going to sleep"
+        delete {!thing}
+        assert {!thing} is null
         sleep
-        print "done"
+        assert {!thing} is true
+        delete {!thing}
+        exit {thread}
