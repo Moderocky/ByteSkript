@@ -1,6 +1,7 @@
 # Table of contents
 
 * [🎶 Introduction to ByteSkript](README.md)
+  * [Getting Started](readme/getting-started.md)
 
 ## Structures
 
@@ -24,6 +25,7 @@
   * [Variables](structures/expressions/variables.md)
   * [Simple Expressions](structures/expressions/simple-expressions.md)
   * [I/O Expressions](structures/expressions/i-o-expressions.md)
+* [Events](structures/events.md)
 
 ## namespaces
 
