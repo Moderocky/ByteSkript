@@ -10,6 +10,7 @@ function generic_expressions:
         assert {var} is "a"
         set {var} to (false ? "a" : "b")
         assert {var} is "b"
+        assert newline is a string
 
 
 function test_system:
