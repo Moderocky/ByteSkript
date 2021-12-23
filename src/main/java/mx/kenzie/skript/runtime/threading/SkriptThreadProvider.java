@@ -7,6 +7,7 @@ import java.util.concurrent.ThreadFactory;
 public class SkriptThreadProvider implements ThreadFactory {
     
     int counter;
+    private final ScriptExceptionHandler handler = new ScriptExceptionHandler();
     
     public Thread newThread(final OperationController controller, Runnable runnable, boolean inheritLocals) {
         final Thread thread = new ScriptThread(controller, Skript.THREAD_GROUP, runnable, Skript.THREAD_GROUP.getName() + "-" + counter++, 0, inheritLocals);
@@ -20,7 +21,7 @@ public class SkriptThreadProvider implements ThreadFactory {
     }
     
     public Thread.UncaughtExceptionHandler getHandler() {
-        return Thread.getDefaultUncaughtExceptionHandler();
+        return handler;
     }
     
 }
