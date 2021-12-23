@@ -1,12 +1,17 @@
 package mx.kenzie.skript.compiler;
 
+import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
+import mx.kenzie.foundation.language.Compiler;
 import mx.kenzie.foundation.language.LanguageDefinition;
+import mx.kenzie.foundation.language.PostCompileClass;
 import mx.kenzie.foundation.opcodes.JavaVersion;
-import mx.kenzie.skript.api.LanguageElement;
-import mx.kenzie.skript.api.Library;
-import mx.kenzie.skript.api.ModifiableLibrary;
-import mx.kenzie.skript.api.SyntaxElement;
+import mx.kenzie.skript.api.*;
+import mx.kenzie.skript.app.ScriptRunner;
+import mx.kenzie.skript.app.SimpleThrottleController;
+import mx.kenzie.skript.app.SkriptApp;
+import mx.kenzie.skript.error.ScriptCompileError;
+import mx.kenzie.skript.error.ScriptRuntimeError;
 import mx.kenzie.skript.lang.element.StandardElements;
 import mx.kenzie.skript.lang.handler.StandardHandlers;
 import mx.kenzie.skript.lang.syntax.comparison.*;
@@ -50,11 +55,14 @@ import mx.kenzie.skript.runtime.internal.IOHandlers;
 import mx.kenzie.skript.runtime.type.DataList;
 import mx.kenzie.skript.runtime.type.DataMap;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.security.CodeSource;
+import java.util.*;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public final class SkriptLangSpec extends ModifiableLibrary implements LanguageDefinition, Library {
     public static final Pattern LINE_COMMENT = Pattern.compile("//.*(?=(\\R|$|\\n))");
@@ -218,4 +226,74 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
     public String sourceFileExt() {
         return "bsk";
     }
+    
+    @Override
+    public Collection<PostCompileClass> getRuntime() {
+        final List<PostCompileClass> runtime = new ArrayList<>();
+        try {
+            for (final Class<?> source : this.findClasses("mx/kenzie/skript/runtime/")) {
+                runtime.add(this.getData(source));
+            }
+            for (final Class<?> source : this.findClasses("mx/kenzie/skript/error/")) {
+                runtime.add(this.getData(source));
+            }
+            for (final Class<?> source : this.findClasses("mx/kenzie/mimic/")) {
+                runtime.add(this.getData(source));
+            }
+            for (final Class<?> source : this.findClasses("mx/kenzie/mirror/")) {
+                runtime.add(this.getData(source));
+            }
+            for (final Class<?> source : this.findClasses("org/objectweb/asm/")) {
+                runtime.add(this.getData(source));
+            }
+            runtime.add(this.getData(Event.class));
+            runtime.add(this.getData(Library.class));
+            runtime.add(this.getData(Class.forName("skript")));
+            runtime.add(this.getData(SkriptCompiler.class));
+            runtime.add(this.getData(Compiler.class));
+            runtime.add(this.getData(ScriptRunner.class));
+            runtime.add(this.getData(SimpleThrottleController.class));
+        } catch (IOException | ClassNotFoundException ex) {
+            throw new ScriptCompileError(-1, "Unable to add runtime to compiled classes.", ex);
+        }
+        return runtime;
+    }
+    
+    private PostCompileClass getData(final Class<?> type) throws IOException {
+        return new PostCompileClass(getSource(type), type.getName(), new Type(type).internalName());
+    }
+    
+    private byte[] getSource(final Class<?> cls) throws IOException {
+        try (final InputStream stream = ClassLoader.getSystemResourceAsStream(cls.getName()
+            .replace('.', '/') + ".class")) {
+            assert stream != null;
+            return stream.readAllBytes();
+        }
+    }
+    
+    private Class<?>[] findClasses(final String namespace) throws IOException, ClassNotFoundException {
+        final List<Class<?>> classes = new ArrayList<>();
+        final CodeSource src = ScriptRunner.class.getProtectionDomain().getCodeSource();
+        if (src != null) {
+            final URL jar = src.getLocation();
+            try (final ZipInputStream zip = new ZipInputStream(jar.openStream())) {
+                while (true) {
+                    final ZipEntry entry = zip.getNextEntry();
+                    if (entry == null) break;
+                    if (entry.isDirectory()) continue;
+                    final String name = entry.getName();
+                    if (name.startsWith(namespace)) {
+                        final Class<?> data = Class.forName(name
+                            .substring(0, name.length() - 6)
+                            .replace("/", "."), false, SkriptApp.class.getClassLoader());
+                        classes.add(data);
+                    }
+                }
+            }
+        } else {
+            throw new ScriptRuntimeError("Unable to access source.");
+        }
+        return classes.toArray(new Class[0]);
+    }
+    
 }

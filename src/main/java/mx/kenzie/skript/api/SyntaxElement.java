@@ -139,4 +139,12 @@ public interface SyntaxElement {
         }
     }
     
+    default Method findMethod(Class<?> owner, String name, Class<?>... parameters) {
+        try {
+            return owner.getMethod(name, parameters);
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
+    
 }

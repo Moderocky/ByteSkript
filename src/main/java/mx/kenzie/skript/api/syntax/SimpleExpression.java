@@ -1,10 +1,12 @@
 package mx.kenzie.skript.api.syntax;
 
 import mx.kenzie.foundation.MethodBuilder;
+import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
 import mx.kenzie.skript.api.LanguageElement;
 import mx.kenzie.skript.api.Library;
 import mx.kenzie.skript.api.SyntaxElement;
+import mx.kenzie.skript.compiler.CommonTypes;
 import mx.kenzie.skript.compiler.CompileState;
 import mx.kenzie.skript.compiler.Context;
 import mx.kenzie.skript.compiler.Pattern;
@@ -32,6 +34,11 @@ public abstract class SimpleExpression extends Element implements SyntaxElement 
     @Override
     public boolean allowedIn(State state, Context context) {
         return state == CompileState.STATEMENT && context.hasCurrentUnit();
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.OBJECT;
     }
     
 }

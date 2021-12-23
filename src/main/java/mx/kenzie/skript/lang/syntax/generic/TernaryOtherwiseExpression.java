@@ -2,7 +2,6 @@ package mx.kenzie.skript.lang.syntax.generic;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
-import mx.kenzie.skript.api.Referent;
 import mx.kenzie.skript.api.note.ForceExtract;
 import mx.kenzie.skript.api.syntax.SimpleExpression;
 import mx.kenzie.skript.compiler.CommonTypes;
@@ -14,7 +13,7 @@ import mx.kenzie.skript.lang.handler.StandardHandlers;
 
 import java.lang.reflect.Method;
 
-public class TernaryOtherwiseExpression extends SimpleExpression implements Referent {
+public class TernaryOtherwiseExpression extends SimpleExpression {
     
     public TernaryOtherwiseExpression() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "if %Boolean% then %Object% otherwise %Object%",
@@ -34,11 +33,6 @@ public class TernaryOtherwiseExpression extends SimpleExpression implements Refe
     @Override
     public boolean allowAsInputFor(Type type) {
         return super.allowAsInputFor(type) || type.equals(CommonTypes.OBJECT);
-    }
-    
-    @Override
-    public Type getHolderType() {
-        return CommonTypes.OBJECT;
     }
     
     @Override

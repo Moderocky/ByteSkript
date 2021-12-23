@@ -57,10 +57,6 @@ public final class Skript {
         this(new SkriptThreadProvider(), SkriptCompiler.createBasic(), Thread.currentThread());
     }
     
-    public Skript(Thread main, ClassLoader parent) {
-        this(new SkriptThreadProvider(), SkriptCompiler.createBasic(), main);
-    }
-    
     public Skript(SkriptThreadProvider threadProvider, ModifiableCompiler compiler, Thread main) {
         this.compiler = compiler;
         factory = threadProvider;
@@ -108,12 +104,6 @@ public final class Skript {
     }
     
     public Future<?> runScript(final ScriptRunner runner, final Event event) {
-//        final OperationController controller = createController();
-//        final ScriptThread thread = (ScriptThread) factory.newThread(controller, runner, true);
-//        thread.initiator = runner.owner();
-//        thread.event = event;
-//        thread.start();
-//        return thread;
         return executor.submit(() -> {
             final ScriptThread thread = (ScriptThread) Thread.currentThread();
             thread.variables.clear();
@@ -182,6 +172,19 @@ public final class Skript {
     //endregion
     
     //region Script Compiling
+    public boolean hasCompiler() {
+        return compiler != null;
+    }
+    
+    public ModifiableCompiler getCompiler() {
+        return compiler;
+    }
+    
+    public Library[] getLoadedLibraries() {
+        if (!this.hasCompiler()) return new Library[0];
+        return compiler.getLibraries();
+    }
+    
     public Collection<File> compileScripts(final File root, final File outputDirectory)
         throws IOException {
         if (!root.exists()) throw new ScriptLoadError("Root folder does not exist.");
@@ -261,7 +264,9 @@ public final class Skript {
         if (!root.isDirectory()) throw new ScriptLoadError("Root must be a folder.");
         final List<File> files = getFiles(new ArrayList<>(), root.toPath());
         final List<Script> scripts = new ArrayList<>();
-        for (File file : files) {
+        for (final File file : files) {
+            if (!file.getName().endsWith(".class")) continue;
+            if (file.isDirectory()) continue;
             try (InputStream namer = new FileInputStream(file); InputStream stream = new FileInputStream(file)) {
                 final String name = getClassName(namer);
                 scripts.add(loadScript(stream, name));
@@ -275,7 +280,9 @@ public final class Skript {
         if (!root.isDirectory()) throw new ScriptLoadError("Root must be a folder.");
         final List<File> files = getFiles(new ArrayList<>(), root.toPath());
         final List<Script> scripts = new ArrayList<>();
-        for (File file : files) {
+        for (final File file : files) {
+            if (!file.getName().endsWith(".bsk")) continue;
+            if (file.isDirectory()) continue;
             try (InputStream stream = new FileInputStream(file)) {
                 final String name = getClassName(file, root);
                 scripts.add(loadScript(compileScript(stream, name)));

@@ -6,7 +6,7 @@ import mx.kenzie.skript.api.Library;
 import java.util.*;
 import java.util.regex.Matcher;
 
-public class Pattern {
+public class Pattern { // todo remove regex go indexOf impl
     
     private static final char START_OPTIONAL = '[';
     private static final char END_OPTIONAL = ']';

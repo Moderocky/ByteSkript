@@ -138,6 +138,11 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         return libraries.remove(library);
     }
     
+    @Override
+    public Library[] getLibraries() {
+        return libraries.toArray(new Library[0]);
+    }
+    
     private final java.util.regex.Pattern unitMatch = java.util.regex.Pattern.compile("(?<=^)[\\t ]+(?=\\S)");
     
     

@@ -20,4 +20,6 @@ public interface ModifiableCompiler {
     
     boolean removeLibrary(Library library);
     
+    Library[] getLibraries();
+    
 }
