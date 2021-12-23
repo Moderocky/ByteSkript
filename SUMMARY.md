@@ -2,6 +2,7 @@
 
 * [🎶 Introduction to ByteSkript](README.md)
   * [Getting Started](readme/getting-started.md)
+  * [Creating a Library](readme/creating-a-library.md)
 
 ## Structures
 
