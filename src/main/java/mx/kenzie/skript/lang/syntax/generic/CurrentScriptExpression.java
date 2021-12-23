@@ -18,7 +18,7 @@ public class CurrentScriptExpression extends SimpleExpression {
     
     @Override
     public Type getReturnType() {
-        return CommonTypes.EVENT;
+        return CommonTypes.STRING;
     }
     
     @Override

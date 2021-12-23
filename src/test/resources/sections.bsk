@@ -9,4 +9,4 @@ function relay:
 
 function relay_test:
     trigger:
-        print relay("there")
+        assert relay("there") is "hello there": "Java relay failed."

@@ -3,15 +3,15 @@
 function file:
     trigger:
         set {file} to a new file at "test.txt"
-        assert "" + {file} is "test.txt"
+        assert "" + {file} is "test.txt": "File name is wrong."
         set the contents of {file} to "hello there"
-        assert the contents of {file} is "hello there"
+        assert the contents of {file} is "hello there": "File contents set/retrieval failed."
         set {writer} to writer of {file}
         write "general kenobi" to {writer}
         close {writer}
         set {reader} to reader of {file}
         set {line} to line of {reader}
-        assert {line} is "general kenobi"
+        assert {line} is "general kenobi": "File read/write by stream failed."
         close {reader}
         delete file {file}
 

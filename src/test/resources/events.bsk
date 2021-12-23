@@ -1,15 +1,16 @@
 on load:
     trigger:
-        print "Loaded."
+        assert true
 
 on any load:
     trigger:
         set {class} to class of event
         set {name} to name of {class}
-        print "The event class is: " + {name}
-        print "The loaded script is: " + event-name
-        print "The script's path is: " + event-script
+        assert {class} exists: "Class-of failed."
+        assert {name} is "Load": "Class name not retrieved."
+        assert event-name is "events": "Event-name value not retrieved correctly."
+        assert event-script is "skript.events": "Event-script value not retrieved correctly."
 
 on any load:
     trigger:
-        print "Done."
+        assert true

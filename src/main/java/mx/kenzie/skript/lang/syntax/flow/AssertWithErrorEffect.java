@@ -14,11 +14,11 @@ import mx.kenzie.skript.lang.handler.StandardHandlers;
 
 import java.lang.reflect.Method;
 
-public class AssertEffect extends Effect {
+public class AssertWithErrorEffect extends Effect {
     
-    public AssertEffect() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "assert %Boolean%");
-        handlers.put(StandardHandlers.RUN, findMethod(AssertEffect.class, "assertion", Object.class, Class.class, int.class));
+    public AssertWithErrorEffect() {
+        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "assert %Boolean%: %String%");
+        handlers.put(StandardHandlers.RUN, findMethod(AssertWithErrorEffect.class, "assertion", Object.class, Object.class, Class.class, int.class));
     }
     
     @Override
@@ -37,17 +37,18 @@ public class AssertEffect extends Effect {
     @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.startsWith("assert ")) return null;
+        if (!thing.contains(": ")) return null;
         return super.match(thing, context);
     }
     
     @ForceExtract
-    public static void assertion(Object object, Class<?> script, int line) {
+    public static void assertion(Object object, Object message, Class<?> script, int line) {
         if (object == null)
-            throw new ScriptAssertionError(script, line);
+            throw new ScriptAssertionError(script, line, message + "");
         else if (object instanceof Boolean boo && !boo)
-            throw new ScriptAssertionError(script, line);
+            throw new ScriptAssertionError(script, line, message + "");
         else if (object instanceof Number number && number.intValue() == 0)
-            throw new ScriptAssertionError(script, line);
+            throw new ScriptAssertionError(script, line, message + "");
     }
     
 }

@@ -1,75 +1,76 @@
 
-
 function generic_expressions:
     trigger:
-        set {var} to "goodbye" ? "hello"
-        assert {var} is "goodbye"
+        set {var} to {blob} otherwise "hello"
+        assert {var} is "hello": "Binary otherwise (long form) failed."
+        set {var} to "goodbye" otherwise "hello"
+        assert {var} is "goodbye": "Binary otherwise (long form) failed."
+        set {var} to "bean" ? "hello"
+        assert {var} is "bean": "Binary otherwise (short form) failed."
         set {var} to null ? "hello"
-        assert {var} is "hello"
+        assert {var} is "hello": "Binary otherwise (short form) failed."
         set {var} to (if "hello" is a string then "a" otherwise "b")
-        assert {var} is "a"
+        assert {var} is "a": "Ternary otherwise (long form) failed."
         set {var} to (false ? "a" : "b")
-        assert {var} is "b"
-        assert newline is a string
-
+        assert {var} is "b": "Ternary otherwise (short form) failed."
+        assert newline is a string: "New line is not a string."
 
 function test_system:
     trigger:
         set system property "blob" to "hello"
         set {var} to system property "blob"
-        assert {var} is "hello"
+        assert {var} is "hello": "System property setting failed."
         delete system property "blob"
 
 function my_function:
     trigger:
-        print "hello there"
+        assert "hello there" is not "general kenobi": "String anti-comparison succeeded?"
         wait 0 seconds
-        print "general kenobi"
-        print 66
+        assert 66 is 66: "Integer self-comparison failed."
+        assert 66.0 is 66.0: "Double self-comparison failed."
+        assert 66.0F is 66.0F: "Float self-comparison failed."
+        assert 66L is 66L: "Long self-comparison failed."
+        assert 66 is 66.0: "Integer/double cross-comparison failed."
+        set {var} to 66
+        assert {var} is 66: "Integer/var comparison failed."
 
 function test_method:
     trigger:
-        assert java version is 61
-        print the java version
-        print null
-        print "hello"
+        assert java version is 61: "Forgot to update java version test ;)"
         stop
-        print "never printed"
+        assert false: "Stop failed."
 
 function testing_variable:
     trigger:
         set {test} to "variable value"
-        assert {test} is set
-        assert {test} is "variable value"
-        assert none is none
-        assert false = false
-        assert true is not false
-        print {test}
+        assert {test} is set: "Setting variable failed."
+        assert {test} is "variable value": "Variable value comparison failed."
+        assert none is none: "Null is not self-equal."
+        assert false = false: "False is not self-equal."
+        assert true is not false: "True = false."
 
 function testing_map:
     trigger:
-        print {bean}
+        assert {bean} is null: "Variable pre-setting failed."
         set {test} to a new map
-        assert {test} exists
+        assert {test} exists: "Map creator failed."
         set "name" in {test} to "Jeremy"
-        print "name" in {test}
+        assert "name" in {test} is "Jeremy": "Map setting/getting failed."
         set "thing" in {test} to "name" in {test}
-        assert "thing" in {test} is "Jeremy"
+        assert "thing" in {test} is "Jeremy": "Map getting/setting failed."
         set ("thing" in {test}) to ("Frog")
-        assert ("thing" in {test}) is "Frog"
-        print "thing" in {test}
+        assert ("thing" in {test}) is "Frog": "Brackets with map getting/setting failed."
         return {test}
 
 function to_be_run:
     trigger:
-        print "was run"
         return new map
 
 function run_function:
     trigger:
-        print "call function"
-        assert "hello" is a string
+        assert "hello" is a string: "String type comparison failed."
         set {map} to to_be_run()
+        assert {map} exists: "Function return value failed."
         set "key" in {map} to "Blob"
-        print "key" in {map}
+        assert "key" in {map} is "Blob": "Map key setting/getting failed."
         return "bees"

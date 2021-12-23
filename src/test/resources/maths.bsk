@@ -5,8 +5,8 @@ function looping:
         while {a} is less than 10:
             set {a} to {a} + 1
             exit section if {a} is 5
-            assert {a} is less than 5
-        assert {a} is 5
+            assert {a} is less than 5: "Exit-section with condition failed."
+        assert {a} is 5: "Section did not exit upon condition."
 
 function basic:
     trigger:
@@ -15,10 +15,10 @@ function basic:
         set {c} to {a} / {b}
         set {d} to {c} * {c}
         set {e} to square root of {d}
-        assert {a} is 4
-        assert {b} is 2
-        assert {c} is 2
-        assert {d} is 4
-        assert {e} is 2
-        assert "hello " + "there" is "hello there"
+        assert {a} is 4: "Addition failed."
+        assert {b} is 2: "Subtraction failed."
+        assert {c} is 2: "Division failed."
+        assert {d} is 4: "Multiplication failed."
+        assert {e} is 2: "Square root (syntax) failed."
+        assert "hello " + "there" is "hello there": "String joining failed."
 

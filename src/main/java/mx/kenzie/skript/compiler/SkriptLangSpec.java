@@ -129,6 +129,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new AddEffect(),
             new DeleteEffect(),
             new RemoveEffect(),
+            new AssertWithErrorEffect(),
             new AssertEffect(),
             new ExitEffect(),
             new ExitThreadEffect(),

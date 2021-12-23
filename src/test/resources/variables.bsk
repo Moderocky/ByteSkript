@@ -2,85 +2,86 @@
 function basic_variables:
     trigger:
         set {var} to 1
-        assert {var} is 1
+        assert {var} is 1: "Variable set/retrieval failed."
         set {var} to {var} + 1
-        assert {var} is 2
-        assert {var} exists
+        assert {var} is 2: "Variable set/retrieval failed."
+        assert {var} exists: "Variable exists check failed."
         delete {var}
-        assert {var} is null
+        assert {var} is null: "Variable deletion failed."
         stop current thread
 
 function atomic_variables:
     trigger:
         set {@var} to 6
-        assert {@var} is 6
+        assert {@var} is 6: "Atomic variable set/retrieval failed."
         set {runnable} to a new runnable:
-            assert {@var} is 6
+            assert {@var} is 6: "Atomic variable retrieval in runnable failed."
             set {@var} to {@var} + 3
-            assert {@var} is 9
-        assert {@var} is 6
+            assert {@var} is 9: "Atomic variable change in runnable failed."
+        assert {@var} is 6: "Atomic variable retrieval failed."
         run {runnable}
-        assert {@var} is 9
-        assert {@var} exists
+        assert {@var} is 9: "Atomic modification failed."
+        assert {@var} exists: "Atomic variable exists check failed."
         delete {@var}
-        assert {@var} is null
+        assert {@var} is null: "Atomic variable deletion failed."
         stop current thread
 
 function thread_variables:
     trigger:
         set {thread} to the current thread
         set {_var} to 1
-        assert {_var} is 1
+        assert {_var} is 1: "Thread variable retrieval failed."
         set {_var} to {_var} + 1
-        assert {_var} is 2
-        assert {_var} exists
-        assert {_blob} is null
+        assert {_var} is 2: "Thread variable set failed."
+        assert {_var} exists: "Thread variable exists check failed."
+        assert {_blob} is null: "Thread variable unset check failed."
         run a new runnable:
-            assert {_var} is 2
+            assert {_var} is 2: "Thread variable access from runnable failed."
         run a new runnable in the background:
-            assert {_var} is null
+            assert {_var} is null: "Thread variable access from wrong thread passed."
             wait 5 ms
             wake {thread}
         sleep
         run a new runnable in the background:
             run copy_threadlocals_from({thread})
-            assert {_var} is 2
+            assert {_var} is 2: "Thread locals copying failed."
             wait 5 ms
             wake {thread}
         sleep
         delete {_var}
-        assert {_var} is null
+        assert {_var} is null: "Thread variable deletion failed."
         stop current thread
 
 function global_variables:
     trigger:
         set {thread} to the current thread
         set {!var} to 1
-        assert {!var} is 1
+        assert {!var} is 1: "Global variable retrieval failed."
         set {!var} to {!var} + 1
-        assert {!var} is 2
-        assert {!var} exists
+        assert {!var} is 2: "Global variable set failed."
+        assert {!var} exists: "Global variable exists check failed."
         set {!blob} to 3
-        assert {!blob} is 3
+        assert {!blob} is 3: "Global variable retrieval failed."
         delete {!blob}
-        assert {!blob} is null
+        assert {!blob} is null: "Global variable deletion failed."
         run a new runnable:
-            assert {!var} is 2
+            assert {!var} is 2: "Global variable access from runnable failed."
         run a new runnable in the background:
-            assert {!var} is 2
+            assert {!var} is 2: "Global variable access from background thread failed."
             wait 5 ms
             wake {thread}
         sleep
+        delete {!var}
         stop current thread
 
 on load:
     trigger:
-        assert {_var} is null
+        assert {_var} is null: "Thread variable set at thread start."
         set {_var} to 10
         assert {_var} is 10
 
 on load:
     trigger:
-        assert {_var} is null
+        assert {_var} is null: "Thread variable set at thread start."
         set {_var} to 10
         assert {_var} is 10

@@ -1,123 +1,115 @@
 
 function if_flow:
     trigger:
-        print "start if"
+        assert "hello" is a string: "String type check failure."
         if "hello" is a string:
             set {var} to true
             assert true
         else if false:
             set {var} to false
-            assert false
+            assert false: "Else-if block ran incorrectly."
         else:
             set {var} to false
-            assert false
-        assert {var} is true
+            assert false: "Else block ran incorrectly."
+        assert {var} is true: "Variable value not kept from if-section."
         if "hello" is a string:
             assert true
             if 1 is a string // jump to else
-            assert false
+            assert false: "Failed inline condition did not exit section properly."
         else:
             assert true
         if "hello" is a string:
             assert true
             if 1 is a string // jump to else-if
-            assert false
+            assert false: "Failed inline condition did not exit section properly."
         else if true: // always run
             assert true
         else: // never run
-            assert false
+            assert false: "Else block ran incorrectly."
         if 1 is 1:
             assert true
             break section
-            assert false
+            assert false: "Section failed to break."
         if 1 is 1:
             assert true
             break section if 1 is 2
             assert true
             break section if 1 is 1
-            assert false
+            assert false: "Section failed to break on break-if."
         if 1 is 1:
             assert true
             break section
-            assert false
+            assert false: "Section failed to break."
         else:
-            assert false
-        print "end if"
+            assert false: "Break effect triggered else-block incorrectly."
 
 function loop_flow:
     trigger:
-        print "start loop"
         set {var} to 0
         loop 3 times:
             set {var} to {var} + 1
-        assert {var} is 3
+        assert {var} is 3: "Loop did not run correct number of times."
         loop {var} times:
             set {var} to {var} + 1
-        assert {var} is 6
+        assert {var} is 6: "Loop did not run correct number of times."
         loop 0 times:
-            assert false
+            assert false: "0-times loop ran incorrectly."
         loop 4 times:
             assert true
             break section
-            assert false
+            assert false: "Loop failed to break from break-section."
         loop 4 times:
             assert true
             if true:
                 break loop
-            assert false
+            assert false: "Loop failed to break from break-loop."
         set {list} to a new list
         add "hello" to {list}
         loop {item} in {list}:
-            assert {item} is "hello"
+            assert {item} is "hello": "List loop-item retrieval failed."
         loop {item} in (1, 2, 3):
-            assert {item} is less than 5
+            assert {item} is less than 5: "List loop-number comparison failed."
         loop {item} in 1:
-            assert {item} is 1
+            assert {item} is 1: "List single-loop-item failed."
         loop {item} in (1, 2, 3, 2):
-            assert {item} is less than 5
+            assert {item} is less than 5: "List loop-number comparison failed."
             if {item} is greater than 2:
                 continue loop
-            assert {item} is less than 3
-        print "end loop"
+            assert {item} is less than 3: "Continue-loop instruction failed."
 
 function while_flow:
     trigger:
-        print "start while"
         set {a} to false
         set {b} to true
         while {b}:
             exit section
-            print "blob"
+            assert false: "While failed to exit."
             wait 3 seconds
-            assert false
-            print "boo"
+            assert false: "While failed to exit."
         while false:
-            assert false
-        print "finish while"
+            assert false: "While (false) ran incorrectly."
         return "ended"
 
 function test_run:
     trigger:
-        print "start deferred"
         set {var} to a new runnable:
-            assert 1 is 1
+            assert 1 is 1: "Equality check failed in runnable."
         run {var}
         run {var} in the background
         run defer({var})
         set {x} to 2
         set {thing} to a new runnable:
-            assert {x} is 2
+            assert {x} is 2: "Var access failed in runnable."
         set {x} to 4
         run {thing}
         run {thing} in the background
-        assert {x} is 4
+        assert {x} is 4: "Runnable mutated value variable."
         set {method} to the function "reflective(a)"
         run {method} with (2, 66) in the background
-        print "end deferred"
 
 function reflective (number):
     trigger:
-        assert 2 is {number}
+        assert 2 is {number}: "Background dynamic function call failed."
 
 function defer (runnable):
     trigger:
@@ -125,16 +117,14 @@ function defer (runnable):
 
 function inline_headers:
     trigger:
-        print "start inline"
         if true:
             assert true
             if false
-            assert false
-            print "w"
-        print "end inline"
+            assert false: "Inline-if failure failed to break IF."
+        else:
+            assert true
         if false
-        print "3"
-        print "4"
+        assert false: "Inline-if failure in trigger failed to end trigger."
 
 function closer: // to check the inlines closed in the previous function
     trigger:
@@ -150,8 +140,8 @@ function sleep_flow:
         assert true
         run {var} in the background
         delete {!thing}
-        assert {!thing} is null
+        assert {!thing} is null: "Something went wrong with threads."
         sleep
-        assert {!thing} is true
+        assert {!thing} is true: "Global variable failed to update."
         delete {!thing}
         exit {thread}

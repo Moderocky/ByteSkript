@@ -3,52 +3,52 @@
 function basic_use:
     trigger:
         set {@var} to 6
-        assert {@var} is 6
-        assert {var} is null
+        assert {@var} is 6: "Atomic retrieval failed."
+        assert {var} is null: "Non-atomic var erroneously set."
         set {@var} to {@var} + 1
-        assert {@var} is 7
+        assert {@var} is 7: "Atomic set/alteration failed."
 
 function passed_use:
     trigger:
         set {@var} to 6
-        assert {@var} is 6
+        assert {@var} is 6: "Atomic retrieval failed."
         run a new runnable:
-            assert {@var} is 6
+            assert {@var} is 6: "Runnable retrieval failed."
             set {@var} to {@var} + 1
-            assert {@var} is 7
-        assert {@var} is 7
+            assert {@var} is 7: "Runnable atomic change failed."
+        assert {@var} is 7: "Runnable did not change atomic value."
 
 function as_simple_parameter:
     trigger:
         set {@var} to 6
-        assert {@var} is 6
+        assert {@var} is 6: "Atomic retrieval failed."
         run test_param_normal({@var}) // @var is atomic-unwrapped
-        assert {@var} is 6
+        assert {@var} is 6: "Atomic unboxing failed - atomic value changed."
 
 function as_atomic_parameter:
     trigger:
         set {@var} to 6
-        assert {@var} is 6
+        assert {@var} is 6: "Atomic retrieval failed."
         run test_param_atomic({@var})
-        assert {@var} is 7
+        assert {@var} is 7: "Atomic parameter use failed - atomic value did not change."
 
 function reverse_case:
     trigger:
         set {var} to 6
-        assert {var} is 6
+        assert {var} is 6: "Variable retrieval failed."
         run test_param_atomic({var}) // var is atomic-wrapped
-        assert {var} is 6
+        assert {var} is 6: "Atomic boxing altered non-atomic var copy."
         run test_param_normal({var}) // var is unchanged
-        assert {var} is 6
+        assert {var} is 6: "Separate function altered non-atomic variable."
 
 function test_param_normal (var):
     trigger:
-        assert {var} is 6
+        assert {var} is 6: "Parameter was not unboxed properly."
         set {var} to {var} + 1
-        assert {var} is 7
+        assert {var} is 7: "Variable failed to change."
 
 function test_param_atomic (@var):
     trigger:
-        assert {@var} is 6
+        assert {@var} is 6: "Parameter was not boxed properly."
         set {@var} to {@var} + 1
-        assert {@var} is 7
+        assert {@var} is 7: "Atomic variable failed to update."

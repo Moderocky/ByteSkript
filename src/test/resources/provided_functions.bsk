@@ -3,74 +3,71 @@ function handles:
     trigger:
         set {system} to get_class("java.lang.System")
         set {object} to get_class("java.lang.Object")
-        assert {object} is object
-        assert has_java_field({system}, "out") is true
+        assert {object} is object: "Class/type comparison failed."
+        assert has_java_field({system}, "out") is true: "Field access failed."
         set {out} to get_java_field({system}, "out")
-        assert {out} exists
+        assert {out} exists: "Field retrieval failed."
         set {method} to get_java_method({out}, "println", {object})
-        assert {method} exists
+        assert {method} exists: "Method retrieval failed."
         run {method} with "Called reflectively."
-        print "finished handles"
 
 function maths:
     trigger:
-        assert 10 exists
-        assert 10L exists
-        assert 10.0 exists
-        assert 10.0F exists
+        assert 10 exists: "Int literal failed."
+        assert 10L exists: "Long literal failed."
+        assert 10.0 exists: "Double literal failed."
+        assert 10.0F exists: "Float literal failed."
         set {three} to 1 - 4
-        assert abs({three}) is 3
-        assert sin(30) < 0.5
-        assert round(sin(90)) is 1
-        assert sin(40) > 0.6
-        assert sin(40) < 0.65
-        assert cos(0) is 1
-        assert round(cos(90)) is 0
-        assert cos(40) > 0.76
-        assert cos(40) < 0.77
-        assert round(tan(0)) is 0
-        assert tan(40) < 0.84
-        assert tan(40) > 0.83
-        assert tan(20) < 0.37
-        assert tan(20) > 0.36
-        assert asin(0) is 0
-        assert round(asin(0.5)) is 30
-        assert acos(0) is 90
-        assert round(acos(0.5)) is 60
-        assert acos(0.3) > 72.5
-        assert acos(0.3) < 72.6
-        assert atan(0) is 0
-        assert atan(0.5) > 26.5
-        assert atan(0.5) < 26.6
-        assert sinh(30) > 31
-        assert sinh(30) < 32
-        assert cosh(40) > 71.8
-        assert cosh(40) < 71.9
-        assert tanh(40) > 34.5
-        assert tanh(40) < 34.6
-        assert round(atan2(5, 5)) is 45
-        assert atan2(5, 6) > 50.1
-        assert atan2(5, 6) < 50.2
-        assert sqrt(25) is 5
-        assert newton_root(25, 0) >= 5
-        assert floor(5.9) is 5
-        assert floor(5) is 5
-        assert ceil(4.1) is 5
-        assert ceil(5.0) is 5
-        assert round(4.5) is 5
-        assert round(5) is 5
-        assert ln(-3) < 1
-        assert log(3) > 1
-        print "finished maths"
+        assert abs({three}) is 3: "Absolute function returned wrong result."
+        assert sin(30) < 0.5: "Sine function returned wrong result."
+        assert round(sin(90)) is 1: "Sine function returned wrong result."
+        assert sin(40) > 0.6: "Sine function returned wrong result."
+        assert sin(40) < 0.65: "Sine function returned wrong result."
+        assert cos(0) is 1: "Cosine function returned wrong result."
+        assert round(cos(90)) is 0: "Cosine function returned wrong result."
+        assert cos(40) > 0.76: "Cosine function returned wrong result."
+        assert cos(40) < 0.77: "Cosine function returned wrong result."
+        assert round(tan(0)) is 0: "Tangent function returned wrong result."
+        assert tan(40) < 0.84: "Tangent function returned wrong result."
+        assert tan(40) > 0.83: "Tangent function returned wrong result."
+        assert tan(20) < 0.37: "Tangent function returned wrong result."
+        assert tan(20) > 0.36: "Tangent function returned wrong result."
+        assert asin(0) is 0: "Arcus sine function returned wrong result."
+        assert round(asin(0.5)) is 30: "Arcus sine function returned wrong result."
+        assert acos(0) is 90: "Arcus cosine function returned wrong result."
+        assert round(acos(0.5)) is 60: "Arcus cosine function returned wrong result."
+        assert acos(0.3) > 72.5: "Arcus cosine function returned wrong result."
+        assert acos(0.3) < 72.6: "Arcus cosine function returned wrong result."
+        assert atan(0) is 0: "Arcus tangent function returned wrong result."
+        assert atan(0.5) > 26.5: "Arcus tangent function returned wrong result."
+        assert atan(0.5) < 26.6: "Arcus tangent function returned wrong result."
+        assert sinh(30) > 31: "Hyperbolic sine function returned wrong result."
+        assert sinh(30) < 32: "Hyperbolic sine function returned wrong result."
+        assert cosh(40) > 71.8: "Hyperbolic cosine function returned wrong result."
+        assert cosh(40) < 71.9: "Hyperbolic cosine function returned wrong result."
+        assert tanh(40) > 34.5: "Hyperbolic tangent function returned wrong result."
+        assert tanh(40) < 34.6: "Hyperbolic tangent function returned wrong result."
+        assert round(atan2(5, 5)) is 45: "2-arg tangent function returned wrong result."
+        assert atan2(5, 6) > 50.1: "2-arg tangent function returned wrong result."
+        assert atan2(5, 6) < 50.2: "2-arg tangent function returned wrong result."
+        assert sqrt(25) is 5: "Square root function returned wrong result."
+        assert newton_root(25, 0) >= 5: "Newton root function returned wrong result."
+        assert floor(5.9) is 5: "Floor function returned wrong result."
+        assert floor(5) is 5: "Floor function returned wrong result."
+        assert ceil(4.1) is 5: "Ceil function returned wrong result."
+        assert ceil(5.0) is 5: "Ceil function returned wrong result."
+        assert round(4.5) is 5: "Round function returned wrong result."
+        assert round(5) is 5: "Round function returned wrong result."
+        assert ln(-3) < 1: "Ln function returned wrong result."
+        assert log(3) > 1: "Log function returned wrong result."
 
 function generic:
     trigger:
-        assert get_class("java.lang.String") is a class
-        assert current_time_millis() is a number
-        assert current_time_millis() is greater than 0
-        assert nano_time() is a number
-        assert line_separator() is a string
-        assert hashcode("hello") is a number
-        assert strict_equals(1, 1) is true
-        assert strict_equals("cc", "c" + "c") is false
-        print "finished generic"
+        assert get_class("java.lang.String") is a class: "Generic function failed."
+        assert current_time_millis() is a number: "Generic function failed."
+        assert current_time_millis() is greater than 0: "Generic function failed."
+        assert nano_time() is a number: "Generic function failed."
+        assert line_separator() is a string: "Generic function failed."
+        assert hashcode("hello") is a number: "Generic function failed."
+        assert strict_equals(1, 1) is true: "Generic function failed."
+        assert strict_equals("cc", "c" + "c") is false: "Generic function failed."

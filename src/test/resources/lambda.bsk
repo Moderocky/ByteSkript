@@ -3,31 +3,28 @@ function external_target:
     trigger:
         return 2
 
-
 function external_target(number):
     trigger:
         return {number}
 
 function lambda_test:
     trigger:
-        print "start lambdas"
         set {boo} to "blob"
         run a new runnable:
-            print "first runnable"
-            print {boo}
+            assert true
         set {thing} to a new runnable:
-            print "second runnable"
+            assert true
         run {thing}
         set {blob} to return_test()
         run {blob}
         set {supplier} to a new supplier:
             return 6
         set {var} to result of {supplier}
-        assert {var} is 6
+        assert {var} is 6: "Supplier result failed to return correctly."
         print result of a new supplier:
             return "supplied value"
 
 function return_test:
     trigger:
         return a new runnable:
-            print "hello"
+            assert true
