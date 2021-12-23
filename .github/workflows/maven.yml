@@ -1,31 +1,20 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: Java CI with Maven
-
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
+name: Run Tests
+on: push
 jobs:
-  test:
-
+  run_tests:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-java@v2
-      with:
-        java-version: '17'
-        distribution: 'adopt'
-        cache: 'maven'
-    - name: Cache Packages
-      uses: actions/cache@v1
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2      
-    - name: Build and test project with Maven
-      run: mvn -B test --file pom.xml
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Run tests with Maven
+        run: mvn -B test --file pom.xml
