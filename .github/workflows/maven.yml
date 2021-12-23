@@ -21,5 +21,11 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
         cache: 'maven'
-    - name: Run Tests
-      run: mvn test --file pom.xml
+    - name: Cache Packages
+      uses: actions/cache@v1
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2      
+    - name: Build and test project with Maven
+      run: mvn -B test --file pom.xml
