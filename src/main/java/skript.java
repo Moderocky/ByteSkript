@@ -1,11 +1,11 @@
 import mx.kenzie.mirror.Mirror;
-import mx.kenzie.skript.error.ScriptRuntimeError;
-import mx.kenzie.skript.runtime.threading.ScriptThread;
-import mx.kenzie.skript.runtime.type.AtomicVariable;
+import org.byteskript.skript.error.ScriptRuntimeError;
+import org.byteskript.skript.runtime.threading.ScriptThread;
+import org.byteskript.skript.runtime.type.AtomicVariable;
 
 import java.util.Collection;
 
-import static mx.kenzie.skript.runtime.type.AtomicVariable.unwrap;
+import static org.byteskript.skript.runtime.type.AtomicVariable.unwrap;
 
 public final class skript {
     

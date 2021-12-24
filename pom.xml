@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>mx.kenzie</groupId>
+    <groupId>org.byteskript</groupId>
     <artifactId>byteskript</artifactId>
     <version>1.0.0</version>
     <name>ByteSkript</name>
@@ -32,14 +32,14 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        mx.kenzie.skript.app.ScriptLoader
+                                        org.byteskript.skript.app.ScriptLoader
                                     </mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
-                            <finalName>SkriptLoader</finalName>
+                            <finalName>ScriptLoader</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                     </execution>
@@ -53,14 +53,14 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        mx.kenzie.skript.app.ScriptJarBuilder
+                                        org.byteskript.skript.app.ScriptJarBuilder
                                     </mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
-                            <finalName>SkriptJarBuilder</finalName>
+                            <finalName>ScriptJarBuilder</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                     </execution>
@@ -74,14 +74,14 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        mx.kenzie.skript.app.ScriptCompiler
+                                        org.byteskript.skript.app.ScriptCompiler
                                     </mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
-                            <finalName>SkriptClassCompiler</finalName>
+                            <finalName>ScriptClassCompiler</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                     </execution>
