@@ -175,6 +175,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new NotEqual(),
             new IsEqual(),
             new Contains(),
+            new Matches(),
             new TernaryOtherwiseExpression(),
             new BinaryOtherwiseExpression(),
             new StringLiteral(),

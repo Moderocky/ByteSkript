@@ -19,8 +19,10 @@ function generic_expressions:
         assert newline is a string: "New line is not a string."
         set {regex} to /hello there/
         assert {regex} exists: "Regex literal failed to load."
+        assert "hello there" matches {regex}: "Regex failed to match exact."
         set {regex} to /.+/
         assert {regex} exists: "Regex literal failed to load."
+        assert "blob blob" matches {regex}: "Regex failed to match anything."
 
 
 function test_system:

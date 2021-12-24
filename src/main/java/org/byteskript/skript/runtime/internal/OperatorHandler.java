@@ -9,6 +9,7 @@ package org.byteskript.skript.runtime.internal;
 import org.byteskript.skript.error.ScriptRuntimeError;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class OperatorHandler {
     
@@ -208,6 +209,13 @@ public class OperatorHandler {
         if (a instanceof Object[] array) return Arrays.asList(array).contains(b);
         if (a instanceof Map<?, ?> map) return map.containsKey(b) || map.containsValue(b);
         return (a + "").contains(b + "");
+    }
+    
+    public static Boolean matches(Object a, Object b) {
+        if (a == null) return false;
+        if (b == null) return false;
+        if (!(b instanceof Pattern pattern)) return equals(a, b); // probably a mistaken use?
+        return pattern.matcher(a + "").matches();
     }
     //endregion
     
