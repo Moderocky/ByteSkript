@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021 ByteSkript org (Moderocky)
+ * View the full licence information and permissions:
+ * https://github.com/Moderocky/ByteSkript/blob/master/LICENSE
+ */
+
 package org.byteskript.skript.app;
 
 import org.byteskript.skript.runtime.Script;
@@ -9,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 public final class ScriptLoader extends SkriptApp {
-    protected static final Skript SKRIPT = new Skript();
+    private static final Skript SKRIPT = new Skript();
     
     static final List<Script> SCRIPTS = new ArrayList<>();
     
