@@ -13,7 +13,15 @@ function generic_expressions:
         assert {var} is "a": "Ternary otherwise (long form) failed."
         set {var} to (false ? "a" : "b")
         assert {var} is "b": "Ternary otherwise (short form) failed."
+        assert ("hi" ? "bye") is "hi": "Binary otherwise (short form) failed."
+        assert (null ? "bye") is "bye": "Binary otherwise (short form) failed."
+        assert (null ? null) is null: "Binary otherwise (short form) failed."
         assert newline is a string: "New line is not a string."
+        set {regex} to /hello there/
+        assert {regex} exists: "Regex literal failed to load."
+        set {regex} to /.+/
+        assert {regex} exists: "Regex literal failed to load."
+
 
 function test_system:
     trigger:

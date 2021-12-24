@@ -178,6 +178,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new TernaryOtherwiseExpression(),
             new BinaryOtherwiseExpression(),
             new StringLiteral(),
+            new RegexLiteral(),
             new SupplierSection(),
             new RunnableSection(),
             new ThreadExpression(),

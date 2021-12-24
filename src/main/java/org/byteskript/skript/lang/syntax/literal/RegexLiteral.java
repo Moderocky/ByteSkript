@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.literal;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.syntax.Literal;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -21,7 +22,7 @@ import java.util.regex.Matcher;
 
 public class RegexLiteral extends Literal<java.util.regex.Pattern> {
     
-    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("^\\/[^\\/\\\\\\r\\n]*(?:\\\\.[^\\/\\\\\\r\\n]*)*\\/\n");
+    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("^\\/[^\\/\\\\\\r\\n]*(?:\\\\.[^\\/\\\\\\r\\n]*)*\\/");
     
     public RegexLiteral() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "string literal");
@@ -45,8 +46,9 @@ public class RegexLiteral extends Literal<java.util.regex.Pattern> {
     }
     
     @Override
+    @ForceExtract
     public java.util.regex.Pattern parse(String input) {
-        return java.util.regex.Pattern.compile(input.substring(1, input.length() - 1));
+        return java.util.regex.Pattern.compile(input);
     }
     
     @Override
