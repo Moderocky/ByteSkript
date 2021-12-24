@@ -21,7 +21,7 @@ function lambda_test:
             return 6
         set {var} to result of {supplier}
         assert {var} is 6: "Supplier result failed to return correctly."
-        print result of a new supplier:
+        assert result of a new supplier is "supplied value": "Supplier result failed to return correctly.":
             return "supplied value"
 
 function return_test:

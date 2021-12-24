@@ -7,9 +7,9 @@ function handles:
         assert has_java_field({system}, "out") is true: "Field access failed."
         set {out} to get_java_field({system}, "out")
         assert {out} exists: "Field retrieval failed."
-        set {method} to get_java_method({out}, "println", {object})
+        set {method} to get_java_method("hello", "toString")
         assert {method} exists: "Method retrieval failed."
-        run {method} with "Called reflectively."
+        assert result of {method} is "hello": "Reflective call failed."
 
 function maths:
     trigger:

@@ -7,7 +7,6 @@ public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler {
         if (throwable instanceof ThreadDeath) return;
         if (source instanceof ScriptThread thread) {
             final Class<?> start = thread.initiator;
-            
             System.err.println("An error has occurred.");
             if (start != null)
                 System.err.println("Source: " + start.getName());
@@ -18,5 +17,5 @@ public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler {
                 + source.getName() + "\" ");
             throwable.printStackTrace(System.err);
         }
-    }
+    } // TODO make errors pretty and helpful :)
 }

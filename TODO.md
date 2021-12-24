@@ -33,6 +33,10 @@ Difficulty: hard
 This will probably need to interact with JavaFX. \
 This should be handled by somebody with experience using Java front-end. \
 Difficulty: medium
+- Write a better default parser. \
+  The current parser uses RegEx for assembling patterns. \
+  Since the matching is trivial, I think these can be converted to string-matches. \
+  Difficulty: easy
 
 ### Least Important
 - Create a library for web-servers. \
