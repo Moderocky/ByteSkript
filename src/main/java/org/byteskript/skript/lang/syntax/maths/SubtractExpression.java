@@ -22,6 +22,7 @@ public class SubtractExpression extends RelationalExpression {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Number% ?- ?%Number%");
         try {
             handlers.put(StandardHandlers.FIND, OperatorHandler.class.getMethod("subtract", Object.class, Object.class));
+            handlers.put(StandardHandlers.GET, OperatorHandler.class.getMethod("subtract", Object.class, Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

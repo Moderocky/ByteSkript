@@ -24,6 +24,7 @@ public class IsArray extends RelationalExpression {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% (is|are) a[n] array");
         try {
             handlers.put(StandardHandlers.FIND, this.getClass().getMethod("check", Object.class));
+            handlers.put(StandardHandlers.GET, this.getClass().getMethod("check", Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

@@ -61,6 +61,13 @@ public class GenericTest extends SkriptTest {
     }
     
     @Test
+    public void testing_list() throws Throwable {
+        final Member function = script.getFunction("testing_list");
+        assert function != null;
+        function.invoke();
+    }
+    
+    @Test
     public void testing_map() throws Throwable {
         final Member function = script.getFunction("testing_map");
         assert function != null;

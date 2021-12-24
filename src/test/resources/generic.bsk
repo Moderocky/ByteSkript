@@ -60,6 +60,24 @@ function testing_variable:
         assert false = false: "False is not self-equal."
         assert true is not false: "True = false."
 
+function testing_list:
+    trigger:
+        set {test} to a new list
+        assert {test} is a list: "List type comparison failed."
+        add "hello" to {test}
+        add "goodbye" to {test}
+        assert {test} contains "hello": "List contains check failed."
+        assert {test} contains "goodbye": "List contains check failed."
+        assert index 1 in {test} is "goodbye": "List index get failed."
+        set index 1 in {test} to "there"
+        assert {test} contains "there": "List index set failed."
+        loop {word} in {test}:
+            assert {word} exists: "List object is empty."
+        clear {test}
+        loop {word} in {test}:
+            assert false: "List failed to clear."
+
+
 function testing_map:
     trigger:
         assert {bean} is null: "Variable pre-setting failed."

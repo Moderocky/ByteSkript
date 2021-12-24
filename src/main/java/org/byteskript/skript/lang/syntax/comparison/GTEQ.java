@@ -20,6 +20,7 @@ public class GTEQ extends RelationalExpression {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% (is greater than or equal to|>=) ?%Object%");
         try {
             handlers.put(StandardHandlers.FIND, OperatorHandler.class.getMethod("gteq", Object.class, Object.class));
+            handlers.put(StandardHandlers.GET, OperatorHandler.class.getMethod("gteq", Object.class, Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

@@ -20,6 +20,7 @@ public class LTEQ extends RelationalExpression {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% (is less than or equal to|<=) ?%Object%");
         try {
             handlers.put(StandardHandlers.FIND, OperatorHandler.class.getMethod("lteq", Object.class, Object.class));
+            handlers.put(StandardHandlers.GET, OperatorHandler.class.getMethod("lteq", Object.class, Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

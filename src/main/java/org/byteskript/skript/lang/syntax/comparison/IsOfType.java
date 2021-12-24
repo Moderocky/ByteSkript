@@ -24,6 +24,7 @@ public class IsOfType extends RelationalExpression {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% (is|are) a[n] %Type%");
         try {
             handlers.put(StandardHandlers.FIND, this.getClass().getMethod("check", Object.class, Object.class));
+            handlers.put(StandardHandlers.GET, this.getClass().getMethod("check", Object.class, Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

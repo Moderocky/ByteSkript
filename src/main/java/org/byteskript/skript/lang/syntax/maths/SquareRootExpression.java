@@ -19,6 +19,7 @@ public class SquareRootExpression extends RelationalExpression {
     public SquareRootExpression() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the ]sq[uare ]r[oo]t of %Number%");
         try {
+            handlers.put(StandardHandlers.GET, OperatorHandler.class.getMethod("root", Object.class));
             handlers.put(StandardHandlers.FIND, OperatorHandler.class.getMethod("root", Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();

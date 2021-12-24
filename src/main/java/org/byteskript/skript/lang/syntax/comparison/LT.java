@@ -20,6 +20,7 @@ public class LT extends RelationalExpression {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% (is less than|<) ?%Object%");
         try {
             handlers.put(StandardHandlers.FIND, OperatorHandler.class.getMethod("lt", Object.class, Object.class));
+            handlers.put(StandardHandlers.GET, OperatorHandler.class.getMethod("lt", Object.class, Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

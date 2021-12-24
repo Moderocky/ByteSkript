@@ -13,6 +13,7 @@ import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.note.ForceInline;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.PreVariable;
+import org.byteskript.skript.lang.handler.StandardHandlers;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -62,6 +63,7 @@ public interface SyntaxElement {
     }
     
     default boolean allowAsInputFor(Type type) {
+        if (CommonTypes.REFERENT.equals(type) && hasHandler(StandardHandlers.SET)) return true;
         return type.equals(CommonTypes.OBJECT) || type.equals(getReturnType());
     }
     

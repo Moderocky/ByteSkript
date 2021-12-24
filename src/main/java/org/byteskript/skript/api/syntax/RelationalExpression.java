@@ -14,7 +14,6 @@ import org.byteskript.skript.api.SyntaxElement;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
-import org.byteskript.skript.lang.handler.StandardHandlers;
 
 import java.lang.reflect.Method;
 
@@ -28,10 +27,15 @@ public abstract class RelationalExpression extends ComplexExpression implements 
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        final Method target = handlers.get(StandardHandlers.FIND);
-        assert target != null;
+        final Method target = handlers.get(context.getHandlerMode());
+        assert target != null : "" + context.getHandlerMode();
         this.writeCall(method, target, context);
         context.setState(CompileState.STATEMENT);
+    }
+    
+    @Override
+    public Pattern.Match match(String thing, Context context) {
+        return super.match(thing, context);
     }
     
     @Override

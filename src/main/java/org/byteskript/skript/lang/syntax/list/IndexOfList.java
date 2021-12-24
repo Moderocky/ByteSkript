@@ -39,6 +39,16 @@ public class IndexOfList extends RelationalExpression implements Referent {
     }
     
     @Override
+    public boolean allowAsInputFor(Type type) {
+        return super.allowAsInputFor(type);
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.OBJECT;
+    }
+    
+    @Override
     public Type getHolderType() {
         return CommonTypes.LIST;
     }

@@ -22,6 +22,7 @@ public class AddExpression extends RelationalExpression {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% ?\\\\+ ?%Object%");
         try {
             handlers.put(StandardHandlers.FIND, OperatorHandler.class.getMethod("add", Object.class, Object.class));
+            handlers.put(StandardHandlers.GET, OperatorHandler.class.getMethod("add", Object.class, Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
