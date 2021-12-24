@@ -1,0 +1,23 @@
+
+function try_catch:
+    trigger:
+        set {var} to "hello"
+        assert {var} is "hello": "Variable failed to store."
+        try:
+            assert true
+            throw exception
+            assert false: "Error failed to throw."
+        catch {error}:
+            assert true
+            assert {error} exists: "Error not stored when caught."
+        assert {error} exists: "Error was not caught."
+        try: throw exception
+        delete {error}
+        try:
+            assert true
+            break section
+            assert false: "Section failed to break."
+        catch {error}:
+            assert false: "Catch section was run with no failed to break."
+        assert {error} is null: "Error was erroneously set."
+        assert true

@@ -22,6 +22,7 @@ public class PrintEffect extends Effect {
         final MethodBuilder method = context.getMethod();
         assert method != null;
         method.writeCode(WriteInstruction.getField(System.class.getField("out")));
+        super.preCompile(context, match);
     }
     
     @Override

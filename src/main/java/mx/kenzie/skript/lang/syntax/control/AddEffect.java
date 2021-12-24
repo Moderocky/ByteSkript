@@ -18,7 +18,7 @@ public class AddEffect extends ControlEffect {
     }
     
     @Override
-    public void preCompile(Context context, Pattern.Match match) {
+    public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final ElementTree tree = context.getLine();
         final ElementTree[] inputs = tree.nested();
         assert inputs.length == 2;
@@ -30,6 +30,7 @@ public class AddEffect extends ControlEffect {
             throw new ScriptParseError(context.lineNumber(), "Syntax '" + inputs[1].current()
                 .name() + "' cannot be added to.");
 //        inputs[1].compile = false; //todo
+        super.preCompile(context, match);
     }
     
     @Override

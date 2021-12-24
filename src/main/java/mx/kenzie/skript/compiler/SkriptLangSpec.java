@@ -29,6 +29,9 @@ import mx.kenzie.skript.lang.syntax.flow.*;
 import mx.kenzie.skript.lang.syntax.flow.conditional.ElseIfSection;
 import mx.kenzie.skript.lang.syntax.flow.conditional.ElseSection;
 import mx.kenzie.skript.lang.syntax.flow.conditional.IfSection;
+import mx.kenzie.skript.lang.syntax.flow.error.CatchSection;
+import mx.kenzie.skript.lang.syntax.flow.error.TryEffect;
+import mx.kenzie.skript.lang.syntax.flow.error.TrySection;
 import mx.kenzie.skript.lang.syntax.flow.execute.*;
 import mx.kenzie.skript.lang.syntax.flow.lambda.RunnableSection;
 import mx.kenzie.skript.lang.syntax.flow.lambda.SupplierSection;
@@ -120,6 +123,8 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new WaitEffect(),
             new ReturnEffect(),
             new WhileSection(),
+            new TrySection(),
+            new CatchSection(),
             new LoopTimesSection(),
             new LoopInSection(),
             new IfSection(),
@@ -141,6 +146,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new ContinueEffect(),
             new BreakIfEffect(),
             new BreakEffect(),
+            new TryEffect(),
             new ClearList(),
             new ClearMap()
         );

@@ -1,6 +1,7 @@
 package mx.kenzie.skript.compiler;
 
 import mx.kenzie.foundation.Type;
+import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.language.PostCompileClass;
 import mx.kenzie.skript.api.Library;
 import mx.kenzie.skript.api.SyntaxElement;
@@ -89,6 +90,9 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             context.lineNumber++;
             context.line = null;
             if (line.isBlank()) continue;
+            if (context.getMethod() != null) {
+                context.getMethod().writeCode(WriteInstruction.lineNumber(context.lineNumber));
+            }
             this.compileLine(line, context);
         }
         for (int i = 0; i < context.units.size(); i++) {
@@ -234,7 +238,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             final Type[] types = match.expected();
             final String[] inputs = match.groups();
             if (inputs.length < types.length) continue;
-            context.setState(CompileState.STATEMENT);
+            context.setState(handler.getSubState()); // move state change to syntax
             context.currentEffect = handler;
             inner:
             for (int i = 0; i < types.length; i++) {

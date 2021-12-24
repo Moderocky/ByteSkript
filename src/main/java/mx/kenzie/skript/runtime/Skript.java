@@ -12,10 +12,7 @@ import mx.kenzie.skript.runtime.internal.EventHandler;
 import mx.kenzie.skript.runtime.internal.GlobalVariableMap;
 import mx.kenzie.skript.runtime.internal.Instruction;
 import mx.kenzie.skript.runtime.internal.ModifiableCompiler;
-import mx.kenzie.skript.runtime.threading.OperationController;
-import mx.kenzie.skript.runtime.threading.ScriptRunner;
-import mx.kenzie.skript.runtime.threading.ScriptThread;
-import mx.kenzie.skript.runtime.threading.SkriptThreadProvider;
+import mx.kenzie.skript.runtime.threading.*;
 
 import java.io.*;
 import java.nio.file.DirectoryStream;
@@ -104,16 +101,36 @@ public final class Skript {
     }
     
     public Future<?> runScript(final ScriptRunner runner, final Event event) {
-        return executor.submit(() -> {
+        final OperationController controller = new OperationController(skript, factory);
+        final ScriptFinishFuture future = new ScriptFinishFuture(this);
+        final Runnable runnable = () -> {
             final ScriptThread thread = (ScriptThread) Thread.currentThread();
+            future.thread = thread;
             thread.variables.clear();
             thread.initiator = runner.owner();
             thread.event = event;
             try {
                 runner.run();
             } catch (ThreadDeath ignore) {
+                // This is likely from an exit the current process effect, we don't want to make noise
+            } finally {
+                future.finish();
             }
-        });
+        };
+        factory.newThread(controller, runnable, true).start();
+        return future;
+//        return executor.submit(() -> {
+//            final ScriptThread thread = (ScriptThread) Thread.currentThread();
+//            thread.variables.clear();
+//            thread.initiator = runner.owner();
+//            thread.event = event;
+//            try {
+//                runner.run();
+//            } catch (ThreadDeath ignore) {
+//            } catch (Throwable ex) {
+//                ex.printStackTrace(); // todo
+//            }
+//        });
     }
     
     public boolean runEvent(final Event event) {

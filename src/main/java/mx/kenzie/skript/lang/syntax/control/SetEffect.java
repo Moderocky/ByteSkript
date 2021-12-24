@@ -23,7 +23,7 @@ public class SetEffect extends ControlEffect {
     }
     
     @Override
-    public void preCompile(Context context, Pattern.Match match) {
+    public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final ElementTree tree = context.getCompileCurrent();
         final ElementTree[] inputs = tree.nested();
         assert inputs.length == 2;
@@ -36,6 +36,7 @@ public class SetEffect extends ControlEffect {
         inputs[0].emptyNest();
         replacement[replacement.length - 1] = inputs[0];
         tree.replaceNest(replacement);
+        super.preCompile(context, match);
     }
     
     @Override

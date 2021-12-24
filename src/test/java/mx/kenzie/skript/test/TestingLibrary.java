@@ -1,6 +1,5 @@
 package mx.kenzie.skript.test;
 
-import mx.kenzie.skript.api.LanguageElement;
 import mx.kenzie.skript.api.Library;
 import mx.kenzie.skript.api.ModifiableLibrary;
 import mx.kenzie.skript.api.syntax.Effect;
@@ -15,7 +14,7 @@ public class TestingLibrary extends ModifiableLibrary {
     }
     
     public static class ThrowException extends Effect {
-    
+        
         public ThrowException(Library provider) {
             super(provider, StandardElements.EFFECT, "throw exception");
             handlers.put(StandardHandlers.RUN, findMethod(ThrowException.class, "error"));

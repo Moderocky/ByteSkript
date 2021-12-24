@@ -22,7 +22,7 @@ import java.util.Iterator;
 public class LoopInSection extends Section {
     
     public LoopInSection() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.SECTION, "loop %Object% in %Object%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.SECTION, "loop %Variable% in %Object%");
     }
     
     @Override
@@ -51,6 +51,8 @@ public class LoopInSection extends Section {
         final String pattern = match.groups()[0].trim();
         assert pattern.startsWith("{") && pattern.endsWith("}");
         final String name = pattern.substring(1, pattern.length() - 1);
+        if (name.charAt(0) == '@' || name.charAt(0) == '_' || name.charAt(0) == '!')
+            throw new ScriptCompileError(context.lineNumber(), "Holder variable must be a normal variable: '{var}'");
         return context.getVariable(name);
     }
     

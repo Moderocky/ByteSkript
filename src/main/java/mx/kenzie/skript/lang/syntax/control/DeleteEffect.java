@@ -25,7 +25,7 @@ public class DeleteEffect extends ControlEffect {
     }
     
     @Override
-    public void preCompile(Context context, Pattern.Match match) {
+    public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final ElementTree tree = context.getLine();
         final ElementTree[] inputs = tree.nested();
         assert inputs.length == 1;
@@ -40,6 +40,7 @@ public class DeleteEffect extends ControlEffect {
             throw new ScriptParseError(context.lineNumber(), "Syntax '" + inputs[0].current()
                 .name() + "' cannot be deleted.");
         inputs[0].compile = false;
+        super.preCompile(context, match);
     }
     
     @Override

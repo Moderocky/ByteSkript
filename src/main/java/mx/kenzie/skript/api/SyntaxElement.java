@@ -5,10 +5,7 @@ import mx.kenzie.foundation.compiler.State;
 import mx.kenzie.skript.api.note.ForceBridge;
 import mx.kenzie.skript.api.note.ForceExtract;
 import mx.kenzie.skript.api.note.ForceInline;
-import mx.kenzie.skript.compiler.CommonTypes;
-import mx.kenzie.skript.compiler.Context;
-import mx.kenzie.skript.compiler.InlineController;
-import mx.kenzie.skript.compiler.Pattern;
+import mx.kenzie.skript.compiler.*;
 import mx.kenzie.skript.compiler.structure.PreVariable;
 
 import java.lang.reflect.Method;
@@ -53,6 +50,10 @@ public interface SyntaxElement {
     Method getHandler(HandlerType type);
     
     void setHandler(HandlerType type, Method method);
+    
+    default CompileState getSubState() {
+        return CompileState.STATEMENT;
+    }
     
     default boolean allowAsInputFor(Type type) {
         return type.equals(CommonTypes.OBJECT) || type.equals(getReturnType());

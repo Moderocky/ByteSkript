@@ -21,6 +21,15 @@ public abstract class Effect extends Element implements SyntaxElement {
     }
     
     @Override
+    public CompileState getSubState() {
+        return CompileState.STATEMENT; // looking for expressions here
+    }
+    
+    @Override
+    public void preCompile(Context context, Pattern.Match match) throws Throwable {
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
@@ -38,7 +47,7 @@ public abstract class Effect extends Element implements SyntaxElement {
     
     @Override
     public boolean allowAsInputFor(Type type) {
-        return false;
+        return true; // support meta-effects
     }
     
 }

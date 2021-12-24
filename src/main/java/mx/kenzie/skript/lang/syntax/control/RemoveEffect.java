@@ -18,7 +18,7 @@ public class RemoveEffect extends ControlEffect {
     }
     
     @Override
-    public void preCompile(Context context, Pattern.Match match) {
+    public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final ElementTree tree = context.getLine();
         final ElementTree[] inputs = tree.nested();
         assert inputs.length == 2;
@@ -30,6 +30,7 @@ public class RemoveEffect extends ControlEffect {
             throw new ScriptParseError(context.lineNumber(), "Syntax '" + inputs[0].current()
                 .name() + "' cannot be removed from.");
         inputs[1].compile = false;
+        super.preCompile(context, match);
     }
     
     @Override

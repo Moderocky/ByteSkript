@@ -53,21 +53,6 @@ public class VariableExpression extends SimpleExpression implements Referent {
     public Type getHolderType() {
         return CommonTypes.VOID;
     }
-
-//    @Override
-//    public void preCompile(Context context, Pattern.Match match) throws Throwable {
-//        final MethodBuilder method = context.getMethod();
-//        assert method != null;
-//        super.preCompile(context, match);
-//        final String name = match.matcher().group("name");
-//        final PreVariable variable = context.getVariable(name);
-//        final int slot = context.slotOf(variable);
-//         if (context.getHandlerMode().equals(StandardHandlers.ADD)) {
-//            method.writeCode(variable.load(slot));
-//        } else if (context.getHandlerMode().equals(StandardHandlers.REMOVE)) {
-//            method.writeCode(variable.load(slot));
-//        }
-//    }
     
     @Override
     public void compile(Context context, Pattern.Match match) {
