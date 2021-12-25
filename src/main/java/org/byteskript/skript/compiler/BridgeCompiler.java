@@ -18,8 +18,6 @@ import java.lang.invoke.*;
 import java.lang.reflect.Method;
 import java.util.Random;
 
-import static org.objectweb.asm.Opcodes.*;
-
 /**
  * The function call-site class compiler.
  * This cannot use {@link mx.kenzie.foundation} because it is required for
@@ -48,7 +46,7 @@ public class BridgeCompiler {
         final Class<?>[] parameters = target.getParameterTypes();
         final Class<?> expected = source.returnType();
         final Class<?> result = target.getReturnType();
-        if (arguments.length != parameters.length)
+        if (arguments.length != parameters.length) // todo dynamic?
             throw new ScriptRuntimeError("Function argument count did not match target parameter count.");
         final ClassWriter writer = new ClassWriter(0);
         writer.visit(Skript.JAVA_VERSION, 0x0001 | 0x1000, location, null, "java/lang/Object", null);
@@ -62,13 +60,18 @@ public class BridgeCompiler {
             final Class<?> parameter = parameters[i];
             visitor.visitVarInsn(20 + this.instructionOffset(argument), i);
             this.boxAtomic(visitor, parameter);
-            visitor.visitTypeInsn(CHECKCAST, Type.getInternalName(this.getUnboxingType(parameter)));
+            visitor.visitTypeInsn(192, Type.getInternalName(this.getUnboxingType(parameter)));
             this.unbox(visitor, parameter);
         }
         this.invoke(visitor);
-        this.box(visitor, result);
-        visitor.visitTypeInsn(CHECKCAST, Type.getInternalName(this.getWrapperType(expected)));
-        visitor.visitInsn(171 + this.instructionOffset(expected));
+        if (result == void.class) {
+            visitor.visitInsn(1);
+            visitor.visitInsn(176);
+        } else {
+            this.box(visitor, result);
+            visitor.visitTypeInsn(192, Type.getInternalName(this.getWrapperType(expected)));
+            visitor.visitInsn(171 + this.instructionOffset(expected));
+        }
         visitor.visitMaxs(Math.max(parameters.length + 1 + this.wideIndexOffset(parameters, result), 1), arguments.length);
         visitor.visitEnd();
         writer.visitEnd();
@@ -85,38 +88,7 @@ public class BridgeCompiler {
     //region Utilities
     protected void invoke(MethodVisitor visitor) {
         final boolean special = target.getDeclaringClass().isInterface();
-        visitor.visitMethodInsn(INVOKESTATIC, Type.getInternalName(target.getDeclaringClass()), target.getName(), Type.getMethodDescriptor(target), special);
-    }
-    
-    protected void doTypeConversion(MethodVisitor visitor, Class<?> from, Class<?> to) {
-        if (from == to) return;
-        if (from == void.class || to == void.class) return;
-        if (from.isPrimitive() && to.isPrimitive()) {
-            final int opcode;
-            if (from == float.class) {
-                if (to == double.class) opcode = F2D;
-                else if (to == long.class) opcode = F2L;
-                else opcode = F2I;
-            } else if (from == double.class) {
-                if (to == float.class) opcode = D2F;
-                else if (to == long.class) opcode = D2L;
-                else opcode = D2I;
-            } else if (from == long.class) {
-                if (to == float.class) opcode = L2F;
-                else if (to == double.class) opcode = L2D;
-                else opcode = L2I;
-            } else {
-                if (to == float.class) opcode = I2F;
-                else if (to == double.class) opcode = I2D;
-                else if (to == byte.class) opcode = I2B;
-                else if (to == short.class) opcode = I2S;
-                else if (to == char.class) opcode = I2C;
-                else opcode = I2L;
-            }
-            visitor.visitInsn(opcode);
-        } else if (from.isPrimitive() ^ to.isPrimitive()) {
-            throw new IllegalArgumentException("Type wrapping is currently unsupported due to side-effects: '" + from.getSimpleName() + "' -> '" + to.getSimpleName() + "'");
-        } else visitor.visitTypeInsn(CHECKCAST, Type.getInternalName(to));
+        visitor.visitMethodInsn(184, Type.getInternalName(target.getDeclaringClass()), target.getName(), Type.getMethodDescriptor(target), special);
     }
     
     protected Class<?> getUnboxingType(Class<?> primitive) {
@@ -143,48 +115,48 @@ public class BridgeCompiler {
     
     protected void boxAtomic(MethodVisitor visitor, Class<?> parameter) {
         if (parameter == AtomicVariable.class)
-            visitor.visitMethodInsn(INVOKESTATIC, Type.getInternalName(AtomicVariable.class), "wrap", "(Ljava/lang/Object;)" + Type.getDescriptor(AtomicVariable.class), false);
+            visitor.visitMethodInsn(184, Type.getInternalName(AtomicVariable.class), "wrap", "(Ljava/lang/Object;)" + Type.getDescriptor(AtomicVariable.class), false);
         else
-            visitor.visitMethodInsn(INVOKESTATIC, Type.getInternalName(AtomicVariable.class), "unwrap", "(Ljava/lang/Object;)Ljava/lang/Object;", false);
+            visitor.visitMethodInsn(184, Type.getInternalName(AtomicVariable.class), "unwrap", "(Ljava/lang/Object;)Ljava/lang/Object;", false);
     }
     
     protected void unbox(MethodVisitor visitor, Class<?> parameter) {
         final String source = Type.getInternalName(OperatorHandler.class);
         if (parameter == byte.class)
-            visitor.visitMethodInsn(INVOKESTATIC, source, "unboxB", "(Ljava/lang/Number;)B", false);
+            visitor.visitMethodInsn(184, source, "unboxB", "(Ljava/lang/Number;)B", false);
         if (parameter == short.class)
-            visitor.visitMethodInsn(INVOKESTATIC, source, "unboxS", "(Ljava/lang/Number;)S", false);
+            visitor.visitMethodInsn(184, source, "unboxS", "(Ljava/lang/Number;)S", false);
         if (parameter == int.class)
-            visitor.visitMethodInsn(INVOKESTATIC, source, "unboxI", "(Ljava/lang/Number;)I", false);
+            visitor.visitMethodInsn(184, source, "unboxI", "(Ljava/lang/Number;)I", false);
         if (parameter == long.class)
-            visitor.visitMethodInsn(INVOKESTATIC, source, "unboxJ", "(Ljava/lang/Number;)J", false);
+            visitor.visitMethodInsn(184, source, "unboxJ", "(Ljava/lang/Number;)J", false);
         if (parameter == float.class)
-            visitor.visitMethodInsn(INVOKESTATIC, source, "unboxF", "(Ljava/lang/Number;)F", false);
+            visitor.visitMethodInsn(184, source, "unboxF", "(Ljava/lang/Number;)F", false);
         if (parameter == double.class)
-            visitor.visitMethodInsn(INVOKESTATIC, source, "unboxD", "(Ljava/lang/Number;)D", false);
+            visitor.visitMethodInsn(184, source, "unboxD", "(Ljava/lang/Number;)D", false);
         if (parameter == boolean.class)
-            visitor.visitMethodInsn(INVOKESTATIC, source, "unbox", "(Ljava/lang/Boolean;)Z", false);
+            visitor.visitMethodInsn(184, source, "unbox", "(Ljava/lang/Boolean;)Z", false);
         if (parameter == char.class)
-            visitor.visitMethodInsn(INVOKESTATIC, source, "unbox", "(Ljava/lang/Character;)C", false);
+            visitor.visitMethodInsn(184, source, "unbox", "(Ljava/lang/Character;)C", false);
     }
     
     protected void box(MethodVisitor visitor, Class<?> value) {
         if (value == byte.class)
-            visitor.visitMethodInsn(INVOKESTATIC, Type.getInternalName(Byte.class), "valueOf", "(B)Ljava/lang/Byte;", false);
+            visitor.visitMethodInsn(184, Type.getInternalName(Byte.class), "valueOf", "(B)Ljava/lang/Byte;", false);
         if (value == short.class)
-            visitor.visitMethodInsn(INVOKESTATIC, Type.getInternalName(Short.class), "valueOf", "(S)Ljava/lang/Short;", false);
+            visitor.visitMethodInsn(184, Type.getInternalName(Short.class), "valueOf", "(S)Ljava/lang/Short;", false);
         if (value == int.class)
-            visitor.visitMethodInsn(INVOKESTATIC, Type.getInternalName(Integer.class), "valueOf", "(I)Ljava/lang/Integer;", false);
+            visitor.visitMethodInsn(184, Type.getInternalName(Integer.class), "valueOf", "(I)Ljava/lang/Integer;", false);
         if (value == long.class)
-            visitor.visitMethodInsn(INVOKESTATIC, Type.getInternalName(Long.class), "valueOf", "(J)Ljava/lang/Long;", false);
+            visitor.visitMethodInsn(184, Type.getInternalName(Long.class), "valueOf", "(J)Ljava/lang/Long;", false);
         if (value == float.class)
-            visitor.visitMethodInsn(INVOKESTATIC, Type.getInternalName(Float.class), "valueOf", "(F)Ljava/lang/Float;", false);
+            visitor.visitMethodInsn(184, Type.getInternalName(Float.class), "valueOf", "(F)Ljava/lang/Float;", false);
         if (value == double.class)
-            visitor.visitMethodInsn(INVOKESTATIC, Type.getInternalName(Double.class), "valueOf", "(D)Ljava/lang/Double;", false);
+            visitor.visitMethodInsn(184, Type.getInternalName(Double.class), "valueOf", "(D)Ljava/lang/Double;", false);
         if (value == boolean.class)
-            visitor.visitMethodInsn(INVOKESTATIC, Type.getInternalName(Boolean.class), "valueOf", "(Z)Ljava/lang/Boolean;", false);
+            visitor.visitMethodInsn(184, Type.getInternalName(Boolean.class), "valueOf", "(Z)Ljava/lang/Boolean;", false);
         if (value == void.class)
-            visitor.visitInsn(ACONST_NULL);
+            visitor.visitInsn(1);
     }
     
     protected int wideIndexOffset(Class<?>[] params, Class<?> ret) {

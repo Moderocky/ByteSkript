@@ -6,6 +6,8 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.mirror.MethodAccessor;
+import mx.kenzie.mirror.Mirror;
 import org.byteskript.skript.compiler.BridgeCompiler;
 import org.byteskript.skript.error.ScriptRuntimeError;
 
@@ -24,6 +26,12 @@ public class Metafactory {
         if (generated == null)
             throw new ScriptRuntimeError("Unable to generate function dynamic bridge during bootstrap phase.");
         return compiler.getCallSite();
+    }
+    
+    public static Object callFunction(String name, Object target, Object[] parameters) {
+        final MethodAccessor<Object> accessor = Mirror.of(target).method(name, parameters);
+        if (accessor == null) throw new ScriptRuntimeError("Unable to find function '" + name + "' from " + target);
+        return accessor.invoke(parameters);
     }
     
     public static CallSite lambda(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner) throws Exception {
@@ -48,10 +56,8 @@ public class Metafactory {
         }
         for (final Method method : methods) {
             if (!Modifier.isStatic(method.getModifiers())) continue; // can only hit statics for now
-            System.out.println(method); // todo
             if (!method.getName().equals(name)) continue;
             if (parameters.length == method.getParameterCount()) return method;
-            else System.out.println(method); // todo
         }
         throw new ScriptRuntimeError("Unable to find function '" + name + Arrays.toString(parameters).replace('[', '(')
             .replace(']', ')') + "'");

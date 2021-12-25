@@ -6,23 +6,23 @@
 
 package org.byteskript.skript.lang.syntax.function;
 
-import mx.kenzie.foundation.MethodBuilder;
-import mx.kenzie.foundation.Type;
+import mx.kenzie.foundation.*;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.*;
-import org.byteskript.skript.compiler.structure.Function;
 import org.byteskript.skript.lang.element.StandardElements;
+import org.byteskript.skript.runtime.internal.Metafactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 
-public class ExternalFunctionExpression extends SimpleExpression {
+public class PropertyFunctionExpression extends SimpleExpression {
     
-    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")\\((?<params>.*)\\) from (?<location>.+)");
+    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")\\((?<params>.*)\\) from (?<object>.+)");
     
-    public ExternalFunctionExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "function(...) from ...");
+    public PropertyFunctionExpression() {
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "function(...) from object");
     }
     
     @Override
@@ -42,7 +42,13 @@ public class ExternalFunctionExpression extends SimpleExpression {
         for (final ElementTree tree : context.getCompileCurrent().nested()) {
             tree.takeAtomic = true;
         }
-        super.preCompile(context, match);
+        final String name = ((FunctionDetails) match.meta()).name();
+        context.getMethod().writeCode(WriteInstruction.loadConstant(name)); // ldc name
+        final ElementTree[] nested = context.getCompileCurrent().nested();
+        if (nested.length < 2) return;
+        final ElementTree tree = nested[nested.length - 1]; // swap object order before array pack
+        System.arraycopy(nested, 0, nested, 1, nested.length - 1);
+        nested[0] = tree;
     }
     
     @Override
@@ -51,38 +57,47 @@ public class ExternalFunctionExpression extends SimpleExpression {
         assert method != null;
         final FunctionDetails details = ((FunctionDetails) match.meta());
         assert details != null;
-        final Type location = new Type(details.location);
-//        method.writeCode(WriteInstruction.invokeStatic(location, CommonTypes.OBJECT, details.name, parameters));
-        
-        final Function function = new Function(details.name, location, CommonTypes.OBJECT, details.arguments);
-        method.writeCode(function.invoke(context.getType().internalName()));
+        final int expected = context.getCompileCurrent().nested().length - 1; // DON'T pack source
+        final ClassBuilder builder = context.getBuilder();
+        final Type[] parameters = new Type[expected];
+        Arrays.fill(parameters, CommonTypes.OBJECT);
+        final MethodErasure erasure = new MethodErasure(CommonTypes.OBJECTS, "lambda$packArray", parameters);
+        if (!builder.hasMatching(erasure)) {
+            final MethodBuilder target = builder.addMatching(erasure)
+                .setModifiers(0x00000002 | 0x00000008 | 0x00001000);
+            target.writeCode(WriteInstruction.newArray(Object.class, parameters.length));
+            for (int i = 0; i < parameters.length; i++) {
+                target.writeCode(WriteInstruction.duplicate());
+                target.writeCode(WriteInstruction.loadObject(i));
+                target.writeCode(WriteInstruction.arrayStoreObject(i));
+            }
+            target.writeCode(WriteInstruction.returnObject());
+        }
+        method.writeCode(WriteInstruction.invokeStatic(builder.getType(), erasure)); // pack array
+        this.writeCall(method, findMethod(Metafactory.class, "callFunction", String.class, Object.class, Object[].class), context);
     }
     
-    private record FunctionDetails(String name, Type[] arguments, String location) {
+    private record FunctionDetails(String name, Type[] arguments) {
     }
-    
-    private final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("^" + SkriptLangSpec.IDENTIFIER.pattern() + "(?:/" + SkriptLangSpec.IDENTIFIER.pattern() + ")*$");
     
     private Pattern.Match createMatch(String thing, Context context) {
         final Matcher matcher = PATTERN.matcher(thing);
         if (!matcher.find()) return null;
         final String name = matcher.group("name");
         final String params = matcher.group("params");
-        final String location = matcher.group("location");
-        if (!pattern.matcher(location).matches()) return null;
-        if (location.contains("\"")) return null;
         final Type[] parameters = getParams(params);
-        final Matcher dummy = java.util.regex.Pattern.compile(buildDummyPattern(name, parameters.length, location))
+        final Matcher dummy = java.util.regex.Pattern.compile(buildDummyPattern(name, parameters.length))
             .matcher(thing);
         dummy.find();
         final List<Type> types = new ArrayList<>();
         for (int i = 0; i < parameters.length; i++) {
             types.add(CommonTypes.OBJECT);
         }
-        return new Pattern.Match(dummy, new FunctionDetails(name, parameters, location), types.toArray(new Type[0]));
+        types.add(CommonTypes.OBJECT);
+        return new Pattern.Match(dummy, new FunctionDetails(name, parameters), types.toArray(new Type[0]));
     }
     
-    private String buildDummyPattern(String name, int params, String location) {
+    private String buildDummyPattern(String name, int params) {
         final StringBuilder builder = new StringBuilder()
             .append(name).append("\\(");
         if (params > 0) {
@@ -91,7 +106,7 @@ public class ExternalFunctionExpression extends SimpleExpression {
                 builder.append("(.+)");
             }
         }
-        return builder.append("\\) from ").append(location).toString();
+        return builder.append("\\) from (.+)").toString();
     }
     
     private Type[] getParams(String params) {
