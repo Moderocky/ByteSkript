@@ -38,8 +38,7 @@ public class NoArgsFunctionMember extends TriggerHolder {
     
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
-        context.registerFunction(new Function(context.getMethod().getErasure()
-            .name(), context.getType()));
+        context.registerFunction(new Function(context.getType(), context.getMethod().getErasure()));
         super.onSectionExit(context, meta);
     }
     

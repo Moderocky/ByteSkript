@@ -45,8 +45,8 @@ public class NoArgsFunctionExpression extends SimpleExpression {
         final MethodBuilder method = context.getMethod();
         assert method != null;
         final String name = (String) match.meta();
-        final Function function = context.getDefaultFunction(name);
-        method.writeCode(function.invoke(0));
+        final Function function = context.getDefaultFunction(name, 0);
+        method.writeCode(function.invoke(context.getType().internalName()));
     }
     
 }

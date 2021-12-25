@@ -43,8 +43,7 @@ public class FunctionMember extends TriggerHolder {
     
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
-        context.registerFunction(new Function(context.getMethod().getErasure()
-            .name(), context.getType()));
+        context.registerFunction(new Function(context.getType(), context.getMethod().getErasure()));
         super.onSectionExit(context, meta);
     }
     
@@ -79,8 +78,10 @@ public class FunctionMember extends TriggerHolder {
             if (name.isEmpty()) throw new ScriptParseError(context.lineNumber(), "Empty function parameter.");
             final PreVariable variable = context.getVariable(name);
             variable.parameter = true;
-            if (name.charAt(0) == '@') variable.atomic = true;
-            types.add(CommonTypes.OBJECT);
+            if (name.charAt(0) == '@') {
+                variable.atomic = true;
+                types.add(CommonTypes.ATOMIC);
+            } else types.add(CommonTypes.OBJECT);
         }
         return types.toArray(new Type[0]);
     }

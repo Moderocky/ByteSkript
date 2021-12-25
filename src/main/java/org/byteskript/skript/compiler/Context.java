@@ -15,10 +15,7 @@ import org.byteskript.skript.api.SyntaxElement;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.compiler.structure.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class Context {
@@ -162,14 +159,16 @@ public abstract class Context {
         }
     }
     
-    public abstract boolean hasFunction(String name);
+    public abstract boolean hasFunction(String name, int arguments);
     
-    public abstract Function getFunction(String name);
+    public abstract Function getFunction(String name, int arguments);
     
-    public Function getDefaultFunction(String name) {
-        final Function function = getFunction(name);
-        if (function == null) return new Function(name, getType());
-        return function;
+    public Function getDefaultFunction(String name, int arguments) {
+        final Function function = getFunction(name, arguments);
+        if (function != null) return function;
+        final Type[] types = new Type[arguments];
+        Arrays.fill(types, CommonTypes.OBJECT); // assert all types are actually object :)
+        return new Function(name, getType(), CommonTypes.OBJECT, types);
     }
     
     public abstract void registerFunction(Function function);

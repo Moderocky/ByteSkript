@@ -30,6 +30,7 @@ import java.util.concurrent.*;
 public final class Skript {
     
     public static final ThreadGroup THREAD_GROUP = new ThreadGroup("skript");
+    public static final int JAVA_VERSION = 61;
     private static Skript skript;
     private static ExecutorService executor;
     static SkriptThreadProvider factory;

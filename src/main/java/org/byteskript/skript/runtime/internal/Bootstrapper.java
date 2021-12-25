@@ -24,6 +24,14 @@ import static org.objectweb.asm.Opcodes.*;
  */
 public final class Bootstrapper {
     
+    public static Handle getBootstrapFunction() {
+        try {
+            return getHandle(Bootstrapper.class.getMethod("bootstrapFunction", MethodHandles.Lookup.class, String.class, MethodType.class, String.class, Class.class, String.class));
+        } catch (Throwable ex) {
+            throw new ScriptBootstrapError(ex);
+        }
+    }
+    
     public static Handle getBootstrap(final boolean isDynamic, final boolean isPrivate) {
         try {
             if (isPrivate) {
@@ -59,6 +67,16 @@ public final class Bootstrapper {
             .append(")")
             .append(ret.descriptorString());
         return builder.toString();
+    }
+    
+    public static CallSite bootstrapFunction(MethodHandles.Lookup caller, String name, MethodType type, String source, Class<?> owner, String args)
+        throws Exception {
+        final org.objectweb.asm.Type[] types = org.objectweb.asm.Type.getArgumentTypes(args);
+        final Class<?>[] arguments = new Class[types.length];
+        for (int i = 0; i < types.length; i++) {
+            arguments[i] = Class.forName(types[i].getClassName());
+        }
+        return Metafactory.createBridge(caller, name, type, source, owner, arguments);
     }
     
     public static CallSite bootstrap(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner) throws Exception {

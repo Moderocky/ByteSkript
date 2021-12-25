@@ -9,6 +9,7 @@ package org.byteskript.skript.compiler;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.Event;
 import org.byteskript.skript.api.Referent;
+import org.byteskript.skript.runtime.type.AtomicVariable;
 import org.byteskript.skript.runtime.type.Executable;
 
 import java.io.InputStream;
@@ -46,6 +47,7 @@ public class CommonTypes {
     public static final Type SUPPLIER = new Type(Supplier.class);
     public static final Type EXECUTABLE = new Type(Executable.class);
     
+    public static final Type ATOMIC = new Type(AtomicVariable.class);
     public static final Type METHOD = new Type(Method.class);
     public static final Type FIELD = new Type(Field.class);
     public static final Type INPUT_STREAM = new Type(InputStream.class);
