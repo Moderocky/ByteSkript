@@ -8,6 +8,7 @@ package org.byteskript.skript.compiler;
 
 import org.byteskript.skript.error.ScriptRuntimeError;
 import org.byteskript.skript.runtime.Skript;
+import org.byteskript.skript.runtime.internal.OperatorHandler;
 import org.byteskript.skript.runtime.type.AtomicVariable;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
@@ -61,7 +62,7 @@ public class BridgeCompiler {
             final Class<?> parameter = parameters[i];
             visitor.visitVarInsn(20 + this.instructionOffset(argument), i);
             this.boxAtomic(visitor, parameter);
-            visitor.visitTypeInsn(CHECKCAST, Type.getInternalName(this.getWrapperType(parameter)));
+            visitor.visitTypeInsn(CHECKCAST, Type.getInternalName(this.getUnboxingType(parameter)));
             this.unbox(visitor, parameter);
         }
         this.invoke(visitor);
@@ -118,13 +119,23 @@ public class BridgeCompiler {
         } else visitor.visitTypeInsn(CHECKCAST, Type.getInternalName(to));
     }
     
+    protected Class<?> getUnboxingType(Class<?> primitive) {
+        if (!primitive.isPrimitive()) return primitive;
+        if (primitive == boolean.class) return Boolean.class;
+        if (primitive == void.class) return Void.class;
+        if (primitive == char.class) return Character.class;
+        return Number.class;
+    }
+    
     protected Class<?> getWrapperType(Class<?> primitive) {
+        if (!primitive.isPrimitive()) return primitive;
         if (primitive == byte.class) return Byte.class;
         if (primitive == short.class) return Short.class;
         if (primitive == int.class) return Integer.class;
         if (primitive == long.class) return Long.class;
         if (primitive == float.class) return Float.class;
         if (primitive == double.class) return Double.class;
+        if (primitive == char.class) return Character.class;
         if (primitive == boolean.class) return Boolean.class;
         if (primitive == void.class) return Void.class;
         return primitive;
@@ -138,20 +149,23 @@ public class BridgeCompiler {
     }
     
     protected void unbox(MethodVisitor visitor, Class<?> parameter) {
+        final String source = Type.getInternalName(OperatorHandler.class);
         if (parameter == byte.class)
-            visitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(Byte.class), "byteValue", "()B", false);
+            visitor.visitMethodInsn(INVOKESTATIC, source, "unboxB", "(Ljava/lang/Number;)B", false);
         if (parameter == short.class)
-            visitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(Short.class), "shortValue", "()S", false);
+            visitor.visitMethodInsn(INVOKESTATIC, source, "unboxS", "(Ljava/lang/Number;)S", false);
         if (parameter == int.class)
-            visitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(Integer.class), "intValue", "()I", false);
+            visitor.visitMethodInsn(INVOKESTATIC, source, "unboxI", "(Ljava/lang/Number;)I", false);
         if (parameter == long.class)
-            visitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(Long.class), "longValue", "()J", false);
+            visitor.visitMethodInsn(INVOKESTATIC, source, "unboxJ", "(Ljava/lang/Number;)J", false);
         if (parameter == float.class)
-            visitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(Float.class), "floatValue", "()F", false);
+            visitor.visitMethodInsn(INVOKESTATIC, source, "unboxF", "(Ljava/lang/Number;)F", false);
         if (parameter == double.class)
-            visitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(Double.class), "doubleValue", "()D", false);
+            visitor.visitMethodInsn(INVOKESTATIC, source, "unboxD", "(Ljava/lang/Number;)D", false);
         if (parameter == boolean.class)
-            visitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(Boolean.class), "booleanValue", "()Z", false);
+            visitor.visitMethodInsn(INVOKESTATIC, source, "unbox", "(Ljava/lang/Boolean;)Z", false);
+        if (parameter == char.class)
+            visitor.visitMethodInsn(INVOKESTATIC, source, "unbox", "(Ljava/lang/Character;)C", false);
     }
     
     protected void box(MethodVisitor visitor, Class<?> value) {

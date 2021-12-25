@@ -11,8 +11,49 @@ import org.byteskript.skript.error.ScriptRuntimeError;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * Operator handler methods invoked by syntax internally.
+ * <p>
+ * The boxing methods are used for null=0 handling by the bridge compiler.
+ */
 public class OperatorHandler {
     
+    //region Unboxing
+    public static byte unboxB(Number value) {
+        return value.byteValue();
+    }
+    
+    public static short unboxS(Number value) {
+        return value.shortValue();
+    }
+    
+    public static int unboxI(Number value) {
+        if (value == null) return 0;
+        return value.intValue();
+    }
+    
+    public static long unboxJ(Number value) {
+        return value.longValue();
+    }
+    
+    public static float unboxF(Number value) {
+        return value.floatValue();
+    }
+    
+    public static double unboxD(Number value) {
+        return value.doubleValue();
+    }
+    
+    public static char unbox(Character value) {
+        return value;
+    }
+    
+    public static boolean unbox(Boolean value) {
+        return value;
+    }
+    //endregion
+    
+    //region Generic
     public static String concat(String... strings) {
         final StringBuilder builder = new StringBuilder();
         for (String string : strings) {
@@ -33,6 +74,7 @@ public class OperatorHandler {
         if (thing == null) return Collections.emptyIterator();
         return Collections.singletonList(thing).iterator();
     }
+    //endregion
     
     //region Calculations
     public static Object add(Object a, Object b) {

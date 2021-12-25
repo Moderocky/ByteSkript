@@ -11,82 +11,64 @@ public final class skript {
     //region Maths
     
     //region Trigonometry
-    public static double acos(Object object) {
-        if (object == null) return 90;
-        if (object instanceof Number number) return Math.toDegrees(Math.acos(number.doubleValue()));
-        throw new ScriptRuntimeError("Unable to acos(" + object + ") - not a number.");
+    public static double acos(double number) {
+        if (number == 0) return 90;
+        return Math.toDegrees(Math.acos(number));
     }
     
-    public static double asin(Object object) {
-        if (object == null) return 0;
-        if (object instanceof Number number) return Math.toDegrees(Math.asin(number.doubleValue()));
-        throw new ScriptRuntimeError("Unable to asin(" + object + ") - not a number.");
+    public static double asin(double number) {
+        if (number == 0) return 0;
+        return Math.toDegrees(Math.asin(number));
     }
     
-    public static double atan(Object object) {
-        if (object == null) return 0;
-        if (object instanceof Number number) return Math.toDegrees(Math.atan(number.doubleValue()));
-        throw new ScriptRuntimeError("Unable to atan(" + object + ") - not a number.");
+    public static double atan(double number) {
+        if (number == 0) return 0;
+        return Math.toDegrees(Math.atan(number));
     }
     
-    public static double atan2(Object rawX, Object rawY) {
-        double x, y;
-        if (rawX == null) x = 0;
-        else if (rawX instanceof Number number) x = number.doubleValue();
-        else throw new ScriptRuntimeError("Unable to atan2(" + rawX + ") - not a number.");
-        if (rawY == null) y = 0;
-        else if (rawY instanceof Number number) y = number.doubleValue();
-        else throw new ScriptRuntimeError("Unable to atan2(" + rawY + ") - not a number.");
+    public static double atan2(double x, double y) {
         return Math.toDegrees(Math.atan2(y, x));
     }
     
-    public static double cos(Object object) {
-        if (object == null) return 1;
-        if (object instanceof Number number) return Math.cos(Math.toRadians(number.doubleValue()));
-        throw new ScriptRuntimeError("Unable to cos(" + object + ") - not a number.");
+    public static double cos(double number) {
+        if (number == 0) return 1;
+        return Math.cos(Math.toRadians(number));
     }
     
-    public static double cosh(Object object) {
-        if (object == null) return 1;
-        if (object instanceof Number number) return Math.toDegrees(Math.cosh(Math.toRadians(number.doubleValue())));
-        throw new ScriptRuntimeError("Unable to cosh(" + object + ") - not a number.");
+    public static double cosh(double number) {
+        if (number == 0) return 1;
+        return Math.toDegrees(Math.cosh(Math.toRadians(number)));
     }
     
-    public static double sin(Object object) {
-        if (object == null) return 0;
-        if (object instanceof Number number) return Math.sin(Math.toRadians(number.doubleValue()));
-        throw new ScriptRuntimeError("Unable to sin(" + object + ") - not a number.");
+    public static double sin(double number) {
+        if (number == 0) return 0;
+        return Math.sin(Math.toRadians(number));
     }
     
-    public static double sinh(Object object) {
-        if (object == null) return 0;
-        if (object instanceof Number number) return Math.toDegrees(Math.sinh(Math.toRadians(number.doubleValue())));
-        throw new ScriptRuntimeError("Unable to sinh(" + object + ") - not a number.");
+    public static double sinh(double number) {
+        if (number == 0) return 0;
+        return Math.toDegrees(Math.sinh(Math.toRadians(number)));
     }
     
-    public static double tan(Object object) {
-        if (object == null) return 0;
-        if (object instanceof Number number) return Math.tan(Math.toRadians(number.doubleValue()));
-        throw new ScriptRuntimeError("Unable to tan(" + object + ") - not a number.");
+    public static double tan(double number) {
+        if (number == 0) return 0;
+        return Math.tan(Math.toRadians(number));
     }
     
-    public static double tanh(Object object) {
-        if (object == null) return 0;
-        if (object instanceof Number number) return Math.toDegrees(Math.tanh(Math.toRadians(number.doubleValue())));
-        throw new ScriptRuntimeError("Unable to tanh(" + object + ") - not a number.");
+    public static double tanh(double number) {
+        if (number == 0) return 0;
+        return Math.toDegrees(Math.tanh(Math.toRadians(number)));
     }
     //endregion
     
-    public static double to_degrees(Object object) {
-        if (object == null) return 0;
-        if (object instanceof Number number) return Math.toDegrees(number.doubleValue());
-        throw new ScriptRuntimeError("Unable to to_degrees(" + object + ") - not a number.");
+    public static double to_degrees(double number) {
+        if (number == 0) return 0;
+        return Math.toDegrees(number);
     }
     
-    public static double to_radians(Object object) {
-        if (object == null) return 0;
-        if (object instanceof Number number) return Math.toRadians(number.doubleValue());
-        throw new ScriptRuntimeError("Unable to to_radians(" + object + ") - not a number.");
+    public static double to_radians(double number) {
+        if (number == 0) return 0;
+        return Math.toRadians(number);
     }
     
     public static Number abs(Object object) {
@@ -100,17 +82,16 @@ public final class skript {
         throw new ScriptRuntimeError("Unable to abs(" + object + ") - not a number.");
     }
     
-    public static double sqrt(Object object) {
-        if (object == null) return 0;
-        if (object instanceof Number number) return Math.sqrt(number.doubleValue());
-        throw new ScriptRuntimeError("Unable to sqrt(" + object + ") - not a number.");
+    public static double sqrt(double number) {
+        if (number == 0) return 0;
+        return Math.sqrt(number);
     }
     
     public static double newton_root(Object object, Object accuracy) {
         if (object == null) return 0;
         final int times = (accuracy instanceof Number number) ? number.intValue() : 1;
         if (!(object instanceof Number number))
-            throw new ScriptRuntimeError("Unable to sqrt(" + object + ") - not a number.");
+            throw new ScriptRuntimeError("Unable to root(" + object + ") - not a number.");
         final double value = number.doubleValue();
         double result = Double.longBitsToDouble(((Double.doubleToLongBits(value) - (1L << 52)) >> 1) + (1L << 61));
         for (int i = 0; i < times; i++) {
@@ -119,23 +100,19 @@ public final class skript {
         return result;
     }
     
-    public static double ceil(Object object) {
-        if (object == null) return 0;
-        if (object instanceof Number number) return Math.ceil(number.doubleValue());
-        throw new ScriptRuntimeError("Unable to ceil(" + object + ") - not a number.");
+    public static double ceil(double number) {
+        if (number == 0) return 0;
+        return Math.ceil(number);
     }
     
-    public static double floor(Object object) {
-        if (object == null) return 0;
-        if (object instanceof Number number) return Math.floor(number.doubleValue());
-        throw new ScriptRuntimeError("Unable to floor(" + object + ") - not a number.");
+    public static double floor(double number) {
+        if (number == 0) return 0;
+        return Math.floor(number);
     }
     
-    public static long round(Object object) {
-        if (object == null) return 0;
-        if (object instanceof Float number) return Math.round(number.doubleValue());
-        if (object instanceof Number number) return Math.round(number.doubleValue());
-        throw new ScriptRuntimeError("Unable to round(" + object + ") - not a number.");
+    public static int round(double number) {
+        if (number == 0) return 0;
+        return (int) Math.round(number);
     }
     
     public static double ln(Object object) {

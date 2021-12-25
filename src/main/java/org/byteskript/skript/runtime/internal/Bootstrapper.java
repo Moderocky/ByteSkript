@@ -69,12 +69,27 @@ public final class Bootstrapper {
         return builder.toString();
     }
     
+    private static Class<?> getClass(String name) throws ClassNotFoundException {
+        return switch (name) {
+            case "boolean" -> boolean.class;
+            case "char" -> char.class;
+            case "void" -> void.class;
+            case "byte" -> byte.class;
+            case "short" -> short.class;
+            case "int" -> int.class;
+            case "long" -> long.class;
+            case "float" -> float.class;
+            case "double" -> double.class;
+            default -> Class.forName(name);
+        };
+    }
+    
     public static CallSite bootstrapFunction(MethodHandles.Lookup caller, String name, MethodType type, String source, Class<?> owner, String args)
         throws Exception {
         final org.objectweb.asm.Type[] types = org.objectweb.asm.Type.getArgumentTypes(args);
         final Class<?>[] arguments = new Class[types.length];
         for (int i = 0; i < types.length; i++) {
-            arguments[i] = Class.forName(types[i].getClassName());
+            arguments[i] = getClass(types[i].getClassName());
         }
         return Metafactory.createBridge(caller, name, type, source, owner, arguments);
     }
