@@ -30,6 +30,6 @@ public class ScriptRuntimeError extends Error {
     
     @Override
     public synchronized Throwable fillInStackTrace() {
-        return this;
+        return super.fillInStackTrace();
     }
 }

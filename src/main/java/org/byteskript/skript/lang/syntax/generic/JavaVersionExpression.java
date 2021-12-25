@@ -15,6 +15,7 @@ import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
+import org.byteskript.skript.runtime.Skript;
 
 public class JavaVersionExpression extends SimpleExpression {
     
@@ -36,7 +37,7 @@ public class JavaVersionExpression extends SimpleExpression {
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        method.writeCode(WriteInstruction.loadConstant(SkriptLangSpec.JAVA_VERSION.version));
+        method.writeCode(WriteInstruction.loadConstant(Skript.JAVA_VERSION));
         method.writeCode(WriteInstruction.invokeStatic(Integer.class.getMethod("valueOf", int.class)));
     }
     

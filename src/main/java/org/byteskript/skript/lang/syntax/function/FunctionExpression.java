@@ -50,8 +50,8 @@ public class FunctionExpression extends SimpleExpression {
         final MethodBuilder method = context.getMethod();
         assert method != null;
         final FunctionDetails details = ((FunctionDetails) match.meta());
-        final Function function = context.getDefaultFunction(details.name);
-        method.writeCode(function.invoke(details.arguments));
+        final Function function = context.getDefaultFunction(details.name, details.arguments);
+        method.writeCode(function.invoke(context.getType().internalName()));
     }
     
     private record FunctionDetails(String name, int arguments) {

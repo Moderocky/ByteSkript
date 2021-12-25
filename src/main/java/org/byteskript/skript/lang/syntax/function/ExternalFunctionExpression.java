@@ -8,13 +8,12 @@ package org.byteskript.skript.lang.syntax.function;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
-import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.*;
+import org.byteskript.skript.compiler.structure.Function;
 import org.byteskript.skript.lang.element.StandardElements;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 
@@ -52,13 +51,14 @@ public class ExternalFunctionExpression extends SimpleExpression {
         assert method != null;
         final FunctionDetails details = ((FunctionDetails) match.meta());
         assert details != null;
-        final Type[] parameters = new Type[details.arguments];
-        Arrays.fill(parameters, CommonTypes.OBJECT);
         final Type location = new Type(details.location);
-        method.writeCode(WriteInstruction.invokeStatic(location, CommonTypes.OBJECT, details.name, parameters));
+//        method.writeCode(WriteInstruction.invokeStatic(location, CommonTypes.OBJECT, details.name, parameters));
+        
+        final Function function = new Function(details.name, location, CommonTypes.OBJECT, details.arguments);
+        method.writeCode(function.invoke(context.getType().internalName()));
     }
     
-    private record FunctionDetails(String name, int arguments, String location) {
+    private record FunctionDetails(String name, Type[] arguments, String location) {
     }
     
     private Pattern.Match createMatch(String thing, Context context) {
@@ -68,14 +68,15 @@ public class ExternalFunctionExpression extends SimpleExpression {
         final String params = matcher.group("params");
         final String location = matcher.group("location");
         if (location.contains("\"")) return null;
-        final int count = getParams(params);
-        final Matcher dummy = java.util.regex.Pattern.compile(buildDummyPattern(name, count, location)).matcher(thing);
+        final Type[] parameters = getParams(params);
+        final Matcher dummy = java.util.regex.Pattern.compile(buildDummyPattern(name, parameters.length, location))
+            .matcher(thing);
         dummy.find();
         final List<Type> types = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < parameters.length; i++) {
             types.add(CommonTypes.OBJECT);
         }
-        return new Pattern.Match(dummy, new FunctionDetails(name, count, location), types.toArray(new Type[0]));
+        return new Pattern.Match(dummy, new FunctionDetails(name, parameters, location), types.toArray(new Type[0]));
     }
     
     private String buildDummyPattern(String name, int params, String location) {
@@ -90,16 +91,26 @@ public class ExternalFunctionExpression extends SimpleExpression {
         return builder.append("\\) from ").append(location).toString();
     }
     
-    private int getParams(String params) {
-        if (params.isBlank()) return 0;
+    private Type[] getParams(String params) {
+        if (params.isBlank()) return new Type[0];
         int nest = 0;
+        final List<Type> types = new ArrayList<>();
         int count = 1;
+        boolean atomic = false;
         for (char c : params.toCharArray()) {
             if (c == '(') nest++;
             else if (c == ')') nest--;
-            else if (c == ',' && nest < 1) count++;
+            else if (c == '@' && nest < 1) atomic = true;
+            else if (c == ',' && nest < 1) {
+                count++;
+                if (atomic) types.add(CommonTypes.ATOMIC);
+                else types.add(CommonTypes.OBJECT);
+                atomic = false;
+            }
         }
-        return count;
+        if (atomic) types.add(CommonTypes.ATOMIC);
+        else types.add(CommonTypes.OBJECT);
+        return types.toArray(new Type[0]);
     }
     
 }

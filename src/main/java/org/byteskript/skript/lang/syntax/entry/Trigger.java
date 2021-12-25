@@ -18,7 +18,6 @@ import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.compiler.structure.TriggerTree;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.runtime.type.AtomicVariable;
-import org.objectweb.asm.Opcodes;
 
 public class Trigger extends Section {
     
@@ -80,15 +79,7 @@ public class Trigger extends Section {
                     }
                 }
                 if (variable.parameter) {
-                    if (variable.atomic) {
-                        visitor.visitVarInsn(Opcodes.ALOAD, i);
-                        wrap.accept(writer, visitor);
-                        visitor.visitVarInsn(Opcodes.ASTORE, i);
-                    } else {
-                        visitor.visitVarInsn(Opcodes.ALOAD, i);
-                        unwrap.accept(writer, visitor);
-                        visitor.visitVarInsn(Opcodes.ASTORE, i);
-                    }
+                    // this is handled by the dynamic callsite now
                 }
                 i++;
             }

@@ -60,10 +60,9 @@ public class FileContext extends Context {
             final Class<?> skript = Class.forName("skript");
             final Type owner = new Type(skript);
             for (final Method method : Class.forName("skript").getMethods()) {
-                if (method.getReturnType() != Object.class) continue;
-                if (!Modifier.isPublic(method.getModifiers())) continue;
                 if (!Modifier.isStatic(method.getModifiers())) continue;
-                this.functions.add(new Function(method.getName(), owner));
+                if (!Modifier.isPublic(method.getModifiers())) continue;
+                this.functions.add(new Function(method.getName(), owner, CommonTypes.OBJECT, Type.array(CommonTypes.OBJECT, method.getParameterCount()), new Type(method.getReturnType()), Type.of(method.getParameterTypes())));
             }
         } catch (Throwable ex) {
             throw new RuntimeException("Unable to load Skript functions.", ex);
@@ -337,17 +336,17 @@ public class FileContext extends Context {
     }
     
     @Override
-    public boolean hasFunction(String name) {
+    public boolean hasFunction(String name, int arguments) {
         for (Function function : functions) {
-            if (function.name().equals(name)) return true;
+            if (function.name().equals(name) && function.arguments().length == arguments) return true;
         }
         return false;
     }
     
     @Override
-    public Function getFunction(String name) {
+    public Function getFunction(String name, int arguments) {
         for (Function function : functions) {
-            if (function.name().equals(name)) return function;
+            if (function.name().equals(name) && function.arguments().length == arguments) return function;
         }
         return null;
     }
@@ -364,6 +363,7 @@ public class FileContext extends Context {
     
     @Override
     public Function assertDefaultLocalFunction(String name) {
+        if (true) throw new RuntimeException("i need to know what's using this"); // todo
         return new Function(name, type);
     }
 }
