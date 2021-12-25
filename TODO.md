@@ -44,10 +44,6 @@ Tasks are categorised by importance and marked by difficulty.
   The first function call from a location can be verified  and bound to the constant call-site for the function. \
   This can be used to type-verify a parameter set. \
   Difficulty: hard
-- Convert all function calls to use type-assuring `invokedynamic` call-sites. \
-  Support automatic conversion and unboxing of parameters. \
-  Support looking for functions with non-exact erasures. \
-  Difficulty: hard
 - Create a library for web-servers. \
   Support opening a web-server and receiving requests. \
   Support sending HTTP requests to a web-server. \
