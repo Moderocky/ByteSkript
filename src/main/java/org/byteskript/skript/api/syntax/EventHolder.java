@@ -11,10 +11,8 @@ import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.AsyncEvent;
 import org.byteskript.skript.api.Event;
 import org.byteskript.skript.api.Library;
-import org.byteskript.skript.compiler.CommonTypes;
-import org.byteskript.skript.compiler.CompileState;
-import org.byteskript.skript.compiler.Context;
-import org.byteskript.skript.compiler.Pattern;
+import org.byteskript.skript.compiler.*;
+import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.runtime.data.EventData;
 import org.byteskript.skript.runtime.data.SourceData;
@@ -28,6 +26,12 @@ public abstract class EventHolder extends TriggerHolder {
     }
     
     public abstract Class<? extends Event> eventClass();
+    
+    @Override
+    public void onSectionExit(Context context, SectionMeta meta) {
+        context.removeFlag(AreaFlag.IN_EVENT);
+        super.onSectionExit(context, meta);
+    }
     
     @Override
     public void compile(Context context, Pattern.Match match) {
@@ -47,6 +51,7 @@ public abstract class EventHolder extends TriggerHolder {
             .addValue("name", name())
             .addValue("event", org.objectweb.asm.Type.getObjectType(new Type(eventClass).internalName()))
             .addValue("async", AsyncEvent.class.isAssignableFrom(eventClass));
+        context.addFlag(AreaFlag.IN_EVENT);
     }
     
     @Override

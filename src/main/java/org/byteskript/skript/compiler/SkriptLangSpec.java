@@ -26,6 +26,7 @@ import org.byteskript.skript.lang.syntax.control.DeleteEffect;
 import org.byteskript.skript.lang.syntax.control.RemoveEffect;
 import org.byteskript.skript.lang.syntax.control.SetEffect;
 import org.byteskript.skript.lang.syntax.entry.JavaRelay;
+import org.byteskript.skript.lang.syntax.entry.ReturnType;
 import org.byteskript.skript.lang.syntax.entry.Trigger;
 import org.byteskript.skript.lang.syntax.entry.Verify;
 import org.byteskript.skript.lang.syntax.event.AnyLoadEvent;
@@ -56,6 +57,8 @@ import org.byteskript.skript.lang.syntax.map.KeyInMap;
 import org.byteskript.skript.lang.syntax.map.MapCreator;
 import org.byteskript.skript.lang.syntax.maths.*;
 import org.byteskript.skript.lang.syntax.timing.*;
+import org.byteskript.skript.lang.syntax.type.TypeCreator;
+import org.byteskript.skript.lang.syntax.type.TypeMember;
 import org.byteskript.skript.lang.syntax.variable.AtomicVariableExpression;
 import org.byteskript.skript.lang.syntax.variable.GlobalVariableExpression;
 import org.byteskript.skript.lang.syntax.variable.ThreadVariableExpression;
@@ -114,12 +117,14 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         );
         registerSyntax(CompileState.ROOT,
 //            new InitClassMember(),
+            new TypeMember(),
             new FunctionMember(),
             new NoArgsFunctionMember()
         );
         registerSyntax(CompileState.MEMBER_BODY,
             new Verify(),
-            new Trigger()
+            new Trigger(),
+            new ReturnType()
         );
         registerSyntax(CompileState.CODE_BODY,
             new PrintEffect(),
@@ -189,6 +194,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new SystemInputExpression(),
             new SystemPropertyExpression(),
             new ExternalFunctionExpression(),
+            new PropertyFunctionExpression(),
             new FunctionExpression(),
             new CurrentScriptExpression(),
             new CurrentEventExpression(),
@@ -217,6 +223,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new ListCreator(),
             new IndexOfList(),
             new KeyInMap(),
+            new TypeCreator(),
             new TypeExpression()
         );
         registerEvents(

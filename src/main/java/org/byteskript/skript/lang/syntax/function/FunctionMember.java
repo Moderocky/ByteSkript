@@ -9,10 +9,7 @@ package org.byteskript.skript.lang.syntax.function;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.syntax.TriggerHolder;
-import org.byteskript.skript.compiler.CommonTypes;
-import org.byteskript.skript.compiler.Context;
-import org.byteskript.skript.compiler.Pattern;
-import org.byteskript.skript.compiler.SkriptLangSpec;
+import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.Function;
 import org.byteskript.skript.compiler.structure.PreVariable;
 import org.byteskript.skript.compiler.structure.SectionMeta;
@@ -43,7 +40,9 @@ public class FunctionMember extends TriggerHolder {
     
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
-        context.registerFunction(new Function(context.getType(), context.getMethod().getErasure()));
+        context.removeFlag(AreaFlag.IN_FUNCTION);
+        if (!context.hasFlag(AreaFlag.IN_TYPE))
+            context.registerFunction(new Function(context.getType(), context.getMethod().getErasure()));
         super.onSectionExit(context, meta);
     }
     
@@ -51,6 +50,13 @@ public class FunctionMember extends TriggerHolder {
     public void compile(Context context, Pattern.Match match) {
         super.compile(context, match);
         final MethodBuilder method = context.getMethod();
+        context.addFlag(AreaFlag.IN_FUNCTION);
+        if (context.hasFlag(AreaFlag.IN_TYPE)) {
+            method.setModifiers(0x0001);
+            final PreVariable variable = new PreVariable("<this>");
+            variable.internal = true;
+            ((FileContext) context).getVariables().add(0, variable);
+        }
         method
             .addAnnotation(org.byteskript.skript.runtime.data.Function.class).setVisible(true)
             .addValue("name", method.getErasure().name())

@@ -1,0 +1,29 @@
+
+//template type Thing:
+//    function my_func
+//    function another_func
+
+type Box:
+    function my_func:
+        return: String
+        trigger:
+            return "hello"
+    function func_with_args (blob):
+        return: Integer
+        trigger:
+            return 208 + {blob}
+    function toString:
+        return: String
+        trigger:
+            return "Hello?"
+
+
+function basic_use:
+    trigger:
+        set {thing} to a new Box
+        assert {thing} exists: "Type creation failed."
+        assert "" + {thing} is "Hello?": "Type toString override failed."
+        set {word} to my_func() from {thing}
+        assert {word} is "hello": "Member function call failed."
+        set {number} to func_with_args(3) from {thing}
+        assert {number} is 211: "Member function call with args failed."

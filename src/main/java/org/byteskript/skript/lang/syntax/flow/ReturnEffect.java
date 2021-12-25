@@ -7,12 +7,10 @@
 package org.byteskript.skript.lang.syntax.flow;
 
 import mx.kenzie.foundation.MethodBuilder;
+import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.syntax.Effect;
-import org.byteskript.skript.compiler.CompileState;
-import org.byteskript.skript.compiler.Context;
-import org.byteskript.skript.compiler.Pattern;
-import org.byteskript.skript.compiler.SkriptLangSpec;
+import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 
 public class ReturnEffect extends Effect {
@@ -25,6 +23,8 @@ public class ReturnEffect extends Effect {
     public void compile(Context context, Pattern.Match match) {
         final MethodBuilder method = context.getMethod();
         assert method != null;
+        final Type type = method.getErasure().returnType();
+        if (!type.equals(CommonTypes.OBJECT)) method.writeCode(WriteInstruction.cast(type));
         method.writeCode(WriteInstruction.returnObject());
         context.setState(CompileState.CODE_BODY);
     }

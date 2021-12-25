@@ -10,6 +10,7 @@ import mx.kenzie.foundation.*;
 import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.api.*;
 import org.byteskript.skript.compiler.structure.*;
+import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 import org.byteskript.skript.runtime.internal.CompiledScript;
 
@@ -33,6 +34,8 @@ public class FileContext extends Context {
     private HandlerType mode = StandardHandlers.GET;
     final List<Consumer<Context>> endOfLine = new ArrayList<>();
     final Map<HandlerType, List<PropertyAccessGenerator>> usedProperties = new HashMap<>();
+    final List<ClassBuilder> suppressedClasses = new ArrayList<>();
+    final List<Flag> flags = new ArrayList<>();
     
     ElementTree line;
     ElementTree current;
@@ -40,7 +43,7 @@ public class FileContext extends Context {
     protected List<PreVariable> variables = new ArrayList<>();
     protected final List<ProgrammaticSplitTree> trees = new ArrayList<>();
     
-    protected final ClassBuilder writer;
+    protected ClassBuilder writer;
     protected FieldBuilder field;
     protected MethodBuilder method;
     
@@ -81,6 +84,21 @@ public class FileContext extends Context {
             classes.add(new PostCompileClass(builder.compile(), builder.getName(), builder.getInternalName()));
         }
         return classes.toArray(new PostCompileClass[0]);
+    }
+    
+    @Override
+    public boolean hasFlag(Flag flag) {
+        return flags.contains(flag);
+    }
+    
+    @Override
+    public void addFlag(Flag flag) {
+        this.flags.add(flag);
+    }
+    
+    @Override
+    public void removeFlag(Flag flag) {
+        this.flags.remove(flag);
     }
     
     @Override
@@ -129,10 +147,39 @@ public class FileContext extends Context {
     }
     
     @Override
+    public void useSubBuilder(ClassBuilder builder) {
+        if (!builder.hasSuppressor() || builder.getSuppressor() != this.writer)
+            throw new ScriptCompileError(lineNumber, "Sub-builders must be suppressed by the root class builder.");
+        this.writer = builder;
+    }
+    
+    @Override
+    public ClassBuilder endSubBuilder() {
+        if (!writer.hasSuppressor())
+            throw new ScriptCompileError(lineNumber, "Sub-builders must be suppressed by the root class builder.");
+        this.writer = writer.getSuppressor();
+        return writer;
+    }
+    
+    @Override
     public ClassBuilder addSuppressedBuilder(final Type type) {
         final ClassBuilder builder;
         this.writer.suppress(builder = new ClassBuilder(type, SkriptLangSpec.JAVA_VERSION));
+        this.suppressedClasses.add(0, builder);
         return builder;
+    }
+    
+    @Override
+    public ClassBuilder getSuppressedBuilder(final Type type) {
+        for (final ClassBuilder builder : suppressedClasses) {
+            if (builder.getType().equals(type)) return builder;
+        }
+        return null;
+    }
+    
+    @Override
+    public ClassBuilder getSuppressedBuilder() {
+        return suppressedClasses.get(0);
     }
     
     @Override

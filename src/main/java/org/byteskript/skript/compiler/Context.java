@@ -8,10 +8,7 @@ package org.byteskript.skript.compiler;
 
 import mx.kenzie.foundation.*;
 import mx.kenzie.foundation.compiler.State;
-import org.byteskript.skript.api.HandlerType;
-import org.byteskript.skript.api.LanguageElement;
-import org.byteskript.skript.api.Library;
-import org.byteskript.skript.api.SyntaxElement;
+import org.byteskript.skript.api.*;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.compiler.structure.*;
 
@@ -35,6 +32,12 @@ public abstract class Context {
     
     protected String storedVariableName;
     
+    public abstract boolean hasFlag(Flag flag);
+    
+    public abstract void addFlag(Flag flag);
+    
+    public abstract void removeFlag(Flag flag);
+    
     public abstract LanguageElement getExpected();
     
     public abstract Collection<Type> getAvailableTypes();
@@ -55,7 +58,15 @@ public abstract class Context {
     
     public abstract ClassBuilder getBuilder();
     
+    public abstract void useSubBuilder(final ClassBuilder builder);
+    
+    public abstract ClassBuilder endSubBuilder();
+    
     public abstract ClassBuilder addSuppressedBuilder(final Type type);
+    
+    public abstract ClassBuilder getSuppressedBuilder(Type type);
+    
+    public abstract ClassBuilder getSuppressedBuilder();
     
     public abstract MethodBuilder getMethod();
     

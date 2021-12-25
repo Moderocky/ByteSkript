@@ -20,10 +20,12 @@ public class OperatorHandler {
     
     //region Unboxing
     public static byte unboxB(Number value) {
+        if (value == null) return 0;
         return value.byteValue();
     }
     
     public static short unboxS(Number value) {
+        if (value == null) return 0;
         return value.shortValue();
     }
     
@@ -33,22 +35,27 @@ public class OperatorHandler {
     }
     
     public static long unboxJ(Number value) {
+        if (value == null) return 0;
         return value.longValue();
     }
     
     public static float unboxF(Number value) {
+        if (value == null) return 0;
         return value.floatValue();
     }
     
     public static double unboxD(Number value) {
+        if (value == null) return 0;
         return value.doubleValue();
     }
     
     public static char unbox(Character value) {
+        if (value == null) return 0;
         return value;
     }
     
     public static boolean unbox(Boolean value) {
+        if (value == null) return false;
         return value;
     }
     //endregion
@@ -81,6 +88,7 @@ public class OperatorHandler {
         if (!(a instanceof Number x) || !(b instanceof Number y)) {
             return "" + a + b;
         }
+        if (x instanceof Integer && y instanceof Integer) return x.intValue() + y.intValue();
         if (x instanceof Float || x instanceof Double) {
             if (y instanceof Float || y instanceof Double) {
                 return x.doubleValue() + y.doubleValue();
