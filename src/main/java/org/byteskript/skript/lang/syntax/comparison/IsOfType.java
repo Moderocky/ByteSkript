@@ -14,7 +14,7 @@ import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.handler.StandardHandlers;
-import org.byteskript.skript.lang.syntax.generic.TypeExpression;
+import org.byteskript.skript.lang.syntax.type.TypeExpression;
 
 import java.lang.reflect.Method;
 

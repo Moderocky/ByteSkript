@@ -83,7 +83,7 @@ function java_implement:
     trigger:
         set {getter} to a new Getter
         assert {getter} is a Getter: "Type self-comparison failed."
-        set {class} to get_class("java.util.function.Supplier")
+        set {class} to java/util/function/Supplier
         assert {getter} is a {class}: "Type java super-comparison failed."
         set {var} to get() from {getter}
         assert {var} is "hello": "Supplier get method failed."

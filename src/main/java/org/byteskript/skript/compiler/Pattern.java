@@ -37,6 +37,13 @@ public class Pattern { // todo remove regex go indexOf impl
         }
     }
     
+    public static Matcher fakeMatcher(String thing) {
+        final String solid = java.util.regex.Pattern.quote(thing);
+        final Matcher matcher = java.util.regex.Pattern.compile(solid).matcher(thing);
+        matcher.find();
+        return matcher;
+    }
+    
     protected void handle(final String string) {
         final StringBuilder builder = new StringBuilder().append("^");
         final List<String> types = new ArrayList<>();

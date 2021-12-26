@@ -4,7 +4,7 @@
  * https://github.com/Moderocky/ByteSkript/blob/master/LICENSE
  */
 
-package org.byteskript.skript.lang.syntax.generic;
+package org.byteskript.skript.lang.syntax.type;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
@@ -41,18 +41,16 @@ public class TypeExpression extends SimpleExpression {
             if (!entry.getKey().toLowerCase(Locale.ROOT).equals(string.toLowerCase(Locale.ROOT))) continue;
             return entry.getValue();
         }
+        if (string.contains("/")) return new Type(string);
         return null;
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        for (final Map.Entry<String, Type> entry : context.getTypeMap().entrySet()) {
-            if (!entry.getKey().toLowerCase(Locale.ROOT).equals(thing.toLowerCase(Locale.ROOT))) continue;
-            final Matcher matcher = java.util.regex.Pattern.compile(thing).matcher(thing);
-            matcher.find();
-            return new Pattern.Match(matcher, entry.getValue(), new Type[0]);
-        }
-        return null;
+        final Type type = this.getType(thing, context);
+        if (type == null) return null;
+        final Matcher matcher = Pattern.fakeMatcher(thing);
+        return new Pattern.Match(matcher, type, new Type[0]);
     }
     
     @Override
