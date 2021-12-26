@@ -1,5 +1,6 @@
 
 template type Thing:
+    function empty_func:
     function my_func:
         return: String
     function another_func:
@@ -27,7 +28,6 @@ type Box:
         trigger:
             return "Hello?"
 
-
 function basic_use:
     trigger:
         set {thing} to a new Box
@@ -42,3 +42,50 @@ function basic_use:
         set {boolean} to bonk() from {thing}
         assert {boolean} is true: "Member function didn't return correctly."
         assert another_func() from {thing} is 10: "Template default function didn't return correctly."
+
+template type Shape:
+    function get_sides:
+
+template type Quadrilateral:
+    template: Shape
+    function get_sides:
+        trigger:
+            return 4
+
+type Square:
+    template: Quadrilateral
+
+type Rectangle:
+    template: Quadrilateral
+
+function multiple_inheritance:
+    trigger:
+        set {square} to a new Square
+        set {rectangle} to a new Rectangle
+        assert {square} exists: "Type creation failed."
+        assert {rectangle} exists: "Type creation failed."
+        assert {square} is a Square: "Type self-comparison failed."
+        assert {square} is a Quadrilateral: "Type super-comparison failed."
+        assert {square} is a Shape: "Type inherited super-comparison failed."
+        assert {rectangle} is a Rectangle: "Type self-comparison failed."
+        assert {rectangle} is a Quadrilateral: "Type super-comparison failed."
+        assert {rectangle} is a Shape: "Type inherited super-comparison failed."
+        assert get_sides() from {square} is 4: "Type default function failed."
+        assert get_sides() from {rectangle} is 4: "Type default function failed."
+
+type Getter:
+    template: java/util/function/Supplier
+    function get:
+        trigger:
+            return "hello"
+
+function java_implement:
+    trigger:
+        set {getter} to a new Getter
+        assert {getter} is a Getter: "Type self-comparison failed."
+        set {class} to get_class("java.util.function.Supplier")
+        assert {getter} is a {class}: "Type java super-comparison failed."
+        set {var} to get() from {getter}
+        assert {var} is "hello": "Supplier get method failed."
+        set {var} to result of {getter}
+        assert {var} is "hello": "Supplier result-of failed."

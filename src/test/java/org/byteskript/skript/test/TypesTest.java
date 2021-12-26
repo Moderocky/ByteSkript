@@ -36,4 +36,18 @@ public class TypesTest extends SkriptTest {
         function.invoke();
     }
     
+    @Test
+    public void multiple_inheritance() throws Throwable {
+        final Member function = script.getFunction("multiple_inheritance");
+        assert function != null;
+        function.invoke();
+    }
+    
+    @Test
+    public void java_implement() throws Throwable {
+        final Member function = script.getFunction("java_implement");
+        assert function != null;
+        function.invoke();
+    }
+    
 }
