@@ -126,6 +126,8 @@ public abstract class Context {
     
     public abstract int methodIndexShift();
     
+    public abstract boolean hasHandle(String property, HandlerType type);
+    
     public abstract MethodErasure useHandle(String property, HandlerType type);
     
     public abstract void setHandlerMode(HandlerType type);

@@ -21,7 +21,7 @@ import org.objectweb.asm.Label;
 public class ContinueEffect extends Effect {
     
     public ContinueEffect() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "continue [[the ]current ]loop");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "continue [[the ]current] loop");
     }
     
     @Override

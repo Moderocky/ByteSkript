@@ -19,7 +19,6 @@ import org.byteskript.skript.app.SkriptApp;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.error.ScriptRuntimeError;
 import org.byteskript.skript.lang.element.StandardElements;
-import org.byteskript.skript.lang.handler.StandardHandlers;
 import org.byteskript.skript.lang.syntax.comparison.*;
 import org.byteskript.skript.lang.syntax.control.AddEffect;
 import org.byteskript.skript.lang.syntax.control.DeleteEffect;
@@ -71,6 +70,8 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import static org.byteskript.skript.lang.handler.StandardHandlers.GET;
 
 public final class SkriptLangSpec extends ModifiableLibrary implements LanguageDefinition, Library {
     public static final Pattern LINE_COMMENT = Pattern.compile("//.*(?=(\\R|$|\\n))");
@@ -231,13 +232,13 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         generateSyntaxFrom(IOHandlers.class);
         generateSyntaxFrom(JavaRelay.class);
         try {
-            registerProperty("keys", StandardHandlers.GET, DataMap.class.getMethod("getKeys", Map.class));
-            registerProperty("values", StandardHandlers.GET, DataMap.class.getMethod("getValues", Map.class));
-            registerProperty("size", StandardHandlers.GET, DataMap.class.getMethod("getSize", Map.class));
-            registerProperty("size", StandardHandlers.GET, DataList.class.getMethod("getSize", Collection.class));
-            registerProperty("class", StandardHandlers.GET, Object.class.getMethod("getClass"));
-            registerProperty("name", StandardHandlers.GET, Class.class.getMethod("getSimpleName"));
-            registerProperty("path", StandardHandlers.GET, Class.class.getMethod("getName"));
+            registerProperty("keys", GET, DataMap.class.getMethod("getKeys", Map.class));
+            registerProperty("values", GET, DataMap.class.getMethod("getValues", Map.class));
+            registerProperty("size", GET, DataMap.class.getMethod("getSize", Map.class));
+            registerProperty("size", GET, DataList.class.getMethod("getSize", Collection.class));
+            registerProperty("class", GET, Object.class.getMethod("getClass"));
+            registerProperty("name", GET, Class.class.getMethod("getSimpleName"));
+            registerProperty("path", GET, Class.class.getMethod("getName"));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

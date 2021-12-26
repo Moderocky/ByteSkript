@@ -20,6 +20,10 @@ import org.byteskript.skript.lang.element.StandardElements;
 
 import java.util.regex.Matcher;
 
+/**
+ * This handles all properties and delegates the compilation
+ * to the expression stubs.
+ */
 public class PropertyExpression extends RelationalExpression implements Referent {
     protected final java.util.regex.Pattern[] patterns;
     
@@ -40,17 +44,19 @@ public class PropertyExpression extends RelationalExpression implements Referent
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        if (!(thing.contains(" of ") || thing.contains("'s ") || thing.contains("-"))) return null;
-        for (int i = 0; i < patterns.length; i++) {
-            final java.util.regex.Pattern pattern = patterns[i];
-            final Matcher matcher = pattern.matcher(thing);
-            if (!matcher.find()) continue;
-            final String name = matcher.group("name");
-            final Matcher dummy = createDummy(thing, i, matcher);
-            dummy.find();
-            return new Pattern.Match(dummy, name, CommonTypes.OBJECT);
-        }
-        return null;
+        final int i;
+        if (thing.contains(" of ")) i = 0;
+        else if (thing.contains("'s ")) i = 1;
+        else if (thing.contains("-")) i = 2;
+        else return null;
+        final java.util.regex.Pattern pattern = patterns[i];
+        final Matcher matcher = pattern.matcher(thing);
+        if (!matcher.find()) return null;
+        final String name = matcher.group("name");
+        if (!context.hasHandle(name, context.getHandlerMode())) return null;
+        final Matcher dummy = createDummy(thing, i, matcher);
+        dummy.find();
+        return new Pattern.Match(dummy, name, CommonTypes.OBJECT);
     }
     
     private Matcher createDummy(String thing, int index, Matcher matcher) {

@@ -18,7 +18,7 @@ import org.byteskript.skript.lang.element.StandardElements;
 public class ExitEffect extends Effect {
     
     public ExitEffect() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "exit[ the] program");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "exit [the] program");
     }
     
     @Override
