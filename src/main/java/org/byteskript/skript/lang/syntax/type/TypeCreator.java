@@ -34,7 +34,13 @@ public class TypeCreator extends SimpleExpression {
         if (object == null) return null;
         if (!(object instanceof Class<?> type))
             throw new ScriptRuntimeError("Tried to create a new non-type thing: " + object);
-        return type.newInstance();
+        try {
+            return type.newInstance();
+        } catch (InstantiationException ex) {
+            throw new ScriptRuntimeError("The type '" + ((Class<?>) object).getSimpleName() + "' cannot be created like this.");
+        } catch (IllegalAccessException ex) {
+            throw new ScriptRuntimeError("The type '" + ((Class<?>) object).getSimpleName() + "' does not permit creation.");
+        }
     }
     
 }

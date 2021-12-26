@@ -4,6 +4,12 @@
 //    function another_func
 
 type Box:
+    function bonk:
+        return: Boolean
+        trigger:
+            set {var} to my_func() from this object
+            assert {var} is "hello": "Member-local function didn't return properly."
+            return true
     function my_func:
         return: String
         trigger:
@@ -27,3 +33,5 @@ function basic_use:
         assert {word} is "hello": "Member function call failed."
         set {number} to func_with_args(3) from {thing}
         assert {number} is 211: "Member function call with args failed."
+        set {boolean} to bonk() from {thing}
+        assert {boolean} is true: "Member function didn't return correctly."

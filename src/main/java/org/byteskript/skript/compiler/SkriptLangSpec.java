@@ -57,6 +57,7 @@ import org.byteskript.skript.lang.syntax.map.KeyInMap;
 import org.byteskript.skript.lang.syntax.map.MapCreator;
 import org.byteskript.skript.lang.syntax.maths.*;
 import org.byteskript.skript.lang.syntax.timing.*;
+import org.byteskript.skript.lang.syntax.type.ThisThingExpression;
 import org.byteskript.skript.lang.syntax.type.TypeCreator;
 import org.byteskript.skript.lang.syntax.type.TypeMember;
 import org.byteskript.skript.lang.syntax.variable.AtomicVariableExpression;
@@ -166,6 +167,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new ImplicitArrayCreator(),
             new BracketExpression(),
             new BooleanLiteral(),
+            new ThisThingExpression(),
             new ThreadVariableExpression(),
             new AtomicVariableExpression(),
             new GlobalVariableExpression(),
