@@ -14,7 +14,6 @@ import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.*;
 
 public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
@@ -51,26 +50,12 @@ public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
         this.registerValues(event);
     }
     
+    public void registerProperty(PropertyHandler handler) {
+        this.properties.add(handler);
+    }
+    
     public void registerProperty(String name, HandlerType type, Method handler) {
-        final Type holder;
-        final Type value;
-        if (type.expectInputs()) {
-            final Class<?>[] classes = handler.getParameterTypes();
-            assert classes.length > 0;
-            value = new Type(classes[classes.length - 1]);
-        } else if (type.expectReturn()) {
-            value = new Type(handler.getReturnType());
-        } else {
-            value = new Type(void.class);
-        }
-        if (Modifier.isStatic(handler.getModifiers())) {
-            final Class<?>[] classes = handler.getParameterTypes();
-            assert classes.length > 0;
-            holder = new Type(classes[0]);
-        } else {
-            holder = new Type(handler.getDeclaringClass());
-        }
-        this.properties.add(new PropertyHandler(name, type, holder, value, handler));
+        this.properties.add(new PropertyHandler(type, handler, name));
     }
     
     public void registerTypes(Class<?>... classes) {

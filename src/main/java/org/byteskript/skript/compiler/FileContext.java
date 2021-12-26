@@ -346,6 +346,16 @@ public class FileContext extends Context {
     }
     
     @Override
+    public boolean hasHandle(String property, HandlerType type) {
+        for (final Library library : this.libraries) {
+            for (final PropertyHandler handler : library.getProperties()) {
+                if (handler.name().equals(property)) return true;
+            }
+        }
+        return false;
+    }
+    
+    @Override
     public MethodErasure useHandle(String property, HandlerType type) {
         this.usedProperties.putIfAbsent(type, new ArrayList<>());
         final List<PropertyAccessGenerator> list = this.usedProperties.get(type);
@@ -357,6 +367,7 @@ public class FileContext extends Context {
                 int uses = 0;
                 for (PropertyAccessGenerator generator : list) {
                     if (!generator.getName().equals(property)) continue;
+                    if (!generator.getType().equals(type)) continue;
                     uses++;
                     generator.addUse(handler.holder(), handler.method());
                 }

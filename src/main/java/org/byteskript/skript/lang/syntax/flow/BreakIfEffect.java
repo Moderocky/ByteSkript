@@ -21,7 +21,7 @@ import org.objectweb.asm.Label;
 public class BreakIfEffect extends Effect {
     
     public BreakIfEffect() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "(break|exit) [[the ]current ]section if %Boolean%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "(break|exit) [[the ]current] section if %Boolean%");
     }
     
     @Override
