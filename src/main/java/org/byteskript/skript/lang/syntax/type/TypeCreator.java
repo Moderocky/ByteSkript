@@ -20,7 +20,7 @@ import java.lang.reflect.Modifier;
 public class TypeCreator extends SimpleExpression {
     
     public TypeCreator() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[a ]new %Type%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[a] new %Type%");
         handlers.put(StandardHandlers.GET, findMethod(TypeCreator.class, "create", Object.class));
         handlers.put(StandardHandlers.FIND, findMethod(TypeCreator.class, "create", Object.class));
     }

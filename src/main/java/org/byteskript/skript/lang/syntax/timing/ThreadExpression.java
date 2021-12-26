@@ -19,7 +19,7 @@ import org.byteskript.skript.lang.element.StandardElements;
 public class ThreadExpression extends SimpleExpression {
     
     public ThreadExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the ][current ](process|thread)");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the] [current] (process|thread)");
     }
     
     @Override

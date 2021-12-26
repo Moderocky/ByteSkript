@@ -21,7 +21,7 @@ import java.time.Duration;
 public class MillisecondsExpression extends SimpleExpression {
     
     public MillisecondsExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Integer% m[illi[ ]]s[econd[s]]");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Number% (ms|millis|milli[ ]second[s])");
         try {
             handlers.put(StandardHandlers.FIND, this.getClass().getMethod("find", Object.class));
         } catch (NoSuchMethodException e) {

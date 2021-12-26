@@ -15,6 +15,7 @@ import org.byteskript.skript.api.syntax.InnerModifyExpression;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.compiler.structure.ProgrammaticSplitTree;
 import org.byteskript.skript.compiler.structure.SectionMeta;
+import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.error.ScriptParseError;
 
 import java.io.*;
@@ -99,7 +100,13 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             if (context.getMethod() != null) {
                 context.getMethod().writeCode(WriteInstruction.lineNumber(context.lineNumber));
             }
-            this.compileLine(line, context);
+            try {
+                this.compileLine(line, context);
+            } catch (ScriptCompileError ex) {
+                throw ex;
+            } catch (Throwable ex) {
+                throw new ScriptCompileError(context.lineNumber, "Error during compilation:", ex);
+            }
         }
         for (int i = 0; i < context.units.size(); i++) {
             context.destroyUnit();
