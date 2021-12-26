@@ -15,6 +15,8 @@ import org.byteskript.skript.error.ScriptRuntimeError;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 
+import java.lang.reflect.Modifier;
+
 public class TypeCreator extends SimpleExpression {
     
     public TypeCreator() {
@@ -25,15 +27,16 @@ public class TypeCreator extends SimpleExpression {
     
     @Override
     public Type getReturnType() {
-        return CommonTypes.LIST;
+        return CommonTypes.OBJECT;
     }
     
     @ForceExtract
-    public static Object create(Object object)
-        throws InstantiationException, IllegalAccessException {
+    public static Object create(Object object) {
         if (object == null) return null;
         if (!(object instanceof Class<?> type))
             throw new ScriptRuntimeError("Tried to create a new non-type thing: " + object);
+        if (type.isInterface() || Modifier.isAbstract(type.getModifiers()))
+            throw new ScriptRuntimeError("The type '" + ((Class<?>) object).getSimpleName() + "' is a template and cannot be created.");
         try {
             return type.newInstance();
         } catch (InstantiationException ex) {

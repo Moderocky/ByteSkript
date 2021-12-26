@@ -57,6 +57,8 @@ public class FunctionMember extends TriggerHolder {
             variable.internal = true;
             ((FileContext) context).getVariables().add(0, variable);
         }
+        if (context.hasFlag(AreaFlag.IN_ABSTRACT_TYPE))
+            context.getMethod().addModifiers(0x0400); // trigger will default this
         method
             .addAnnotation(org.byteskript.skript.runtime.data.Function.class).setVisible(true)
             .addValue("name", method.getErasure().name())

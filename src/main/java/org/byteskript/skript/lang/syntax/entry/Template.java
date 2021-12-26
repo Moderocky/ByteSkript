@@ -15,10 +15,10 @@ import org.byteskript.skript.lang.element.StandardElements;
 
 import java.util.regex.Matcher;
 
-public class ReturnType extends SimpleEntry {
+public class Template extends SimpleEntry {
     
-    public ReturnType() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.METADATA, "return: %Type%");
+    public Template() {
+        super(SkriptLangSpec.LIBRARY, StandardElements.METADATA, "template: %Type%");
     }
     
     @Override
@@ -30,14 +30,14 @@ public class ReturnType extends SimpleEntry {
     public void compile(Context context, Pattern.Match match) {
         final String name = (String) match.meta();
         final Type type = context.getType(name);
-        if (type != null) context.getMethod().setReturnType(type);
-        else context.getMethod().setReturnType(new Type(name.replace('.', '/')));
-        context.setState(CompileState.MEMBER_BODY);
+        if (type != null) context.getBuilder().addInterfaces(type);
+        else context.getBuilder().addInterfaces(new Type(name.replace('.', '/')));
+        context.setState(CompileState.ROOT);
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        if (!thing.startsWith("return: ")) return null;
+        if (!thing.startsWith("template: ")) return null;
         final Pattern.Match match = super.match(thing, context);
         if (match == null) return null;
         final String name = match.groups()[0].trim();
@@ -51,7 +51,7 @@ public class ReturnType extends SimpleEntry {
     
     @Override
     public boolean allowedIn(State state, Context context) {
-        return super.allowedIn(state, context) && context.hasFlag(AreaFlag.IN_FUNCTION);
+        return context.getState() == CompileState.ROOT && context.hasFlag(AreaFlag.IN_TYPE);
     }
     
     

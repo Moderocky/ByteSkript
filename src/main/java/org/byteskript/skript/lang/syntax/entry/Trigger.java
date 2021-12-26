@@ -31,11 +31,17 @@ public class Trigger extends Section {
     }
     
     @Override
+    public Pattern.Match match(String thing, Context context) {
+        return super.match(thing, context);
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) {
         final TriggerTree tree = new TriggerTree(context.getSection(1), context.getVariables());
         context.createTree(tree);
         context.setState(CompileState.CODE_BODY);
         final MethodBuilder method = context.getMethod();
+        method.removeModifiers(0x0400); // not abstract
         method.writeCode(prepareVariables(tree));
     }
     

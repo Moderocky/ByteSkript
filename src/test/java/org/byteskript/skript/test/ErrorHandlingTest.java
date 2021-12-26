@@ -33,7 +33,7 @@ public class ErrorHandlingTest extends SkriptTest {
     public void try_catch() throws Throwable {
         final Member function = script.getFunction("try_catch");
         assert function != null;
-        function.run(skript);
+        function.run(skript).get();
     }
     
     public void errorMessage() throws Throwable {
@@ -56,7 +56,7 @@ public class ErrorHandlingTest extends SkriptTest {
             """.getBytes(StandardCharsets.UTF_8)), "skript.error_test");
         final Member function = skript.loadScript(test).getFunction("test_error");
         assert function != null;
-        function.run(skript);
+        function.run(skript).get();
     }
     
 }

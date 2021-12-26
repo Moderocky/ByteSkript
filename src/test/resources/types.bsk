@@ -1,9 +1,13 @@
 
-//template type Thing:
-//    function my_func
-//    function another_func
+template type Thing:
+    function my_func:
+        return: String
+    function another_func:
+        trigger:
+            return 10
 
 type Box:
+    template: Thing
     function bonk:
         return: Boolean
         trigger:
@@ -28,6 +32,8 @@ function basic_use:
     trigger:
         set {thing} to a new Box
         assert {thing} exists: "Type creation failed."
+        assert {thing} is a Box: "Type self-comparison failed."
+        assert {thing} is a Thing: "Type template-comparison failed."
         assert "" + {thing} is "Hello?": "Type toString override failed."
         set {word} to my_func() from {thing}
         assert {word} is "hello": "Member function call failed."
@@ -35,3 +41,4 @@ function basic_use:
         assert {number} is 211: "Member function call with args failed."
         set {boolean} to bonk() from {thing}
         assert {boolean} is true: "Member function didn't return correctly."
+        assert another_func() from {thing} is 10: "Template default function didn't return correctly."

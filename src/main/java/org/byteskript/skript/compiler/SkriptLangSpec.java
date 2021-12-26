@@ -25,10 +25,7 @@ import org.byteskript.skript.lang.syntax.control.AddEffect;
 import org.byteskript.skript.lang.syntax.control.DeleteEffect;
 import org.byteskript.skript.lang.syntax.control.RemoveEffect;
 import org.byteskript.skript.lang.syntax.control.SetEffect;
-import org.byteskript.skript.lang.syntax.entry.JavaRelay;
-import org.byteskript.skript.lang.syntax.entry.ReturnType;
-import org.byteskript.skript.lang.syntax.entry.Trigger;
-import org.byteskript.skript.lang.syntax.entry.Verify;
+import org.byteskript.skript.lang.syntax.entry.*;
 import org.byteskript.skript.lang.syntax.event.AnyLoadEvent;
 import org.byteskript.skript.lang.syntax.event.CurrentEventExpression;
 import org.byteskript.skript.lang.syntax.event.LoadEvent;
@@ -57,6 +54,7 @@ import org.byteskript.skript.lang.syntax.map.KeyInMap;
 import org.byteskript.skript.lang.syntax.map.MapCreator;
 import org.byteskript.skript.lang.syntax.maths.*;
 import org.byteskript.skript.lang.syntax.timing.*;
+import org.byteskript.skript.lang.syntax.type.TemplateTypeMember;
 import org.byteskript.skript.lang.syntax.type.ThisThingExpression;
 import org.byteskript.skript.lang.syntax.type.TypeCreator;
 import org.byteskript.skript.lang.syntax.type.TypeMember;
@@ -117,10 +115,11 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             CommonTypes.FIELD
         );
         registerSyntax(CompileState.ROOT,
-//            new InitClassMember(),
             new TypeMember(),
+            new TemplateTypeMember(),
             new FunctionMember(),
-            new NoArgsFunctionMember()
+            new NoArgsFunctionMember(),
+            new Template()
         );
         registerSyntax(CompileState.MEMBER_BODY,
             new Verify(),
