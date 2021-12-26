@@ -45,12 +45,15 @@ public class Pattern { // todo remove regex go indexOf impl
     }
     
     protected void handle(final String string) {
-        final StringBuilder builder = new StringBuilder().append("^");
+        final StringBuilder builder = new StringBuilder();
         final List<String> types = new ArrayList<>();
-        boolean escape = false;
-        boolean input = false;
+        final List<Integer> nest = new ArrayList<>();
+        boolean escape = false,
+            input = false,
+            head = false;
+        char last = 0;
         StringBuilder current = builder;
-        for (char c : string.toCharArray()) {
+        for (final char c : string.toCharArray()) {
             if (escape) {
                 escape = false;
                 builder.append(c);
@@ -59,6 +62,7 @@ public class Pattern { // todo remove regex go indexOf impl
             switch (c) {
                 case ESCAPE -> escape = true;
                 case INPUT -> {
+                    if (last == END_OPTIONAL) current.append(")?");
                     if (input) {
                         input = false;
                         types.add(current.toString());
@@ -69,13 +73,37 @@ public class Pattern { // todo remove regex go indexOf impl
                         current = new StringBuilder();
                     }
                 }
-                case START_SWITCH, START_OPTIONAL -> current.append("(?:");
-                case END_OPTIONAL -> current.append(")?");
-                default -> current.append(c);
+                case START_SWITCH -> {
+                    if (last == END_OPTIONAL) current.append(")?");
+                    current.append("(?:");
+                }
+                case START_OPTIONAL -> {
+                    if (last == END_OPTIONAL) current.append(")?");
+                    if (last == ' ' || last == 0) nest.add(0, 1);
+                    else nest.add(0, 0);
+                    current.append("(?:");
+                }
+                case END_OPTIONAL -> {
+                    if (last == END_OPTIONAL) current.append(")?");
+                    if (nest.remove(0) > 0) head = true;
+                }
+                case ' ' -> {
+                    if (last == END_OPTIONAL && head) {
+                        current.append(c);
+                        current.append(")?");
+                    } else if (last == END_OPTIONAL) current.append(")?");
+                    else current.append(c);
+                }
+                default -> {
+                    if (last == END_OPTIONAL) current.append(")?");
+                    current.append(c);
+                    head = false;
+                }
             }
+            last = c;
         }
-        builder.append("$");
-        final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(builder.toString());
+        if (last == END_OPTIONAL) current.append(")?");
+        final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("^" + builder.toString().trim() + "$");
         this.patternMap.put(pattern, types.toArray(new String[0]));
     }
     
@@ -125,18 +153,43 @@ public class Pattern { // todo remove regex go indexOf impl
         return types;
     }
     
-    public record Match(Matcher matcher, Object meta, Type... expected) {
+    public static final class Match {
+        private final Matcher matcher;
+        private final Object meta;
+        private final Type[] expected;
+        private final String[] groups;
+        
+        public Match(Matcher matcher, Object meta, Type... expected) {
+            this.matcher = matcher;
+            this.meta = meta;
+            this.expected = expected;
+            {
+                final List<String> list = new ArrayList<>();
+                for (int i = 1; i <= matcher.groupCount(); i++) {
+                    list.add(matcher.group(i).trim());
+                }
+                this.groups = list.toArray(new String[0]);
+            }
+        }
         
         public Match(Matcher matcher, Type... expected) {
             this(matcher, null, expected);
         }
         
         public String[] groups() {
-            final List<String> list = new ArrayList<>();
-            for (int i = 1; i <= matcher.groupCount(); i++) {
-                list.add(matcher.group(i));
-            }
-            return list.toArray(new String[0]);
+            return groups;
+        }
+        
+        public Matcher matcher() {
+            return matcher;
+        }
+        
+        public Object meta() {
+            return meta;
+        }
+        
+        public Type[] expected() {
+            return expected;
         }
         
     }

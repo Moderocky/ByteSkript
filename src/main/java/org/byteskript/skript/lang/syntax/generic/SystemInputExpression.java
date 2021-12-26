@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 public class SystemInputExpression extends SimpleExpression {
     
     public SystemInputExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the ](system|console) input");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the] (system|console) input");
     }
     
     @Override
