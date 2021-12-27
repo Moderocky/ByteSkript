@@ -140,19 +140,15 @@ public class Pattern { // todo remove regex go indexOf impl
     }
     
     public Match match(final String thing, final Context context) {
-        int found = 0;
-        for (java.util.regex.Pattern pattern : patternMap.keySet()) {
-            final Matcher matcher = pattern.matcher(thing);
-            if (matcher.find()) return new Match(matcher, found, convert(context, patternMap.get(pattern)));
-            found++;
-        }
-        return null;
+        return match(thing, context, null);
     }
     
     public Match match(final String thing, final Context context, final Object meta) {
+        int found = 0;
         for (java.util.regex.Pattern pattern : patternMap.keySet()) {
             final Matcher matcher = pattern.matcher(thing);
-            if (matcher.find()) return new Match(matcher, meta, convert(context, patternMap.get(pattern)));
+            if (matcher.find()) return new Match(matcher, found, meta != null ? meta : found, convert(context, patternMap.get(pattern)));
+            found++;
         }
         return null;
     }
@@ -178,18 +174,22 @@ public class Pattern { // todo remove regex go indexOf impl
         private final Object meta;
         private final Type[] expected;
         private final String[] groups;
+        public final int matchedPattern;
         
         public Match(Matcher matcher, Object meta, Type... expected) {
+            this(matcher, 0, meta, expected);
+        }
+        
+        public Match(Matcher matcher, int matchedPattern, Object meta, Type... expected) {
             this.matcher = matcher;
             this.meta = meta;
             this.expected = expected;
-            {
-                final List<String> list = new ArrayList<>();
-                for (int i = 1; i <= matcher.groupCount(); i++) {
-                    list.add(matcher.group(i).trim());
-                }
-                this.groups = list.toArray(new String[0]);
+            this.matchedPattern = matchedPattern;
+            final List<String> list = new ArrayList<>();
+            for (int i = 1; i <= matcher.groupCount(); i++) {
+                list.add(matcher.group(i).trim());
             }
+            this.groups = list.toArray(new String[0]);
         }
         
         public Match(Matcher matcher, Type... expected) {

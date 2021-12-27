@@ -9,6 +9,7 @@ package org.byteskript.skript.compiler;
 import org.byteskript.skript.api.Flag;
 
 public enum AreaFlag implements Flag {
+    IN_SYNTAX,
     IN_FUNCTION,
     IN_TYPE,
     IN_ABSTRACT_TYPE,

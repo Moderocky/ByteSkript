@@ -10,7 +10,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
-import org.byteskript.skript.api.syntax.Section;
+import org.byteskript.skript.api.syntax.SectionEntry;
 import org.byteskript.skript.api.syntax.TriggerHolder;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.PreVariable;
@@ -19,15 +19,10 @@ import org.byteskript.skript.compiler.structure.TriggerTree;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.runtime.type.AtomicVariable;
 
-public class Trigger extends Section {
+public class Trigger extends SectionEntry {
     
     public Trigger() {
         super(SkriptLangSpec.LIBRARY, StandardElements.SECTION, "trigger");
-    }
-    
-    @Override
-    public boolean allowAsInputFor(Type type) {
-        return false;
     }
     
     @Override

@@ -12,6 +12,16 @@ import org.junit.Test;
 public class PatternsTest {
     
     @Test
+    public void matchResult() {
+        final Pattern pattern = new Pattern(new String[]{"foo", "bar", "blob"}, null);
+        final Pattern.Match match = pattern.match("foo", null);
+        assert match != null;
+        assert match.matchedPattern == 0;
+        assert pattern.match("bar", null).matchedPattern == 1;
+        assert pattern.match("blob", null).matchedPattern == 2;
+    }
+    
+    @Test
     public void simpleOptional() {
         final Pattern pattern = new Pattern(new String[]{"[a] new thing"}, null);
         final java.util.regex.Pattern result = pattern.getCompiledPatterns()[0];

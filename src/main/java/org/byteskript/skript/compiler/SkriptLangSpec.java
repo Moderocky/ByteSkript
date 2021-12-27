@@ -25,6 +25,7 @@ import org.byteskript.skript.lang.syntax.control.DeleteEffect;
 import org.byteskript.skript.lang.syntax.control.RemoveEffect;
 import org.byteskript.skript.lang.syntax.control.SetEffect;
 import org.byteskript.skript.lang.syntax.entry.*;
+import org.byteskript.skript.lang.syntax.entry.syntax.*;
 import org.byteskript.skript.lang.syntax.event.AnyLoadEvent;
 import org.byteskript.skript.lang.syntax.event.CurrentEventExpression;
 import org.byteskript.skript.lang.syntax.event.LoadEvent;
@@ -122,7 +123,12 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         registerSyntax(CompileState.MEMBER_BODY,
             new Verify(),
             new Trigger(),
-            new ReturnType()
+            new ReturnType(),
+            new SyntaxEntry(),
+            new EffectEntry(),
+            new ExpressionEntry(),
+            new PropertyEntry(),
+            new ModeEntry()
         );
         registerSyntax(CompileState.CODE_BODY,
             new PrintEffect(),

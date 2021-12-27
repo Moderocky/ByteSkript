@@ -1,0 +1,28 @@
+
+function test_effect(string, number):
+    syntax:
+        effect: my [cool] %String% and %Number%
+    trigger:
+        print "hello"
+
+function test_expression(string):
+    syntax:
+        expression: a [cool] %String%
+        mode: get
+    trigger:
+        return "hello"
+
+function test_set_property(string):
+    syntax:
+        property: prop
+        mode: set
+    trigger:
+        print "hello"
+
+function test_get_property:
+    syntax:
+        property: prop
+        mode: get
+    return: String
+    trigger:
+        return "hello"

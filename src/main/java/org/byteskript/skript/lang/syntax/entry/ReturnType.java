@@ -13,8 +13,6 @@ import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
 
-import java.util.regex.Matcher;
-
 public class ReturnType extends SimpleEntry {
     
     public ReturnType() {
@@ -43,10 +41,7 @@ public class ReturnType extends SimpleEntry {
         final String name = match.groups()[0].trim();
         if (name.contains("\""))
             throw new ScriptCompileError(context.lineNumber(), "Types should not be written inside quotation marks.");
-        final String quote = java.util.regex.Pattern.quote(thing);
-        final Matcher matcher = java.util.regex.Pattern.compile(quote).matcher(thing);
-        matcher.find();
-        return new Pattern.Match(matcher, name);
+        return new Pattern.Match(Pattern.fakeMatcher(thing), name);
     }
     
     @Override
