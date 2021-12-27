@@ -23,9 +23,29 @@ public class Pattern { // todo remove regex go indexOf impl
     private static final char ESCAPE = '\\';
     
     protected final String[] patterns;
-    protected final Map<java.util.regex.Pattern, String[]> patternMap = new HashMap<>();
+    protected final PatternMap patternMap = new PatternMap(); // maintains entry order
     protected final Library provider;
     
+    protected static class PatternMap extends ArrayList<Map.Entry<java.util.regex.Pattern, String[]>> {
+        public void put(java.util.regex.Pattern pattern, String[] lines) {
+            add(new AbstractMap.SimpleEntry<>(pattern, lines));
+        }
+        
+        public List<java.util.regex.Pattern> keySet() {
+            final List<java.util.regex.Pattern> list = new ArrayList<>();
+            for (Map.Entry<java.util.regex.Pattern, String[]> entry : this) {
+                list.add(entry.getKey());
+            }
+            return list;
+        }
+        
+        public String[] get(java.util.regex.Pattern pattern) {
+            for (Map.Entry<java.util.regex.Pattern, String[]> entry : this) {
+                if (entry.getKey().equals(pattern)) return entry.getValue();
+            }
+            return null;
+        }
+    }
     
     public Pattern(String[] patterns, Library provider) {
         assert patterns != null;

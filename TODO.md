@@ -12,9 +12,6 @@ Tasks are categorised by importance and marked by difficulty.
 - Finish documentation for built-in syntax. \
   Some syntax is missing proper [documentation](https://moderocky.gitbook.io/byteskript/). \
   Difficulty: trivial
-- Make proper handlers for property expressions. \
-  The current system is inadequate for complex properties.
-  Difficulty: medium
 - Write more comprehensive tests. \
   It is important to test all expected behaviour - some syntax are missing full tests. \
   It is also important to test forbidden behaviour does *not* work, and proper negative tests are not implemented yet. \
@@ -23,10 +20,6 @@ Tasks are categorised by importance and marked by difficulty.
 
 ### Medium Importance
 
-- Create a library for interacting with Java directly. \
-  This will allow a lot more to be done within scripts, rather than relying on libraries to provide complex
-  functionality. \
-  Difficulty: hard
 - Create a library for Java GUIs. \
   This will probably need to interact with JavaFX. \
   This should be handled by somebody with experience using Java front-end. \
