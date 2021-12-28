@@ -4,7 +4,7 @@
  * https://github.com/Moderocky/ByteSkript/blob/master/LICENSE
  */
 
-package org.byteskript.skript.lang.syntax.entry;
+package org.byteskript.skript.lang.syntax.type.property;
 
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
@@ -12,34 +12,29 @@ import org.byteskript.skript.api.syntax.SimpleEntry;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 
-public class Template extends SimpleEntry {
+public class TypeEntry extends SimpleEntry {
     
-    public Template() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.METADATA, "template: %Type%");
-    }
-    
-    @Override
-    public boolean allowAsInputFor(Type type) {
-        return false;
+    public TypeEntry() {
+        super(SkriptLangSpec.LIBRARY, StandardElements.METADATA, "type: %Type%");
     }
     
     @Override
     public void compile(Context context, Pattern.Match match) {
         final String name = (String) match.meta();
         final Type type = context.getType(name);
-        if (type != null) context.getBuilder().addInterfaces(type);
-        else context.getBuilder().addInterfaces(new Type(name.replace('.', '/')));
-        context.setState(CompileState.ROOT);
+        if (type != null) context.getField().setType(type);
+        else context.getField().setType(new Type(name.replace('.', '/')));
+        context.setState(CompileState.MEMBER_BODY);
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        if (!thing.startsWith("template: ")) return null;
+        if (!thing.startsWith("type: ")) return null;
         final Pattern.Match match = super.match(thing, context);
         if (match == null) return null;
         final String name = match.groups()[0].trim();
         if (name.isEmpty()) {
-            context.getError().addHint(this, "A type should be specified after the 'template:' entry.");
+            context.getError().addHint(this, "A type should be specified after the 'type:' entry.");
             return null;
         }
         if (name.contains("\"")) {
@@ -51,7 +46,9 @@ public class Template extends SimpleEntry {
     
     @Override
     public boolean allowedIn(State state, Context context) {
-        return context.getState() == CompileState.ROOT && context.hasFlag(AreaFlag.IN_TYPE);
+        return context.getState() == CompileState.MEMBER_BODY
+            && context.hasFlag(AreaFlag.IN_TYPE)
+            && context.hasFlag(AreaFlag.IN_PROPERTY);
     }
     
     

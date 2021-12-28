@@ -1,3 +1,4 @@
+import mx.kenzie.mirror.FieldAccessor;
 import mx.kenzie.mirror.MethodAccessor;
 import mx.kenzie.mirror.Mirror;
 import org.byteskript.skript.error.ScriptRuntimeError;
@@ -190,7 +191,9 @@ public final class skript {
     }
     
     public static Object get_java_field(Object owner, Object name) {
-        return Mirror.of((owner)).field((name) + "").get();
+        final FieldAccessor<?> accessor = Mirror.of((owner)).field((name) + "");
+        if (accessor == null) return null;
+        return accessor.get();
     }
     
     public static Void set_java_field(Object owner, Object name, Object value) {

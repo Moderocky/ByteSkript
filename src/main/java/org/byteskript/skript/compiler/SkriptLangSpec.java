@@ -55,6 +55,10 @@ import org.byteskript.skript.lang.syntax.map.MapCreator;
 import org.byteskript.skript.lang.syntax.maths.*;
 import org.byteskript.skript.lang.syntax.timing.*;
 import org.byteskript.skript.lang.syntax.type.*;
+import org.byteskript.skript.lang.syntax.type.property.FinalEntry;
+import org.byteskript.skript.lang.syntax.type.property.LocalEntry;
+import org.byteskript.skript.lang.syntax.type.property.PropertyMember;
+import org.byteskript.skript.lang.syntax.type.property.TypeEntry;
 import org.byteskript.skript.lang.syntax.variable.AtomicVariableExpression;
 import org.byteskript.skript.lang.syntax.variable.GlobalVariableExpression;
 import org.byteskript.skript.lang.syntax.variable.ThreadVariableExpression;
@@ -116,6 +120,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         registerSyntax(CompileState.ROOT,
             new TypeMember(),
             new TemplateTypeMember(),
+            new PropertyMember(),
             new FunctionMember(),
             new NoArgsFunctionMember(),
             new Template()
@@ -128,7 +133,10 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new EffectEntry(),
             new ExpressionEntry(),
             new PropertyEntry(),
-            new ModeEntry()
+            new ModeEntry(),
+            new TypeEntry(),
+            new LocalEntry(),
+            new FinalEntry()
         );
         registerSyntax(CompileState.CODE_BODY,
             new PrintEffect(),

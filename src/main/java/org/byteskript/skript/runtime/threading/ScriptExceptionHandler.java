@@ -16,6 +16,7 @@ public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler, 
         if (source instanceof ScriptThread thread) {
             final Class<?> start = thread.initiator;
             System.err.println("An error occurred while running a script.");
+            System.err.println("\t" + throwable.getMessage());
             if (start != null)
                 System.err.println("This program started in: " + BLACK_BACKGROUND + ANSI_YELLOW + start.getName()
                     .replace('.', '/') + ".bsk" + ANSI_RESET);

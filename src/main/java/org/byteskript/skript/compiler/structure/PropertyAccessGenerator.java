@@ -12,6 +12,7 @@ import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.HandlerType;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
+import org.byteskript.skript.lang.handler.StandardHandlers;
 import org.byteskript.skript.runtime.data.HandlerData;
 import org.objectweb.asm.Label;
 
@@ -84,6 +85,24 @@ public class PropertyAccessGenerator {
             if (this.type.expectReturn()) method.writeCode(WriteInstruction.returnObject()); // return value
             else method.writeCode(WriteInstruction.returnEmpty()); // return empty
             method.writeCode((writer, visitor) -> visitor.visitLabel(jump)); // end
+        }
+        field_property:
+        {
+            if (this.type == StandardHandlers.GET) method.writeCode((writer, visitor) -> {
+                visitor.visitVarInsn(25, 0); // load holder
+                visitor.visitLdcInsn(name);
+                visitor.visitMethodInsn(184, "skript", "get_java_field", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", false);
+                visitor.visitInsn(176); // areturn
+                return;
+            });
+            else if (this.type == StandardHandlers.SET) method.writeCode((writer, visitor) -> {
+                visitor.visitVarInsn(25, 0); // load holder
+                visitor.visitLdcInsn(name);
+                visitor.visitVarInsn(25, 1); // load value
+                visitor.visitMethodInsn(184, "skript", "set_java_field", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Void;", false);
+                visitor.visitInsn(177); // return top
+                return;
+            });
         }
         if (this.type.expectReturn()) { // return null if requires result
             method.writeCode(WriteInstruction.pushNull());

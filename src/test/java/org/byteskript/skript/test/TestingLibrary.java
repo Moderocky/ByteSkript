@@ -13,7 +13,7 @@ import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 
-public class TestingLibrary extends ModifiableLibrary {
+public final class TestingLibrary extends ModifiableLibrary {
     public TestingLibrary() {
         super("testing");
         this.registerSyntax(CompileState.CODE_BODY, new ThrowException(this));

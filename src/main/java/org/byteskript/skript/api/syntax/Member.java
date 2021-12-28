@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.api.syntax;
 
+import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.LanguageElement;
 import org.byteskript.skript.api.Library;
 import org.byteskript.skript.compiler.CompileState;
@@ -28,6 +29,11 @@ public abstract class Member extends Section {
         context.setMethod(null);
         context.setField(null);
         context.setState(CompileState.ROOT);
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return false;
     }
     
 }

@@ -359,6 +359,7 @@ public class FileContext extends Context {
     public MethodErasure useHandle(String property, HandlerType type) {
         this.usedProperties.putIfAbsent(type, new ArrayList<>());
         final List<PropertyAccessGenerator> list = this.usedProperties.get(type);
+        boolean unused = true;
         for (Library library : this.libraries) {
             sub:
             for (PropertyHandler handler : library.getProperties()) {
@@ -369,14 +370,25 @@ public class FileContext extends Context {
                     if (!generator.getName().equals(property)) continue;
                     if (!generator.getType().equals(type)) continue;
                     uses++;
+                    unused = false;
                     generator.addUse(handler.holder(), handler.method());
                 }
                 if (uses == 0) {
                     final PropertyAccessGenerator generator = new PropertyAccessGenerator(type, property);
                     generator.addUse(handler.holder(), handler.method());
                     list.add(generator);
+                    unused = false;
                 }
             }
+        }
+        if (unused) check:{
+            for (PropertyAccessGenerator generator : list) {
+                if (!generator.getName().equals(property)) continue;
+                if (!generator.getType().equals(type)) continue;
+                break check;
+            }
+            final PropertyAccessGenerator generator = new PropertyAccessGenerator(type, property);
+            list.add(generator);
         }
         final Type ret = type.expectReturn() ? CommonTypes.OBJECT : new Type(void.class);
         final Type[] params = type.expectInputs() ? new Type[]{CommonTypes.OBJECT, CommonTypes.OBJECT} : new Type[]{CommonTypes.OBJECT};
