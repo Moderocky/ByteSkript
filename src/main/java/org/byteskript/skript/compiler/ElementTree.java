@@ -19,6 +19,7 @@ public final class ElementTree {
     private final Pattern.Match match;
     private ElementTree[] nested;
     public boolean compile = true;
+    public boolean treasure = false;
     public boolean takeAtomic = false;
     public HandlerType type = StandardHandlers.GET;
     
@@ -28,7 +29,36 @@ public final class ElementTree {
         this.nested = nested;
     }
     
+    public ElementTree[] falseCopy() {
+        final ElementTree[] trees = new ElementTree[nested.length];
+        for (int i = 0; i < nested.length; i++) {
+            trees[i] = nested[i].deepCopy();
+            trees[i].treasure = true;
+        }
+        return trees;
+    }
+    
+    public ElementTree shallowCopy() {
+        final ElementTree tree = new ElementTree(current, match, nested);
+        tree.compile = compile;
+        tree.takeAtomic = takeAtomic;
+        tree.type = type;
+        return tree;
+    }
+    
+    public ElementTree deepCopy() {
+        final ElementTree tree = new ElementTree(current, match, nested);
+        tree.compile = compile;
+        tree.takeAtomic = takeAtomic;
+        tree.type = type;
+        for (int i = 0; i < nested.length; i++) {
+            tree.nested[i] = nested[i].deepCopy();
+        }
+        return tree;
+    }
+    
     public void preCompile(Context context) { // Pre-compilation is (outer -> inner)
+        if (treasure) return;
         context.setCompileCurrent(this);
         final HandlerType previous = context.getHandlerMode();
         context.setHandlerMode(type);
@@ -46,6 +76,7 @@ public final class ElementTree {
     }
     
     public void compile(Context context) { // Post-compilation is (inner -> outer)
+        if (treasure) return;
         for (ElementTree tree : nested) {
             tree.compile(context);
         }
@@ -60,6 +91,13 @@ public final class ElementTree {
             throw new ScriptCompileError(context.lineNumber(), "Failure during compilation of '" + current.name() + "'", ex);
         }
         context.setHandlerMode(previous);
+    }
+    
+    public void disableCompilation() {
+        this.compile = false;
+        for (final ElementTree tree : nested) {
+            tree.disableCompilation();
+        }
     }
     
     public SyntaxElement current() {
@@ -87,10 +125,11 @@ public final class ElementTree {
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (ElementTree) obj;
+        final ElementTree that = (ElementTree) obj;
         return Objects.equals(this.current, that.current) &&
             Objects.equals(this.match, that.match) &&
-            Objects.equals(this.nested, that.nested);
+            Arrays.equals(this.nested, that.nested) &&
+            this.compile == that.compile;
     }
     
     public void emptyNest() {
@@ -109,9 +148,9 @@ public final class ElementTree {
     @Override
     public String toString() {
         return "ElementTree{" +
-            "current=" + current.getClass().getSimpleName() + ", " +
-            "nested=" + Arrays.toString(nested) + '}';
+            "current=" + current.name() +
+            ", nested=" + Arrays.toString(nested) +
+            ", compile=" + compile +
+            '}';
     }
-    
-    
 }

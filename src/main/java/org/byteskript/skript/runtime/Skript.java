@@ -99,10 +99,6 @@ public final class Skript {
         return processes;
     }
     
-    private OperationController createController() {
-        return new OperationController(this, factory); // todo
-    }
-    
     public Future<?> runScript(final ScriptRunner runner) {
         return runScript(runner, null);
     }
@@ -126,18 +122,6 @@ public final class Skript {
         };
         factory.newThread(controller, runnable, true).start();
         return future;
-//        return executor.submit(() -> {
-//            final ScriptThread thread = (ScriptThread) Thread.currentThread();
-//            thread.variables.clear();
-//            thread.initiator = runner.owner();
-//            thread.event = event;
-//            try {
-//                runner.run();
-//            } catch (ThreadDeath ignore) {
-//            } catch (Throwable ex) {
-//                ex.printStackTrace(); // todo
-//            }
-//        });
     }
     
     public boolean runEvent(final Event event) {
@@ -360,7 +344,7 @@ public final class Skript {
     public Script loadScript(final File source)
         throws IOException {
         try (InputStream stream = new FileInputStream(source)) {
-            return loadScript(stream, source.getName()); // todo
+            return loadScript(stream, source.getName());
         }
     }
     

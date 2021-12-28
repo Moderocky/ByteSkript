@@ -40,11 +40,19 @@ type Blob:
         type: String
     property age:
         type: Number
+    property house:
+        local: true
+    function set_house(house):
+        trigger:
+            set (house of (this object)) to {house}
+            assert house of this object is {house}: "Set comparison failed."
 
-function simple_example:
+function simple_example: // todo - check other property accessors inside types
     trigger:
         set {thing} to a new Blob
         set name of {thing} to "Thing"
         set age of {thing} to 62
         assert name of {thing} is "Thing": "Name property set/access failed."
         assert age of {thing} is 62: "Age property set/access failed."
+        run set_house("hello") from {thing}
+        assert house of {thing} is "hello": "Local set failed."

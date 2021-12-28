@@ -23,6 +23,7 @@ public class PropertiesTest extends SkriptTest {
         final PostCompileClass[] classes = skript.compileComplexScript(TypesTest.class.getClassLoader()
             .getResourceAsStream("properties.bsk"), "skript.properties");
         for (PostCompileClass cls : classes) {
+            debug(cls);
             if (script == null)
                 script = skript.loadScript(cls);
             else skript.loadScript(cls);
@@ -40,6 +41,7 @@ public class PropertiesTest extends SkriptTest {
     public void simple_example() throws Throwable {
         final Member function = script.getFunction("simple_example");
         assert function != null;
+        function.run(skript).get();
         function.invoke();
     }
     

@@ -30,6 +30,10 @@ public class PropertyMember extends Member {
             context.getError().addHint(this, "Properties can be declared only in types.");
             return null;
         }
+        if (context.hasFlag(AreaFlag.IN_ABSTRACT_TYPE)) {
+            context.getError().addHint(this, "Abstract types cannot hold properties.");
+            return null;
+        }
         if (thing.length() < 12) {
             context.getError().addHint(this, "Property names must be at least 3 characters long.");
             return null;

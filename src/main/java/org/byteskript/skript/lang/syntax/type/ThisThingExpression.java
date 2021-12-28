@@ -15,7 +15,7 @@ import org.byteskript.skript.lang.element.StandardElements;
 
 public class ThisThingExpression extends SimpleExpression {
     
-    public ThisThingExpression() { // todo test this
+    public ThisThingExpression() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "this (thing|object)");
     }
     

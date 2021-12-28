@@ -36,12 +36,13 @@ public class SetEffect extends ControlEffect {
         if (!(inputs[0].current() instanceof Referent))
             throw new ScriptParseError(context.lineNumber(), "Syntax '" + inputs[0].current()
                 .name() + "' cannot be set.");
-        final ElementTree[] replacement = Arrays.copyOf(inputs[0].nested(), inputs[0].nested().length + 2);
-        replacement[replacement.length - 2] = inputs[1];
         inputs[0].type = StandardHandlers.SET;
-        inputs[0].emptyNest();
+        final ElementTree[] trees = inputs[0].falseCopy();
+        final ElementTree[] replacement = Arrays.copyOf(inputs[0].nested(), trees.length + 2);
+        replacement[replacement.length - 2] = inputs[1];
         replacement[replacement.length - 1] = inputs[0];
         tree.replaceNest(replacement);
+        inputs[0].replaceNest(trees);
         super.preCompile(context, match);
     }
     

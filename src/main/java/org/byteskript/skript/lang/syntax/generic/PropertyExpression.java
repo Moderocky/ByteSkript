@@ -6,17 +6,14 @@
 
 package org.byteskript.skript.lang.syntax.generic;
 
-import mx.kenzie.foundation.MethodErasure;
-import mx.kenzie.foundation.Type;
-import mx.kenzie.foundation.WriteInstruction;
+import mx.kenzie.foundation.*;
 import org.byteskript.skript.api.HandlerType;
 import org.byteskript.skript.api.Referent;
 import org.byteskript.skript.api.syntax.RelationalExpression;
-import org.byteskript.skript.compiler.CommonTypes;
-import org.byteskript.skript.compiler.Context;
-import org.byteskript.skript.compiler.Pattern;
-import org.byteskript.skript.compiler.SkriptLangSpec;
+import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
+import org.byteskript.skript.lang.handler.StandardHandlers;
+import org.byteskript.skript.lang.syntax.type.ThisThingExpression;
 
 import java.util.regex.Matcher;
 
@@ -89,6 +86,25 @@ public class PropertyExpression extends RelationalExpression implements Referent
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final String name = (String) match.meta();
+        final MethodBuilder method = context.getMethod();
+        final ElementTree tree = context.getCompileCurrent().nested()[0];
+        if (tree != null && context.hasFlag(AreaFlag.IN_TYPE) && tree.current() instanceof ThisThingExpression) {
+            if (context.getHandlerMode() == StandardHandlers.SET)
+                for (final FieldBuilder field : context.getBuilder().getFields()) {
+                    if (!field.getErasure().name().equals(name)) continue;
+                    method.writeCode(WriteInstruction.loadThis());
+                    method.writeCode(WriteInstruction.swap());
+                    method.writeCode(WriteInstruction.setField(context.getBuilder().getType(), field.getErasure()));
+                    return;
+                }
+            if (context.getHandlerMode() == StandardHandlers.GET)
+                for (final FieldBuilder field : context.getBuilder().getFields()) {
+                    if (!field.getErasure().name().equals(name)) continue;
+                    method.writeCode(WriteInstruction.loadThis());
+                    method.writeCode(WriteInstruction.getField(context.getBuilder().getType(), field.getErasure()));
+                    return;
+                }
+        }
         final HandlerType type = context.getHandlerMode();
         final MethodErasure target = context.useHandle(name, type);
         context.getMethod().writeCode(WriteInstruction.invokeStatic(context.getType(), target));
