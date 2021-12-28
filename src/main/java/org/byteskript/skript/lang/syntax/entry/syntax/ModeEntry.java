@@ -10,7 +10,6 @@ import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.syntax.SimpleEntry;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.SyntaxTree;
-import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 
@@ -34,9 +33,14 @@ public class ModeEntry extends SimpleEntry {
     public Pattern.Match match(String thing, Context context) {
         if (!thing.startsWith("mode: ")) return null;
         final String mode = thing.substring(6).trim();
-        if (mode.isEmpty()) throw new ScriptCompileError(context.lineNumber(), "No mode was specified.");
-        if (thing.contains("\"") || mode.contains(" "))
-            throw new ScriptCompileError(context.lineNumber(), "Modes are set, get, add, remove or delete.");
+        if (mode.isEmpty()) {
+            context.getError().addHint(this, "A mode needs to be written after the 'mode:' entry.");
+            return null;
+        }
+        if (thing.contains("\"")) {
+            context.getError().addHint(this, "Modes should not contain quotation marks.");
+            return null;
+        }
         return new Pattern.Match(Pattern.fakeMatcher(thing), mode);
     }
     

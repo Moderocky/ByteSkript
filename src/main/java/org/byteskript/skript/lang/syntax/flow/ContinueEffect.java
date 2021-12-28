@@ -25,6 +25,13 @@ public class ContinueEffect extends Effect {
     }
     
     @Override
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.startsWith("continue ")) return null;
+        if (!thing.endsWith(" loop")) return null;
+        return super.match(thing, context);
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final ProgrammaticSplitTree tree = context.getCurrentTree();
         if (tree == null)

@@ -10,7 +10,6 @@ import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.syntax.SimpleEntry;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.SyntaxTree;
-import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
 
 public class ExpressionEntry extends SimpleEntry {
@@ -31,9 +30,14 @@ public class ExpressionEntry extends SimpleEntry {
     public Pattern.Match match(String thing, Context context) {
         if (!thing.startsWith("expression: ")) return null;
         final String raw = thing.substring(12).trim();
-        if (raw.isEmpty()) throw new ScriptCompileError(context.lineNumber(), "No pattern was specified.");
-        if (thing.contains("\""))
-            throw new ScriptCompileError(context.lineNumber(), "Patterns should not contain quotation marks.");
+        if (raw.isEmpty()) {
+            context.getError().addHint(this, "A pattern needs to be written after the 'expression:' entry.");
+            return null;
+        }
+        if (thing.contains("\"")) {
+            context.getError().addHint(this, "Patterns should not contain quotation marks.");
+            return null;
+        }
         return new Pattern.Match(Pattern.fakeMatcher(thing), raw);
     }
     

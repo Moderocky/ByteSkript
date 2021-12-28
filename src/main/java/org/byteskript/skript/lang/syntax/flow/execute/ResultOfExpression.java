@@ -23,11 +23,12 @@ import java.util.function.Supplier;
 public class ResultOfExpression extends SimpleExpression {
     
     public ResultOfExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the ]result of %Executable%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the] result of %Executable%");
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
+        if (!thing.contains("result of ")) return null;
         return super.match(thing, context);
     }
     

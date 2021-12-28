@@ -21,7 +21,13 @@ import org.objectweb.asm.Label;
 public class BreakLoopEffect extends Effect {
     
     public BreakLoopEffect() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "(break|exit) [[the ]current ]loop");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "(break|exit) [[the ]current] loop");
+    }
+    
+    @Override
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.endsWith(" loop")) return null;
+        return super.match(thing, context);
     }
     
     @Override

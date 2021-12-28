@@ -29,7 +29,7 @@ import java.lang.reflect.Modifier;
 public class RunnableSection extends ExtractedSection {
     
     public RunnableSection() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[a ]new runnable");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[a] new runnable");
     }
     
     @Override
@@ -39,6 +39,7 @@ public class RunnableSection extends ExtractedSection {
     
     @Override
     public Pattern.Match match(String thing, Context context) {
+        if (!thing.contains(" new runnable")) return null;
         return super.match(thing, context);
     }
     

@@ -33,8 +33,10 @@ public class SyntaxEntry extends SectionEntry {
     @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.equals("syntax")) return null;
-        if (!context.hasFlag(AreaFlag.IN_FUNCTION))
-            throw new ScriptCompileError(context.lineNumber(), "Syntax can only be declared inside a function.");
+        if (!context.hasFlag(AreaFlag.IN_FUNCTION)) {
+            context.getError().addHint(this, "Syntax can only be declared inside a function.");
+            return null;
+        }
         return new Pattern.Match(matcher);
     }
     

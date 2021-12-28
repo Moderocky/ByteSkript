@@ -13,6 +13,7 @@ import org.byteskript.skript.api.Library;
 import org.byteskript.skript.api.SyntaxElement;
 import org.byteskript.skript.api.syntax.InnerModifyExpression;
 import org.byteskript.skript.api.syntax.Section;
+import org.byteskript.skript.compiler.structure.ErrorDetails;
 import org.byteskript.skript.compiler.structure.ProgrammaticSplitTree;
 import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.error.ScriptCompileError;
@@ -26,7 +27,6 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 
 public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser {
-    
     final List<Library> libraries = new ArrayList<>();
     
     public SimpleSkriptCompiler(Library... libraries) {
@@ -102,10 +102,10 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             }
             try {
                 this.compileLine(line, context);
-            } catch (ScriptCompileError ex) {
+            } catch (ScriptParseError | ScriptCompileError ex) {
                 throw ex;
             } catch (Throwable ex) {
-                throw new ScriptCompileError(context.lineNumber, "Error during compilation:", ex);
+                throw new ScriptCompileError(context.lineNumber, "Unknown error during compilation:", ex);
             }
         }
         for (int i = 0; i < context.units.size(); i++) {
@@ -178,11 +178,16 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     
     protected ElementTree parseStatement(final String statement, final FileContext context, boolean storeSection) {
         final ElementTree effect;
+        final ErrorDetails details = new ErrorDetails();
+        context.error = details;
+        details.file = context.getType().internalName() + ".bsk";
         try {
-            effect = assembleStatement(statement, context);
+            effect = assembleStatement(statement, context, details);
             context.line = effect;
-        } catch (ScriptParseError error) {
-            throw new ScriptParseError(context.lineNumber(), "Error while parsing statement '" + statement + "'", error);
+        } catch (Throwable ex) {
+            if (ex instanceof ScriptParseError)
+                throw new ScriptParseError(context.lineNumber, details, "Error while parsing statement '" + statement + "'", ex);
+            throw new ScriptCompileError(context.lineNumber, "An unknown error occurred while compiling:\n" + statement, ex);
         }
         if (effect == null)
             throw new ScriptParseError(context.lineNumber(), "No syntax match found for line '" + statement + "'");
@@ -240,8 +245,9 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         } else return this.parseStatement(statement, context, false);
     }
     
-    public ElementTree assembleStatement(final String statement, final FileContext context) {
+    public ElementTree assembleStatement(final String statement, final FileContext context, final ErrorDetails details) {
         final List<ElementTree> elements = new ArrayList<>();
+        details.line = statement;
         ElementTree current = null;
         outer:
         for (SyntaxElement handler : context.getHandlers()) {
@@ -253,11 +259,12 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             if (inputs.length < types.length) continue;
             context.setState(handler.getSubState()); // move state change to syntax
             context.currentEffect = handler;
+            details.lineMatched = handler;
             inner:
             for (int i = 0; i < types.length; i++) {
                 final String input = inputs[i];
                 final Type type = types[i];
-                final ElementTree sub = assembleExpression(input.trim(), type, context);
+                final ElementTree sub = assembleExpression(input.trim(), type, context, details);
                 if (sub == null) {
                     context.currentEffect = null;
                     continue outer;
@@ -272,9 +279,10 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         return current;
     }
     
-    public ElementTree assembleExpression(String expression, final Type expected, final FileContext context) {
+    public ElementTree assembleExpression(String expression, final Type expected, final FileContext context, final ErrorDetails details) {
         final List<ElementTree> elements = new ArrayList<>();
         ElementTree current = null;
+        details.expression = expression;
         outer:
         for (SyntaxElement handler : context.getHandlers()) {
             if (!handler.allowAsInputFor(expected)) continue;
@@ -284,11 +292,12 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             final Type[] types = match.expected();
             final String[] inputs = match.groups();
             if (inputs.length < types.length) continue;
+            details.expressionMatched = handler;
             inner:
             for (int i = 0; i < types.length; i++) {
                 final String input = inputs[i];
                 final Type type = types[i];
-                final ElementTree sub = assembleExpression(input.trim(), type, context);
+                final ElementTree sub = assembleExpression(input.trim(), type, context, details);
                 if (sub == null) continue outer;
                 elements.add(sub);
             }

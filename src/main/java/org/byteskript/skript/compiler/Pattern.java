@@ -147,7 +147,8 @@ public class Pattern { // todo remove regex go indexOf impl
         int found = 0;
         for (java.util.regex.Pattern pattern : patternMap.keySet()) {
             final Matcher matcher = pattern.matcher(thing);
-            if (matcher.find()) return new Match(matcher, found, meta != null ? meta : found, convert(context, patternMap.get(pattern)));
+            if (matcher.find())
+                return new Match(matcher, found, meta != null ? meta : found, convert(context, patternMap.get(pattern)));
             found++;
         }
         return null;

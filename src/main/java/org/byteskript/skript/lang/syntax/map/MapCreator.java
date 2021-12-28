@@ -18,12 +18,8 @@ import org.byteskript.skript.runtime.type.DataMap;
 public class MapCreator extends SimpleExpression {
     
     public MapCreator() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[a ]new map");
-        try {
-            handlers.put(StandardHandlers.GET, this.getClass().getMethod("create"));
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[a] new map");
+        handlers.put(StandardHandlers.GET, findMethod(this.getClass(), "create"));
     }
     
     @Override

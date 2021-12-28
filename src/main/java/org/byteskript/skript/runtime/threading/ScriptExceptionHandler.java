@@ -6,19 +6,29 @@
 
 package org.byteskript.skript.runtime.threading;
 
-public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler {
+import org.byteskript.skript.error.ScriptError;
+
+public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler, ScriptError {
     
     @Override
     public void uncaughtException(Thread source, Throwable throwable) {
         if (throwable instanceof ThreadDeath) return;
         if (source instanceof ScriptThread thread) {
             final Class<?> start = thread.initiator;
-            System.err.println("An error has occurred.");
+            System.err.println("An error occurred while running a script.");
             if (start != null)
-                System.err.println("This program started in: " + start.getName().replace('.', '/'));
+                System.err.println("This program started in: " + BLACK_BACKGROUND + ANSI_YELLOW + start.getName()
+                    .replace('.', '/') + ".bsk" + ANSI_RESET);
             final StackTraceElement[] elements = throwable.getStackTrace();
             if (elements == null || elements.length < 1) return;
-            System.err.println("The error came from '" + elements[0].getClassName() + "' line " + elements[0].getLineNumber());
+            System.err.println("The error came from:");
+            if (elements[0].getClassName().startsWith("skript.")) {
+                System.err.println("\t'" + ANSI_RED + elements[0].getClassName() + ANSI_RESET + "' line " + ANSI_CYAN + elements[0].getLineNumber() + ANSI_RESET);
+                System.err.println("\t(This is from Skript code.)" + ANSI_RESET);
+            } else {
+                System.err.println("\t'" + ANSI_RED + elements[0].getClassName() + ANSI_RESET + "' line " + ANSI_CYAN + elements[0].getLineNumber() + ANSI_RESET);
+                System.err.println("\t(This is from a Java library.)" + ANSI_RESET);
+            }
             System.err.println("Below is the list of trigger calls that caused this error.");
             System.err.println("The top line was the most recent call.");
             for (final StackTraceElement element : elements) {
@@ -29,23 +39,34 @@ public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler {
                 final String method = element.getMethodName();
                 if (method.startsWith("verify$")) {
                     error
-                        .append("  verifier ")
-                        .append(method.substring(7));
+                        .append("\tverifier ")
+                        .append(ANSI_PURPLE)
+                        .append(method.substring(7))
+                        .append(ANSI_RESET);
                 } else if (method.startsWith("event$")) {
                     error
-                        .append("  event ")
-                        .append(method.substring(6));
+                        .append("\tevent ")
+                        .append(ANSI_PURPLE)
+                        .append(method.substring(6))
+                        .append(ANSI_RESET);
                 } else {
                     error
-                        .append("  function ")
+                        .append("\tfunction ")
+                        .append(ANSI_PURPLE)
                         .append(method)
+                        .append(ANSI_RESET)
                         .append("(...)");
                 }
                 error
-                    .append(" in ")
+                    .append(" in '")
+                    .append(BLACK_BACKGROUND)
+                    .append(ANSI_YELLOW)
                     .append(this.getScriptName(element))
-                    .append(" at line ")
-                    .append(element.getLineNumber());
+                    .append(ANSI_RESET)
+                    .append("' at line ")
+                    .append(ANSI_CYAN)
+                    .append(element.getLineNumber())
+                    .append(ANSI_RESET);
                 System.err.println(error);
             }
         } else {

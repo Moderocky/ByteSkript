@@ -18,7 +18,13 @@ public class DynamicFunctionExpression extends SimpleExpression {
     
     public DynamicFunctionExpression() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION,
-            "[the ]function %String%");
+            "[the] function %String%");
+    }
+    
+    @Override
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.contains("function ")) return null;
+        return super.match(thing, context);
     }
     
     @Override

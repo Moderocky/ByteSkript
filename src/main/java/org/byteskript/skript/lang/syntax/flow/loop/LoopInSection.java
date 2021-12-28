@@ -104,6 +104,10 @@ public class LoopInSection extends Section {
     public Pattern.Match match(String thing, Context context) {
         if (!thing.startsWith("loop ")) return null;
         if (!thing.contains(" in ")) return null;
+        if (!thing.startsWith("loop {")) {
+            context.getError().addHint(this, "This must use a variable: 'loop {xyz} in ...'");
+            return null;
+        }
         return super.match(thing, context);
     }
     

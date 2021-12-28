@@ -22,7 +22,7 @@ public class ExternalFunctionExpression extends SimpleExpression {
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")\\((?<params>.*)\\) from (?<location>.+)");
     
     public ExternalFunctionExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "function(...) from ...");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "function(...) from %Source%");
     }
     
     @Override

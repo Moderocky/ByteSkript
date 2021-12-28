@@ -6,7 +6,7 @@
 
 package org.byteskript.skript.error;
 
-public class ScriptRuntimeError extends Error {
+public class ScriptRuntimeError extends Error implements ScriptError {
     
     public ScriptRuntimeError() {
         super();

@@ -23,13 +23,13 @@ import java.lang.reflect.Method;
 public class RunAsyncEffect extends ControlEffect {
     
     public RunAsyncEffect() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "run %Executable% (async[hronously]|in [the ]background)");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "run %Executable% (async[hronously]|in [the] background)");
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.startsWith("run ")) return null;
-        if (!thing.contains(" async") && !thing.contains("background")) return null;
+        if (!thing.contains(" async") && !thing.contains(" background")) return null;
         return super.match(thing, context);
     }
     

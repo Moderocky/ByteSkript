@@ -20,7 +20,12 @@ public abstract class Context {
     protected final List<Library> libraries = new ArrayList<>();
     protected final List<Unit> units = new ArrayList<>();
     protected final List<SectionMeta> sections = new ArrayList<>();
+    protected ErrorDetails error;
     protected State state;
+    
+    public ErrorDetails getError() {
+        return error;
+    }
     
     public String getStoredVariableName() {
         return storedVariableName;

@@ -15,7 +15,7 @@ import org.byteskript.skript.compiler.SkriptLangSpec;
 import java.util.regex.Matcher;
 
 public class NoArgsFunctionMember extends FunctionMember {
-    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("function (?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")");
+    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("function (?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")(?:\\(\\))?");
     
     public NoArgsFunctionMember() {
         super();

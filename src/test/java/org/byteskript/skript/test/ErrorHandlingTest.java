@@ -36,6 +36,9 @@ public class ErrorHandlingTest extends SkriptTest {
         function.run(skript).get();
     }
     
+    /**
+     * Just for testing how runtime errors look.
+     */
     public void errorMessage() throws Throwable {
         final PostCompileClass test = skript.compileScript(new ByteArrayInputStream("""
             function test_error:
@@ -51,12 +54,33 @@ public class ErrorHandlingTest extends SkriptTest {
             function another_func:
                 trigger:
                     set {myvar} to 2
+                    assert false: "Blob!"
                     throw exception
                 
             """.getBytes(StandardCharsets.UTF_8)), "skript.error_test");
         final Member function = skript.loadScript(test).getFunction("test_error");
         assert function != null;
         function.run(skript).get();
+    }
+    
+    /**
+     * Just for testing how errors look.
+     */
+    public void parseError() throws Throwable {
+        final PostCompileClass test = skript.compileScript(new ByteArrayInputStream("""
+            function test_error:
+                trigger:
+                    set {var} to 4
+                    exit program
+                    
+            function my_func:
+                syntax:
+                    effect: hello
+                trigger:
+                    loop box in {var}:
+                        print "hello"
+                
+            """.getBytes(StandardCharsets.UTF_8)), "skript.error_test");
     }
     
 }

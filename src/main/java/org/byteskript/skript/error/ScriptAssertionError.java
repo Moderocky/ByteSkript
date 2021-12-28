@@ -6,7 +6,7 @@
 
 package org.byteskript.skript.error;
 
-public class ScriptAssertionError extends AssertionError {
+public class ScriptAssertionError extends AssertionError implements ScriptError {
     private final int line;
     private final Class<?> script;
     
@@ -55,9 +55,9 @@ public class ScriptAssertionError extends AssertionError {
             }
         }
     }
-    
-    @Override
-    public synchronized Throwable fillInStackTrace() {
-        return this;
-    }
+
+//    @Override
+//    public synchronized Throwable fillInStackTrace() {
+//        return this;
+//    }
 }

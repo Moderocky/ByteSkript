@@ -10,7 +10,6 @@ import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.syntax.SimpleEntry;
 import org.byteskript.skript.compiler.*;
-import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
 
 public class ReturnType extends SimpleEntry {
@@ -39,8 +38,10 @@ public class ReturnType extends SimpleEntry {
         final Pattern.Match match = super.match(thing, context);
         if (match == null) return null;
         final String name = match.groups()[0].trim();
-        if (name.contains("\""))
-            throw new ScriptCompileError(context.lineNumber(), "Types should not be written inside quotation marks.");
+        if (name.contains("\"")) {
+            context.getError().addHint(this, "Types should not be written inside quotation marks.");
+            return null;
+        }
         return new Pattern.Match(Pattern.fakeMatcher(thing), name);
     }
     

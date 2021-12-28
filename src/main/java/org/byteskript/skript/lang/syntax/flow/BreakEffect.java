@@ -24,6 +24,12 @@ public class BreakEffect extends Effect {
     }
     
     @Override
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.endsWith("section")) return null;
+        return super.match(thing, context);
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final ProgrammaticSplitTree tree = context.getCurrentTree();
         if (tree == null)

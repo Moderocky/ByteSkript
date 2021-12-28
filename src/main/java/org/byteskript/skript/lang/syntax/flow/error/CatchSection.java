@@ -69,6 +69,10 @@ public class CatchSection extends Section {
     @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.startsWith("catch ")) return null;
+        if (!thing.contains("{")) {
+            context.getError().addHint(this, "The catch section needs to use a '{variable}'");
+            return null;
+        }
         return super.match(thing, context);
     }
     

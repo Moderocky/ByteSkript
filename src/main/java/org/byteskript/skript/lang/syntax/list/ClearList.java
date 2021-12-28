@@ -14,28 +14,26 @@ import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public class ClearList extends Effect {
     
     public ClearList() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "clear %List%");
-        try {
-            handlers.put(StandardHandlers.RUN, this.getClass().getMethod("run", Object.class));
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        handlers.put(StandardHandlers.RUN, findMethod(this.getClass(), "run", Object.class));
+    }
+    
+    @ForceExtract
+    public static void run(Object object) {
+        if (object instanceof Collection list) list.clear();
+        else if (object instanceof Object[] array) Arrays.fill(array, null);
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.startsWith("clear ")) return null;
         return super.match(thing, context);
-    }
-    
-    @ForceExtract
-    public static void run(Object object) {
-        if (object instanceof Collection list) list.clear();
     }
     
     

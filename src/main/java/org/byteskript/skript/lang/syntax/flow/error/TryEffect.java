@@ -59,6 +59,10 @@ public class TryEffect extends Effect {
     public Pattern.Match match(String thing, Context context) {
         if (!thing.startsWith("try")) return null;
         if (!thing.contains(":")) return null;
+        if (thing.endsWith(":")) {
+            context.getError().addHint(this, "Section headers cannot be used in the 'try-to' effect.");
+            return null;
+        }
         return super.match(thing, context);
     }
     

@@ -6,7 +6,7 @@
 
 package org.byteskript.skript.error;
 
-public class ScriptCompileError extends Error {
+public class ScriptCompileError extends Error implements ScriptError {
     
     private final boolean fill = true;
     private final int line;
@@ -45,7 +45,7 @@ public class ScriptCompileError extends Error {
     
     @Override
     public synchronized Throwable fillInStackTrace() {
-        if (fill)
+        if (fill && System.getProperty("debug_mode") != null)
             return super.fillInStackTrace();
         return this;
     }

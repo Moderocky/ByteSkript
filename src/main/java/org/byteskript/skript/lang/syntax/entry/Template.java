@@ -10,7 +10,6 @@ import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.syntax.SimpleEntry;
 import org.byteskript.skript.compiler.*;
-import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
 
 import java.util.regex.Matcher;
@@ -41,8 +40,14 @@ public class Template extends SimpleEntry {
         final Pattern.Match match = super.match(thing, context);
         if (match == null) return null;
         final String name = match.groups()[0].trim();
-        if (name.contains("\""))
-            throw new ScriptCompileError(context.lineNumber(), "Types should not be written inside quotation marks.");
+        if (name.isEmpty()) {
+            context.getError().addHint(this, "A type should be specified after the 'type:' entry.");
+            return null;
+        }
+        if (name.contains("\"")) {
+            context.getError().addHint(this, "Type names should not be written inside quotation marks.");
+            return null;
+        }
         final String quote = java.util.regex.Pattern.quote(thing);
         final Matcher matcher = java.util.regex.Pattern.compile(quote).matcher(thing);
         matcher.find();

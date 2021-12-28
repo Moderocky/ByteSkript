@@ -29,7 +29,7 @@ import java.lang.reflect.Modifier;
 public class SupplierSection extends ExtractedSection {
     
     public SupplierSection() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[a ]new supplier");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[a] new supplier");
     }
     
     @Override
@@ -39,6 +39,7 @@ public class SupplierSection extends ExtractedSection {
     
     @Override
     public Pattern.Match match(String thing, Context context) {
+        if (!thing.contains(" new supplier")) return null;
         return super.match(thing, context);
     }
     

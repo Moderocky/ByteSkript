@@ -22,7 +22,7 @@ public class PropertyFunctionExpression extends SimpleExpression {
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")\\((?<params>.*)\\) from (?<object>.+)");
     
     public PropertyFunctionExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "function(...) from object");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "function(...) from %Object%");
     }
     
     @Override
