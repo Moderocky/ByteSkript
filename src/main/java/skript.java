@@ -7,6 +7,12 @@ import org.byteskript.skript.runtime.type.AtomicVariable;
 
 import java.util.Collection;
 
+/**
+ * This is the Java implementation of the 'skript' namespace functions.
+ * Some implementations may re-implement this in Skript itself.
+ * <p>
+ * The unusual casing is to match Skript's code-style.
+ */
 public final class skript {
     
     //region Maths

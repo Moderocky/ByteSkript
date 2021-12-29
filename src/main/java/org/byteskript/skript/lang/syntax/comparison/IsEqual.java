@@ -33,15 +33,10 @@ public class IsEqual extends RelationalExpression {
     
     @Override
     public void compile(Context context, Pattern.Match match) {
-        try {
-            final MethodBuilder method = context.getMethod();
-            assert method != null;
-            final Method target = OperatorHandler.class.getDeclaredMethod("equals", Object.class, Object.class);
-            method.writeCode(WriteInstruction.invokeStatic(target));
-            context.setState(CompileState.STATEMENT);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        final MethodBuilder method = context.getMethod();
+        final Method target = findMethod(OperatorHandler.class, "equals", Object.class, Object.class);
+        method.writeCode(WriteInstruction.invokeStatic(target));
+        context.setState(CompileState.STATEMENT);
     }
     
     @Override

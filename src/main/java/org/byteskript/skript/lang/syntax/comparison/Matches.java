@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
 public class Matches extends RelationalExpression {
     
     public Matches() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%String% matches %Pattern%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% matches %Query%");
     }
     
     @Override
@@ -30,15 +30,11 @@ public class Matches extends RelationalExpression {
     
     @Override
     public void compile(Context context, Pattern.Match match) {
-        try {
-            final MethodBuilder method = context.getMethod();
-            assert method != null;
-            final Method target = OperatorHandler.class.getDeclaredMethod("matches", Object.class, Object.class);
-            method.writeCode(WriteInstruction.invokeStatic(target));
-            context.setState(CompileState.STATEMENT);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        final MethodBuilder method = context.getMethod();
+        assert method != null;
+        final Method target = findMethod(OperatorHandler.class, "matches", Object.class, Object.class);
+        method.writeCode(WriteInstruction.invokeStatic(target));
+        context.setState(CompileState.STATEMENT);
     }
     
     @Override
@@ -49,7 +45,9 @@ public class Matches extends RelationalExpression {
     @Override
     public String description() {
         return """
-            Check whether the first string matches the given RegEx pattern.""";
+            Check whether the first string matches the given RegEx pattern.
+            Check whether the first object matches the given query.
+            """;
     }
     
 }

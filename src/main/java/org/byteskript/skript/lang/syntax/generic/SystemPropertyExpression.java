@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 public class SystemPropertyExpression extends SimpleExpression implements Referent {
     
     public SystemPropertyExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the ]system property %String%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the] system property %String%");
         try {
             handlers.put(StandardHandlers.GET, SystemPropertyExpression.class.getMethod("getProperty", String.class));
             handlers.put(StandardHandlers.FIND, SystemPropertyExpression.class.getMethod("getProperty", String.class));
@@ -32,6 +32,12 @@ public class SystemPropertyExpression extends SimpleExpression implements Refere
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
+    }
+    
+    @Override
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.contains("system property ")) return null;
+        return super.match(thing, context);
     }
     
     @Override

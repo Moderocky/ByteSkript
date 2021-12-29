@@ -31,7 +31,7 @@ public class SystemInputExpression extends SimpleExpression {
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        if (!thing.endsWith("input")) return null;
+        if (!thing.endsWith(" input")) return null;
         return super.match(thing, context);
     }
     
@@ -50,7 +50,7 @@ public class SystemInputExpression extends SimpleExpression {
     
     @Override
     public Type getReturnType() {
-        return CommonTypes.OBJECT;
+        return CommonTypes.STRING;
     }
     
 }

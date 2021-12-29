@@ -26,7 +26,6 @@ public class PrintEffect extends Effect {
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
-        assert method != null;
         method.writeCode(WriteInstruction.getField(System.class.getField("out")));
         super.preCompile(context, match);
     }
@@ -34,7 +33,6 @@ public class PrintEffect extends Effect {
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
-        assert method != null;
         method.writeCode(WriteInstruction.invokeVirtual(PrintStream.class.getMethod("println", Object.class)));
         context.setState(CompileState.CODE_BODY);
     }

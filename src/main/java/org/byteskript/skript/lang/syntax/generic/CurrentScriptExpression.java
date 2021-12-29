@@ -19,7 +19,7 @@ import org.byteskript.skript.lang.element.StandardElements;
 public class CurrentScriptExpression extends SimpleExpression {
     
     public CurrentScriptExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the ][current ]script");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the] [current] script");
     }
     
     @Override

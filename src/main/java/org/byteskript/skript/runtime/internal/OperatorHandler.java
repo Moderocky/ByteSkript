@@ -6,7 +6,9 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import org.byteskript.skript.error.ScriptAssertionError;
 import org.byteskript.skript.error.ScriptRuntimeError;
+import org.byteskript.skript.runtime.type.Query;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -80,6 +82,30 @@ public class OperatorHandler {
         if (thing instanceof Map<?, ?> map) return map.values().iterator();
         if (thing == null) return Collections.emptyIterator();
         return Collections.singletonList(thing).iterator();
+    }
+    
+    /**
+     * Moved from {@link org.byteskript.skript.lang.syntax.flow.AssertEffect}
+     */
+    public static void assertion(Object object, Class<?> script, int line) {
+        if (object == null)
+            throw new ScriptAssertionError(script, line);
+        else if (object instanceof Boolean boo && !boo)
+            throw new ScriptAssertionError(script, line);
+        else if (object instanceof Number number && number.intValue() == 0)
+            throw new ScriptAssertionError(script, line);
+    }
+    
+    /**
+     * Moved from {@link org.byteskript.skript.lang.syntax.flow.AssertWithErrorEffect}
+     */
+    public static void assertion(Object object, Object message, Class<?> script, int line) {
+        if (object == null)
+            throw new ScriptAssertionError(script, line, message + "");
+        else if (object instanceof Boolean boo && !boo)
+            throw new ScriptAssertionError(script, line, message + "");
+        else if (object instanceof Number number && number.intValue() == 0)
+            throw new ScriptAssertionError(script, line, message + "");
     }
     //endregion
     
@@ -264,8 +290,9 @@ public class OperatorHandler {
     public static Boolean matches(Object a, Object b) {
         if (a == null) return false;
         if (b == null) return false;
-        if (!(b instanceof Pattern pattern)) return equals(a, b); // probably a mistaken use?
-        return pattern.matcher(a + "").matches();
+        if (b instanceof Query query) return query.check(a);
+        if (b instanceof Pattern pattern) return pattern.matcher(a + "").matches();
+        return equals(a, b); // probably a mistaken use?
     }
     //endregion
     
