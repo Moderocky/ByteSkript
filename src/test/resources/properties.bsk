@@ -35,6 +35,10 @@ function basic_use:
         assert blob of {thing} is null: "Empty field was set somehow."
         assert blob() from {thing} is "hello": "Function access failed."
 
+
+type Foo:
+    property blob:
+
 type Blob:
     property name:
         type: String
@@ -46,6 +50,10 @@ type Blob:
         trigger:
             set (house of (this object)) to {house}
             assert house of this object is {house}: "Set comparison failed."
+            set {foo} to a new Foo
+            assert {foo} exists: "Creating type in type failed."
+            set blob of {foo} to 5
+            assert blob of {foo} is 5: "Other type property set failed."
 
 function simple_example: // todo - check other property accessors inside types
     trigger:
