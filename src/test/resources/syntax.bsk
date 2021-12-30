@@ -3,7 +3,8 @@ function test_effect(string, number):
     syntax:
         effect: my [cool] %String% and %Number%
     trigger:
-        print "hello"
+        assert {string} is "hello"
+        assert {number} is 5
 
 function test_expression(string):
     syntax:
@@ -12,14 +13,14 @@ function test_expression(string):
     trigger:
         return "hello"
 
-function test_set_property(string):
+function test_set_property(thing, string):
     syntax:
         property: prop
         mode: set
     trigger:
         print "hello"
 
-function test_get_property:
+function test_get_property(thing):
     syntax:
         property: prop
         mode: get

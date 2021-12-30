@@ -8,6 +8,8 @@ package org.byteskript.skript.runtime.threading;
 
 import org.byteskript.skript.error.ScriptError;
 
+import java.util.Arrays;
+
 public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler, ScriptError {
     
     @Override

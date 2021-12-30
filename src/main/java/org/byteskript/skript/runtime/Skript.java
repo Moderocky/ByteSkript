@@ -11,6 +11,7 @@ import mx.kenzie.foundation.language.PostCompileClass;
 import mx.kenzie.mirror.Mirror;
 import org.byteskript.skript.api.Event;
 import org.byteskript.skript.api.Library;
+import org.byteskript.skript.api.ModifiableLibrary;
 import org.byteskript.skript.compiler.SkriptCompiler;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.error.ScriptLoadError;
@@ -21,6 +22,7 @@ import org.byteskript.skript.runtime.internal.ModifiableCompiler;
 import org.byteskript.skript.runtime.threading.*;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -170,6 +172,18 @@ public final class Skript {
     //endregion
     
     //region Libraries
+    public void registerLibraryClass(byte[] bytes) throws IOException {
+        final String name = getClassName(new ByteArrayInputStream(bytes));
+        final Class<?> source = new ClassLoader(Skript.class.getClassLoader()) {
+            public Class<?> defineClass(String name, byte[] bytes) {
+                return defineClass(name, bytes, 0, bytes.length);
+            }
+        }.defineClass(name, bytes);
+        final ModifiableLibrary library = new ModifiableLibrary(name);
+        library.generateSyntaxFrom(source);
+        compiler.addLibrary(library);
+    }
+    
     public boolean registerLibrary(Library library) {
         return compiler.addLibrary(library);
     }
@@ -199,10 +213,9 @@ public final class Skript {
         if (!root.isDirectory()) throw new ScriptLoadError("Root must be a folder.");
         final List<File> files = getFiles(new ArrayList<>(), root.toPath());
         final List<File> outputs = new ArrayList<>();
-        final int length = root.getAbsolutePath().length();
         for (final File file : files) {
             try (final InputStream input = new FileInputStream(file)) {
-                final String name = createClassName(file.getName(), file.getAbsolutePath().substring(length));
+                final String name = getClassName(file, root);
                 outputs.addAll(compileComplexScript(input, name, outputDirectory));
             }
         }
@@ -251,6 +264,14 @@ public final class Skript {
         final PostCompileClass[] classes = compiler.compile(stream, new Type(name));
         if (classes.length < 1) throw new ScriptCompileError(-1, "Script does not compile to a class.");
         return classes;
+    }
+    
+    /**
+     * This method may be unavailable in some distributions.
+     */
+    @Deprecated
+    public PostCompileClass compileScript(final String code, final String name) {
+        return compileScript(new ByteArrayInputStream(code.getBytes(StandardCharsets.UTF_8)), name);
     }
     
     public PostCompileClass compileScript(final InputStream stream, final String name) {

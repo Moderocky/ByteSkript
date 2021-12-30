@@ -30,7 +30,7 @@ public final class Script {
     private final Structure[] members;
     
     public Script(Skript skript, File sourceFile, Class<?>... classes) {
-        this(false, skript, sourceFile, classes);
+        this(true, skript, sourceFile, classes);
     }
     
     public Script(boolean init, Skript skript, File sourceFile, Class<?>... classes) {

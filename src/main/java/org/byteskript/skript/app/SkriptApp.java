@@ -10,7 +10,9 @@ import org.byteskript.skript.error.ScriptLibraryError;
 import org.byteskript.skript.runtime.Skript;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -53,7 +55,11 @@ public abstract class SkriptApp {
                     ex.printStackTrace();
                 }
             } else if (file.getName().endsWith(".class")) {
-                // todo
+                try (final InputStream stream = new FileInputStream(file)) {
+                    skript.registerLibraryClass(stream.readAllBytes());
+                } catch (IOException exception) {
+                    throw new ScriptLibraryError("Error while loading library '" + file.getName() + "'", exception);
+                }
             }
         }
     }
