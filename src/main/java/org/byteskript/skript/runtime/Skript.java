@@ -307,6 +307,20 @@ public final class Skript {
         return path;
     }
     
+    public Script assembleScript(final PostCompileClass... data) {
+        if (data.length == 0) return null;
+        final List<Class<?>> classes = new ArrayList<>();
+        for (PostCompileClass datum : data) {
+            final Class<?> part = mirror.loadClass(datum.name(), datum.code());
+            classes.add(part);
+        }
+        return new Script(false, this, null, classes.toArray(new Class[0]));
+    }
+    
+    public Script assembleScript(final Class<?> loaded) {
+        return new Script(false, this, null, loaded);
+    }
+    
     public Script loadScript(final Class<?> loaded) {
         return new Script(this, null, loaded);
     }

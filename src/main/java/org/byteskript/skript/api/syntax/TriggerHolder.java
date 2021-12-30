@@ -13,10 +13,8 @@ import org.byteskript.skript.api.Library;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
-import org.byteskript.skript.runtime.data.SourceData;
 
 import java.lang.reflect.Modifier;
-import java.time.Instant;
 
 public abstract class TriggerHolder extends Member {
     public TriggerHolder(Library provider, LanguageElement type, String... patterns) {
@@ -38,10 +36,6 @@ public abstract class TriggerHolder extends Member {
             .addParameter(parameters(context, match));
         context.setMethod(method);
         context.setState(CompileState.MEMBER_BODY);
-        method
-            .addAnnotation(SourceData.class).setVisible(true)
-            .addValue("line", context.lineNumber())
-            .addValue("compiled", Instant.now().getEpochSecond());
     }
     
 }

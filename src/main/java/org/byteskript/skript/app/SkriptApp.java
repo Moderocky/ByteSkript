@@ -30,7 +30,7 @@ public abstract class SkriptApp {
             ROOT = new File(SkriptApp.class.getProtectionDomain().getCodeSource().getLocation()
                 .toURI()).getParentFile();
         } catch (URISyntaxException e) {
-            throw new IllegalStateException("Unable to get root file.");
+            throw new IllegalStateException("Unable to get root file.", e);
         }
     }
     
@@ -38,13 +38,6 @@ public abstract class SkriptApp {
     protected static final File RESOURCES = new File(ROOT, "resources/");
     protected static final File LIBRARIES = new File(ROOT, "libraries/");
     protected static final File OUTPUT = new File(ROOT, "compiled/");
-    
-    static {
-        if (!SOURCE.exists()) SOURCE.mkdirs();
-        if (!OUTPUT.exists()) OUTPUT.mkdirs();
-        if (!LIBRARIES.exists()) LIBRARIES.mkdirs();
-        if (!RESOURCES.exists()) RESOURCES.mkdirs();
-    }
     
     protected static void registerLibraries(final Skript skript) {
         final List<File> files = getFiles(new ArrayList<>(), LIBRARIES.toPath());

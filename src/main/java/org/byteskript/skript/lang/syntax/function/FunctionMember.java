@@ -15,7 +15,9 @@ import org.byteskript.skript.compiler.structure.PreVariable;
 import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.error.ScriptParseError;
 import org.byteskript.skript.lang.element.StandardElements;
+import org.byteskript.skript.runtime.data.SourceData;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -64,6 +66,13 @@ public class FunctionMember extends TriggerHolder {
             .addValue("name", method.getErasure().name())
             .addValue("arguments", method.getErasure().parameterTypes().length)
             .addValue("async", false);
+        
+        method
+            .addAnnotation(SourceData.class).setVisible(true)
+            .addValue("name", name())
+            .addValue("type", "function")
+            .addValue("line", context.lineNumber())
+            .addValue("compiled", Instant.now().getEpochSecond());
     }
     
     @Override

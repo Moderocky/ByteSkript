@@ -14,6 +14,10 @@ public @interface SourceData {
     
     int line();
     
+    String type() default "unknown";
+    
+    String name() default "unknown";
+    
     String file() default "Unknown";
     
     long compiled();

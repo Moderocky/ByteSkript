@@ -12,7 +12,9 @@ import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.error.ScriptError;
 import org.byteskript.skript.lang.element.StandardElements;
+import org.byteskript.skript.runtime.data.SourceData;
 
+import java.time.Instant;
 import java.util.regex.Matcher;
 
 public class PropertyMember extends Member {
@@ -56,6 +58,12 @@ public class PropertyMember extends Member {
     public void compile(Context context, Pattern.Match match) {
         final String name = match.matcher().group("name");
         final FieldBuilder field = context.getBuilder().addField(name);
+        field
+            .addAnnotation(SourceData.class).setVisible(true)
+            .addValue("name", name)
+            .addValue("type", "property")
+            .addValue("line", context.lineNumber())
+            .addValue("compiled", Instant.now().getEpochSecond());
         context.setField(field);
         field.setModifiers(0x0001);
         field.setType(CommonTypes.OBJECT);

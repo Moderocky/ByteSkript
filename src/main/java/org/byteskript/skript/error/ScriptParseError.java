@@ -18,6 +18,14 @@ public class ScriptParseError extends Error implements ScriptError {
     private final int line;
     private ErrorDetails details;
     
+    public ErrorDetails getDetails() {
+        return details;
+    }
+    
+    public int getLine() {
+        return line;
+    }
+    
     public ScriptParseError(int line) {
         super();
         this.line = line;

@@ -11,6 +11,10 @@ public class ScriptCompileError extends Error implements ScriptError {
     private final boolean fill = true;
     private final int line;
     
+    public int getLine() {
+        return line;
+    }
+    
     public ScriptCompileError(int line) {
         super();
         this.line = line;

@@ -23,7 +23,7 @@ public class ScriptRunner {
     
     static final List<Script> SCRIPTS = new ArrayList<>();
     
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String... args) throws IOException, ClassNotFoundException {
         final Class<?>[] classes = findClasses("skript/");
         for (Class<?> source : classes) {
             final Script script = SKRIPT.loadScript(source);

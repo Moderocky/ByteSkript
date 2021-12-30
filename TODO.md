@@ -20,10 +20,6 @@ Tasks are categorised by importance and marked by difficulty.
 
 ### Medium Importance
 
-- Move some common syntax to the runtime. \
-  A lot of extracted syntax should be in the runtime. \
-  This would reduce the size of the output files. \
-  Difficulty: easy
 - Create a library for Java GUIs. \
   This will probably need to interact with JavaFX. \
   This should be handled by somebody with experience using Java front-end. \
@@ -35,13 +31,9 @@ Tasks are categorised by importance and marked by difficulty.
 
 ### Least Important
 
-- Convert function verifiers to `invokedynamic` call-site binders. \
-  The first function call from a location can be verified  and bound to the constant call-site for the function. \
-  This can be used to type-verify a parameter set. \
-  Difficulty: hard
 - Create a library for web-servers. \
   Support opening a web-server and receiving requests. \
   Support sending HTTP requests to a web-server. \
   Difficulty: medium
 - Create a library for Discord bots. \
-  Difficulty: medium
+  Difficulty: easy

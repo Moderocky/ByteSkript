@@ -48,7 +48,10 @@ public class ThreadVariableExpression extends VariableExpression implements Refe
         if (thing.charAt(0) != '{') return null;
         if (!thing.endsWith("}")) return null;
         final Matcher matcher = PATTERN.matcher(thing);
-        if (!matcher.find()) return null;
+        if (!matcher.find()) {
+            context.getError().addHint(this, "Variable names must be alphanumeric (but allow _).");
+            return null;
+        }
         return new Pattern.Match(matcher);
     }
     

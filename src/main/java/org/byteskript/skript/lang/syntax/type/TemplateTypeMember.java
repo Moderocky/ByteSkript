@@ -13,6 +13,7 @@ import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.runtime.data.SourceData;
+import org.byteskript.skript.runtime.data.TypeData;
 
 import java.time.Instant;
 import java.util.regex.Matcher;
@@ -49,11 +50,13 @@ public class TemplateTypeMember extends Member {
         final Type type = builder.getType();
         context.registerType(name, type);
         builder
-            .addAnnotation(org.byteskript.skript.runtime.data.Type.class).setVisible(true)
+            .addAnnotation(TypeData.class).setVisible(true)
             .addValue("name", name)
             .addValue("template", true);
         builder
             .addAnnotation(SourceData.class).setVisible(true)
+            .addValue("type", "template")
+            .addValue("name", name)
             .addValue("line", context.lineNumber())
             .addValue("compiled", Instant.now().getEpochSecond());
         builder.setModifiers(0x0001 | 0x0400 | 0x0200);

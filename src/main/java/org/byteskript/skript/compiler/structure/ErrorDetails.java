@@ -25,4 +25,15 @@ public class ErrorDetails {
         hints.put(source, hint);
     }
     
+    @Override
+    public ErrorDetails clone() {
+        final ErrorDetails details = new ErrorDetails();
+        details.file = file;
+        details.line = line;
+        details.lineMatched = lineMatched;
+        details.expression = expression;
+        details.expressionMatched = expressionMatched;
+        details.hints.putAll(hints);
+        return details;
+    }
 }

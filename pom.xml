@@ -6,7 +6,7 @@
 
     <groupId>org.byteskript</groupId>
     <artifactId>byteskript</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <name>ByteSkript</name>
 
     <properties>
@@ -23,7 +23,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>build-loader</id>
+                        <id>build-app</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
@@ -32,56 +32,14 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        org.byteskript.skript.app.ScriptLoader
+                                        org.byteskript.skript.app.ByteSkriptApp
                                     </mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
-                            <finalName>ScriptLoader</finalName>
-                            <appendAssemblyId>false</appendAssemblyId>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build-jar</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>
-                                        org.byteskript.skript.app.ScriptJarBuilder
-                                    </mainClass>
-                                </manifest>
-                            </archive>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                            <finalName>ScriptJarBuilder</finalName>
-                            <appendAssemblyId>false</appendAssemblyId>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build-compiler</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>
-                                        org.byteskript.skript.app.ScriptCompiler
-                                    </mainClass>
-                                </manifest>
-                            </archive>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                            <finalName>ScriptClassCompiler</finalName>
+                            <finalName>ByteSkript</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                     </execution>

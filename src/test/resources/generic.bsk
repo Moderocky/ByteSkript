@@ -89,6 +89,10 @@ function testing_map:
         assert "thing" in {test} is "Jeremy": "Map getting/setting failed."
         set ("thing" in {test}) to ("Frog")
         assert ("thing" in {test}) is "Frog": "Brackets with map getting/setting failed."
+        set 4 in {test} to "hello"
+        assert 4 in {test} is "hello": "Integer map key getting/setting failed."
+        set 49.4 in {test} to "hello"
+        assert 49.4 in {test} is "hello": "Double map key getting/setting failed."
         return {test}
 
 function to_be_run:

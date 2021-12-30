@@ -19,7 +19,7 @@ public final class ScriptLoader extends SkriptApp {
     
     static final List<Script> SCRIPTS = new ArrayList<>();
     
-    public static void main(String[] args) throws IOException {
+    public static void main(String... args) throws IOException {
         registerLibraries(SKRIPT);
         final Collection<Script> scripts = SKRIPT.compileLoadScripts(SOURCE);
         new SimpleThrottleController(SKRIPT).run();

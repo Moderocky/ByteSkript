@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 public class KeyInMap extends RelationalExpression implements Referent {
     
     public KeyInMap() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% in [map ]%Map%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% in [map] %Map%");
         try {
             handlers.put(StandardHandlers.GET, ExtractedSyntaxCalls.class.getMethod("getMapValue", Object.class, Object.class));
             handlers.put(StandardHandlers.SET, ExtractedSyntaxCalls.class.getMethod("setMapValue", Object.class, Object.class, Object.class));

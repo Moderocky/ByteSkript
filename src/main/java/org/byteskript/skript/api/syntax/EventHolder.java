@@ -44,6 +44,8 @@ public abstract class EventHolder extends TriggerHolder {
         context.setState(CompileState.MEMBER_BODY);
         method
             .addAnnotation(SourceData.class).setVisible(true)
+            .addValue("name", name())
+            .addValue("type", "event")
             .addValue("line", context.lineNumber())
             .addValue("compiled", Instant.now().getEpochSecond());
         method

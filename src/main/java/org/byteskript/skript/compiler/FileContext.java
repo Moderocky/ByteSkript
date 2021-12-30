@@ -303,11 +303,11 @@ public class FileContext extends Context {
     }
     
     @Override
-    public void closeAllTrees() {
-        for (ProgrammaticSplitTree tree : trees) {
+    public synchronized void closeAllTrees() {
+        for (ProgrammaticSplitTree tree : trees.toArray(new ProgrammaticSplitTree[0])) {
             tree.close(this);
         }
-        trees.clear();
+        this.trees.clear();
     }
     
     @Override

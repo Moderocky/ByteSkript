@@ -117,7 +117,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         return context.compile();
     }
     
-    private List<String> removeComments(final String string) {
+    List<String> removeComments(final String string) {
         final List<String> original = string.lines().toList(); // stream of sadness :(
         final List<String> lines = new ArrayList<>();
         final String regex = "\\s+$";
@@ -184,9 +184,11 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         try {
             effect = assembleStatement(statement, context, details);
             context.line = effect;
+        } catch (ScriptParseError ex) {
+            if (ex.getDetails() == null)
+                throw new ScriptParseError(ex.getLine(), details.clone(), ex.getMessage(), ex.getCause());
+            else throw ex;
         } catch (Throwable ex) {
-            if (ex instanceof ScriptParseError)
-                throw new ScriptParseError(context.lineNumber, details, "Error while parsing statement '" + statement + "'", ex);
             throw new ScriptCompileError(context.lineNumber, "An unknown error occurred while compiling:\n" + statement, ex);
         }
         if (effect == null)
@@ -275,7 +277,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             break;
         }
         if (current == null)
-            throw new ScriptParseError(context.lineNumber(), "No syntax match found for statement '" + statement + "'");
+            throw new ScriptParseError(context.lineNumber(), details.clone(), "No syntax match found for statement '" + statement + "'", null);
         return current;
     }
     
@@ -308,8 +310,6 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             }
             break;
         }
-//        if (current == null)
-//            throw new ScriptParseError(context.lineNumber(), "No syntax match found for '" + expression + "'");
         return current;
     }
     
@@ -324,7 +324,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         return compile(unstream(stream), name);
     }
     
-    private int trueIndent(final String line, final String unit) {
+    int trueIndent(final String line, final String unit) {
         int indent = 0, offset = 0;
         if (unit == null) return 0;
         final int length = unit.length();
