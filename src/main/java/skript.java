@@ -137,7 +137,7 @@ public final class skript {
     //endregion
     
     //region Generic
-    public static AtomicVariable get_atomic_literal(Object atomic) { // todo returning atomics
+    public static AtomicVariable get_atomic_literal(Object atomic) {
         if (atomic instanceof AtomicVariable variable) return variable;
         else return AtomicVariable.wrap(atomic);
     }
@@ -186,26 +186,37 @@ public final class skript {
         else {
             arguments = new Class[]{(Class<?>) parameters};
         }
-        return Mirror.of((owner)).useProvider(Skript.LOADER).method(name + "", arguments);
+        return mirror(owner).method(name + "", arguments);
     }
     
     public static MethodAccessor<Object> get_java_method(Object owner, Object name) {
-        return Mirror.of((owner)).useProvider(Skript.LOADER).method(name + "");
+        return mirror(owner).method(name + "");
     }
     
     public static boolean has_java_field(Object owner, Object name) {
-        return Mirror.of((owner)).useProvider(Skript.LOADER).field((name) + "") != null;
+        return mirror(owner).field((name) + "") != null;
     }
     
     public static Object get_java_field(Object owner, Object name) {
-        final FieldAccessor<?> accessor = Mirror.of((owner)).useProvider(Skript.LOADER).field((name) + "");
+        final FieldAccessor<?> accessor = mirror(owner).field((name) + "");
         if (accessor == null) return null;
         return accessor.get();
     }
     
     public static Void set_java_field(Object owner, Object name, Object value) {
-        Mirror.of((owner)).useProvider(Skript.LOADER).field((name) + "").set((value));
+        mirror(owner).field((name) + "").set((value));
         return null;
+    }
+    
+    private static Mirror<?> mirror(Object owner) {
+        if (owner == null) return null;
+        if (owner instanceof Class<?> type) {
+            if (type.getName().startsWith("skript")) return Mirror.of(type).useProvider(Skript.LOADER);
+            return Mirror.of(type);
+        } else {
+            if (owner.getClass().getName().startsWith("skript")) return Mirror.of(owner).useProvider(Skript.LOADER);
+            return Mirror.of(owner);
+        }
     }
     //endregion
     
