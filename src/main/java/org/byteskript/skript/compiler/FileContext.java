@@ -24,11 +24,11 @@ public class FileContext extends Context {
     final Type type;
     protected final Map<String, Type> types = new HashMap<>();
     protected String indentUnit;
-    int indent;
-    int lineNumber;
-    int lambdaIndex;
-    int indexShift;
-    boolean sectionHeader;
+    public int indent;
+    public int lineNumber;
+    public int lambdaIndex;
+    public int indexShift;
+    public boolean sectionHeader;
     LanguageElement expected;
     SyntaxElement currentEffect;
     private HandlerType mode = StandardHandlers.GET;
@@ -37,8 +37,8 @@ public class FileContext extends Context {
     final List<ClassBuilder> suppressedClasses = new ArrayList<>();
     final List<Flag> flags = new ArrayList<>();
     
-    ElementTree line;
-    ElementTree current;
+    public ElementTree line;
+    public ElementTree current;
     protected final List<Function> functions = new ArrayList<>();
     protected List<PreVariable> variables = new ArrayList<>();
     protected final List<ProgrammaticSplitTree> trees = new ArrayList<>();

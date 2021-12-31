@@ -10,6 +10,7 @@ import mx.kenzie.mirror.MethodAccessor;
 import mx.kenzie.mirror.Mirror;
 import org.byteskript.skript.compiler.BridgeCompiler;
 import org.byteskript.skript.error.ScriptRuntimeError;
+import org.byteskript.skript.runtime.Skript;
 
 import java.lang.invoke.*;
 import java.lang.reflect.Method;
@@ -29,7 +30,7 @@ public class Metafactory {
     }
     
     public static Object callFunction(String name, Object target, Object[] parameters) {
-        final MethodAccessor<Object> accessor = Mirror.of(target).method(name, parameters);
+        final MethodAccessor<Object> accessor = Mirror.of(target).useProvider(Skript.LOADER).method(name, parameters);
         if (accessor == null) throw new ScriptRuntimeError("Unable to find function '" + name + "' from " + target);
         return accessor.invoke(parameters);
     }

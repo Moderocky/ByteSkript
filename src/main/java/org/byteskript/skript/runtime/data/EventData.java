@@ -6,8 +6,6 @@
 
 package org.byteskript.skript.runtime.data;
 
-import org.byteskript.skript.api.Event;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -19,7 +17,7 @@ public @interface EventData {
     
     String name();
     
-    Class<? extends Event> event();
+    String event();
     
     boolean async();
     

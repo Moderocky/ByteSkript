@@ -18,6 +18,7 @@ import org.byteskript.skript.compiler.structure.ProgrammaticSplitTree;
 import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.error.ScriptParseError;
+import org.byteskript.skript.runtime.Skript;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -117,7 +118,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         return context.compile();
     }
     
-    List<String> removeComments(final String string) {
+    protected List<String> removeComments(final String string) {
         final List<String> original = string.lines().toList(); // stream of sadness :(
         final List<String> lines = new ArrayList<>();
         final String regex = "\\s+$";
@@ -162,7 +163,6 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     }
     
     private final java.util.regex.Pattern unitMatch = java.util.regex.Pattern.compile("(?<=^)[\\t ]+(?=\\S)");
-    
     
     protected void compileLine(final String line, final FileContext context) {
         final ElementTree tree = parseLine(line, context);
@@ -316,8 +316,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     
     @Override
     public Class<?> load(byte[] bytecode, String name) {
-        return new PostCompileClass(bytecode, name, name.replace(".", "/"))
-            .compileAndLoad();
+        return Skript.LOADER.loadClass(name, bytecode);
     }
     
     @Override

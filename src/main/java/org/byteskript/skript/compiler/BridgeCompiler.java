@@ -37,7 +37,7 @@ public class BridgeCompiler {
         this.owner = owner;
         this.source = source;
         this.target = target;
-        this.location = owner + "$" + "Bridge" + new Random().nextInt(100000, 999999);
+        this.location = owner + "$" + "Bridge" + new Random().nextInt(100000, 999999) + Math.abs(owner.hashCode());
     }
     
     public Class<?> createClass()

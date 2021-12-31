@@ -8,15 +8,13 @@ package org.byteskript.skript.app;
 
 import org.byteskript.skript.error.ScriptLibraryError;
 import org.byteskript.skript.runtime.Skript;
+import org.byteskript.skript.runtime.internal.LibraryClassLoader;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -64,11 +62,8 @@ public abstract class SkriptApp {
         }
     }
     
-    protected static void callLibrary(final File file, final String main, final Skript skript) throws MalformedURLException, ClassNotFoundException {
-        final URLClassLoader child = new URLClassLoader(
-            new URL[]{file.toURI().toURL()},
-            SkriptApp.class.getClassLoader()
-        );
+    protected static void callLibrary(final File file, final String main, final Skript skript) throws IOException, ClassNotFoundException {
+        final LibraryClassLoader child = new LibraryClassLoader(file, SkriptApp.class.getClassLoader());
         final Class<?> target = Class.forName(main, true, child);
         try {
             target.getMethod("load", Skript.class)

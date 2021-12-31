@@ -2,6 +2,7 @@ import mx.kenzie.mirror.FieldAccessor;
 import mx.kenzie.mirror.MethodAccessor;
 import mx.kenzie.mirror.Mirror;
 import org.byteskript.skript.error.ScriptRuntimeError;
+import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.threading.ScriptThread;
 import org.byteskript.skript.runtime.type.AtomicVariable;
 
@@ -185,25 +186,25 @@ public final class skript {
         else {
             arguments = new Class[]{(Class<?>) parameters};
         }
-        return Mirror.of((owner)).method(name + "", arguments);
+        return Mirror.of((owner)).useProvider(Skript.LOADER).method(name + "", arguments);
     }
     
     public static MethodAccessor<Object> get_java_method(Object owner, Object name) {
-        return Mirror.of((owner)).method(name + "");
+        return Mirror.of((owner)).useProvider(Skript.LOADER).method(name + "");
     }
     
     public static boolean has_java_field(Object owner, Object name) {
-        return Mirror.of((owner)).field((name) + "") != null;
+        return Mirror.of((owner)).useProvider(Skript.LOADER).field((name) + "") != null;
     }
     
     public static Object get_java_field(Object owner, Object name) {
-        final FieldAccessor<?> accessor = Mirror.of((owner)).field((name) + "");
+        final FieldAccessor<?> accessor = Mirror.of((owner)).useProvider(Skript.LOADER).field((name) + "");
         if (accessor == null) return null;
         return accessor.get();
     }
     
     public static Void set_java_field(Object owner, Object name, Object value) {
-        Mirror.of((owner)).field((name) + "").set((value));
+        Mirror.of((owner)).useProvider(Skript.LOADER).field((name) + "").set((value));
         return null;
     }
     //endregion

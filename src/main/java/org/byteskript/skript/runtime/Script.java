@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.runtime;
 
+import org.byteskript.skript.api.Event;
 import org.byteskript.skript.error.ScriptLoadError;
 import org.byteskript.skript.runtime.data.EventData;
 import org.byteskript.skript.runtime.data.Function;
@@ -59,7 +60,7 @@ public final class Script {
                 final EventData event = method.getAnnotation(EventData.class);
                 final Member member = new Member(this, method, event.async());
                 this.events.add(member);
-                skript.registerEventHandler(event.event(), new InvokingScriptRunner(mainClass(), member));
+                skript.registerEventHandler((Class<? extends Event>) skript.getClass(event.event()), new InvokingScriptRunner(mainClass(), member));
             }
         }
         this.members = structures.toArray(new Structure[0]);

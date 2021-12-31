@@ -51,7 +51,7 @@ public abstract class EventHolder extends TriggerHolder {
         method
             .addAnnotation(EventData.class).setVisible(true)
             .addValue("name", name())
-            .addValue("event", org.objectweb.asm.Type.getObjectType(new Type(eventClass).internalName()))
+            .addValue("event", eventClass.getName())
             .addValue("async", AsyncEvent.class.isAssignableFrom(eventClass));
         context.addFlag(AreaFlag.IN_EVENT);
     }

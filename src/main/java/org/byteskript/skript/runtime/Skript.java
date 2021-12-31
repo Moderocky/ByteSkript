@@ -8,6 +8,7 @@ package org.byteskript.skript.runtime;
 
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.language.PostCompileClass;
+import mx.kenzie.mirror.ClassProvider;
 import mx.kenzie.mirror.Mirror;
 import org.byteskript.skript.api.Event;
 import org.byteskript.skript.api.Library;
@@ -33,6 +34,7 @@ public final class Skript {
     
     public static final ThreadGroup THREAD_GROUP = new ThreadGroup("skript");
     public static final int JAVA_VERSION = 61;
+    public static final RuntimeClassLoader LOADER = new RuntimeClassLoader(Skript.class.getClassLoader());
     private static Skript skript;
     private static ExecutorService executor;
     static SkriptThreadProvider factory;
@@ -44,9 +46,43 @@ public final class Skript {
     final SkriptMirror mirror = new SkriptMirror(Skript.class);
     static final GlobalVariableMap VARIABLES = new GlobalVariableMap();
     
+    public static class RuntimeClassLoader extends ClassLoader implements ClassProvider {
+        protected RuntimeClassLoader(ClassLoader parent) {
+            super(parent);
+        }
+        
+        @Override
+        public Class<?> loadClass(String name) throws ClassNotFoundException {
+            return super.loadClass(name);
+        }
+        
+        @Override
+        public Class<?> findClass(String name) {
+            try {
+                return super.findClass(name);
+            } catch (ClassNotFoundException e) {
+                return Skript.currentInstance().getClass(name);
+            }
+        }
+        
+        public Class<?> loadClass(String name, byte[] bytecode) {
+            return super.defineClass(name, bytecode, 0, bytecode.length);
+        }
+        
+        @Override
+        public Class<?> loadClass(Class<?> aClass, String name, byte[] bytecode) {
+            try {
+                return Class.forName(name, false, this);
+            } catch (ClassNotFoundException ex) {
+                return super.defineClass(name, bytecode, 0, bytecode.length);
+            }
+        }
+    }
+    
     static class SkriptMirror extends Mirror<Object> {
         protected SkriptMirror(Object target) {
             super(target);
+            useProvider(LOADER);
         }
         
         @Override
@@ -172,6 +208,24 @@ public final class Skript {
     //endregion
     
     //region Libraries
+    public Class<?> getClass(String name) {
+        final Class<?> found = getClass(name, Skript.class);
+        if (found != null) return found;
+        for (Library library : compiler.getLibraries()) {
+            final Class<?> test = getClass(name, library.getClass());
+            if (test != null) return test;
+        }
+        return null;
+    }
+    
+    private static Class<?> getClass(String name, Class<?> owner) {
+        try {
+            return Class.forName(name, false, owner.getClassLoader());
+        } catch (ClassNotFoundException ex) {
+            return null;
+        }
+    }
+    
     public void registerLibraryClass(byte[] bytes) throws IOException {
         final String name = getClassName(new ByteArrayInputStream(bytes));
         final Class<?> source = new ClassLoader(Skript.class.getClassLoader()) {
