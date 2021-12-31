@@ -30,8 +30,8 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     final List<Library> libraries = new ArrayList<>();
     
     public SimpleSkriptCompiler(Library... libraries) {
-        this.libraries.add(SkriptLangSpec.LIBRARY);
         this.libraries.addAll(List.of(libraries));
+        this.libraries.add(SkriptLangSpec.LIBRARY); // skript goes last so addons can override
     }
     
     @Override
@@ -147,7 +147,8 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     @Override
     public boolean addLibrary(Library library) {
         if (libraries.contains(library)) return false;
-        return libraries.add(library);
+        libraries.add(0, library); // need to make sure it goes before skript
+        return true;
     }
     
     @Override

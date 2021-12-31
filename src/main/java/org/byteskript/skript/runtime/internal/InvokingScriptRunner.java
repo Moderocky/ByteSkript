@@ -13,6 +13,6 @@ public record InvokingScriptRunner(Class<? extends CompiledScript> owner, Member
     
     @Override
     public void start() {
-        method.invoke(null, parameters);
+        method.invoke(parameters);
     }
 }

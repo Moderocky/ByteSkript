@@ -13,6 +13,7 @@ import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.note.ForceInline;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.PreVariable;
+import org.byteskript.skript.error.ScriptReassemblyError;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 
 import java.lang.reflect.Method;
@@ -154,6 +155,17 @@ public interface SyntaxElement {
         } catch (NoSuchMethodException e) {
             return null;
         }
+    }
+    
+    /**
+     * For script reassembly - taking the post-parse structure and generating a (new) text script from it.
+     *
+     * @param inputs the (probably-expression) inputs that go into this line
+     * @return the string that would parse as this syntax, containing the inputs
+     * @throws ScriptReassemblyError if you do not wish to support this / the inputs are wrong
+     */
+    default String assemble(int line, String... inputs) throws ScriptReassemblyError {
+        throw new ScriptReassemblyError(line, "Not supported yet.");
     }
     
 }

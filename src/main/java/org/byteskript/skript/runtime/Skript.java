@@ -404,6 +404,10 @@ public final class Skript {
         return scheduler;
     }
     
+    public static ExecutorService getExecutor() {
+        return executor;
+    }
+    
     public Future<?> schedule(Runnable runnable, long millis) {
         return scheduler.schedule(runnable, millis, TimeUnit.MILLISECONDS);
     }

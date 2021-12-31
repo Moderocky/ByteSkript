@@ -14,7 +14,7 @@ import org.byteskript.skript.runtime.event.Load;
 public class AnyLoadEvent extends EventHolder {
     
     public AnyLoadEvent() {
-        super(SkriptLangSpec.LIBRARY, "on any [script ]load");
+        super(SkriptLangSpec.LIBRARY, "on any [script] load");
     }
     
     @Override

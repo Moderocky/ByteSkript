@@ -133,7 +133,7 @@ public class SyntaxCreationTest extends SkriptTest {
                 trigger:
                     assert true
                     hello "hi"
-            
+                    
             """;
         final Skript skript = new Skript();
         final PostCompileClass syntax = skript.compileScript(first, "skript.test_blob");

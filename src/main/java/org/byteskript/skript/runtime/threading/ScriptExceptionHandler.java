@@ -7,15 +7,18 @@
 package org.byteskript.skript.runtime.threading;
 
 import org.byteskript.skript.error.ScriptError;
-
-import java.util.Arrays;
+import org.byteskript.skript.error.ScriptParseError;
 
 public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler, ScriptError {
     
     @Override
     public void uncaughtException(Thread source, Throwable throwable) {
         if (throwable instanceof ThreadDeath) return;
-        if (source instanceof ScriptThread thread) {
+        if (System.getProperty("debug_mode") != null)
+            throwable.printStackTrace();
+        if (throwable instanceof ScriptParseError error) {
+            error.printStackTrace(System.err);
+        } else if (source instanceof ScriptThread thread) {
             final Class<?> start = thread.initiator;
             System.err.println("An error occurred while running a script.");
             System.err.println("\t" + throwable.getMessage());
