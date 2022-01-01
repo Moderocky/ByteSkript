@@ -8,10 +8,26 @@ package org.byteskript.skript.lang.syntax.entry;
 
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleEntry;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Function Return Type",
+    description = """
+        Specify an explicit return type of a function.
+        This can be used for overriding functions in types.
+        """,
+    examples = {
+        """
+            function my_func:
+                return: String
+                trigger:
+                    return "hello"
+                    """
+    }
+)
 public class ReturnType extends SimpleEntry {
     
     public ReturnType() {

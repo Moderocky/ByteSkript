@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.flow.error;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Effect;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -20,6 +21,18 @@ import org.byteskript.skript.lang.element.StandardElements;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
 
+@Documentation(
+    name = "Inline Try",
+    description = """
+        Attempts the following effect, failing silently if an error occurs.
+        This is a meta-effect and follows an unusual pattern.
+        """,
+    examples = {
+        """
+            try: assert 1 is 2
+                """
+    }
+)
 public class TryEffect extends Effect {
     
     public TryEffect() {

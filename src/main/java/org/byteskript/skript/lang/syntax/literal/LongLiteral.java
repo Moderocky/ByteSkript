@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.literal;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Literal;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -19,6 +20,19 @@ import org.byteskript.skript.lang.element.StandardElements;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Long Literal",
+    description = """
+        A very large whole number `55L` value.
+        Use the suffix `L` to ensure this is a long.
+        """,
+    examples = {
+        """
+            set {var} to 50000000000L
+            set {var} to -300L
+                """
+    }
+)
 public class LongLiteral extends Literal<Long> {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("^-?\\d+[Ll](?![\\d.#DFdf])");

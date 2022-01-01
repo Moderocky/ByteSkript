@@ -8,8 +8,9 @@ package org.byteskript.skript.lang.syntax.event;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
+import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.Event;
-import org.byteskript.skript.api.note.ForceExtract;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -17,13 +18,26 @@ import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.runtime.threading.ScriptThread;
+import org.objectweb.asm.Label;
 
-import java.lang.reflect.Method;
-
+@Documentation(
+    name = "Current Event",
+    description = """
+        The event that triggered this process.
+        This is designed for use in event triggers.
+        This is also available in other triggers, as long as the process was started by an event.""",
+    examples = {
+        """
+            on any script load:
+                trigger:
+                    print "the event is " + event
+                    """
+    }
+)
 public class CurrentEventExpression extends SimpleExpression {
     
     public CurrentEventExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the ][current ]event");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the] [current] event");
     }
     
     @Override
@@ -31,19 +45,25 @@ public class CurrentEventExpression extends SimpleExpression {
         return CommonTypes.EVENT;
     }
     
-    @Override
+    @Override // now inlined
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
-        assert method != null;
-        final Method target = CurrentEventExpression.class.getMethod("get");
-        this.writeCall(method, target, context);
-    }
-    
-    @ForceExtract
-    public static Event get() {
-        final Thread current = Thread.currentThread();
-        if (!(current instanceof ScriptThread thread)) return null;
-        return thread.event;
+        final Label first = new Label(), second = new Label();
+        final String type = new Type(ScriptThread.class).internalName(),
+            event = new Type(Event.class).descriptorString();
+        method.writeCode(WriteInstruction.invokeStatic(Thread.class.getMethod("currentThread")));
+        method.writeCode((writer, visitor) -> {
+            visitor.visitInsn(89); // dup
+            visitor.visitTypeInsn(193, type); // instanceof
+            visitor.visitJumpInsn(153, first); // if0
+            visitor.visitTypeInsn(192, type); // checkcast
+            visitor.visitFieldInsn(180, type, "event", event);
+            visitor.visitJumpInsn(167, second); // goto
+            visitor.visitLabel(first);
+            visitor.visitInsn(87); // pop
+            visitor.visitInsn(1); // null
+            visitor.visitLabel(second); // event | null
+        });
     }
     
 }

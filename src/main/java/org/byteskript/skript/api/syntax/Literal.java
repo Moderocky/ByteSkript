@@ -7,6 +7,7 @@
 package org.byteskript.skript.api.syntax;
 
 import mx.kenzie.foundation.MethodBuilder;
+import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.LanguageElement;
 import org.byteskript.skript.api.Library;
@@ -32,6 +33,8 @@ public abstract class Literal<Type> extends Element implements SyntaxElement {
         assert target != null;
         assert target.getReturnType() != void.class;
         this.writeCall(method, target, context);
+        final mx.kenzie.foundation.Type type = context.getCompileCurrent().wanted;
+        if (type != null) method.writeCode(WriteInstruction.cast(type));
     }
     
     public abstract Type parse(String input);

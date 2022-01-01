@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.comparison;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
@@ -16,6 +17,17 @@ import org.byteskript.skript.lang.element.StandardElements;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
+@Documentation(
+    name = "Not Equal",
+    description = """
+        Check whether two objects are not equal in value.""",
+    examples = {
+        """
+            assert "hello" is not 6
+            assert 6 != 5
+            """
+    }
+)
 public class NotEqual extends RelationalExpression {
     
     public NotEqual() {
@@ -54,23 +66,6 @@ public class NotEqual extends RelationalExpression {
     @Override
     public Type getReturnType() {
         return CommonTypes.BOOLEAN;
-    }
-    
-    @Override
-    public String description() {
-        return """
-            Check whether the first number is greater than the second.""";
-    }
-    
-    @Override
-    public String[] examples() {
-        return new String[]{
-            "assert 4 is not 3",
-            """
-                if {var} != 6:
-                    print "hello"
-                    """
-        };
     }
     
 }

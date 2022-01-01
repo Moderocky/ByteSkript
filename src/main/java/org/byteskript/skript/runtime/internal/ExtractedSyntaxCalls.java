@@ -6,14 +6,18 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.mirror.MethodAccessor;
 import org.byteskript.skript.error.ScriptRuntimeError;
 import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.threading.ScriptThread;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
+import java.util.function.Supplier;
 
 public class ExtractedSyntaxCalls {
     
@@ -61,27 +65,37 @@ public class ExtractedSyntaxCalls {
     public static Object getListValue(Object key, Object target) {
         if (!(key instanceof Number number))
             throw new ScriptRuntimeError("The given index must be a number.");
-        if (!(target instanceof List list))
-            throw new ScriptRuntimeError("The given collection must be a map.");
-        return list.get(number.intValue());
+        if (target instanceof List list) return list.get(number.intValue());
+        if (target instanceof Object[] list) return list[number.intValue()];
+        throw new ScriptRuntimeError("The given collection must be a list.");
     }
     
     @SuppressWarnings("unchecked")
     public static void setListValue(Object key, Object target, Object value) {
         if (!(key instanceof Number number))
             throw new ScriptRuntimeError("The given index must be a number.");
-        if (!(target instanceof List list))
-            throw new ScriptRuntimeError("The given collection must be a map.");
-        list.remove(number.intValue());
-        list.add(number.intValue(), value);
+        if (target instanceof List list) {
+            list.remove(number.intValue());
+            list.add(number.intValue(), value);
+            return;
+        } else if (target instanceof Object[] array) {
+            array[number.intValue()] = value;
+            return;
+        }
+        throw new ScriptRuntimeError("The given collection must be a list.");
     }
     
     public static void deleteListValue(Object key, Object target) {
         if (!(key instanceof Number number))
             throw new ScriptRuntimeError("The given index must be a number.");
-        if (!(target instanceof List list))
-            throw new ScriptRuntimeError("The given collection must be a map.");
-        list.remove(number.intValue());
+        if (target instanceof List list) {
+            list.remove(number.intValue());
+            return;
+        } else if (target instanceof Object[] array) {
+            array[number.intValue()] = null;
+            return;
+        }
+        throw new ScriptRuntimeError("The given collection must be a list.");
     }
     
     public static Object getMapValue(Object key, Object target) {
@@ -100,5 +114,23 @@ public class ExtractedSyntaxCalls {
         if (!(target instanceof Map map))
             throw new ScriptRuntimeError("The given collection must be a map.");
         map.remove(key);
+    }
+    
+    public static Object run(Object thing)
+        throws Throwable {
+        if (thing instanceof Method method)
+            return method.invoke(null);
+        else if (thing instanceof MethodAccessor<?> runnable)
+            return runnable.invoke();
+        else if (thing instanceof Member runnable)
+            return runnable.invoke();
+        else if (thing instanceof Runnable runnable) {
+            runnable.run();
+            return null;
+        } else if (thing instanceof Supplier<?> runnable)
+            return runnable.get();
+        else if (thing instanceof Future future)
+            return future.get();
+        return thing;
     }
 }

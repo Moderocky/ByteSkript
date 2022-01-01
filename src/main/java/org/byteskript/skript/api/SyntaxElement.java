@@ -8,6 +8,7 @@ package org.byteskript.skript.api;
 
 import mx.kenzie.foundation.*;
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.note.ForceBridge;
 import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.note.ForceInline;
@@ -43,14 +44,22 @@ public interface SyntaxElement {
         return CommonTypes.VOID;
     }
     
-    String name();
+    default String name() {
+        final Documentation documentation = this.getClass().getAnnotation(Documentation.class);
+        if (documentation == null) return getPattern().name();
+        return documentation.name();
+    }
     
     default String description() {
-        return null;
+        final Documentation documentation = this.getClass().getAnnotation(Documentation.class);
+        if (documentation == null) return "None.";
+        return documentation.description();
     }
     
     default String[] examples() {
-        return null;
+        final Documentation documentation = this.getClass().getAnnotation(Documentation.class);
+        if (documentation == null) return new String[0];
+        return documentation.examples();
     }
     
     boolean hasHandler(HandlerType type);
@@ -61,6 +70,16 @@ public interface SyntaxElement {
     
     default CompileState getSubState() {
         return CompileState.STATEMENT;
+    }
+    
+    default void prepareExpectedTypes(Context context, Method target) {
+        if (target == null) return;
+        final ElementTree[] inputs = context.getCompileCurrent().nested();
+        if (inputs.length == 0) return;
+        final Type[] types = Type.of(target.getParameterTypes());
+        for (int i = 0; i < Math.min(types.length, inputs.length); i++) {
+            inputs[i].wanted = types[i];
+        }
     }
     
     default boolean allowAsInputFor(Type type) {
@@ -166,6 +185,10 @@ public interface SyntaxElement {
      */
     default String assemble(int line, String... inputs) throws ScriptReassemblyError {
         throw new ScriptReassemblyError(line, "Not supported yet.");
+    }
+    
+    default Document createDocument() {
+        return new Document(name(), getType().name(), getPatterns(), description(), examples());
     }
     
 }

@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.generic;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -16,6 +17,19 @@ import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.objectweb.asm.Label;
 
+@Documentation(
+    name = "Otherwise (Ternary)",
+    description = """
+        If the condition is true, returns the second input.
+        Otherwise, returns the third.
+        """,
+    examples = {
+        """
+            set {var} to true ? {number} : 0
+            set {var} to (if {thing} is true then 56 otherwise 31)
+                """
+    }
+)
 public class TernaryOtherwiseExpression extends SimpleExpression {
     
     public TernaryOtherwiseExpression() {

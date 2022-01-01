@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.entry.syntax;
 
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleEntry;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.SyntaxTree;
@@ -15,6 +16,24 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 
 import java.util.Locale;
 
+@Documentation(
+    name = "Syntax Handler Mode",
+    description = """
+        Uses this mode for the current syntax registration.
+        This is for use with the `property` entry.
+        Must be used inside the `syntax` block of a function.
+        """,
+    examples = {
+        """
+            function my_func(thing):
+                syntax:
+                    property: name
+                    mode: get
+                trigger:
+                    return {thing} + ""
+            """
+    }
+)
 public class ModeEntry extends SimpleEntry {
     
     public ModeEntry() {

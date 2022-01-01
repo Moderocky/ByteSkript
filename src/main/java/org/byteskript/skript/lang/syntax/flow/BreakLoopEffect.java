@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.flow;
 
 import mx.kenzie.foundation.MethodBuilder;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Effect;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -18,6 +19,21 @@ import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.objectweb.asm.Label;
 
+@Documentation(
+    name = "Exit Loop",
+    description = """
+        Exits the current loop, jumping to the end.
+        This will find the innermost loop.
+        """,
+    examples = {
+        """
+            while true is true:
+                print "yes"
+                if true:
+                    exit loop
+                """
+    }
+)
 public class BreakLoopEffect extends Effect {
     
     public BreakLoopEffect() {

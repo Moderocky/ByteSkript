@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.flow;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Effect;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -19,6 +20,19 @@ import org.byteskript.skript.runtime.internal.OperatorHandler;
 
 import java.lang.reflect.Method;
 
+@Documentation(
+    name = "Assert",
+    description = """
+        Tests that the given value is true, halting the program if it isn't.
+        This is very useful for creating tests.
+        """,
+    examples = {
+        """
+            assert {var} is true
+            assert 1 is 1
+                """
+    }
+)
 public class AssertEffect extends Effect {
     
     public AssertEffect() {

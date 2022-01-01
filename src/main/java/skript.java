@@ -203,9 +203,8 @@ public final class skript {
         return accessor.get();
     }
     
-    public static Void set_java_field(Object owner, Object name, Object value) {
+    public static void set_java_field(Object owner, Object name, Object value) {
         mirror(owner).field((name) + "").set((value));
-        return null;
     }
     
     private static Mirror<?> mirror(Object owner) {
@@ -221,10 +220,9 @@ public final class skript {
     //endregion
     
     //region Thread Handlers
-    public static Void clear_threadlocals() {
-        if (!(Thread.currentThread() instanceof ScriptThread source)) return null;
+    public static void clear_threadlocals() {
+        if (!(Thread.currentThread() instanceof ScriptThread source)) return;
         source.variables.clear();
-        return null;
     }
     
     public static Object get_threadlocal(Object thread, Object name) {
@@ -233,24 +231,22 @@ public final class skript {
         return target.variables.get(key);
     }
     
-    public static Void copy_threadlocals_to(Object object) {
-        if (object == null) return null;
+    public static void copy_threadlocals_to(Object object) {
+        if (object == null) return;
         if (!(Thread.currentThread() instanceof ScriptThread source))
             throw new ScriptRuntimeError("Code is not being run on a script thread - thread variables are unavailable here.");
         if (!((object) instanceof ScriptThread target))
             throw new ScriptRuntimeError("Target is not a script thread - thread variables are unavailable here.");
         target.variables.putAll(source.variables);
-        return null;
     }
     
-    public static Void copy_threadlocals_from(Object object) {
-        if (object == null) return null;
+    public static void copy_threadlocals_from(Object object) {
+        if (object == null) return;
         if (!(Thread.currentThread() instanceof ScriptThread target))
             throw new ScriptRuntimeError("Code is not being run on a script thread - thread variables are unavailable here.");
         if (!((object) instanceof ScriptThread source))
             throw new ScriptRuntimeError("Source is not a script thread - thread variables are unavailable here.");
         target.variables.putAll(source.variables);
-        return null;
     }
     //endregion
     

@@ -7,10 +7,23 @@
 package org.byteskript.skript.lang.syntax.event;
 
 import org.byteskript.skript.api.Event;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.EventHolder;
 import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.runtime.event.Load;
 
+@Documentation(
+    name = "Load",
+    description = """
+        Run when this script loads.""",
+    examples = {
+        """
+            on script load:
+                trigger:
+                    print "this script loaded"
+                    """
+    }
+)
 public class LoadEvent extends EventHolder {
     
     public LoadEvent() {

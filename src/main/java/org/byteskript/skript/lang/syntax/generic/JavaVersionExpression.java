@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.generic;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -17,10 +18,22 @@ import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.runtime.Skript;
 
+@Documentation(
+    name = "Java Version",
+    description = """
+        Returns the class file version used to compile this script.
+        This will be a number (61).
+        """,
+    examples = {
+        """
+            set {var} to the java version
+                """
+    }
+)
 public class JavaVersionExpression extends SimpleExpression {
     
     public JavaVersionExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the ]java version");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "[the] java version");
     }
     
     @Override

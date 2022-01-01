@@ -9,10 +9,24 @@ package org.byteskript.skript.lang.syntax.type;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "This Object",
+    description = """
+        Returns the current object, while in a function from a type.
+        Outside a custom type this will not be usable.
+        """,
+    examples = """
+        type Square:
+            function my_func:
+                trigger:
+                    return this object
+        """
+)
 public class ThisThingExpression extends SimpleExpression {
     
     public ThisThingExpression() {

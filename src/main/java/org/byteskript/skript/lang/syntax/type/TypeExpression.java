@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.type;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -20,6 +21,21 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Type",
+    description = """
+        Gets the (class) handle for a type, using its fully-qualified name.
+        Custom types can be referenced with `skript/scriptname/Name`.
+        Java types may be referenced with this.
+        """,
+    examples = {
+        """
+            set {type} to skript/myscript/Square
+            set {type} to String
+            set {type} to java/util/List // a Java type
+                """
+    }
+)
 public class TypeExpression extends SimpleExpression {
     
     public TypeExpression() {

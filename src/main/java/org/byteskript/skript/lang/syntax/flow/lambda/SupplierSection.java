@@ -10,6 +10,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.MethodErasure;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.ExtractedSection;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -26,6 +27,24 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Modifier;
 
+@Documentation(
+    name = "Supplier",
+    description = """
+        Creates a section of runnable code that can be stored.
+        This gives back a value using the `return` effect.
+        This can be run anywhere using the `result of` expression.
+        Variables used inside are frozen.
+        """,
+    examples = {
+        """
+            set {var} to a new supplier:
+                return "hello"
+            set {word} to result of {var}
+            print result of a new supplier:
+                return "bye"
+            """
+    }
+)
 public class SupplierSection extends ExtractedSection {
     
     public SupplierSection() {

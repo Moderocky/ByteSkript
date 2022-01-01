@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.function;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.Function;
@@ -17,6 +18,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Function (External)",
+    description = """
+        Runs a function from another script or library.
+        The script is specified by its path from skript/path/to/file.
+        The file extension is not required.
+        """,
+    examples = {
+        """
+            set {var} to my_func(4) from skript/utils
+                """
+    }
+)
 public class ExternalFunctionExpression extends SimpleExpression {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")\\((?<params>.*)\\) from (?<location>.+)");
@@ -48,12 +62,9 @@ public class ExternalFunctionExpression extends SimpleExpression {
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
-        assert method != null;
         final FunctionDetails details = ((FunctionDetails) match.meta());
-        assert details != null;
+        assert details != null : "No details found, parsing errored.";
         final Type location = new Type(details.location);
-//        method.writeCode(WriteInstruction.invokeStatic(location, CommonTypes.OBJECT, details.name, parameters));
-        
         final Function function = new Function(details.name, location, CommonTypes.OBJECT, details.arguments);
         method.writeCode(function.invoke(context.getType().internalName()));
     }

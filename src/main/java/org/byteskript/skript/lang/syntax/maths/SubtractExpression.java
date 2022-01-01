@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.maths;
 
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -16,10 +17,21 @@ import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 import org.byteskript.skript.runtime.internal.OperatorHandler;
 
+@Documentation(
+    name = "Subtraction",
+    description = """
+        Subtract two numbers.
+        """,
+    examples = {
+        """
+            set {var} to 5 - 2
+                """
+    }
+)
 public class SubtractExpression extends RelationalExpression {
     
     public SubtractExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Number% ?- ?%Number%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% ?- ?%Object%");
         try {
             handlers.put(StandardHandlers.FIND, OperatorHandler.class.getMethod("subtract", Object.class, Object.class));
             handlers.put(StandardHandlers.GET, OperatorHandler.class.getMethod("subtract", Object.class, Object.class));

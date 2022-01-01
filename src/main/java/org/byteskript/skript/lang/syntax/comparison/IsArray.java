@@ -8,10 +8,22 @@ package org.byteskript.skript.lang.syntax.comparison;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Is Array",
+    description = "Check whether an object is an array.",
+    examples = {
+        "assert (1, 2) is an array",
+        """
+            if {var} is an array:
+                print "hello"
+                """
+    }
+)
 public class IsArray extends RelationalExpression {
     
     public IsArray() {
@@ -38,23 +50,6 @@ public class IsArray extends RelationalExpression {
     @Override
     public Type getReturnType() {
         return CommonTypes.BOOLEAN;
-    }
-    
-    @Override
-    public String description() {
-        return """
-            Check whether an object is an array.""";
-    }
-    
-    @Override
-    public String[] examples() {
-        return new String[]{
-            "assert (1, 2) is an array",
-            """
-                if {var} is an array:
-                    print "hello"
-                    """
-        };
     }
     
 }

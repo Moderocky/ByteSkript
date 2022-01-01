@@ -33,6 +33,9 @@ public abstract class Effect extends Element implements SyntaxElement {
     
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
+        final Method target = handlers.get(StandardHandlers.RUN);
+        if (target == null) return;
+        this.prepareExpectedTypes(context, target);
     }
     
     @Override

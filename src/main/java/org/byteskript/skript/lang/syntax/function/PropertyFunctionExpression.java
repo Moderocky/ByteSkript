@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.function;
 
 import mx.kenzie.foundation.*;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
@@ -17,6 +18,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Local Function",
+    description = """
+        A function attached to an object.
+        This can have special behaviour specific to the object it is run for.
+        """,
+    examples = {
+        """
+            set {sides} to get_sides() from {square}
+                """
+    }
+)
 public class PropertyFunctionExpression extends SimpleExpression {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")\\((?<params>.*)\\) from (?<object>.+)");

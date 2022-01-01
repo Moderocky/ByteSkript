@@ -49,7 +49,6 @@ import org.byteskript.skript.lang.syntax.list.ImplicitArrayCreator;
 import org.byteskript.skript.lang.syntax.list.IndexOfList;
 import org.byteskript.skript.lang.syntax.list.ListCreator;
 import org.byteskript.skript.lang.syntax.literal.*;
-import org.byteskript.skript.lang.syntax.map.ClearMap;
 import org.byteskript.skript.lang.syntax.map.KeyInMap;
 import org.byteskript.skript.lang.syntax.map.MapCreator;
 import org.byteskript.skript.lang.syntax.maths.*;
@@ -170,8 +169,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new BreakIfEffect(),
             new BreakEffect(),
             new TryEffect(),
-            new ClearList(),
-            new ClearMap()
+            new ClearList()
         );
         registerSyntax(CompileState.STATEMENT,
             new NoneLiteral(),

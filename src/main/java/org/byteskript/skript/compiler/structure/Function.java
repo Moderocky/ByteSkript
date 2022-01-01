@@ -31,7 +31,6 @@ public record Function(String name, Type provider, Type returnType, Type[] argum
         final org.objectweb.asm.Type[] types = convert(parameters);
         final org.objectweb.asm.Type blob = org.objectweb.asm.Type.getType(void.class);
         return WriteInstruction.invokeDynamic(CommonTypes.OBJECT, name, arguments, Bootstrapper.getBootstrapFunction(), source, owner, org.objectweb.asm.Type.getMethodDescriptor(blob, types));
-//        return WriteInstruction.invokeStatic(provider, CommonTypes.OBJECT, name, types);
     }
     
     private org.objectweb.asm.Type convert(Type type) {

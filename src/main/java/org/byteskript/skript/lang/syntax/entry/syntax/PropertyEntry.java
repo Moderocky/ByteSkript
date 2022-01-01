@@ -7,11 +7,29 @@
 package org.byteskript.skript.lang.syntax.entry.syntax;
 
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleEntry;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.SyntaxTree;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Syntax Property",
+    description = """
+        Registers a property handler for the given word.
+        Must be used inside the `syntax` block of a function.
+        The function will need to accept inputs for property set/add/remove handlers.
+        """,
+    examples = {
+        """
+            function set_name(thing, name):
+                syntax:
+                    property: name
+                trigger:
+                    run set_name({name}) from {thing}
+            """
+    }
+)
 public class PropertyEntry extends SimpleEntry {
     
     public PropertyEntry() {

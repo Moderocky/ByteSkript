@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.control;
 import mx.kenzie.foundation.MethodBuilder;
 import org.byteskript.skript.api.HandlerType;
 import org.byteskript.skript.api.Referent;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.ControlEffect;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.error.ScriptParseError;
@@ -18,6 +19,18 @@ import org.byteskript.skript.lang.syntax.variable.VariableExpression;
 
 import java.lang.reflect.Method;
 
+@Documentation(
+    name = "Delete",
+    description = """
+        Empty the provided storage object.
+        This can be a variable or a supported expression.""",
+    examples = {
+        """
+            delete {var}
+            delete system property "hello"
+            """
+    }
+)
 public class DeleteEffect extends ControlEffect {
     
     public DeleteEffect() {

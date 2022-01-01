@@ -7,6 +7,8 @@
 package org.byteskript.skript.api.syntax;
 
 import mx.kenzie.foundation.MethodBuilder;
+import mx.kenzie.foundation.Type;
+import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.LanguageElement;
 import org.byteskript.skript.api.Library;
@@ -26,11 +28,13 @@ public abstract class RelationalExpression extends ComplexExpression implements 
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
-        assert method != null;
         final Method target = handlers.get(context.getHandlerMode());
-        assert target != null : "" + context.getHandlerMode();
+        assert target != null : "Missing target for: " + context.getHandlerMode();
         this.writeCall(method, target, context);
         context.setState(CompileState.STATEMENT);
+        if (!context.getHandlerMode().expectReturn()) return;
+        final Type type = context.getCompileCurrent().wanted;
+        if (type != null) method.writeCode(WriteInstruction.cast(type));
     }
     
     @Override

@@ -130,7 +130,12 @@ public class OperatorHandler {
         }
     }
     
-    public static Number subtract(Object a, Object b) {
+    public static Object subtract(Object a, Object b) {
+        if (a instanceof String first && b instanceof String second) {
+            if (first.endsWith(second)) return first.substring(0, first.length() - second.length());
+        } else if (a instanceof String string && b instanceof Number number) {
+            return string.substring(0, string.length() - number.intValue());
+        }
         if (!(a instanceof Number x) || !(b instanceof Number y)) {
             throw new ScriptRuntimeError("Provided inputs must be numerical.");
         }
@@ -149,7 +154,12 @@ public class OperatorHandler {
         }
     }
     
-    public static Number multiply(Object a, Object b) {
+    public static Object multiply(Object a, Object b) {
+        if (a instanceof String string && b instanceof Number number) {
+            return string.repeat(Math.max(0, number.intValue()));
+        } else if (b instanceof String string && a instanceof Number number) {
+            return string.repeat(Math.max(0, number.intValue()));
+        }
         if (!(a instanceof Number x) || !(b instanceof Number y)) {
             throw new ScriptRuntimeError("Provided inputs must be numerical.");
         }

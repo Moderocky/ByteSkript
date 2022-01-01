@@ -8,10 +8,23 @@ package org.byteskript.skript.lang.syntax.type.property;
 
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleEntry;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Property Type",
+    description = """
+        The type of this property.
+        This can be used to allow only certain values.
+        """,
+    examples = """
+        type Square:
+            property sides:
+                type: Integer
+        """
+)
 public class TypeEntry extends SimpleEntry {
     
     public TypeEntry() {

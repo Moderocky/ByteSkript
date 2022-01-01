@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.flow.error;
 
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -18,6 +19,19 @@ import org.byteskript.skript.compiler.structure.TryCatchTree;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Type",
+    description = """
+        Handles errors automatically, passing them to the following `catch` block.""",
+    examples = {
+        """
+            try:
+                assert 1 is 2
+            catch {error}:
+                print "The error was: " + {error}
+                    """
+    }
+)
 public class TrySection extends Section {
     
     public TrySection() {

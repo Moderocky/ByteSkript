@@ -8,16 +8,28 @@ package org.byteskript.skript.lang.syntax.flow;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Effect;
-import org.byteskript.skript.compiler.CompileState;
-import org.byteskript.skript.compiler.Context;
-import org.byteskript.skript.compiler.Pattern;
-import org.byteskript.skript.compiler.SkriptLangSpec;
+import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.ProgrammaticSplitTree;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.objectweb.asm.Label;
 
+@Documentation(
+    name = "Exit Section If",
+    description = """
+        Runs only if the boolean value is true.
+        Exits the current section (block) jumping to the end.
+        """,
+    examples = {
+        """
+            while true is true:
+                print "yes"
+                exit section if {var} is 6
+                """
+    }
+)
 public class BreakIfEffect extends Effect {
     
     public BreakIfEffect() {
@@ -38,6 +50,7 @@ public class BreakIfEffect extends Effect {
         final MethodBuilder method = context.getMethod();
         assert method != null;
         final Label end = tree.getEnd().use();
+        method.writeCode(WriteInstruction.cast(CommonTypes.BOOLEAN));
         method.writeCode(WriteInstruction.invokeVirtual(Boolean.class.getMethod("booleanValue")));
         method.writeCode((writer, visitor) -> visitor.visitJumpInsn(157, end));
         context.setState(CompileState.CODE_BODY);

@@ -7,10 +7,18 @@
 package org.byteskript.skript.lang.syntax.type.property;
 
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleEntry;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Local Property",
+    description = """
+        Makes this property local (inaccessible.)
+        Not currently supported.
+        """
+)
 public class LocalEntry extends SimpleEntry {
     
     public LocalEntry() {

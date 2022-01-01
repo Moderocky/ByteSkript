@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.flow;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Effect;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -19,6 +20,19 @@ import org.byteskript.skript.runtime.internal.OperatorHandler;
 
 import java.lang.reflect.Method;
 
+@Documentation(
+    name = "Assert",
+    description = """
+        Tests that the given value is true, halting the program if it isn't.
+        Prints the error message provided.
+        """,
+    examples = {
+        """
+            assert {var} is true: "Var wasn't true"
+            assert 1 is 1: "1 wasn't 1"
+                """
+    }
+)
 public class AssertWithErrorEffect extends Effect {
     
     public AssertWithErrorEffect() {
@@ -29,9 +43,7 @@ public class AssertWithErrorEffect extends Effect {
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
-        assert method != null;
         final Method target = handlers.get(StandardHandlers.RUN);
-        assert target != null;
         final int line = context.lineNumber();
         method.writeCode(WriteInstruction.loadClassConstant(method.finish().getType()));
         method.writeCode(WriteInstruction.push(line));

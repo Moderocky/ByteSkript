@@ -7,6 +7,8 @@
 package org.byteskript.skript.api.syntax;
 
 import mx.kenzie.foundation.MethodBuilder;
+import mx.kenzie.foundation.Type;
+import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.Library;
 import org.byteskript.skript.api.SyntaxElement;
@@ -35,6 +37,8 @@ public abstract class EventValueExpression extends Element implements SyntaxElem
         assert target.getReturnType() != void.class;
         this.writeCall(method, target, context);
         context.setState(CompileState.STATEMENT);
+        final Type type = context.getCompileCurrent().wanted;
+        if (type != null) method.writeCode(WriteInstruction.cast(type));
     }
     
     @Override

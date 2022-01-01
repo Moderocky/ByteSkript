@@ -10,6 +10,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.Referent;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -22,6 +23,17 @@ import org.byteskript.skript.runtime.internal.OperatorHandler;
 
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Local Variable",
+    description = """
+        A normal variable, local to this trigger.
+        This variable exists only in the current trigger.
+        Lambdas will use a frozen copy that does not reference the original.
+        """,
+    examples = """
+        set {var} to 5
+        """
+)
 public class VariableExpression extends SimpleExpression implements Referent {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("\\{(?<name>" + SkriptLangSpec.IDENTIFIER + ")\\}");

@@ -10,6 +10,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.MethodErasure;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.ExtractedSection;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -26,6 +27,23 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Modifier;
 
+@Documentation(
+    name = "Runnable",
+    description = """
+        Creates a section of runnable code that can be stored.
+        This can be run anywhere using the `run` effect.
+        Variables used inside are frozen.
+        """,
+    examples = {
+        """
+            set {var} to a new runnable:
+                print "hello"
+            run {var}
+            run a new runnable:
+                print "bye"
+                    """
+    }
+)
 public class RunnableSection extends ExtractedSection {
     
     public RunnableSection() {

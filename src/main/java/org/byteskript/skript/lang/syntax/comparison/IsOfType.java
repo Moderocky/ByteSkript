@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.comparison;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.*;
@@ -18,6 +19,17 @@ import org.byteskript.skript.lang.syntax.type.TypeExpression;
 
 import java.lang.reflect.Method;
 
+@Documentation(
+    name = "Is of Type",
+    description = "Check whether an object is of the given type.",
+    examples = {
+        "assert 1 is a number",
+        """
+            if {var} is a string:
+                print {var}
+                """
+    }
+)
 public class IsOfType extends RelationalExpression {
     
     public IsOfType() {
@@ -74,17 +86,6 @@ public class IsOfType extends RelationalExpression {
     @Override
     public Type getReturnType() {
         return CommonTypes.BOOLEAN;
-    }
-    
-    @Override
-    public String[] examples() {
-        return new String[]{
-            "assert 1 is a number",
-            """
-                if {var} is a string:
-                    print {var}
-                    """
-        };
     }
     
 }

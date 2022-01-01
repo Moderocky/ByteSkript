@@ -10,6 +10,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.api.syntax.TriggerHolder;
 import org.byteskript.skript.compiler.CompileState;
@@ -23,6 +24,20 @@ import org.byteskript.skript.lang.element.StandardElements;
 
 import java.lang.reflect.Modifier;
 
+@Documentation(
+    name = "Verifier",
+    description = """
+        A test-scenario for a function, checked at load.
+        This can be used to check whether libraries, etc. are available.
+        """,
+    examples = {
+        """
+            function my_func:
+                verify:
+                    assert "hello" is a string
+                    """,
+    }
+)
 public class Verify extends Section {
     
     public Verify() {

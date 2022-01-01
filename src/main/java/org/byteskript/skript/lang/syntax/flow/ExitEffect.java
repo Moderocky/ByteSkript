@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.flow;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Effect;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -15,6 +16,19 @@ import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Exit Program",
+    description = """
+        Exits the program. This ends all processes immediately.
+        Some processes are capable of blocking this, in which case it will throw an error and kill the current process.
+        """,
+    examples = {
+        """
+            if true is false:
+                exit the program
+                """
+    }
+)
 public class ExitEffect extends Effect {
     
     public ExitEffect() {

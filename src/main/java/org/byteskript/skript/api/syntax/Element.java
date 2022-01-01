@@ -48,11 +48,6 @@ public abstract class Element implements SyntaxElement {
     }
     
     @Override
-    public String name() {
-        return pattern.name();
-    }
-    
-    @Override
     public boolean hasHandler(HandlerType type) {
         return handlers.containsKey(type) && handlers.get(type) != null;
     }

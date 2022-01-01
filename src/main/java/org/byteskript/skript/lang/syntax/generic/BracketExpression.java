@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.generic;
 
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.InnerModifyExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -16,6 +17,18 @@ import org.byteskript.skript.lang.element.StandardElements;
 
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Brackets",
+    description = """
+        Used to help the parser determine which parts of a line are expressions.
+        Bracketed content is always prioritised.
+        """,
+    examples = {
+        """
+            set {var} to 5 * (5 + 3)
+                """
+    }
+)
 public class BracketExpression extends InnerModifyExpression {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("\\((.+)\\)");

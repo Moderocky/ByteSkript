@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.maths;
 
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.SkriptLangSpec;
@@ -14,6 +15,18 @@ import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 import org.byteskript.skript.runtime.internal.OperatorHandler;
 
+@Documentation(
+    name = "Square Root",
+    description = """
+        Find the square root of a number.
+        This is quite a slow calculation.
+        """,
+    examples = {
+        """
+            set {var} to sqrt of 25
+                """
+    }
+)
 public class SquareRootExpression extends RelationalExpression {
     
     public SquareRootExpression() {

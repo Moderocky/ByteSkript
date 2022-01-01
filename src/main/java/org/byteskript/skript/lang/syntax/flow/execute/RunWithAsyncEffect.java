@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.flow.execute;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.HandlerType;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.ControlEffect;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -20,6 +21,18 @@ import org.byteskript.skript.runtime.internal.Member;
 
 import java.lang.reflect.Method;
 
+@Documentation(
+    name = "Run (Arguments) in Background",
+    description = """
+        Runs the given executable in the background.
+        Uses arguments from the `with` input.
+        """,
+    examples = {
+        """
+            run {function} with (1, "hello") in the background
+                    """
+    }
+)
 public class RunWithAsyncEffect extends ControlEffect {
     
     public RunWithAsyncEffect() {

@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.literal;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.syntax.Literal;
 import org.byteskript.skript.compiler.CommonTypes;
@@ -20,6 +21,19 @@ import org.byteskript.skript.lang.element.StandardElements;
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Regular Expression Literal",
+    description = """
+        A RegEx `/.+/` pattern.
+        This can be used for easier string-matching.
+        """,
+    examples = {
+        """
+            set {var} to /hello/
+            if "hello" matches {var}:
+                """
+    }
+)
 public class RegexLiteral extends Literal<java.util.regex.Pattern> {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("^\\/[^\\/\\\\\\r\\n]*(?:\\\\.[^\\/\\\\\\r\\n]*)*\\/");

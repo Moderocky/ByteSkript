@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.generic;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.Referent;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.CommonTypes;
@@ -20,6 +21,17 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 
 import java.lang.reflect.Method;
 
+@Documentation(
+    name = "System Property",
+    description = """
+        Used to set/get/delete a system property by name.
+        """,
+    examples = {
+        """
+            set {var} to {number} ? 0
+                """
+    }
+)
 public class SystemPropertyExpression extends SimpleExpression implements Referent {
     
     public SystemPropertyExpression() {

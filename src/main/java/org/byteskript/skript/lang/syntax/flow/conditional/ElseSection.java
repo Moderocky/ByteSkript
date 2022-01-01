@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.flow.conditional;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -19,6 +20,21 @@ import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.objectweb.asm.Label;
 
+@Documentation(
+    name = "Else",
+    description = """
+        Run if the preceding if-block fails.""",
+    examples = {
+        """
+            if {var} is true:
+                print "yes"
+            else if {foo} is 6:
+                print "maybe"
+            else:
+                print "no"
+                    """
+    }
+)
 public class ElseSection extends Section {
     
     public ElseSection() {

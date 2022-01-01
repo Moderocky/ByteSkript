@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.timing;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.*;
@@ -18,6 +19,18 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 import java.lang.reflect.Method;
 import java.time.Duration;
 
+@Documentation(
+    name = "Days",
+    description = """
+        A timespan in days.
+        """,
+    examples = {
+        """
+            set {var} to 5 days
+            wait 5 days // probably not a great idea
+                """
+    }
+)
 public class DaysExpression extends SimpleExpression {
     
     public DaysExpression() {

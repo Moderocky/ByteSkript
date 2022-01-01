@@ -10,6 +10,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.Referent;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
@@ -20,6 +21,16 @@ import org.byteskript.skript.runtime.internal.ThreadVariableMap;
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Thread Variable",
+    description = """
+        A reference variable, local to this process, modifiable from inside lambdas.
+        This variable is accessible in other triggers in the same process.
+        """,
+    examples = """
+        set {_var} to 5
+        """
+)
 public class ThreadVariableExpression extends VariableExpression implements Referent {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("\\{(?<name>_" + SkriptLangSpec.IDENTIFIER + ")\\}");

@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.flow.error;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.PreVariable;
@@ -22,6 +23,19 @@ import org.byteskript.skript.lang.syntax.variable.VariableExpression;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
 
+@Documentation(
+    name = "Catch",
+    description = """
+        Run if an error occurs in the preceding try-block.""",
+    examples = {
+        """
+            try:
+                assert 1 is 2
+            catch {error}:
+                print "The error was: " + {error}
+                    """
+    }
+)
 public class CatchSection extends Section {
     
     public CatchSection() {

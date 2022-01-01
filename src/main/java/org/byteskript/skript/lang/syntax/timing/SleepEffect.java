@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.lang.syntax.timing;
 
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.syntax.Effect;
 import org.byteskript.skript.compiler.Context;
@@ -16,6 +17,23 @@ import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 import org.byteskript.skript.runtime.threading.ScriptThread;
 
+@Documentation(
+    name = "Sleep",
+    description = """
+        Puts the current process to sleep (indefinitely.)
+        Another (background) process can wake it up.
+        """,
+    examples = {
+        """
+            set {thread} to the current process
+            run a new runnable in the background:
+                wait 10 seconds
+                wake {thread}
+            sleep
+            print "something woke me"
+                """
+    }
+)
 public class SleepEffect extends Effect {
     
     public SleepEffect() {

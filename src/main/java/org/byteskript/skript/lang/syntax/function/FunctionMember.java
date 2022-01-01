@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.function;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.TriggerHolder;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.Function;
@@ -22,6 +23,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Function",
+    description = """
+        A function that can be called from any code.
+        Function names are alphanumeric and allow underscores.
+        """,
+    examples = {
+        """
+            function my_func (name, age):
+                trigger:
+                    print "my name is " + {name}
+                    print "I am " + {age}
+                """
+    }
+)
 public class FunctionMember extends TriggerHolder {
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("function (?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ") ?\\((?<params>@?" + SkriptLangSpec.IDENTIFIER.pattern() + "(?:, @?" + SkriptLangSpec.IDENTIFIER.pattern() + ")*)\\)");
     

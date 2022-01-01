@@ -8,18 +8,28 @@ package org.byteskript.skript.lang.syntax.flow.execute;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
-import mx.kenzie.mirror.MethodAccessor;
-import org.byteskript.skript.api.note.ForceExtract;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.syntax.flow.lambda.RunnableSection;
-import org.byteskript.skript.runtime.internal.Member;
+import org.byteskript.skript.runtime.internal.ExtractedSyntaxCalls;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.Future;
-import java.util.function.Supplier;
 
+@Documentation(
+    name = "Result Of",
+    description = """
+        Retrieves the value of an executable, such as a supplier or a dynamic function.""",
+    examples = {
+        """
+            set {var} to the result of {supplier}
+            set {var} to the result of a new supplier:
+                return "hello"
+            assert {var} is "hello"
+                    """
+    }
+)
 public class ResultOfExpression extends SimpleExpression {
     
     public ResultOfExpression() {
@@ -34,7 +44,7 @@ public class ResultOfExpression extends SimpleExpression {
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
-        final ElementTree tree = context.getLine().nested()[0];
+        final ElementTree tree = context.getCompileCurrent().nested()[0];
         final MethodBuilder method = context.getMethod();
         assert method != null;
         if (tree.current() instanceof RunnableSection) {
@@ -43,28 +53,9 @@ public class ResultOfExpression extends SimpleExpression {
             context.setState(CompileState.CODE_BODY);
             return;
         }
-        final Method target = ResultOfExpression.class.getMethod("run", Object.class);
+        final Method target = ExtractedSyntaxCalls.class.getMethod("run", Object.class);
         this.writeCall(method, target, context);
         context.setState(CompileState.CODE_BODY);
-    }
-    
-    @ForceExtract
-    public static Object run(Object thing)
-        throws Throwable {
-        if (thing instanceof Method method)
-            return method.invoke(null);
-        else if (thing instanceof MethodAccessor<?> runnable)
-            return runnable.invoke();
-        else if (thing instanceof Member runnable)
-            return runnable.invoke();
-        else if (thing instanceof Runnable runnable) {
-            runnable.run();
-            return null;
-        } else if (thing instanceof Supplier<?> runnable)
-            return runnable.get();
-        else if (thing instanceof Future future)
-            return future.get();
-        return thing;
     }
     
 }

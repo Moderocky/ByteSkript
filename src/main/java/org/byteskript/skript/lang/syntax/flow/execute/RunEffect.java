@@ -10,6 +10,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.mirror.MethodAccessor;
 import org.byteskript.skript.api.HandlerType;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.syntax.ControlEffect;
 import org.byteskript.skript.compiler.*;
@@ -22,6 +23,19 @@ import org.byteskript.skript.runtime.internal.Member;
 import java.lang.reflect.Method;
 import java.util.concurrent.Future;
 
+@Documentation(
+    name = "Run",
+    description = """
+        Runs the given executable (function, lambda, etc.)
+        The current block will wait for this to finish.
+        """,
+    examples = {
+        """
+            run my_func()
+            run {runnable}
+                    """
+    }
+)
 public class RunEffect extends ControlEffect {
     
     public RunEffect() {
@@ -36,7 +50,7 @@ public class RunEffect extends ControlEffect {
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
-        final ElementTree tree = context.getLine().nested()[0];
+        final ElementTree tree = context.getCompileCurrent().nested()[0];
         final MethodBuilder method = context.getMethod();
         assert method != null;
         if (tree.current() instanceof VariableExpression) {

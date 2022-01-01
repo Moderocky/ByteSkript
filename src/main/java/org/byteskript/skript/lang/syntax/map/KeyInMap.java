@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.map;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.Referent;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -20,6 +21,19 @@ import org.byteskript.skript.runtime.internal.ExtractedSyntaxCalls;
 
 import java.lang.reflect.Method;
 
+@Documentation(
+    name = "Key in Map",
+    description = """
+        Accesses this key in the provided map.
+        This can use the set/get/delete handlers.
+        """,
+    examples = {
+        """
+            set {var} to "hello" in map {map}
+            set ("name" in map {map}) to "Bob"
+                """
+    }
+)
 public class KeyInMap extends RelationalExpression implements Referent {
     
     public KeyInMap() {

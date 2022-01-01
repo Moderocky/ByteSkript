@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.entry.syntax;
 
 import mx.kenzie.foundation.AnnotationBuilder;
 import org.byteskript.skript.api.HandlerType;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SectionEntry;
 import org.byteskript.skript.compiler.AreaFlag;
 import org.byteskript.skript.compiler.Context;
@@ -22,6 +23,22 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Syntax",
+    description = """
+        This block can be used to register custom syntax that links to a function.
+        """,
+    examples = {
+        """
+            function get_name(thing):
+                syntax:
+                    property: name
+                    mode: get
+                trigger:
+                    return {thing} + ""
+            """
+    }
+)
 public class SyntaxEntry extends SectionEntry {
     
     public SyntaxEntry() {

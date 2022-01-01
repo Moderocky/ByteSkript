@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.compiler;
 
+import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.HandlerType;
 import org.byteskript.skript.api.SyntaxElement;
 import org.byteskript.skript.api.syntax.Section;
@@ -21,6 +22,7 @@ public final class ElementTree {
     public boolean compile = true;
     public boolean treasure = false;
     public boolean takeAtomic = false;
+    public Type wanted = null;
     public HandlerType type = StandardHandlers.GET;
     
     public ElementTree(SyntaxElement current, Pattern.Match match, ElementTree... nested) {

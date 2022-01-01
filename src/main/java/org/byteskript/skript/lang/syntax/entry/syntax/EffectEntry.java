@@ -7,11 +7,28 @@
 package org.byteskript.skript.lang.syntax.entry.syntax;
 
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleEntry;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.SyntaxTree;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Syntax Effect",
+    description = """
+        Registers the following pattern as an effect.
+        Must be used inside the `syntax` block of a function.
+        """,
+    examples = {
+        """
+            function my_func:
+                syntax:
+                    effect: my [cool] effect
+                trigger:
+                    print "hello"
+            """
+    }
+)
 public class EffectEntry extends SimpleEntry {
     
     public EffectEntry() {
@@ -45,6 +62,5 @@ public class EffectEntry extends SimpleEntry {
     public boolean allowedIn(State state, Context context) {
         return super.allowedIn(state, context) && context.hasFlag(AreaFlag.IN_SYNTAX);
     }
-    
     
 }

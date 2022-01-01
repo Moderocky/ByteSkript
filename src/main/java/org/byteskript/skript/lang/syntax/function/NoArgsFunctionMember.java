@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.function;
 
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
@@ -14,6 +15,20 @@ import org.byteskript.skript.compiler.SkriptLangSpec;
 
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Function (No Arguments)",
+    description = """
+        A function with no arguments.
+        This does not need the `()` brackets.
+        """,
+    examples = {
+        """
+            function my_func:
+                trigger:
+                    print "hello!"
+                """
+    }
+)
 public class NoArgsFunctionMember extends FunctionMember {
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("function (?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")(?:\\(\\))?");
     

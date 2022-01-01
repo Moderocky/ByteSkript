@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.lang.syntax.timing;
 
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.syntax.Effect;
 import org.byteskript.skript.compiler.Context;
@@ -17,6 +18,19 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 
 import java.time.Duration;
 
+@Documentation(
+    name = "Wait",
+    description = """
+        Waits for the specified duration.
+        This process is halted during this time. Background processes will continue.
+        """,
+    examples = {
+        """
+            wait 10 seconds
+            wait 50 milliseconds
+                """
+    }
+)
 public class WaitEffect extends Effect {
     
     public WaitEffect() {

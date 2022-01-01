@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.flow.loop;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -20,6 +21,20 @@ import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.objectweb.asm.Label;
 
+@Documentation(
+    name = "While Loop",
+    description = """
+        Re-runs this loop as long as the value given is true.
+        """,
+    examples = {
+        """
+            while {number} is 3:
+                set {number} to 6
+            while {@var} is true:
+                print "hello"
+                    """
+    }
+)
 public class WhileSection extends Section {
     
     public WhileSection() {

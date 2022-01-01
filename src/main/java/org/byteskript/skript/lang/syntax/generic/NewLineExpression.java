@@ -7,12 +7,25 @@
 package org.byteskript.skript.lang.syntax.generic;
 
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 
+@Documentation(
+    name = "New Line",
+    description = """
+        Returns the system-local line separator character(s).
+        This may be different from the typical `\\n`.
+        """,
+    examples = {
+        """
+            print "hello" + newline + "there"
+                """
+    }
+)
 public class NewLineExpression extends SimpleExpression {
     
     public NewLineExpression() {

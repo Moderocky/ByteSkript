@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.generic;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -18,6 +19,18 @@ import org.byteskript.skript.runtime.internal.ExtractedSyntaxCalls;
 
 import java.lang.reflect.Method;
 
+@Documentation(
+    name = "System Input",
+    description = """
+        Gets the next system console input.
+        This will halt the current process (indefinitely) while waiting for a user input.
+        """,
+    examples = {
+        """
+            set {var} to {number} ? 0
+                """
+    }
+)
 public class SystemInputExpression extends SimpleExpression {
     
     public SystemInputExpression() {

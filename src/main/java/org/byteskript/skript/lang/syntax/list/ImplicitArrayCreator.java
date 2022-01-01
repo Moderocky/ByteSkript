@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.list;
 
 import mx.kenzie.foundation.*;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -19,6 +20,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "New Array",
+    description = """
+        Returns a fixed-size, unmodifiable collection of objects.
+        """,
+    examples = {
+        """
+            set {var} to (1, 2, 3)
+            set {var} to a new array of (1, 2, 3)
+                """
+    }
+)
 public class ImplicitArrayCreator extends SimpleExpression {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?:(?:a )?new array of )?\\((?<params>.+)\\)");

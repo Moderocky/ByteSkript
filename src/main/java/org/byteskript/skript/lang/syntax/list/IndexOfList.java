@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.list;
 
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.Referent;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -17,6 +18,20 @@ import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 import org.byteskript.skript.runtime.internal.ExtractedSyntaxCalls;
 
+@Documentation(
+    name = "Index of List",
+    description = """
+        Accesses the given index of a collection.
+        This can be used to get, set or delete its value.
+        Indices start at *zero*.
+        """,
+    examples = {
+        """
+            set {var} index 0 of {list}
+            set {var} index 1 of {array}
+                """
+    }
+)
 public class IndexOfList extends RelationalExpression implements Referent {
     
     public IndexOfList() {

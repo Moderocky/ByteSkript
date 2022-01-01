@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.flow;
 
 import mx.kenzie.foundation.MethodBuilder;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Effect;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -18,6 +19,21 @@ import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.objectweb.asm.Label;
 
+@Documentation(
+    name = "Continue Loop",
+    description = """
+        Skips the rest of the current loop and jumps back to the top.
+        This starts the next iteration of the loop.
+        """,
+    examples = {
+        """
+            loop 10 times:
+                print "yes"
+                continue loop
+                print "never printed"
+                """
+    }
+)
 public class ContinueEffect extends Effect {
     
     public ContinueEffect() {

@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.literal;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Literal;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -18,6 +19,18 @@ import org.byteskript.skript.lang.element.StandardElements;
 
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Integer Literal",
+    description = """
+        A whole number `66` value.
+        """,
+    examples = {
+        """
+            set {var} to 40
+            set {var} to -4
+                """
+    }
+)
 public class IntegerLiteral extends Literal<Integer> {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("^-?\\d+(?![\\d.#LlFfDd])");

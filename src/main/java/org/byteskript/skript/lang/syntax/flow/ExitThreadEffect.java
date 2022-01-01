@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.flow;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Effect;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -15,6 +16,19 @@ import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Exit Thread",
+    description = """
+        Exits the current process (thread).
+        This kills the process immediately, so no future instructions will be run.
+        Other processes are not affected.
+        """,
+    examples = {
+        """
+            exit the current thread
+                """
+    }
+)
 public class ExitThreadEffect extends Effect {
     
     public ExitThreadEffect() {

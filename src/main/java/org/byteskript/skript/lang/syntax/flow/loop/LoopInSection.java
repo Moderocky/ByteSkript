@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.flow.loop;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.LoopTree;
@@ -25,6 +26,19 @@ import org.objectweb.asm.Opcodes;
 
 import java.util.Iterator;
 
+@Documentation(
+    name = "Loop Objects",
+    description = """
+        Loops through the contents of the second value.
+        The loop-value will be stored in the variable in the first slot.
+        """,
+    examples = {
+        """
+            loop {number} in (1, 2, 3):
+                print {number}
+                    """
+    }
+)
 public class LoopInSection extends Section {
     
     public LoopInSection() {
@@ -55,10 +69,7 @@ public class LoopInSection extends Section {
     
     private PreVariable getHolderVariable(Context context, Pattern.Match match) {
         final String pattern = match.groups()[0].trim();
-        assert pattern.startsWith("{") && pattern.endsWith("}");
         final String name = pattern.substring(1, pattern.length() - 1);
-        if (name.charAt(0) == '@' || name.charAt(0) == '_' || name.charAt(0) == '!')
-            throw new ScriptCompileError(context.lineNumber(), "Holder variable must be a normal variable: '{var}'");
         return context.getVariable(name);
     }
     
@@ -106,6 +117,10 @@ public class LoopInSection extends Section {
         if (!thing.contains(" in ")) return null;
         if (!thing.startsWith("loop {")) {
             context.getError().addHint(this, "This must use a variable: 'loop {xyz} in ...'");
+            return null;
+        }
+        if (thing.charAt(6) == '@' || thing.charAt(6) == '_' || thing.charAt(6) == '!') {
+            context.getError().addHint(this, "Holder variable must be a normal variable: '{var}'");
             return null;
         }
         return super.match(thing, context);

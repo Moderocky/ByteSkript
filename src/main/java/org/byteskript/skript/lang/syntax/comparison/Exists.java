@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.comparison;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
@@ -16,6 +17,16 @@ import org.byteskript.skript.lang.element.StandardElements;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
+@Documentation(
+    name = "Exists",
+    description = "Check an object exists (isn't 'null')",
+    examples = {
+        "assert \"hello\" exists",
+        """
+            if {var} exists:
+                print {var}"""
+    }
+)
 public class Exists extends RelationalExpression {
     
     public Exists() {
@@ -52,22 +63,6 @@ public class Exists extends RelationalExpression {
     @Override
     public Type getReturnType() {
         return CommonTypes.BOOLEAN;
-    }
-    
-    @Override
-    public String description() {
-        return """
-            Check an object exists (isn't 'null')""";
-    }
-    
-    @Override
-    public String[] examples() {
-        return new String[]{
-            "assert \"hello\" exists",
-            """
-                if {var} exists:
-                    print {var}"""
-        };
     }
     
 }

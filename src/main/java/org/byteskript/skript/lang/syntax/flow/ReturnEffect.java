@@ -9,10 +9,25 @@ package org.byteskript.skript.lang.syntax.flow;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Effect;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Return",
+    description = """
+        Stops the current trigger, giving back this value to whatever started.
+        This is designed for use in functions and suppliers.
+        Some triggers cannot return a value, such as events.
+        """,
+    examples = {
+        """
+            return "hello"
+            return 63
+                """
+    }
+)
 public class ReturnEffect extends Effect {
     
     public ReturnEffect() {

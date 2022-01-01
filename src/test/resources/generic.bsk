@@ -35,6 +35,7 @@ function test_system:
 
 function my_function:
     trigger:
+        assert "hello \n \" there" is "hello \n \" there"
         assert "hello there" is not "general kenobi": "String anti-comparison succeeded?"
         wait 0 seconds
         assert 66 is 66: "Integer self-comparison failed."

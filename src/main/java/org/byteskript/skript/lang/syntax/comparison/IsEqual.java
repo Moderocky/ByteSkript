@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.comparison;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
@@ -16,6 +17,17 @@ import org.byteskript.skript.runtime.internal.OperatorHandler;
 
 import java.lang.reflect.Method;
 
+@Documentation(
+    name = "Is Equal",
+    description = "Check whether two objects are equal in value.",
+    examples = {
+        "assert 1 is 1",
+        """
+            if {var} = 6:
+                print "hello"
+                """
+    }
+)
 public class IsEqual extends RelationalExpression {
     
     public IsEqual() {
@@ -42,17 +54,6 @@ public class IsEqual extends RelationalExpression {
     @Override
     public Type getReturnType() {
         return CommonTypes.BOOLEAN;
-    }
-    
-    @Override
-    public String[] examples() {
-        return new String[]{
-            "assert 1 is 1",
-            """
-                if {var} = 6:
-                    print "hello"
-                    """
-        };
     }
     
 }

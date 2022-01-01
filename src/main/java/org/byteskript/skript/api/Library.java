@@ -11,7 +11,9 @@ import mx.kenzie.foundation.compiler.State;
 import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.compiler.Context;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public interface Library {
     
@@ -31,5 +33,13 @@ public interface Library {
      * Runtime dependencies to be included in complete archives.
      */
     Collection<PostCompileClass> getRuntime();
+    
+    default Document[] generateDocumentation() {
+        final List<Document> documents = new ArrayList<>();
+        for (final SyntaxElement syntax : this.getSyntax()) {
+            documents.add(syntax.createDocument());
+        }
+        return documents.toArray(new Document[0]);
+    }
     
 }

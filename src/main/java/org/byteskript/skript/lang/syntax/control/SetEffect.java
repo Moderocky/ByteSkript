@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.control;
 
 import org.byteskript.skript.api.HandlerType;
 import org.byteskript.skript.api.Referent;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.ControlEffect;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.error.ScriptParseError;
@@ -16,6 +17,21 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 
 import java.util.Arrays;
 
+@Documentation(
+    name = "Set",
+    description = """
+        Sets the first storage object to second value.
+        Not all expressions support setting a value.
+        """,
+    examples = {
+        """
+            set {var} to "hello"
+            set {word} to "bee"
+            set {number} to 1
+            set system property "test" to "hello"
+            """
+    }
+)
 public class SetEffect extends ControlEffect {
     
     public SetEffect() {

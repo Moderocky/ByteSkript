@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.literal;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Literal;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -19,6 +20,19 @@ import org.byteskript.skript.lang.element.StandardElements;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Double Literal",
+    description = """
+        A decimal `0.43` value.
+        Use the suffix `D` to ensure this is a double.
+        """,
+    examples = {
+        """
+            set {var} to 0.5
+            set {var} to 89D
+                """
+    }
+)
 public class DoubleLiteral extends Literal<Double> {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("^-?\\d+(?:\\.\\d+)?[Dd]?(?![\\d.#FfLl])");

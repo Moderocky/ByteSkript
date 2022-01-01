@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.literal;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Literal;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -19,6 +20,18 @@ import org.byteskript.skript.lang.element.StandardElements;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Float Literal",
+    description = """
+        A less-precise decimal `0.43F` value.
+        """,
+    examples = {
+        """
+            set {var} to 0.5F
+            set {var} to 89F
+                """
+    }
+)
 public class FloatLiteral extends Literal<Float> {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("^-?\\d+(?:\\.\\d+)?[Ff](?![\\d.#DLdl])");

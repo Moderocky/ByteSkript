@@ -9,12 +9,25 @@ package org.byteskript.skript.lang.syntax.literal;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Literal;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Nothing Literal",
+    description = """
+        An empty `null` value.
+        """,
+    examples = {
+        """
+            set {var} to null
+            set {var} to none
+                """
+    }
+)
 public class NoneLiteral extends Literal<Void> {
     
     public NoneLiteral() {

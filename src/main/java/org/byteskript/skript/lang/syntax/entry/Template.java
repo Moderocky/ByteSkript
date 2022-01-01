@@ -8,10 +8,21 @@ package org.byteskript.skript.lang.syntax.entry;
 
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleEntry;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Use Template",
+    description = "Specify a template this type uses.",
+    examples = {
+        """
+            type Square:
+                template: Shape
+            """
+    }
+)
 public class Template extends SimpleEntry {
     
     public Template() {

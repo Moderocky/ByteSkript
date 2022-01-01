@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.maths;
 
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
@@ -16,6 +17,18 @@ import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 import org.byteskript.skript.runtime.internal.OperatorHandler;
 
+@Documentation(
+    name = "Division",
+    description = """
+        Divide two numbers.
+        """,
+    examples = {
+        """
+            set {var} to 15/3
+            set {var} to 10 / 10
+                """
+    }
+)
 public class DivideExpression extends RelationalExpression {
     
     public DivideExpression() {

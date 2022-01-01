@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.flow.loop;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.LoopTree;
@@ -19,6 +20,18 @@ import org.byteskript.skript.lang.element.StandardElements;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
 
+@Documentation(
+    name = "Loop Times",
+    description = """
+        Loops the given number of times.
+        """,
+    examples = {
+        """
+            loop {number} times:
+                print "hello"
+                    """
+    }
+)
 public class LoopTimesSection extends Section {
     
     public LoopTimesSection() {

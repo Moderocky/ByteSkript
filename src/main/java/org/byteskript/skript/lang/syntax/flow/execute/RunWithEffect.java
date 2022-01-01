@@ -10,6 +10,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.mirror.MethodAccessor;
 import org.byteskript.skript.api.HandlerType;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.syntax.ControlEffect;
 import org.byteskript.skript.compiler.CompileState;
@@ -23,6 +24,18 @@ import org.byteskript.skript.runtime.internal.Member;
 import java.lang.reflect.Method;
 import java.util.Collection;
 
+@Documentation(
+    name = "Run (Arguments)",
+    description = """
+        Runs the given executable.
+        Uses arguments from the `with` input.
+        """,
+    examples = {
+        """
+            run {function} with (1, "hello")
+                    """
+    }
+)
 public class RunWithEffect extends ControlEffect {
     
     public RunWithEffect() {

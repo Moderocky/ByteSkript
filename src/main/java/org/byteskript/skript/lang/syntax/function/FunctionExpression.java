@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.function;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.Function;
@@ -17,6 +18,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Function (Local)",
+    description = """
+        Runs a function from this script or the 'skript' library.
+        """,
+    examples = {
+        """
+            set {var} to my_func(4)
+            set {number} to sqrt(25)
+                """
+    }
+)
 public class FunctionExpression extends SimpleExpression {
     
     static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")\\((?<params>.*)\\)");
@@ -48,7 +61,6 @@ public class FunctionExpression extends SimpleExpression {
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
-        assert method != null;
         final FunctionDetails details = ((FunctionDetails) match.meta());
         final Function function = context.getDefaultFunction(details.name, details.arguments);
         method.writeCode(function.invoke(context.getType().internalName()));

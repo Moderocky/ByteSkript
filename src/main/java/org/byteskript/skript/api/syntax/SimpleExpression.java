@@ -8,6 +8,7 @@ package org.byteskript.skript.api.syntax;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
+import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.LanguageElement;
 import org.byteskript.skript.api.Library;
@@ -27,14 +28,23 @@ public abstract class SimpleExpression extends Element implements SyntaxElement 
     }
     
     @Override
+    public void preCompile(Context context, Pattern.Match match) throws Throwable {
+        super.preCompile(context, match);
+        final Method target = handlers.get(context.getHandlerMode());
+        if (target == null) return;
+        this.prepareExpectedTypes(context, target);
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
         final Method target = handlers.get(StandardHandlers.GET);
         assert target != null;
-        assert target.getReturnType() != void.class;
         this.writeCall(method, target, context);
         context.setState(CompileState.STATEMENT);
+        final Type type = context.getCompileCurrent().wanted;
+        if (type != null) method.writeCode(WriteInstruction.cast(type));
     }
     
     @Override

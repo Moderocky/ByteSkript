@@ -10,6 +10,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SectionEntry;
 import org.byteskript.skript.api.syntax.TriggerHolder;
 import org.byteskript.skript.compiler.*;
@@ -19,6 +20,22 @@ import org.byteskript.skript.compiler.structure.TriggerTree;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.runtime.type.AtomicVariable;
 
+@Documentation(
+    name = "Trigger",
+    description = "The code-holding section for a function, event or other member.",
+    examples = {
+        """
+            function my_func:
+                trigger:
+                    print "hello" // inside the trigger.
+                    """,
+        """
+            on load:
+                trigger:
+                    print "hello" // inside the trigger.
+                    """
+    }
+)
 public class Trigger extends SectionEntry {
     
     public Trigger() {

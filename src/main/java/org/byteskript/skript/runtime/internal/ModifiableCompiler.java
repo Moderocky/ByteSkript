@@ -8,9 +8,13 @@ package org.byteskript.skript.runtime.internal;
 
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.language.PostCompileClass;
+import org.byteskript.skript.api.Document;
 import org.byteskript.skript.api.Library;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public interface ModifiableCompiler {
     
@@ -27,5 +31,13 @@ public interface ModifiableCompiler {
     boolean removeLibrary(Library library);
     
     Library[] getLibraries();
+    
+    default Document[] generateDocumentation() {
+        final List<Document> documents = new ArrayList<>();
+        for (final Library library : getLibraries()) {
+            documents.addAll(Arrays.asList(library.generateDocumentation()));
+        }
+        return documents.toArray(new Document[0]);
+    }
     
 }

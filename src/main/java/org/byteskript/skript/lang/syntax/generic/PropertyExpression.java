@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.generic;
 import mx.kenzie.foundation.*;
 import org.byteskript.skript.api.HandlerType;
 import org.byteskript.skript.api.Referent;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
@@ -21,6 +22,18 @@ import java.util.regex.Matcher;
  * This handles all properties and delegates the compilation
  * to the expression stubs.
  */
+@Documentation(
+    name = "Property",
+    description = """
+        Properties can be registered as `<property> of %Object%`.
+        This expression is the internal handler for them all!
+        """,
+    examples = {
+        """
+            set {var} to name of {script}
+                """
+    }
+)
 public class PropertyExpression extends RelationalExpression implements Referent {
     protected final java.util.regex.Pattern[] patterns;
     

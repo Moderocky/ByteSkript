@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.control;
 import mx.kenzie.foundation.MethodBuilder;
 import org.byteskript.skript.api.HandlerType;
 import org.byteskript.skript.api.Referent;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.ControlEffect;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.error.ScriptParseError;
@@ -17,6 +18,19 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 
 import java.lang.reflect.Method;
 
+@Documentation(
+    name = "Remove",
+    description = """
+        Remove the first input from the given object.
+        If the object is not a collection (or does not support removing) this will fail silently.
+        This is not a mathematical operator expression.
+        """,
+    examples = {
+        """
+            remove "hello" from {list}
+            """
+    }
+)
 public class RemoveEffect extends ControlEffect {
     
     public RemoveEffect() {

@@ -10,6 +10,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.Referent;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
@@ -20,6 +21,16 @@ import org.byteskript.skript.runtime.internal.GlobalVariableMap;
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Global Variable",
+    description = """
+        A global reference variable, accessible from anywhere.
+        This variable is accessed by name, and only a single copy exists.
+        """,
+    examples = """
+        set {!var} to 5
+        """
+)
 public class GlobalVariableExpression extends VariableExpression implements Referent {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("\\{(?<name>!" + SkriptLangSpec.IDENTIFIER + ")\\}");

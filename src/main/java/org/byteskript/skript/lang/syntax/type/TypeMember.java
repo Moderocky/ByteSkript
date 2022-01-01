@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.type;
 import mx.kenzie.foundation.ClassBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Member;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.SectionMeta;
@@ -19,6 +20,20 @@ import org.byteskript.skript.runtime.data.TypeData;
 import java.time.Instant;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Custom Type",
+    description = """
+        A custom object type.
+        This can be used to register object-local functions and properties.
+        This can also be used to interact with advanced Java libraries.
+        """,
+    examples = """
+        type Square:
+            function get_sides:
+                trigger:
+                    return 4
+        """
+)
 public class TypeMember extends Member {
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("type (?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")");
     

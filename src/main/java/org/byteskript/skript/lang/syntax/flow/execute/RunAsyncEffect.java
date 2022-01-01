@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.flow.execute;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.HandlerType;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.ControlEffect;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -20,6 +21,19 @@ import org.byteskript.skript.runtime.internal.Member;
 
 import java.lang.reflect.Method;
 
+@Documentation(
+    name = "Run in Background",
+    description = """
+        Runs the given executable in the background.
+        Background processes ignore waits from the current process.
+        """,
+    examples = {
+        """
+            run {function} in the background
+            run {runnable} in the background
+                    """
+    }
+)
 public class RunAsyncEffect extends ControlEffect {
     
     public RunAsyncEffect() {
@@ -36,10 +50,10 @@ public class RunAsyncEffect extends ControlEffect {
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
-        assert method != null;
+        // todo functions
         final Method target = Member.class.getMethod("runAsync", Object.class);
         this.writeCall(method, target, context);
-        method.writeCode(WriteInstruction.pop());
+        if (target.getReturnType() != void.class) method.writeCode(WriteInstruction.pop());
         context.setState(CompileState.CODE_BODY);
     }
     

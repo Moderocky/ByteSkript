@@ -12,11 +12,22 @@ import org.byteskript.skript.api.Library;
 import org.byteskript.skript.api.SyntaxElement;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
+import org.byteskript.skript.compiler.Pattern;
+
+import java.lang.reflect.Method;
 
 public abstract class ComplexExpression extends Element implements SyntaxElement {
     
     public ComplexExpression(final Library provider, final LanguageElement type, final String... patterns) {
         super(provider, type, patterns);
+    }
+    
+    @Override
+    public void preCompile(Context context, Pattern.Match match) throws Throwable {
+        super.preCompile(context, match);
+        final Method target = handlers.get(context.getHandlerMode());
+        if (target == null) return;
+        this.prepareExpectedTypes(context, target);
     }
     
     @Override

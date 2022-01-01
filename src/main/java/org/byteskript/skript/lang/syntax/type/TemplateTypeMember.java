@@ -8,6 +8,7 @@ package org.byteskript.skript.lang.syntax.type;
 
 import mx.kenzie.foundation.ClassBuilder;
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Member;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.SectionMeta;
@@ -18,6 +19,19 @@ import org.byteskript.skript.runtime.data.TypeData;
 import java.time.Instant;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Template Type",
+    description = """
+        A template for a type.
+        Types can use this, but it cannot do anything by itself.
+        """,
+    examples = """
+        template type Shape:
+            function get_sides:
+                trigger:
+                    return 0
+        """
+)
 public class TemplateTypeMember extends Member {
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("template type (?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")");
     

@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.flow;
 
 import mx.kenzie.foundation.MethodBuilder;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Effect;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -17,10 +18,23 @@ import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.objectweb.asm.Label;
 
+@Documentation(
+    name = "Exit Section",
+    description = """
+        Exits the current section (block) jumping to the end.
+        """,
+    examples = {
+        """
+            while true is true:
+                print "yes"
+                exit section
+                """
+    }
+)
 public class BreakEffect extends Effect {
     
     public BreakEffect() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "(break|exit) [[the ]current ]section");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "(break|exit) [[the ]current] section");
     }
     
     @Override

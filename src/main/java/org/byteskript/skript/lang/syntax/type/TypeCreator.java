@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.type;
 
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.CommonTypes;
@@ -17,6 +18,19 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 
 import java.lang.reflect.Modifier;
 
+@Documentation(
+    name = "New Object",
+    description = """
+        Creates an empty object of a type.
+        Not all types support object creation. Some may have special syntax.
+        """,
+    examples = {
+        """
+            set {var} to a new Square
+            set {var} to a new Object
+                """
+    }
+)
 public class TypeCreator extends SimpleExpression {
     
     public TypeCreator() {

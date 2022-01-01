@@ -7,10 +7,18 @@
 package org.byteskript.skript.lang.syntax.type.property;
 
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleEntry;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Final Property",
+    description = """
+        Makes this property final (unmodifiable.)
+        Not currently supported.
+        """
+)
 public class FinalEntry extends SimpleEntry {
     
     public FinalEntry() {

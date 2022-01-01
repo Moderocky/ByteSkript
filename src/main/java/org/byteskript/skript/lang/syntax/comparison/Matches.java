@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.comparison;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
@@ -16,6 +17,18 @@ import org.byteskript.skript.runtime.internal.OperatorHandler;
 
 import java.lang.reflect.Method;
 
+@Documentation(
+    name = "Matches",
+    description = """
+        Check whether the first string matches the given RegEx pattern.
+        Check whether the first object matches the given query.""",
+    examples = {
+        """
+            assert "hello" matches /.+/
+            assert "blob" matches /blobs?/
+            """
+    }
+)
 public class Matches extends RelationalExpression {
     
     public Matches() {
@@ -40,14 +53,6 @@ public class Matches extends RelationalExpression {
     @Override
     public Type getReturnType() {
         return CommonTypes.BOOLEAN;
-    }
-    
-    @Override
-    public String description() {
-        return """
-            Check whether the first string matches the given RegEx pattern.
-            Check whether the first object matches the given query.
-            """;
     }
     
 }

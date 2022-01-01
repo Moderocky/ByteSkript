@@ -10,6 +10,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.MethodErasure;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.FunctionalEntrySection;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.note.EntryNode;
 import org.byteskript.skript.api.note.EntrySection;
 import org.byteskript.skript.compiler.CommonTypes;
@@ -17,6 +18,23 @@ import org.byteskript.skript.compiler.Context;
 
 import static mx.kenzie.foundation.WriteInstruction.*;
 
+@Documentation(
+    name = "Java Method Relay",
+    description = """
+        This is an advanced feature, not designed for normal use.
+        Used to link a function directly to a library method.
+        This is designed for programs that need to combine Skript and Java code.
+        """,
+    examples = {
+        """
+            function relay:
+               java method target:
+                   owner: "org/byteskript/skript/test/SectionsTest"
+                   name: "blob"
+                   descriptor: "(Ljava/lang/String;)Ljava/lang/Object;"
+                """
+    }
+)
 @EntrySection("java method target")
 public record JavaRelay(
     @EntryNode("owner: %String%") String owner,

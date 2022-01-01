@@ -7,11 +7,28 @@
 package org.byteskript.skript.lang.syntax.entry.syntax;
 
 import mx.kenzie.foundation.compiler.State;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleEntry;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.SyntaxTree;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Syntax Expression",
+    description = """
+        Registers the following pattern as an expression.
+        Must be used inside the `syntax` block of a function.
+        """,
+    examples = {
+        """
+            function my_func:
+                syntax:
+                    expression: my [cool] expr
+                trigger:
+                    return "hello"
+            """
+    }
+)
 public class ExpressionEntry extends SimpleEntry {
     
     public ExpressionEntry() {

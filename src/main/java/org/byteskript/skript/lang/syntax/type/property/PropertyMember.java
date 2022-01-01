@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.type.property;
 
 import mx.kenzie.foundation.FieldBuilder;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Member;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.SectionMeta;
@@ -17,6 +18,17 @@ import org.byteskript.skript.runtime.data.SourceData;
 import java.time.Instant;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Property Member",
+    description = """
+        A value-storing property for an object, accessible using the property expression.
+        """,
+    examples = """
+        type Square:
+            property sides:
+                type Integer
+        """
+)
 public class PropertyMember extends Member {
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("property (?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")");
     

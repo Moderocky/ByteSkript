@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.variable;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.Referent;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.PreVariable;
 import org.byteskript.skript.lang.handler.StandardHandlers;
@@ -17,6 +18,16 @@ import org.byteskript.skript.runtime.type.AtomicVariable;
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 
+@Documentation(
+    name = "Atomic Variable",
+    description = """
+        An atomic reference variable, modifiable from inside lambdas.
+        This can be passed to other functions, which will modify the original copy.
+        """,
+    examples = """
+        set {@var} to 5
+        """
+)
 public class AtomicVariableExpression extends VariableExpression implements Referent {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("\\{(?<name>@" + SkriptLangSpec.IDENTIFIER + ")\\}");
