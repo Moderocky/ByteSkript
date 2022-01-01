@@ -76,7 +76,6 @@ public class VariableExpression extends SimpleExpression implements Referent {
     @Override
     public void compile(Context context, Pattern.Match match) {
         final MethodBuilder method = context.getMethod();
-        assert method != null;
         final String name = match.matcher().group("name");
         final PreVariable variable = context.getVariable(name);
         final int slot = context.slotOf(variable);
@@ -88,6 +87,11 @@ public class VariableExpression extends SimpleExpression implements Referent {
             method.writeCode(WriteInstruction.pushNull());
             method.writeCode(variable.store(slot));
         }
+    }
+    
+    public PreVariable getVariable(Context context, Pattern.Match match) {
+        final String name = match.matcher().group("name");
+        return context.getVariable(name);
     }
     
     @Override

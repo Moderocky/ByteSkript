@@ -1,0 +1,7 @@
+
+function simple:
+    trigger:
+        set {var} to a new list
+        add "hello" to {var}
+        assert {var} contains "hello": "List contains check failed."
+        clear {var}

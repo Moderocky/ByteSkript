@@ -8,7 +8,7 @@ package org.byteskript.skript.lang.syntax.map;
 
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.note.Documentation;
-import org.byteskript.skript.api.note.ForceExtract;
+import org.byteskript.skript.api.note.ForceInline;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.SkriptLangSpec;
@@ -40,7 +40,7 @@ public class MapCreator extends SimpleExpression {
         return CommonTypes.MAP;
     }
     
-    @ForceExtract
+    @ForceInline
     public static DataMap create() {
         return new DataMap();
     }

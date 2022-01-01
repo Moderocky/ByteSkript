@@ -6,13 +6,17 @@
 
 package org.byteskript.skript.compiler;
 
+import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.RewriteController;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import org.byteskript.skript.api.SyntaxElement;
 import org.byteskript.skript.compiler.structure.MultiLabel;
 import org.byteskript.skript.compiler.structure.PreVariable;
+import org.byteskript.skript.lang.syntax.variable.VariableExpression;
 import org.objectweb.asm.Label;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,8 +27,30 @@ public class InlineController extends RewriteController {
     final MultiLabel label = new MultiLabel();
     protected final Map<Integer, PreVariable> special = new HashMap<>();
     
-    public InlineController(Context context) {
+    public InlineController(Context context, Method method) {
         this.context = context;
+        this.prepareVariables(method);
+    }
+    
+    private void prepareVariables(Method method) {
+        final ElementTree[] inputs = context.getCompileCurrent().nested();
+        for (int i = 0; i < inputs.length; i++) {
+            final SyntaxElement element = inputs[i].current();
+            if (element.getClass() != VariableExpression.class) continue;
+            final VariableExpression expression = (VariableExpression) inputs[i].current();
+            special.put(i, expression.getVariable(context, inputs[i].match()));
+        }
+        final MethodBuilder builder = context.getMethod();
+        for (int i = method.getParameterTypes().length - 1; i >= 0; i--) {
+            if (special.containsKey(i)) {
+                builder.writeCode(WriteInstruction.pop()); // have to pop, aload is already queued
+                continue;
+            }
+            final PreVariable var = new PreVariable("$unspec_" + i);
+            context.forceUnspecVariable(var);
+            final int slot = context.slotOf(var);
+            builder.writeCode(WriteInstruction.storeObject(slot));
+        }
     }
     
     public Map<Integer, PreVariable> getSpecial() {
@@ -61,6 +87,20 @@ public class InlineController extends RewriteController {
         special.put(i, variable);
         context.forceUnspecVariable(variable);
         return context.slotOf(variable);
+    }
+    
+    @Override
+    public WriteInstruction return0(int opcode) {
+        return this.jumpToEnd();
+//        if (opcode < 177) {
+//            int slot = this.returnSlot();
+//            return (writer, visitor) -> {
+//                visitor.visitVarInsn(opcode - 118, slot);
+//                this.jumpToEnd().accept(writer, visitor);
+//            };
+//        } else {
+//            return this.jumpToEnd();
+//        }
     }
     
     @Override

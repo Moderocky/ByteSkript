@@ -8,7 +8,7 @@ package org.byteskript.skript.lang.syntax.list;
 
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.note.Documentation;
-import org.byteskript.skript.api.note.ForceExtract;
+import org.byteskript.skript.api.note.ForceInline;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.SkriptLangSpec;
@@ -47,7 +47,7 @@ public class ListCreator extends SimpleExpression {
         return CommonTypes.LIST;
     }
     
-    @ForceExtract
+    @ForceInline
     public static DataList create() {
         return new DataList();
     }

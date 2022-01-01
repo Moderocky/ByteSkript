@@ -7,7 +7,7 @@
 package org.byteskript.skript.lang.syntax.list;
 
 import org.byteskript.skript.api.note.Documentation;
-import org.byteskript.skript.api.note.ForceExtract;
+import org.byteskript.skript.api.note.ForceInline;
 import org.byteskript.skript.api.syntax.Effect;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
@@ -39,7 +39,7 @@ public class ClearList extends Effect {
         handlers.put(StandardHandlers.RUN, findMethod(this.getClass(), "run", Object.class));
     }
     
-    @ForceExtract
+    @ForceInline
     public static void run(Object object) {
         if (object instanceof Collection list) list.clear();
         if (object instanceof Map map) map.clear(); // in case this is loaded in preference.

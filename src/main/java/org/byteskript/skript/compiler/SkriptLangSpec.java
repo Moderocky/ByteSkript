@@ -78,19 +78,19 @@ import java.util.zip.ZipInputStream;
 import static org.byteskript.skript.lang.handler.StandardHandlers.GET;
 
 public final class SkriptLangSpec extends ModifiableLibrary implements LanguageDefinition, Library {
-    public static final Pattern LINE_COMMENT = Pattern.compile("//.*(?=(\\R|$|\\n))");
-    public static final Pattern BLOCK_COMMENT = Pattern.compile("/\\*[\\s\\S]*?\\*/");
-    public static final Pattern DEAD_SPACE = Pattern.compile("(?<=\\S)[\\t\\f\\v ]+(?=(\\R|$))");
     public static final Pattern IDENTIFIER = Pattern.compile("\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*");
     public static final JavaVersion JAVA_VERSION = JavaVersion.JAVA_17;
     
     static final SkriptLangSpec INSTANCE = new SkriptLangSpec();
-    public static final LanguageDefinition LANG = INSTANCE;
     public static final Library LIBRARY = INSTANCE;
     
     final LanguageElement[] grammar = StandardElements.values();
     
     final Map<State, List<SyntaxElement>> syntax = new HashMap<>();
+    
+    public LanguageElement[] getGrammar() {
+        return grammar;
+    }
     
     private SkriptLangSpec() {
         super("Skript");

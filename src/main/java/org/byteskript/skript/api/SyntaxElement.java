@@ -13,7 +13,6 @@ import org.byteskript.skript.api.note.ForceBridge;
 import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.note.ForceInline;
 import org.byteskript.skript.compiler.*;
-import org.byteskript.skript.compiler.structure.PreVariable;
 import org.byteskript.skript.error.ScriptReassemblyError;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 
@@ -143,13 +142,7 @@ public interface SyntaxElement {
             else sub.writeCode(returnObject());
             builder.writeCode(invokeStatic(context.getType(), target));
         } else if (inline != null) {
-            final InlineController controller = new InlineController(context);
-            for (int i = method.getParameterTypes().length - 1; i >= 0; i--) {
-                final PreVariable var = new PreVariable("$unspec_" + i);
-                context.forceUnspecVariable(var);
-                final int slot = context.slotOf(var);
-                builder.writeCode(WriteInstruction.storeObject(slot));
-            }
+            final InlineController controller = new InlineController(context, method);
             builder.writeCode(SourceReader.getSource(method, controller).toArray(new WriteInstruction[0]));
         } else if (extract != null) {
             final ClassBuilder parent = builder.finish();
