@@ -52,6 +52,9 @@ import org.byteskript.skript.lang.syntax.literal.*;
 import org.byteskript.skript.lang.syntax.map.KeyInMap;
 import org.byteskript.skript.lang.syntax.map.MapCreator;
 import org.byteskript.skript.lang.syntax.maths.*;
+import org.byteskript.skript.lang.syntax.script.CurrentScriptExpression;
+import org.byteskript.skript.lang.syntax.script.LoadScriptEffect;
+import org.byteskript.skript.lang.syntax.script.UnloadScriptEffect;
 import org.byteskript.skript.lang.syntax.timing.*;
 import org.byteskript.skript.lang.syntax.type.*;
 import org.byteskript.skript.lang.syntax.type.property.FinalEntry;
@@ -169,7 +172,9 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new BreakIfEffect(),
             new BreakEffect(),
             new TryEffect(),
-            new ClearList()
+            new ClearList(),
+            new LoadScriptEffect(),
+            new UnloadScriptEffect()
         );
         registerSyntax(CompileState.STATEMENT,
             new NoneLiteral(),

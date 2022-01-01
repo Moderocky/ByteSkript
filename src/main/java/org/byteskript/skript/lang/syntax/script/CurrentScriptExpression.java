@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2021 ByteSkript org (Moderocky)
+ * Copyright (c) 2021-2022 ByteSkript org (Moderocky)
  * View the full licence information and permissions:
  * https://github.com/Moderocky/ByteSkript/blob/master/LICENSE
  */
 
-package org.byteskript.skript.lang.syntax.generic;
+package org.byteskript.skript.lang.syntax.script;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;

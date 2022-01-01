@@ -18,6 +18,10 @@ public class EventHandler {
     
     protected final List<ScriptRunner> triggers = new ArrayList<>();
     
+    public List<ScriptRunner> getTriggers() {
+        return triggers;
+    }
+    
     public void run(final Skript skript, final Event event) {
         for (ScriptRunner trigger : triggers) {
             skript.runScript(trigger, event);

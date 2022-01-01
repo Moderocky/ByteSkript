@@ -16,10 +16,7 @@ import org.byteskript.skript.api.ModifiableLibrary;
 import org.byteskript.skript.compiler.SkriptCompiler;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.error.ScriptLoadError;
-import org.byteskript.skript.runtime.internal.EventHandler;
-import org.byteskript.skript.runtime.internal.GlobalVariableMap;
-import org.byteskript.skript.runtime.internal.Instruction;
-import org.byteskript.skript.runtime.internal.ModifiableCompiler;
+import org.byteskript.skript.runtime.internal.*;
 import org.byteskript.skript.runtime.threading.*;
 
 import java.io.*;
@@ -43,7 +40,9 @@ public final class Skript {
     final ModifiableCompiler compiler;
     final List<OperationController> processes;
     final Map<Class<? extends Event>, EventHandler> events;
-    final SkriptMirror mirror = new SkriptMirror(Skript.class);
+    final SkriptMirror mirror = new SkriptMirror(LOADER);
+    final WeakList<ScriptClassLoader> loaders = new WeakList<>();
+    final List<Script> scripts = new ArrayList<>(); // the only strong reference, be careful!
     static final GlobalVariableMap VARIABLES = new GlobalVariableMap();
     
     public static class RuntimeClassLoader extends ClassLoader implements ClassProvider {
@@ -53,7 +52,18 @@ public final class Skript {
         
         @Override
         public Class<?> loadClass(String name) throws ClassNotFoundException {
-            return super.loadClass(name);
+            try {
+                return super.loadClass(name);
+            } catch (ClassNotFoundException ex) {
+                for (final ScriptClassLoader value : Skript.currentInstance().loaders.collectRemaining()) {
+                    if (value == null) continue;
+                    try {
+                        return value.loadClass0(name);
+                    } catch (ClassNotFoundException ignored) {
+                    }
+                }
+                throw ex;
+            }
         }
         
         @Override
@@ -61,6 +71,13 @@ public final class Skript {
             try {
                 return super.findClass(name);
             } catch (ClassNotFoundException e) {
+                for (final ScriptClassLoader value : Skript.currentInstance().loaders.collectRemaining()) {
+                    if (value == null) continue;
+                    try {
+                        return value.findClass0(name);
+                    } catch (ClassNotFoundException ignored) {
+                    }
+                }
                 return Skript.currentInstance().getClass(name);
             }
         }
@@ -80,15 +97,25 @@ public final class Skript {
     }
     
     static class SkriptMirror extends Mirror<Object> {
-        protected SkriptMirror(Object target) {
-            super(target);
-            useProvider(LOADER);
+        protected SkriptMirror(ClassProvider provider) {
+            super(Skript.class);
+            useProvider(provider);
         }
         
         @Override
         public Class<?> loadClass(String name, byte[] bytecode) {
             return super.loadClass(name, bytecode);
         }
+    }
+    
+    private Class<?> loadClass(String name, byte[] bytecode) {
+        return this.createLoader().loadClass(name, bytecode);
+    }
+    
+    private SkriptMirror createLoader() {
+        final ScriptClassLoader loader = new ScriptClassLoader();
+        this.loaders.addActual(loader);
+        return new SkriptMirror(loader);
     }
     
     public Skript(ModifiableCompiler compiler) {
@@ -337,6 +364,33 @@ public final class Skript {
     //endregion
     
     //region Script Loading
+    public void unloadScript(Class<?> main) {
+        for (Script script : scripts.toArray(new Script[0])) {
+            if (script.mainClass() == main) this.unloadScript(script);
+        }
+    }
+    
+    public void unloadScript(Script script) {
+        synchronized (events) {
+            for (final EventHandler value : events.values()) {
+                for (final ScriptRunner trigger : value.getTriggers().toArray(new ScriptRunner[0])) {
+                    if (trigger.owner() != script.mainClass()) continue;
+                    value.getTriggers().remove(trigger);
+                    UnsafeAccessor.graveyard(trigger);
+                }
+            }
+        }
+        scripts.remove(script);
+        UnsafeAccessor.graveyard(script);
+    }
+    
+    @Deprecated
+    public Script compileLoad(File file, String name) throws IOException {
+        try (final InputStream stream = new FileInputStream(file)) {
+            return compileLoad(stream, null);
+        }
+    }
+    
     @Deprecated
     public Script compileLoad(InputStream stream, String name) {
         return loadScript(compileScript(stream, name));
@@ -386,22 +440,26 @@ public final class Skript {
         if (data.length == 0) return null;
         final List<Class<?>> classes = new ArrayList<>();
         for (PostCompileClass datum : data) {
-            final Class<?> part = mirror.loadClass(datum.name(), datum.code());
+            final Class<?> part = this.createLoader().loadClass(datum.name(), datum.code());
             classes.add(part);
         }
-        return new Script(false, this, null, classes.toArray(new Class[0]));
+        return assembleScript(classes.toArray(new Class[0]));
     }
     
-    public Script assembleScript(final Class<?> loaded) {
-        return new Script(false, this, null, loaded);
+    public Script assembleScript(final Class<?>... loaded) {
+        final Script script = new Script(false, this, null, loaded);
+        this.scripts.add(script);
+        return script;
     }
     
     public Script loadScript(final Class<?> loaded) {
-        return new Script(this, null, loaded);
+        final Script script = new Script(this, null, loaded);
+        this.scripts.add(script);
+        return script;
     }
     
     public Script loadScript(final PostCompileClass datum) {
-        return new Script(this, null, mirror.loadClass(datum.name(), datum.code()));
+        return loadScript(this.loadClass(datum.name(), datum.code()));
     }
     
     public Collection<Script> loadScripts(final PostCompileClass[] data) {
@@ -413,7 +471,7 @@ public final class Skript {
     }
     
     public Script loadScript(final byte[] bytecode, final String name) {
-        return new Script(this, null, mirror.loadClass(name, bytecode));
+        return loadScript(this.loadClass(name, bytecode));
     }
     
     public Script loadScript(final byte[] bytecode) throws IOException {
@@ -422,7 +480,7 @@ public final class Skript {
     
     public Script loadScript(final InputStream stream, final String name)
         throws IOException {
-        return new Script(this, null, mirror.loadClass(name, stream.readAllBytes()));
+        return loadScript(this.loadClass(name, stream.readAllBytes()));
     }
     
     public Script loadScript(final InputStream stream)
@@ -440,7 +498,7 @@ public final class Skript {
     public Script loadScript(final File source, final String name)
         throws IOException {
         try (InputStream stream = new FileInputStream(source)) {
-            return new Script(this, source, mirror.loadClass(name, stream.readAllBytes()));
+            return loadScript(this.loadClass(name, stream.readAllBytes()));
         }
     }
     //endregion
