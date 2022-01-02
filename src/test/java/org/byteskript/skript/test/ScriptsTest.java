@@ -13,21 +13,28 @@ import org.byteskript.skript.runtime.internal.Member;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class InlineTest extends SkriptTest {
+public class ScriptsTest extends SkriptTest {
     
     private static final Skript skript = new Skript();
     private static Script script;
     
     @BeforeClass
     public static void start() throws Throwable {
-        final PostCompileClass cls = skript.compileScript(InlineTest.class.getClassLoader()
-            .getResourceAsStream("inline.bsk"), "skript.inline");
+        final PostCompileClass cls = skript.compileScript(ScriptsTest.class.getClassLoader()
+            .getResourceAsStream("scripts_test.bsk"), "skript.scripts_test");
         script = skript.loadScript(cls);
     }
     
     @Test
     public void simple() throws Throwable {
         final Member function = script.getFunction("simple");
+        assert function != null;
+        function.invoke();
+    }
+    
+    @Test
+    public void test_load() throws Throwable {
+        final Member function = script.getFunction("test_load");
         assert function != null;
         function.invoke();
     }

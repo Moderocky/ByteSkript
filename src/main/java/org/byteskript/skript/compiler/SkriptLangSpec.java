@@ -52,9 +52,7 @@ import org.byteskript.skript.lang.syntax.literal.*;
 import org.byteskript.skript.lang.syntax.map.KeyInMap;
 import org.byteskript.skript.lang.syntax.map.MapCreator;
 import org.byteskript.skript.lang.syntax.maths.*;
-import org.byteskript.skript.lang.syntax.script.CurrentScriptExpression;
-import org.byteskript.skript.lang.syntax.script.LoadScriptEffect;
-import org.byteskript.skript.lang.syntax.script.UnloadScriptEffect;
+import org.byteskript.skript.lang.syntax.script.*;
 import org.byteskript.skript.lang.syntax.timing.*;
 import org.byteskript.skript.lang.syntax.type.*;
 import org.byteskript.skript.lang.syntax.type.property.FinalEntry;
@@ -212,6 +210,8 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new ExternalFunctionExpression(),
             new PropertyFunctionExpression(),
             new FunctionExpression(),
+            new CompilerExpression(),
+            new LoadedScriptsExpression(),
             new CurrentScriptExpression(),
             new CurrentEventExpression(),
             new NoArgsFunctionExpression(),

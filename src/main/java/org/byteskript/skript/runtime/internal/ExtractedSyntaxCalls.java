@@ -8,8 +8,10 @@ package org.byteskript.skript.runtime.internal;
 
 import mx.kenzie.mirror.MethodAccessor;
 import org.byteskript.skript.error.ScriptRuntimeError;
+import org.byteskript.skript.runtime.Script;
 import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.threading.ScriptThread;
+import org.byteskript.skript.runtime.type.DataList;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -20,6 +22,18 @@ import java.util.concurrent.Future;
 import java.util.function.Supplier;
 
 public class ExtractedSyntaxCalls {
+    
+    public static ModifiableCompiler getCompiler() {
+        return Skript.currentInstance().getCompiler();
+    }
+    
+    public static DataList getLoadedScripts() {
+        final DataList list = new DataList();
+        for (final Script script : Skript.currentInstance().getScripts()) {
+            list.add(script.mainClass());
+        }
+        return list;
+    }
     
     public static String getSystemInput() throws Throwable {
         final Instruction<String> instruction = new Instruction<>() {

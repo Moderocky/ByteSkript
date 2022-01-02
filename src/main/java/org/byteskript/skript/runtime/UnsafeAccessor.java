@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 
-@SuppressWarnings("removal")
+@SuppressWarnings({"removal"})
 class UnsafeAccessor {
     
     private static final Unsafe UNSAFE;

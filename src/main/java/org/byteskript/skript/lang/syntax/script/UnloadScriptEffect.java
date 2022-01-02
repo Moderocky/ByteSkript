@@ -28,7 +28,7 @@ import java.io.IOException;
         """
             unload script skript/myscript
             """
-    } // todo
+    }
 )
 public class UnloadScriptEffect extends Effect {
     

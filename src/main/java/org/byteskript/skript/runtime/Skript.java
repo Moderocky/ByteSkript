@@ -160,6 +160,20 @@ public final class Skript {
     //endregion
     
     //region Script Control
+    
+    /**
+     * Gets a copy of the handles for all loaded scripts.
+     * Storing a strong reference to these will prevent them being unloaded safely.
+     * These can be graveyarded (annulled in memory) without warning.
+     * <p>
+     * This is designed for looping and discarding.
+     *
+     * @return the scripts owned by this instance
+     */
+    public Script[] getScripts() {
+        return scripts.toArray(new Script[0]);
+    }
+    
     public Collection<OperationController> getProcesses() {
         return processes;
     }

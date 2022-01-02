@@ -1,0 +1,16 @@
+
+function simple:
+    trigger:
+        set {var} to a new list
+        add "hello" to {var}
+        assert {var} contains "hello": "List contains check failed."
+        clear {var}
+
+function test_load:
+    trigger:
+        assert the compiler exists: "Compiler unavailable in test."
+        set {list} to all loaded scripts
+        assert {list} exists: "Couldn't get loaded scripts"
+        loop {script} in {list}:
+            assert {script} exists: "Loop extracted null-value."
+        assert {script} exists: "Nothing was looped."

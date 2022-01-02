@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
     name = "Load Script",
     description = """
         Loads a script from the given file or string source code.
+        Not all installations can load scripts after start-up: check whether the compiler exists first.
         """,
     examples = {
         """
