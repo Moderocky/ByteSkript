@@ -12,6 +12,7 @@ import org.byteskript.skript.error.ScriptRuntimeError;
 import org.byteskript.skript.runtime.Script;
 import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.threading.ScriptRunner;
+import org.byteskript.skript.runtime.threading.ScriptThread;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -65,10 +66,13 @@ public class Member {
     
     public static Object runAsync(Object thing, Object args) {
         final Object[] arguments;
+        final Thread current = Thread.currentThread();
+        if (!(current instanceof ScriptThread thread))
+            throw new ScriptRuntimeError("Cannot create background process from non-script thread.");
         if (args instanceof Collection<?> collection) arguments = collection.toArray();
         else if (args instanceof Object[] array) arguments = array;
         else arguments = new Object[]{args};
-        Skript.runOnAsyncThread((Instruction<?>) () -> {
+        thread.skript.runOnAsyncThread((Instruction<?>) () -> {
             if (thing instanceof Method method)
                 method.invoke(null, arguments);
             else if (thing instanceof Member method)
@@ -80,7 +84,10 @@ public class Member {
     }
     
     public static Object runAsync(Object thing) {
-        Skript.runOnAsyncThread((Instruction<?>) () -> {
+        final Thread current = Thread.currentThread();
+        if (!(current instanceof ScriptThread thread))
+            throw new ScriptRuntimeError("Cannot create background process from non-script thread.");
+        thread.skript.runOnAsyncThread((Instruction<?>) () -> {
             if (thing instanceof Method method)
                 method.invoke(null);
             else if (thing instanceof Member method)

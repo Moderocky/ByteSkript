@@ -8,6 +8,9 @@ package org.byteskript.skript.runtime.threading;
 
 import org.byteskript.skript.runtime.internal.CompiledScript;
 
+/**
+ * A task designed to start the script-running process.
+ */
 public interface ScriptRunner extends Runnable {
     
     @Override

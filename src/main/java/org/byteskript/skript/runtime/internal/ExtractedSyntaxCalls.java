@@ -23,13 +23,19 @@ import java.util.function.Supplier;
 
 public class ExtractedSyntaxCalls {
     
+    private static Skript findInstance() {
+        final Thread current = Thread.currentThread();
+        if (!(current instanceof ScriptThread thread)) return Skript.currentInstance();
+        return thread.skript;
+    }
+    
     public static ModifiableCompiler getCompiler() {
-        return Skript.currentInstance().getCompiler();
+        return findInstance().getCompiler();
     }
     
     public static DataList getLoadedScripts() {
         final DataList list = new DataList();
-        for (final Script script : Skript.currentInstance().getScripts()) {
+        for (final Script script : findInstance().getScripts()) {
             list.add(script.mainClass());
         }
         return list;
@@ -69,11 +75,17 @@ public class ExtractedSyntaxCalls {
     }
     
     public static void runOnAsyncThread(final Runnable runnable) {
-        Skript.runOnAsyncThread(runnable);
+        final Thread current = Thread.currentThread();
+        if (!(current instanceof ScriptThread thread))
+            throw new ScriptRuntimeError("Cannot create background process from non-script thread.");
+        thread.skript.runOnAsyncThread(runnable);
     }
     
     public static void runOnAsyncThread(final Instruction<?> runnable) {
-        Skript.runOnAsyncThread(runnable);
+        final Thread current = Thread.currentThread();
+        if (!(current instanceof ScriptThread thread))
+            throw new ScriptRuntimeError("Cannot create background process from non-script thread.");
+        thread.skript.runOnAsyncThread(runnable);
     }
     
     public static Object getListValue(Object key, Object target) {

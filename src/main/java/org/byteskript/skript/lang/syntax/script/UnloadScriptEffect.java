@@ -40,11 +40,11 @@ public class UnloadScriptEffect extends Effect {
     @ForceExtract
     public static void unloadScript(Object object) throws IOException {
         if (object instanceof Class main)
-            Skript.currentInstance().unloadScript(main);
+            Skript.localInstance().unloadScript(main);
         else if (object instanceof Script script)
-            Skript.currentInstance().unloadScript(script);
+            Skript.localInstance().unloadScript(script);
         else if (object instanceof String name)
-            Skript.currentInstance().unloadScript(Skript.LOADER.findClass(name.replace('/', '.')));
+            Skript.localInstance().unloadScript(Skript.LOADER.findClass(name.replace('/', '.')));
     }
     
 }

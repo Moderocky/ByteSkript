@@ -17,6 +17,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
+/**
+ * The meta-factory handles building call-sites at runtime.
+ * Currently, Java's {@link LambdaMetafactory} is used for building lambda call-sites.
+ * <p>
+ * Methods in this are used by name from dynamic invocation.
+ */
+@SuppressWarnings("unused")
 public class Metafactory {
     
     public static CallSite createBridge(MethodHandles.Lookup caller, String name, MethodType type, String source, Class<?> owner, Class<?>... parameters)

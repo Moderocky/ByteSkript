@@ -9,6 +9,9 @@ package org.byteskript.skript.runtime.threading;
 import org.byteskript.skript.error.ScriptError;
 import org.byteskript.skript.error.ScriptParseError;
 
+/**
+ * This produces nice, detailed error messages.
+ */
 public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler, ScriptError {
     
     @Override
@@ -16,7 +19,7 @@ public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler, 
         if (throwable instanceof ThreadDeath) return;
         if (System.getProperty("debug_mode") != null)
             throwable.printStackTrace();
-        if (throwable instanceof ScriptParseError error) {
+        if (throwable instanceof ScriptParseError error) { // these already look pretty.
             error.printStackTrace(System.err);
         } else if (source instanceof ScriptThread thread) {
             final Class<?> start = thread.initiator;

@@ -64,7 +64,7 @@ public class FlowTest extends SkriptTest {
     public void test_run() throws Throwable {
         final Member function = script.getFunction("test_run");
         assert function != null;
-        function.invoke();
+        function.run(skript).get();
     }
     
 }

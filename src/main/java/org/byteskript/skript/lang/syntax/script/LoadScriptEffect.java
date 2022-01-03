@@ -30,7 +30,7 @@ import java.nio.charset.StandardCharsets;
             load script {file} as "skript/myscript"
             load script {code} as "skript/myscript"
                 """
-    } // todo
+    }
 )
 public class LoadScriptEffect extends Effect {
     
@@ -40,11 +40,12 @@ public class LoadScriptEffect extends Effect {
     }
     
     @ForceExtract
+    @SuppressWarnings("deprecation")
     public static void loadScript(Object object, String name) throws IOException {
         if (object instanceof File file)
-            Skript.currentInstance().compileLoad(file, name);
+            Skript.localInstance().compileLoad(file, name);
         else if (object instanceof String string)
-            Skript.currentInstance()
+            Skript.localInstance()
                 .compileLoad(new ByteArrayInputStream(string.getBytes(StandardCharsets.UTF_8)), name);
     }
     

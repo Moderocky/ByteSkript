@@ -9,6 +9,13 @@ package org.byteskript.skript.runtime.threading;
 import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.internal.Instruction;
 
+/**
+ * This is the runtime half of the airlock system.
+ * A distribution needs to provide the other half, which is the throttle controller.
+ * <p>
+ * Together, these two halves bind multiple threads to the 'main' thread.
+ * This allows for the behaviour defined in the language specification.
+ */
 public class OperationController {
     
     protected final AirlockQueue queue;

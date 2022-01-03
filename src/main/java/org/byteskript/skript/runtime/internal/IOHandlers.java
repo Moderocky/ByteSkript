@@ -15,6 +15,7 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+@Deprecated(forRemoval = true)
 public class IOHandlers {
     
     @Property("reader")

@@ -17,11 +17,16 @@ import java.lang.reflect.Modifier;
 import static org.objectweb.asm.Opcodes.*;
 
 /**
- * Krow's bootstrapper.
- * Used for dynamics.
+ * The bootstrapper handles resolving call-sites for dynamic method calls.
+ * This is used by functions in conjunction with the meta-factory.
+ * <p>
+ * Methods in this are used by name from dynamic invocation.
+ * <p>
+ * This is an adapted copy of Krow's bootstrapper.
  *
  * @author Moderocky
  */
+@SuppressWarnings("unused")
 public final class Bootstrapper {
     
     public static Handle getBootstrapFunction() {
