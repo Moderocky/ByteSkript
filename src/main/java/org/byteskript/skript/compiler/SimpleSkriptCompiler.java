@@ -28,35 +28,39 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 
 public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser {
-    final List<Library> libraries = new ArrayList<>();
+    private static volatile int anonymous = 0;
+    protected final List<Library> libraries = new ArrayList<>();
+    protected final java.util.regex.Pattern whitespace = java.util.regex.Pattern.compile("(?<=^)[\\t ]+(?=\\S)");
     
-    public SimpleSkriptCompiler(Library... libraries) {
+    public SimpleSkriptCompiler(final Library... libraries) {
         this.libraries.addAll(List.of(libraries));
         this.libraries.add(SkriptLangSpec.LIBRARY); // skript goes last so addons can override
     }
     
-    @Override
-    public PostCompileClass compileClass(InputStream inputStream) {
-        return null;
+    protected static synchronized int getAnonymous() {
+        return ++anonymous;
     }
     
     @Override
-    public PostCompileClass[] compile(InputStream inputStream) {
-        return new PostCompileClass[0];
+    public PostCompileClass compileClass(InputStream source) {
+        return this.compile(source)[0];
+    }
+    
+    @Override
+    public PostCompileClass[] compile(InputStream source) {
+        final int index = getAnonymous();
+        final String path = "skript/unknown_" + index;
+        return this.compile(source, path);
     }
     
     @Override
     public void compileAndLoad(InputStream inputStream) {
-    
+        throw new ScriptCompileError(-1, "This compiler does not support this feature.");
     }
     
     @Override
     public void compileResource(String s, File file, InputStream... inputStreams) {
-    
-    }
-    
-    public Class<?> compileAndLoad(InputStream file, String path) {
-        return compileAndLoad(unstream(file), path);
+        throw new ScriptCompileError(-1, "This compiler does not support this feature.");
     }
     
     private String unstream(InputStream stream) {
@@ -71,51 +75,6 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             e.printStackTrace();
         }
         return builder.toString();
-    }
-    
-    public Class<?> compileAndLoad(String file, String path) {
-        final List<Class<?>> classes = new ArrayList<>();
-        for (PostCompileClass cls : this.compile(file, new Type(path))) {
-            classes.add(cls.compileAndLoad());
-        }
-        return classes.get(0);
-    }
-    
-    public PostCompileClass[] compile(InputStream file, String path) {
-        return compile(unstream(file), new Type(path));
-    }
-    
-    public PostCompileClass[] compile(String file, Type path) {
-        final FileContext context = new FileContext(path);
-        context.libraries.addAll(libraries);
-        for (final Library library : libraries) {
-            for (final Type type : library.getTypes()) {
-                context.registerType(type);
-            }
-        }
-        final List<String> lines = this.removeComments(file);
-        for (String line : lines) {
-            context.lineNumber++;
-            context.line = null;
-            if (line.isBlank()) continue;
-            if (context.getMethod() != null) {
-                context.getMethod().writeCode(WriteInstruction.lineNumber(context.lineNumber));
-            }
-            try {
-                this.compileLine(line, context);
-            } catch (ScriptParseError | ScriptCompileError ex) {
-                throw ex;
-            } catch (Throwable ex) {
-                throw new ScriptCompileError(context.lineNumber, "Unknown error during compilation:", ex);
-            }
-        }
-        for (int i = 0; i < context.units.size(); i++) {
-            context.destroyUnit();
-        }
-        for (int i = 0; i < context.sections.size(); i++) {
-            context.destroySection();
-        }
-        return context.compile();
     }
     
     protected List<String> removeComments(final String string) {
@@ -146,23 +105,9 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     }
     
     @Override
-    public boolean addLibrary(Library library) {
-        if (libraries.contains(library)) return false;
-        libraries.add(0, library); // need to make sure it goes before skript
-        return true;
-    }
-    
-    @Override
-    public boolean removeLibrary(Library library) {
-        return libraries.remove(library);
-    }
-    
-    @Override
     public Library[] getLibraries() {
         return libraries.toArray(new Library[0]);
     }
-    
-    private final java.util.regex.Pattern unitMatch = java.util.regex.Pattern.compile("(?<=^)[\\t ]+(?=\\S)");
     
     protected void compileLine(final String line, final FileContext context) {
         final ElementTree tree = parseLine(line, context);
@@ -226,17 +171,20 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     public ElementTree parseLine(final String line, final FileContext context) {
         final int expected = context.indent();
         if (expected > 0 && context.indentUnit() == null) {
-            final Matcher matcher = unitMatch.matcher(line);
+            final Matcher matcher = whitespace.matcher(line);
             matcher.find();
             final String unit = matcher.group();
             context.setIndentUnit(unit);
         }
-        final int actual = trueIndent(line, context.indentUnit());
+        final int actual = this.trueIndent(line, context.indentUnit());
         if (actual < expected) {
             for (int i = 0; i < (expected - actual); i++) {
                 context.destroySection();
                 context.destroyUnit();
                 context.indent--;
+            }
+            if (actual == 0) { // allow different indentation per member
+                context.setIndentUnit(null);
             }
         } else if (actual != expected) throw new ScriptParseError(context.lineNumber(), "Wrong indent.");
         final String statement = line.trim();
@@ -253,7 +201,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         details.line = statement;
         ElementTree current = null;
         outer:
-        for (SyntaxElement handler : context.getHandlers()) {
+        for (final SyntaxElement handler : context.getHandlers()) {
             final Pattern.Match match = handler.match(statement, context);
             if (match == null) continue;
             if (!match.matcher().group().equals(statement)) continue;
@@ -287,7 +235,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         ElementTree current = null;
         details.expression = expression;
         outer:
-        for (SyntaxElement handler : context.getHandlers()) {
+        for (final SyntaxElement handler : context.getHandlers()) {
             if (!handler.allowAsInputFor(expected)) continue;
             final Pattern.Match match = handler.match(expression, context);
             if (match == null) continue;
@@ -300,7 +248,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             for (int i = 0; i < types.length; i++) {
                 final String input = inputs[i];
                 final Type type = types[i];
-                final ElementTree sub = assembleExpression(input.trim(), type, context, details);
+                final ElementTree sub = this.assembleExpression(input.trim(), type, context, details);
                 if (sub == null) continue outer;
                 elements.add(sub);
             }
@@ -322,6 +270,56 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     @Override
     public PostCompileClass[] compile(InputStream stream, Type name) {
         return compile(unstream(stream), name);
+    }
+    
+    public PostCompileClass[] compile(InputStream source, String path) {
+        if (path == null) return this.compile(source);
+        return compile(unstream(source), new Type(path));
+    }
+    
+    public PostCompileClass[] compile(String source, Type path) {
+        final FileContext context = new FileContext(path);
+        context.libraries.addAll(libraries);
+        for (final Library library : libraries) {
+            for (final Type type : library.getTypes()) {
+                context.registerType(type);
+            }
+        }
+        final List<String> lines = this.removeComments(source);
+        for (String line : lines) {
+            context.lineNumber++;
+            context.line = null;
+            if (line.isBlank()) continue;
+            if (context.getMethod() != null) {
+                context.getMethod().writeCode(WriteInstruction.lineNumber(context.lineNumber));
+            }
+            try {
+                this.compileLine(line, context);
+            } catch (ScriptParseError | ScriptCompileError ex) {
+                throw ex;
+            } catch (Throwable ex) {
+                throw new ScriptCompileError(context.lineNumber, "Unknown error during compilation:", ex);
+            }
+        }
+        for (int i = 0; i < context.units.size(); i++) {
+            context.destroyUnit();
+        }
+        for (int i = 0; i < context.sections.size(); i++) {
+            context.destroySection();
+        }
+        return context.compile();
+    }
+    
+    @Override
+    public boolean addLibrary(Library library) {
+        if (libraries.contains(library)) return false;
+        libraries.add(0, library); // need to make sure it goes before skript
+        return true;
+    }
+    
+    @Override
+    public boolean removeLibrary(Library library) {
+        return libraries.remove(library);
     }
     
     int trueIndent(final String line, final String unit) {

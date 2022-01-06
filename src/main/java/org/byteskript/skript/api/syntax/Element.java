@@ -17,10 +17,10 @@ import java.util.Arrays;
 
 public abstract class Element implements SyntaxElement {
     
-    private final Pattern pattern;
     protected final Library provider;
     protected final LanguageElement type;
     protected final Handlers handlers = new Handlers();
+    private final Pattern pattern;
     
     public Element(final Library provider, final LanguageElement type, final String... patterns) {
         this.pattern = new Pattern(Arrays.copyOf(patterns, patterns.length), provider);
@@ -53,13 +53,13 @@ public abstract class Element implements SyntaxElement {
     }
     
     @Override
-    public void setHandler(HandlerType type, Method method) {
-        this.handlers.put(type, method);
+    public Method getHandler(HandlerType type) {
+        return handlers.get(type);
     }
     
     @Override
-    public Method getHandler(HandlerType type) {
-        return handlers.get(type);
+    public void setHandler(HandlerType type, Method method) {
+        this.handlers.put(type, method);
     }
     
 }

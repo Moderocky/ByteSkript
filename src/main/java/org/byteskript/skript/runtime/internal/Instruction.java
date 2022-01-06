@@ -8,8 +8,6 @@ package org.byteskript.skript.runtime.internal;
 
 public interface Instruction<Type> {
     
-    void run() throws Throwable;
-    
     default Type get() {
         return null;
     }
@@ -21,5 +19,7 @@ public interface Instruction<Type> {
             ex.printStackTrace();
         }
     }
+    
+    void run() throws Throwable;
     
 }

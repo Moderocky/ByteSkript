@@ -21,8 +21,8 @@ public interface ScriptRunner extends Runnable {
         thread.variables.clear();
     }
     
-    Class<? extends CompiledScript> owner();
-    
     void start();
+    
+    Class<? extends CompiledScript> owner();
     
 }

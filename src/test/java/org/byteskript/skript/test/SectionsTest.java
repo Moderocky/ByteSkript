@@ -24,13 +24,13 @@ public class SectionsTest extends SkriptTest {
         script = skript.loadScript(cls);
     }
     
+    public static Object blob(String thing) {
+        return "hello " + thing;
+    }
+    
     @Test
     public void relay_test() throws Throwable {
         script.getFunction("relay_test").invoke();
-    }
-    
-    public static Object blob(String thing) {
-        return "hello " + thing;
     }
     
 }

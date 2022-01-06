@@ -42,14 +42,24 @@ public class MillisecondsExpression extends SimpleExpression {
         }
     }
     
-    @Override
-    public boolean allowAsInputFor(Type type) {
-        return CommonTypes.DURATION.equals(type) || CommonTypes.OBJECT.equals(type);
+    @ForceExtract
+    public static Object find(Object object) {
+        if (!(object instanceof Number)) {
+            throw new ScriptRuntimeError("Timespan expression requires number.");
+        } else {
+            final Number number = (Number) object;
+            return Duration.ofMillis(number.longValue());
+        }
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
         return super.match(thing, context);
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return CommonTypes.DURATION.equals(type) || CommonTypes.OBJECT.equals(type);
     }
     
     @Override
@@ -60,16 +70,6 @@ public class MillisecondsExpression extends SimpleExpression {
         assert target != null;
         this.writeCall(method, target, context);
         context.setState(CompileState.STATEMENT);
-    }
-    
-    @ForceExtract
-    public static Object find(Object object) {
-        if (!(object instanceof Number)) {
-            throw new ScriptRuntimeError("Timespan expression requires number.");
-        } else {
-            final Number number = (Number) object;
-            return Duration.ofMillis(number.longValue());
-        }
     }
     
 }

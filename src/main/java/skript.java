@@ -189,6 +189,17 @@ public final class skript {
         return mirror(owner).method(name + "", arguments);
     }
     
+    private static Mirror<?> mirror(Object owner) {
+        if (owner == null) return null;
+        if (owner instanceof Class<?> type) {
+            if (type.getName().startsWith("skript")) return Mirror.of(type).useProvider(Skript.LOADER);
+            return Mirror.of(type);
+        } else {
+            if (owner.getClass().getName().startsWith("skript")) return Mirror.of(owner).useProvider(Skript.LOADER);
+            return Mirror.of(owner);
+        }
+    }
+    
     public static MethodAccessor<Object> get_java_method(Object owner, Object name) {
         return mirror(owner).method(name + "");
     }
@@ -205,17 +216,6 @@ public final class skript {
     
     public static void set_java_field(Object owner, Object name, Object value) {
         mirror(owner).field((name) + "").set((value));
-    }
-    
-    private static Mirror<?> mirror(Object owner) {
-        if (owner == null) return null;
-        if (owner instanceof Class<?> type) {
-            if (type.getName().startsWith("skript")) return Mirror.of(type).useProvider(Skript.LOADER);
-            return Mirror.of(type);
-        } else {
-            if (owner.getClass().getName().startsWith("skript")) return Mirror.of(owner).useProvider(Skript.LOADER);
-            return Mirror.of(owner);
-        }
     }
     //endregion
     

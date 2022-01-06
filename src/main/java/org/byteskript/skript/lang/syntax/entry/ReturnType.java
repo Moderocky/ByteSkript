@@ -35,11 +35,6 @@ public class ReturnType extends SimpleEntry {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return false;
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) {
         final String name = (String) match.meta();
         final Type type = context.getType(name);
@@ -59,6 +54,11 @@ public class ReturnType extends SimpleEntry {
             return null;
         }
         return new Pattern.Match(Pattern.fakeMatcher(thing), name);
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return false;
     }
     
     @Override

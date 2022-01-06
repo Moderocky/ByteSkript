@@ -29,16 +29,16 @@ public final class GeneratedExpression extends SimpleExpression {
     }
     
     @Override
+    public Type getReturnType() {
+        return value;
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert target.getReturnType() != void.class;
         this.writeCall(method, target, context);
         context.setState(CompileState.STATEMENT);
-    }
-    
-    @Override
-    public Type getReturnType() {
-        return value;
     }
     
 }

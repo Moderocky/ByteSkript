@@ -89,10 +89,6 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
     
     final Map<State, List<SyntaxElement>> syntax = new HashMap<>();
     
-    public LanguageElement[] getGrammar() {
-        return grammar;
-    }
-    
     private SkriptLangSpec() {
         super("Skript");
         registerTypes(
@@ -261,6 +257,10 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         }
     }
     
+    public LanguageElement[] getGrammar() {
+        return grammar;
+    }
+    
     @Override
     public String sourceFileExt() {
         return "bsk";
@@ -299,18 +299,6 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         return runtime;
     }
     
-    private PostCompileClass getData(final Class<?> type) throws IOException {
-        return new PostCompileClass(getSource(type), type.getName(), new Type(type).internalName());
-    }
-    
-    private byte[] getSource(final Class<?> cls) throws IOException {
-        try (final InputStream stream = ClassLoader.getSystemResourceAsStream(cls.getName()
-            .replace('.', '/') + ".class")) {
-            assert stream != null;
-            return stream.readAllBytes();
-        }
-    }
-    
     private Class<?>[] findClasses(final String namespace) throws IOException, ClassNotFoundException {
         final List<Class<?>> classes = new ArrayList<>();
         final CodeSource src = ScriptRunner.class.getProtectionDomain().getCodeSource();
@@ -334,6 +322,18 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             throw new ScriptRuntimeError("Unable to access source.");
         }
         return classes.toArray(new Class[0]);
+    }
+    
+    private PostCompileClass getData(final Class<?> type) throws IOException {
+        return new PostCompileClass(getSource(type), type.getName(), new Type(type).internalName());
+    }
+    
+    private byte[] getSource(final Class<?> cls) throws IOException {
+        try (final InputStream stream = ClassLoader.getSystemResourceAsStream(cls.getName()
+            .replace('.', '/') + ".class")) {
+            assert stream != null;
+            return stream.readAllBytes();
+        }
     }
     
 }

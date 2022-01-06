@@ -11,10 +11,6 @@ public class ScriptReassemblyError extends Error implements ScriptError {
     private final boolean fill = true;
     private final int line;
     
-    public int getLine() {
-        return line;
-    }
-    
     public ScriptReassemblyError(int line) {
         super();
         this.line = line;
@@ -38,6 +34,10 @@ public class ScriptReassemblyError extends Error implements ScriptError {
     protected ScriptReassemblyError(int line, String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
         this.line = line;
+    }
+    
+    public int getLine() {
+        return line;
     }
     
     @Override

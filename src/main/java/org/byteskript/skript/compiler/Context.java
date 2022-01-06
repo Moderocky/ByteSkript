@@ -15,6 +15,9 @@ import org.byteskript.skript.compiler.structure.*;
 import java.util.*;
 import java.util.function.Consumer;
 
+/**
+ * This keeps track of what happens during a compiler pass.
+ */
 public abstract class Context {
     
     protected final List<Library> libraries = new ArrayList<>();
@@ -22,6 +25,7 @@ public abstract class Context {
     protected final List<SectionMeta> sections = new ArrayList<>();
     protected ErrorDetails error;
     protected State state;
+    protected String storedVariableName;
     
     public ErrorDetails getError() {
         return error;
@@ -35,29 +39,17 @@ public abstract class Context {
         this.storedVariableName = storedVariableName;
     }
     
-    protected String storedVariableName;
-    
     public abstract boolean hasFlag(Flag flag);
     
     public abstract void addFlag(Flag flag);
     
     public abstract void removeFlag(Flag flag);
     
-    public abstract LanguageElement getExpected();
-    
     public abstract Collection<Type> getAvailableTypes();
     
     public abstract Map<String, Type> getTypeMap();
     
-    public abstract Type getType();
-    
     public abstract Type getType(String name);
-    
-    public abstract void registerType(String name, Type type);
-    
-    public abstract int indent();
-    
-    public abstract String indentUnit();
     
     public abstract void setIndentUnit(String string);
     
@@ -75,9 +67,9 @@ public abstract class Context {
     
     public abstract MethodBuilder getMethod();
     
-    public abstract FieldBuilder getField();
-    
     public abstract void setMethod(MethodBuilder method);
+    
+    public abstract FieldBuilder getField();
     
     public abstract void setField(FieldBuilder field);
     
@@ -113,8 +105,6 @@ public abstract class Context {
     
     public abstract ProgrammaticSplitTree getTree(SectionMeta meta);
     
-    public abstract ProgrammaticSplitTree getCurrentTree();
-    
     public abstract void closeAllTrees();
     
     public abstract void removeTree(ProgrammaticSplitTree tree);
@@ -135,21 +125,23 @@ public abstract class Context {
     
     public abstract MethodErasure useHandle(String property, HandlerType type);
     
-    public abstract void setHandlerMode(HandlerType type);
-    
     public abstract HandlerType getHandlerMode();
+    
+    public abstract void setHandlerMode(HandlerType type);
     
     public MultiLabel getSectionBreak() {
         return getCurrentTree().getEnd();
     }
     
-    public void addSection(Section handler) {
-        sections.add(0, new SectionMeta(handler));
-    }
+    public abstract ProgrammaticSplitTree getCurrentTree();
     
     public void appendSection(Section handler) {
         if (sections.isEmpty()) addSection(handler);
         else sections.get(0).getHandlers().add(handler);
+    }
+    
+    public void addSection(Section handler) {
+        sections.add(0, new SectionMeta(handler));
     }
     
     public SectionMeta getSection() {
@@ -179,8 +171,6 @@ public abstract class Context {
     
     public abstract boolean hasFunction(String name, int arguments);
     
-    public abstract Function getFunction(String name, int arguments);
-    
     public Function getDefaultFunction(String name, int arguments) {
         final Function function = getFunction(name, arguments);
         if (function != null) return function;
@@ -189,24 +179,16 @@ public abstract class Context {
         return new Function(name, getType(), CommonTypes.OBJECT, types);
     }
     
+    public abstract Function getFunction(String name, int arguments);
+    
+    public abstract Type getType();
+    
     public abstract void registerFunction(Function function);
     
     public abstract Function assertDefaultLocalFunction(String name);
     
     public void addLibrary(Library provider) {
         this.libraries.add(provider);
-    }
-    
-    public Collection<Library> getLibraries() {
-        return libraries;
-    }
-    
-    public State getState() {
-        return state;
-    }
-    
-    public void setState(State state) {
-        this.state = state;
     }
     
     public Unit getCurrentUnit() {
@@ -226,26 +208,42 @@ public abstract class Context {
         units.add(0, new Unit(element));
     }
     
+    public Collection<SyntaxElement> getHandlers(State state) {
+        return getHandlers(state, getExpected());
+    }
+    
     public Collection<SyntaxElement> getHandlers(State state, LanguageElement expected) {
         final List<SyntaxElement> elements = new ArrayList<>();
-        for (Library library : getLibraries()) {
+        for (final Library library : getLibraries()) {
             elements.addAll(library.getHandlers(state, expected, this));
         }
         return elements;
     }
     
-    public Collection<SyntaxElement> getHandlers(State state) {
-        return getHandlers(state, getExpected());
+    public abstract LanguageElement getExpected();
+    
+    public Collection<Library> getLibraries() {
+        return libraries;
     }
     
     public Collection<SyntaxElement> getHandlers() {
         return getHandlers(getState(), getExpected());
     }
     
+    public State getState() {
+        return state;
+    }
+    
+    public void setState(State state) {
+        this.state = state;
+    }
+    
     public void registerType(Type type) {
         if (type.isArray()) registerType(type.componentType().getSimpleName() + "s", type);
         else registerType(type.getSimpleName(), type);
     }
+    
+    public abstract void registerType(String name, Type type);
     
     public String expectedIndent() {
         if (indentUnit() == null) return "";
@@ -255,5 +253,9 @@ public abstract class Context {
         }
         return builder.toString();
     }
+    
+    public abstract String indentUnit();
+    
+    public abstract int indent();
     
 }

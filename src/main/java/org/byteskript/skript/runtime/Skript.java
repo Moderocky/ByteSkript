@@ -42,6 +42,7 @@ public final class Skript {
     public static final ThreadGroup THREAD_GROUP = new ThreadGroup("skript");
     public static final int JAVA_VERSION = 61;
     public static final RuntimeClassLoader LOADER = new RuntimeClassLoader(Skript.class.getClassLoader());
+    static final GlobalVariableMap VARIABLES = new GlobalVariableMap();
     private static Skript skript;
     final ExecutorService executor;
     final SkriptThreadProvider factory;
@@ -53,91 +54,8 @@ public final class Skript {
     final SkriptMirror mirror = new SkriptMirror(LOADER);
     final WeakList<ScriptClassLoader> loaders = new WeakList<>();
     final List<Script> scripts = new ArrayList<>(); // the only strong reference, be careful!
-    static final GlobalVariableMap VARIABLES = new GlobalVariableMap();
     
     //region Class Loaders
-    
-    /**
-     * This class handles the class-loading delegation for libraries and scripts.
-     * It should not be interacted with directly, see {@link Skript#LOADER} for an instance.
-     */
-    public static class RuntimeClassLoader extends ClassLoader implements ClassProvider {
-        protected RuntimeClassLoader(ClassLoader parent) {
-            super(parent);
-        }
-        
-        @Override
-        public Class<?> loadClass(String name) throws ClassNotFoundException {
-            try {
-                return super.loadClass(name);
-            } catch (ClassNotFoundException ex) {
-                for (final ScriptClassLoader value : Skript.findInstance().loaders.collectRemaining()) {
-                    if (value == null) continue;
-                    try {
-                        return value.loadClass0(name);
-                    } catch (ClassNotFoundException ignored) {
-                    }
-                }
-                throw ex;
-            }
-        }
-        
-        @Override
-        public Class<?> findClass(String name) {
-            try {
-                return super.findClass(name);
-            } catch (ClassNotFoundException e) {
-                for (final ScriptClassLoader value : Skript.findInstance().loaders.collectRemaining()) {
-                    if (value == null) continue;
-                    try {
-                        return value.findClass0(name);
-                    } catch (ClassNotFoundException ignored) {
-                    }
-                }
-                return Skript.findInstance().getClass(name);
-            }
-        }
-        
-        public Class<?> loadClass(String name, byte[] bytecode) {
-            return super.defineClass(name, bytecode, 0, bytecode.length);
-        }
-        
-        @Override
-        public Class<?> loadClass(Class<?> aClass, String name, byte[] bytecode) {
-            try {
-                return Class.forName(name, false, this);
-            } catch (ClassNotFoundException ex) {
-                return super.defineClass(name, bytecode, 0, bytecode.length);
-            }
-        }
-    }
-    
-    /**
-     * This mirror handles class injection.
-     * This should not be interacted with by an external program.
-     */
-    static class SkriptMirror extends Mirror<Object> {
-        protected SkriptMirror(ClassProvider provider) {
-            super(Skript.class);
-            useProvider(provider);
-        }
-        
-        @Override
-        public Class<?> loadClass(String name, byte[] bytecode) {
-            return super.loadClass(name, bytecode);
-        }
-    }
-    
-    private Class<?> loadClass(String name, byte[] bytecode) {
-        return this.createLoader().loadClass(name, bytecode);
-    }
-    
-    private SkriptMirror createLoader() {
-        final ScriptClassLoader loader = new ScriptClassLoader();
-        this.loaders.addActual(loader);
-        return new SkriptMirror(loader);
-    }
-    //endregion
     
     /**
      * Create a Skript runtime with a custom (non-default) Skript compiler.
@@ -153,14 +71,6 @@ public final class Skript {
      */
     public Skript(ModifiableCompiler compiler) {
         this(new SkriptThreadProvider(), compiler, Thread.currentThread());
-    }
-    
-    /**
-     * Create a default Skript runtime with all basic features present.
-     * The thread this is created from is treated as the 'main' thread.
-     */
-    public Skript() {
-        this(new SkriptThreadProvider(), SkriptCompiler.createBasic(), Thread.currentThread());
     }
     
     /**
@@ -184,6 +94,14 @@ public final class Skript {
     }
     
     /**
+     * Create a default Skript runtime with all basic features present.
+     * The thread this is created from is treated as the 'main' thread.
+     */
+    public Skript() {
+        this(new SkriptThreadProvider(), SkriptCompiler.createBasic(), Thread.currentThread());
+    }
+    
+    /**
      * This is the map of global `{!var}` variables.
      * This is a modifiable and atomic map.
      * Destroying this map's contents without warning is not advised.
@@ -196,22 +114,7 @@ public final class Skript {
     public static GlobalVariableMap getVariables() {
         return VARIABLES;
     }
-    
-    //region Runtime Instances
-    
-    /**
-     * This returns the most recently-created Skript runtime.
-     * It is designed to be an entry-point for programs that attach in an unusual way, and have
-     * no other way of getting the current Skript instance.
-     * <p>
-     * Multiple or zero runtimes may exist - this should not be depended upon.
-     *
-     * @return potentially null Skript runtime
-     */
-    @Deprecated
-    public static Skript currentInstance() {
-        return skript;
-    }
+    //endregion
     
     /**
      * This returns the Skript instance that launched the current thread.
@@ -232,9 +135,45 @@ public final class Skript {
         if (!(current instanceof ScriptThread thread)) return currentInstance();
         return thread.skript;
     }
-    //endregion
     
-    //region Thread Control
+    /**
+     * This returns the most recently-created Skript runtime.
+     * It is designed to be an entry-point for programs that attach in an unusual way, and have
+     * no other way of getting the current Skript instance.
+     * <p>
+     * Multiple or zero runtimes may exist - this should not be depended upon.
+     *
+     * @return potentially null Skript runtime
+     */
+    @Deprecated
+    public static Skript currentInstance() {
+        return skript;
+    }
+    
+    private static String createClassName(String name, String path) {
+        final int index = name.lastIndexOf('.');
+        if (path.startsWith(File.separator)) path = path.substring(1);
+        if (index == -1) return path.replace(File.separatorChar, '.');
+        return path.substring(0, index).replace(File.separatorChar, '.');
+    }
+    
+    //region Runtime Instances
+    
+    private static List<File> getFiles(List<File> files, Path root) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(root)) {
+            for (Path path : stream) {
+                if (path.toFile().isDirectory()) {
+                    getFiles(files, path);
+                } else {
+                    if (!path.toFile().getName().endsWith(".bsk")) continue;
+                    files.add(path.toAbsolutePath().toFile());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return files;
+    }
     
     /**
      * Submits this instruction to a background thread.
@@ -256,6 +195,9 @@ public final class Skript {
     public Future<?> getOnAsyncThread(final Instruction<?> runnable) {
         return executor.submit(runnable::get);
     }
+    //endregion
+    
+    //region Thread Control
     
     /**
      * Submits this instruction to a background thread.
@@ -266,9 +208,6 @@ public final class Skript {
     public void runOnAsyncThread(final Runnable runnable) {
         executor.submit(runnable);
     }
-    //endregion
-    
-    //region Script Control
     
     /**
      * Gets a copy of the handles for all loaded scripts.
@@ -293,6 +232,9 @@ public final class Skript {
     public Collection<OperationController> getProcesses() {
         return processes;
     }
+    //endregion
+    
+    //region Script Control
     
     /**
      * Runs a script with a completing future.
@@ -386,9 +328,6 @@ public final class Skript {
         this.events.putIfAbsent(event, new EventHandler());
         this.events.get(event).add(runner);
     }
-    //endregion
-    
-    //region Libraries
     
     /**
      * This searches the app class loader and all library class loaders for the given class.
@@ -414,6 +353,9 @@ public final class Skript {
             return null;
         }
     }
+    //endregion
+    
+    //region Libraries
     
     /**
      * Registers a single class library, typically compiled from a script to load
@@ -436,6 +378,28 @@ public final class Skript {
         compiler.addLibrary(library);
     }
     
+    //region File Utilities
+    private static String getClassName(InputStream is)
+        throws IOException {
+        final DataInputStream stream = new DataInputStream(is);
+        stream.readLong();
+        final int paths = (stream.readShort() & 0xffff) - 1;
+        final int[] classes = new int[paths];
+        final String[] names = new String[paths];
+        for (int i = 0; i < paths; i++) {
+            final int t = stream.read();
+            if (t == 7) classes[i] = stream.readShort() & 0xffff;
+            else if (t == 1) names[i] = stream.readUTF();
+            else if (t == 5 || t == 6) {
+                stream.readLong();
+                i++;
+            } else if (t == 8) stream.readShort();
+            else stream.readInt();
+        }
+        stream.readShort();
+        return names[classes[(stream.readShort() & 0xffff) - 1] - 1].replace('/', '.');
+    }
+    
     /**
      * Registers a library instance to the current compiler.
      *
@@ -455,18 +419,6 @@ public final class Skript {
     public boolean unregisterLibrary(Library library) {
         return compiler.removeLibrary(library);
     }
-    //endregion
-    
-    //region Script Compiling
-    
-    /**
-     * Whether this Skript runtime has a compiler.
-     *
-     * @return if compiler is present
-     */
-    public boolean hasCompiler() {
-        return compiler != null;
-    }
     
     /**
      * Returns the provided script compiler.
@@ -476,6 +428,9 @@ public final class Skript {
     public ModifiableCompiler getCompiler() {
         return compiler;
     }
+    //endregion
+    
+    //region Script Compiling
     
     /**
      * Returns an array of all registered libraries.
@@ -485,6 +440,15 @@ public final class Skript {
     public Library[] getLoadedLibraries() {
         if (!this.hasCompiler()) return new Library[0];
         return compiler.getLibraries();
+    }
+    
+    /**
+     * Whether this Skript runtime has a compiler.
+     *
+     * @return if compiler is present
+     */
+    public boolean hasCompiler() {
+        return compiler != null;
     }
     
     /**
@@ -527,6 +491,21 @@ public final class Skript {
         throws IOException {
         final PostCompileClass datum = compileScript(input, name);
         target.write(datum.code());
+    }
+    
+    /**
+     * Compiles a simple script from its source to a memory class.
+     * This method may be unavailable in some distributions.
+     *
+     * @param stream the source
+     * @param name   the class name
+     * @return the 'main' class
+     */
+    @CompilerDependent
+    public PostCompileClass compileScript(final InputStream stream, final String name) {
+        final PostCompileClass[] classes = compiler.compile(stream, new Type(name));
+        if (classes.length < 1) throw new ScriptCompileError(-1, "Script does not compile to a class.");
+        return classes[0];
     }
     
     /**
@@ -609,24 +588,6 @@ public final class Skript {
     }
     
     /**
-     * Compiles a simple script from its source to a memory class.
-     * This method may be unavailable in some distributions.
-     *
-     * @param stream the source
-     * @param name   the class name
-     * @return the 'main' class
-     */
-    @CompilerDependent
-    public PostCompileClass compileScript(final InputStream stream, final String name) {
-        final PostCompileClass[] classes = compiler.compile(stream, new Type(name));
-        if (classes.length < 1) throw new ScriptCompileError(-1, "Script does not compile to a class.");
-        return classes[0];
-    }
-    //endregion
-    
-    //region Script Loading
-    
-    /**
      * Unloads a script by its main class.
      * This is a destructive operation.
      *
@@ -637,6 +598,9 @@ public final class Skript {
             if (script.mainClass() == main) this.unloadScript(script);
         }
     }
+    //endregion
+    
+    //region Script Loading
     
     /**
      * Unloads a script. This is a destructive operation.
@@ -684,6 +648,38 @@ public final class Skript {
     @CompilerDependent
     public Script compileLoad(InputStream stream, String name) {
         return loadScript(compileScript(stream, name));
+    }
+    
+    /**
+     * Loads a script from compiled source code.
+     *
+     * @param datum the class code
+     * @return the script
+     */
+    public Script loadScript(final PostCompileClass datum) {
+        return this.loadScript(this.loadClass(datum.name(), datum.code()));
+    }
+    
+    /**
+     * Loads a script from a defined class.
+     *
+     * @param loaded the class
+     * @return the script
+     */
+    public Script loadScript(final Class<?> loaded) {
+        final Script script = new Script(this, null, loaded);
+        this.scripts.add(script);
+        return script;
+    }
+    
+    private Class<?> loadClass(String name, byte[] bytecode) {
+        return this.createLoader().loadClass(name, bytecode);
+    }
+    
+    private SkriptMirror createLoader() {
+        final ScriptClassLoader loader = new ScriptClassLoader();
+        this.loaders.addActual(loader);
+        return new SkriptMirror(loader);
     }
     
     /**
@@ -775,28 +771,6 @@ public final class Skript {
     }
     
     /**
-     * Loads a script from a defined class.
-     *
-     * @param loaded the class
-     * @return the script
-     */
-    public Script loadScript(final Class<?> loaded) {
-        final Script script = new Script(this, null, loaded);
-        this.scripts.add(script);
-        return script;
-    }
-    
-    /**
-     * Loads a script from compiled source code.
-     *
-     * @param datum the class code
-     * @return the script
-     */
-    public Script loadScript(final PostCompileClass datum) {
-        return this.loadScript(this.loadClass(datum.name(), datum.code()));
-    }
-    
-    /**
      * Loads scripts from compiled source code.
      *
      * @param data the class code
@@ -811,14 +785,15 @@ public final class Skript {
     }
     
     /**
-     * Loads a script from its compiled bytecode and class name.
+     * Loads a script from a stream of its compiled bytecode.
      *
-     * @param bytecode the compiled class code
-     * @param name     the class name
+     * @param stream the compiled class code
      * @return the script
+     * @throws IOException if something goes wrong
      */
-    public Script loadScript(final byte[] bytecode, final String name) {
-        return loadScript(this.loadClass(name, bytecode));
+    public Script loadScript(final InputStream stream)
+        throws IOException {
+        return loadScript(stream.readAllBytes());
     }
     
     /**
@@ -834,28 +809,14 @@ public final class Skript {
     }
     
     /**
-     * Loads a script from a stream of its compiled bytecode.
+     * Loads a script from its compiled bytecode and class name.
      *
-     * @param stream the compiled class code
-     * @param name   the class name
+     * @param bytecode the compiled class code
+     * @param name     the class name
      * @return the script
-     * @throws IOException if something goes wrong
      */
-    public Script loadScript(final InputStream stream, final String name)
-        throws IOException {
-        return loadScript(this.loadClass(name, stream.readAllBytes()));
-    }
-    
-    /**
-     * Loads a script from a stream of its compiled bytecode.
-     *
-     * @param stream the compiled class code
-     * @return the script
-     * @throws IOException if something goes wrong
-     */
-    public Script loadScript(final InputStream stream)
-        throws IOException {
-        return loadScript(stream.readAllBytes());
+    public Script loadScript(final byte[] bytecode, final String name) {
+        return loadScript(this.loadClass(name, bytecode));
     }
     
     /**
@@ -873,6 +834,22 @@ public final class Skript {
     }
     
     /**
+     * Loads a script from a stream of its compiled bytecode.
+     *
+     * @param stream the compiled class code
+     * @param name   the class name
+     * @return the script
+     * @throws IOException if something goes wrong
+     */
+    public Script loadScript(final InputStream stream, final String name)
+        throws IOException {
+        return loadScript(this.loadClass(name, stream.readAllBytes()));
+    }
+    //endregion
+    
+    //region Timings
+    
+    /**
      * Loads a script from its compiled class file.
      *
      * @param source the compiled class
@@ -886,9 +863,6 @@ public final class Skript {
             return loadScript(this.loadClass(name, stream.readAllBytes()));
         }
     }
-    //endregion
-    
-    //region Timings
     
     /**
      * Generates a script thread from the given process.
@@ -930,6 +904,7 @@ public final class Skript {
     public ExecutorService getExecutor() {
         return executor;
     }
+    //endregion
     
     /**
      * Schedules a task to be run at some point in the future.
@@ -941,51 +916,76 @@ public final class Skript {
     public Future<?> schedule(Runnable runnable, long millis) {
         return scheduler.schedule(runnable, millis, TimeUnit.MILLISECONDS);
     }
-    //endregion
     
-    //region File Utilities
-    private static String getClassName(InputStream is)
-        throws IOException {
-        final DataInputStream stream = new DataInputStream(is);
-        stream.readLong();
-        final int paths = (stream.readShort() & 0xffff) - 1;
-        final int[] classes = new int[paths];
-        final String[] names = new String[paths];
-        for (int i = 0; i < paths; i++) {
-            final int t = stream.read();
-            if (t == 7) classes[i] = stream.readShort() & 0xffff;
-            else if (t == 1) names[i] = stream.readUTF();
-            else if (t == 5 || t == 6) {
-                stream.readLong();
-                i++;
-            } else if (t == 8) stream.readShort();
-            else stream.readInt();
+    /**
+     * This class handles the class-loading delegation for libraries and scripts.
+     * It should not be interacted with directly, see {@link Skript#LOADER} for an instance.
+     */
+    public static class RuntimeClassLoader extends ClassLoader implements ClassProvider {
+        protected RuntimeClassLoader(ClassLoader parent) {
+            super(parent);
         }
-        stream.readShort();
-        return names[classes[(stream.readShort() & 0xffff) - 1] - 1].replace('/', '.');
-    }
-    
-    private static String createClassName(String name, String path) {
-        final int index = name.lastIndexOf('.');
-        if (path.startsWith(File.separator)) path = path.substring(1);
-        if (index == -1) return path.replace(File.separatorChar, '.');
-        return path.substring(0, index).replace(File.separatorChar, '.');
-    }
-    
-    private static List<File> getFiles(List<File> files, Path root) {
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(root)) {
-            for (Path path : stream) {
-                if (path.toFile().isDirectory()) {
-                    getFiles(files, path);
-                } else {
-                    if (!path.toFile().getName().endsWith(".bsk")) continue;
-                    files.add(path.toAbsolutePath().toFile());
+        
+        @Override
+        public Class<?> loadClass(String name) throws ClassNotFoundException {
+            try {
+                return super.loadClass(name);
+            } catch (ClassNotFoundException ex) {
+                for (final ScriptClassLoader value : Skript.findInstance().loaders.collectRemaining()) {
+                    if (value == null) continue;
+                    try {
+                        return value.loadClass0(name);
+                    } catch (ClassNotFoundException ignored) {
+                    }
                 }
+                throw ex;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return files;
+        
+        @Override
+        public Class<?> findClass(String name) {
+            try {
+                return super.findClass(name);
+            } catch (ClassNotFoundException e) {
+                for (final ScriptClassLoader value : Skript.findInstance().loaders.collectRemaining()) {
+                    if (value == null) continue;
+                    try {
+                        return value.findClass0(name);
+                    } catch (ClassNotFoundException ignored) {
+                    }
+                }
+                return Skript.findInstance().getClass(name);
+            }
+        }
+        
+        public Class<?> loadClass(String name, byte[] bytecode) {
+            return super.defineClass(name, bytecode, 0, bytecode.length);
+        }
+        
+        @Override
+        public Class<?> loadClass(Class<?> aClass, String name, byte[] bytecode) {
+            try {
+                return Class.forName(name, false, this);
+            } catch (ClassNotFoundException ex) {
+                return super.defineClass(name, bytecode, 0, bytecode.length);
+            }
+        }
+    }
+    
+    /**
+     * This mirror handles class injection.
+     * This should not be interacted with by an external program.
+     */
+    static class SkriptMirror extends Mirror<Object> {
+        protected SkriptMirror(ClassProvider provider) {
+            super(Skript.class);
+            useProvider(provider);
+        }
+        
+        @Override
+        public Class<?> loadClass(String name, byte[] bytecode) {
+            return super.loadClass(name, bytecode);
+        }
     }
     //endregion
     

@@ -42,6 +42,22 @@ public class RunWithEffect extends ControlEffect {
         super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "run %Executable% with %Object%");
     }
     
+    @ForceExtract
+    public static Object run(Object thing, Object args)
+        throws Throwable {
+        final Object[] arguments;
+        if (args instanceof Collection<?> collection) arguments = collection.toArray();
+        else if (args instanceof Object[] array) arguments = array;
+        else arguments = new Object[]{args};
+        if (thing instanceof Method method)
+            return method.invoke(null, arguments);
+        else if (thing instanceof MethodAccessor<?> runnable)
+            runnable.invoke(arguments);
+        else if (thing instanceof Member runnable)
+            runnable.invoke(arguments);
+        return null;
+    }
+    
     @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.startsWith("run ")) return null;
@@ -57,22 +73,6 @@ public class RunWithEffect extends ControlEffect {
         this.writeCall(method, target, context);
         method.writeCode(WriteInstruction.pop());
         context.setState(CompileState.CODE_BODY);
-    }
-    
-    @ForceExtract
-    public static Object run(Object thing, Object args)
-        throws Throwable {
-        final Object[] arguments;
-        if (args instanceof Collection<?> collection) arguments = collection.toArray();
-        else if (args instanceof Object[] array) arguments = array;
-        else arguments = new Object[]{args};
-        if (thing instanceof Method method)
-            return method.invoke(null, arguments);
-        else if (thing instanceof MethodAccessor<?> runnable)
-            runnable.invoke(arguments);
-        else if (thing instanceof Member runnable)
-            runnable.invoke(arguments);
-        return null;
     }
     
     @Override

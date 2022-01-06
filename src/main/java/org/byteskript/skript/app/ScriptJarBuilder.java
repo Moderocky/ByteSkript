@@ -31,12 +31,6 @@ public final class ScriptJarBuilder extends SkriptApp {
         compileResource(jar, scripts);
     }
     
-    static void scrapeRuntimeResources(final List<PostCompileClass> runtime) {
-        for (final Library library : SKRIPT.getLoadedLibraries()) {
-            runtime.addAll(library.getRuntime());
-        }
-    }
-    
     static void compileResource(File jar, PostCompileClass... classes) throws IOException {
         final List<File> resources = getFiles(new ArrayList<>(), RESOURCES.toPath());
         final List<PostCompileClass> runtime = new ArrayList<>();
@@ -67,6 +61,12 @@ public final class ScriptJarBuilder extends SkriptApp {
                 out.write(data, 0, data.length);
                 out.closeEntry();
             }
+        }
+    }
+    
+    static void scrapeRuntimeResources(final List<PostCompileClass> runtime) {
+        for (final Library library : SKRIPT.getLoadedLibraries()) {
+            runtime.addAll(library.getRuntime());
         }
     }
     

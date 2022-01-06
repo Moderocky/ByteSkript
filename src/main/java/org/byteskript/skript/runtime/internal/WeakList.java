@@ -34,14 +34,14 @@ public class WeakList<Type> extends ArrayList<WeakReference<Type>> {
         return list;
     }
     
-    public void collect() {
-        this.removeIf(typeWeakReference -> typeWeakReference.get() == null);
-    }
-    
     @NotNull
     @Override
     public Iterator<WeakReference<Type>> iterator() {
         this.collect();
         return super.iterator();
+    }
+    
+    public void collect() {
+        this.removeIf(typeWeakReference -> typeWeakReference.get() == null);
     }
 }

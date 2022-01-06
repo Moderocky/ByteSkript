@@ -38,6 +38,11 @@ import org.byteskript.skript.runtime.type.AtomicVariable;
 )
 public class Trigger extends SectionEntry {
     
+    private final WriteInstruction wrap = WriteInstruction
+        .invokeStatic(new Type(AtomicVariable.class), new Type(AtomicVariable.class), "wrap", CommonTypes.OBJECT);
+    private final WriteInstruction unwrap = WriteInstruction
+        .invokeStatic(new Type(AtomicVariable.class), CommonTypes.OBJECT, "unwrap", CommonTypes.OBJECT);
+    
     public Trigger() {
         super(SkriptLangSpec.LIBRARY, StandardElements.SECTION, "trigger");
     }
@@ -56,31 +61,6 @@ public class Trigger extends SectionEntry {
         method.removeModifiers(0x0400); // not abstract
         method.writeCode(prepareVariables(tree));
     }
-    
-    @Override
-    public boolean allowedIn(State state, Context context) {
-        return super.allowedIn(state, context) && context.getParent() instanceof TriggerHolder;
-    }
-    
-    @Override
-    public void onSectionExit(Context context, SectionMeta meta) {
-        final MethodBuilder method = context.getMethod();
-        assert method != null;
-        context.closeAllTrees();
-        if (method.getErasure().returnType().equals(new Type(void.class))) {
-            method.writeCode(WriteInstruction.returnEmpty());
-        } else {
-            method.writeCode(WriteInstruction.pushNull());
-            method.writeCode(WriteInstruction.returnObject());
-        }
-        context.emptyVariables();
-        context.setState(CompileState.MEMBER_BODY);
-    }
-    
-    private final WriteInstruction wrap = WriteInstruction
-        .invokeStatic(new Type(AtomicVariable.class), new Type(AtomicVariable.class), "wrap", CommonTypes.OBJECT);
-    private final WriteInstruction unwrap = WriteInstruction
-        .invokeStatic(new Type(AtomicVariable.class), CommonTypes.OBJECT, "unwrap", CommonTypes.OBJECT);
     
     private WriteInstruction prepareVariables(TriggerTree context) {
         return (writer, visitor) -> {
@@ -102,6 +82,26 @@ public class Trigger extends SectionEntry {
                 i++;
             }
         };
+    }
+
+    @Override
+    public boolean allowedIn(State state, Context context) {
+        return super.allowedIn(state, context) && context.getParent() instanceof TriggerHolder;
+    }
+    
+    @Override
+    public void onSectionExit(Context context, SectionMeta meta) {
+        final MethodBuilder method = context.getMethod();
+        assert method != null;
+        context.closeAllTrees();
+        if (method.getErasure().returnType().equals(new Type(void.class))) {
+            method.writeCode(WriteInstruction.returnEmpty());
+        } else {
+            method.writeCode(WriteInstruction.pushNull());
+            method.writeCode(WriteInstruction.returnObject());
+        }
+        context.emptyVariables();
+        context.setState(CompileState.MEMBER_BODY);
     }
     
 }

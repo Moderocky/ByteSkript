@@ -18,10 +18,10 @@ import java.util.Map;
 
 public class BasicInlineController extends RewriteController {
     
-    final Context context;
-    int returnCount;
-    final MultiLabel label = new MultiLabel();
     protected final Map<Integer, PreVariable> special = new HashMap<>();
+    final Context context;
+    final MultiLabel label = new MultiLabel();
+    int returnCount;
     
     public BasicInlineController(Context context) {
         this.context = context;
@@ -51,10 +51,6 @@ public class BasicInlineController extends RewriteController {
     }
     
     @Override
-    public void write(String s, int i, Object o) {
-    }
-    
-    @Override
     public int adjustVariable(int i) {
         System.out.println(i);
         if (special.containsKey(i)) return context.slotOf(special.get(i));
@@ -69,6 +65,10 @@ public class BasicInlineController extends RewriteController {
         final PreVariable variable = new PreVariable("$unspec_ret");
         context.forceUnspecVariable(variable);
         return context.slotOf(variable);
+    }
+    
+    @Override
+    public void write(String s, int i, Object o) {
     }
     
     @Override

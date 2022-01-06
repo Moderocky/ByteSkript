@@ -65,6 +65,11 @@ public class FunctionMember extends TriggerHolder {
     }
     
     @Override
+    public boolean allowAsInputFor(Type type) {
+        return false;
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) {
         super.compile(context, match);
         final MethodBuilder method = context.getMethod();
@@ -92,8 +97,8 @@ public class FunctionMember extends TriggerHolder {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return false;
+    public String callSiteName(Context context, Pattern.Match match) {
+        return match.matcher().group("name");
     }
     
     @Override
@@ -117,10 +122,5 @@ public class FunctionMember extends TriggerHolder {
             } else types.add(CommonTypes.OBJECT);
         }
         return types.toArray(new Type[0]);
-    }
-    
-    @Override
-    public String callSiteName(Context context, Pattern.Match match) {
-        return match.matcher().group("name");
     }
 }

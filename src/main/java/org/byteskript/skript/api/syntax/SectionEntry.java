@@ -18,12 +18,12 @@ public abstract class SectionEntry extends Section {
     }
     
     @Override
-    public boolean allowedIn(State state, Context context) {
-        return state == CompileState.MEMBER_BODY;
+    public CompileState getSubState() {
+        return CompileState.MEMBER_BODY;
     }
     
     @Override
-    public CompileState getSubState() {
-        return CompileState.MEMBER_BODY;
+    public boolean allowedIn(State state, Context context) {
+        return state == CompileState.MEMBER_BODY;
     }
 }

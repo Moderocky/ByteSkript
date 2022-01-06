@@ -24,11 +24,11 @@ public class ScriptThread extends Thread {
     
     public final AirlockQueue queue;
     public final OperationController controller;
-    public Class<? extends CompiledScript> initiator;
-    public Event event;
     public final Object lock = new Object();
     public final ThreadVariableMap variables = new ThreadVariableMap();
     public final Skript skript;
+    public Class<? extends CompiledScript> initiator;
+    public Event event;
     
     public ScriptThread(final Skript skript, final OperationController controller, ThreadGroup group, Runnable target, String name, long stackSize, boolean inheritThreadLocals) {
         super(group, target, name, stackSize, inheritThreadLocals);

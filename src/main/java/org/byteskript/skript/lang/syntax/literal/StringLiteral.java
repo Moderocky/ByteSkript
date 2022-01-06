@@ -40,11 +40,6 @@ public class StringLiteral extends Literal<String> {
     }
     
     @Override
-    public Type getReturnType() {
-        return CommonTypes.STRING;
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) {
         final String string = match.matcher().group();
         assert string.length() > 1;
@@ -88,6 +83,11 @@ public class StringLiteral extends Literal<String> {
         if (thing.charAt(thing.length() - 1) != '"') return null;
         if (!matches(thing.substring(1, thing.length() - 1))) return null;
         return new Pattern.Match(Pattern.fakeMatcher(thing));
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.STRING;
     }
     
     private boolean matches(final String string) {

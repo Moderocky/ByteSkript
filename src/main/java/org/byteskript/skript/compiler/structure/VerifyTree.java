@@ -50,10 +50,6 @@ public class VerifyTree extends ProgrammaticSplitTree {
     
     }
     
-    public MethodBuilder getMethod() {
-        return method;
-    }
-    
     @Override
     public void close(Context context) {
         if (end.uses.size() > 0)
@@ -69,5 +65,9 @@ public class VerifyTree extends ProgrammaticSplitTree {
     @Override
     public boolean isOpen() {
         return false;
+    }
+    
+    public MethodBuilder getMethod() {
+        return method;
     }
 }

@@ -18,12 +18,12 @@ import java.util.*;
 public final class ElementTree {
     private final SyntaxElement current;
     private final Pattern.Match match;
-    private ElementTree[] nested;
     public boolean compile = true;
     public boolean treasure = false;
     public boolean takeAtomic = false;
     public Type wanted = null;
     public HandlerType type = StandardHandlers.GET;
+    private ElementTree[] nested;
     
     public ElementTree(SyntaxElement current, Pattern.Match match, ElementTree... nested) {
         this.current = current;
@@ -123,17 +123,6 @@ public final class ElementTree {
         return nested;
     }
     
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        final ElementTree that = (ElementTree) obj;
-        return Objects.equals(this.current, that.current) &&
-            Objects.equals(this.match, that.match) &&
-            Arrays.equals(this.nested, that.nested) &&
-            this.compile == that.compile;
-    }
-    
     public void emptyNest() {
         this.nested = new ElementTree[0];
     }
@@ -145,6 +134,17 @@ public final class ElementTree {
     @Override
     public int hashCode() {
         return Objects.hash(current, match, nested);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        final ElementTree that = (ElementTree) obj;
+        return Objects.equals(this.current, that.current) &&
+            Objects.equals(this.match, that.match) &&
+            Arrays.equals(this.nested, that.nested) &&
+            this.compile == that.compile;
     }
     
     @Override

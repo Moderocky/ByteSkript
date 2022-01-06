@@ -16,9 +16,9 @@ import java.util.concurrent.TimeoutException;
 
 public class ScriptFinishFuture implements Future<Void> {
     
-    public ScriptThread thread;
     private final Skript skript;
     private final Object lock = new Object();
+    public ScriptThread thread;
     
     public ScriptFinishFuture(Skript skript) {
         this.skript = skript;

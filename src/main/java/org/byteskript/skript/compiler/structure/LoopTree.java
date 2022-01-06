@@ -17,19 +17,15 @@ import org.objectweb.asm.Label;
 public class LoopTree extends ProgrammaticSplitTree {
     
     private final SectionMeta owner;
-    private boolean open;
-    private Label top;
     private final MultiLabel end;
     public int slot;
+    private boolean open;
+    private Label top;
     
     public LoopTree(SectionMeta owner) {
         this.owner = owner;
         this.open = true;
         this.end = new MultiLabel();
-    }
-    
-    public MultiLabel getEnd() {
-        return end;
     }
     
     public Label getTop() {
@@ -43,6 +39,10 @@ public class LoopTree extends ProgrammaticSplitTree {
     @Override
     public SectionMeta owner() {
         return owner;
+    }
+    
+    public MultiLabel getEnd() {
+        return end;
     }
     
     @Override

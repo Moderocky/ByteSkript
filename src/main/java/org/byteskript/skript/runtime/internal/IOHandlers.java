@@ -38,14 +38,6 @@ public class IOHandlers {
         }
     }
     
-    @Property(value = "contents", type = StandardHandlers.SET)
-    public static void setContents(File file, String contents)
-        throws Throwable {
-        try (final OutputStream stream = new FileOutputStream(file)) {
-            stream.write(contents.getBytes(StandardCharsets.UTF_8));
-        }
-    }
-    
     @Property("all")
     public static String read(InputStream stream)
         throws Throwable {
@@ -89,6 +81,14 @@ public class IOHandlers {
     public static void clear(File file)
         throws Throwable {
         setContents(file, "");
+    }
+    
+    @Property(value = "contents", type = StandardHandlers.SET)
+    public static void setContents(File file, String contents)
+        throws Throwable {
+        try (final OutputStream stream = new FileOutputStream(file)) {
+            stream.write(contents.getBytes(StandardCharsets.UTF_8));
+        }
     }
     
     @Expression("[a ]new file at %String%")

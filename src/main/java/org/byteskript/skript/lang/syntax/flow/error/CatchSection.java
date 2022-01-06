@@ -43,6 +43,16 @@ public class CatchSection extends Section {
     }
     
     @Override
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.startsWith("catch ")) return null;
+        if (!thing.contains("{")) {
+            context.getError().addHint(this, "The catch section needs to use a '{variable}'");
+            return null;
+        }
+        return super.match(thing, context);
+    }
+    
+    @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final ElementTree holder = context.getLine().nested()[0];
         if (!(holder.current() instanceof VariableExpression))
@@ -78,16 +88,6 @@ public class CatchSection extends Section {
         if (name.charAt(0) == '@' || name.charAt(0) == '_' || name.charAt(0) == '!')
             throw new ScriptCompileError(context.lineNumber(), "Holder variable must be a normal variable: '{var}'");
         return context.getVariable(name);
-    }
-    
-    @Override
-    public Pattern.Match match(String thing, Context context) {
-        if (!thing.startsWith("catch ")) return null;
-        if (!thing.contains("{")) {
-            context.getError().addHint(this, "The catch section needs to use a '{variable}'");
-            return null;
-        }
-        return super.match(thing, context);
     }
     
     @Override

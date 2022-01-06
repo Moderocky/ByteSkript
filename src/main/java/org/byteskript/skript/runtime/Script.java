@@ -77,6 +77,17 @@ public final class Script {
         }
     }
     
+    /**
+     * Gets the main class of this script, which root-level members occupy.
+     * Custom types and other members may be moved to other classes, depending on the compiler used.
+     * This should not be stored - it will prevent the script unloading safely.
+     *
+     * @return the main class
+     */
+    public Class<? extends CompiledScript> mainClass() {
+        return (Class<? extends CompiledScript>) classes[0];
+    }
+    
     void verify() {
         this.forceLoad(mainClass());
         for (final Map.Entry<String, Member> entry : functions.entrySet()) {
@@ -93,6 +104,13 @@ public final class Script {
     void load(Skript skript) {
         skript.runEvent(new Load.LoadThis(this), this);
         skript.runEvent(new Load(this));
+    }
+    
+    private void forceLoad(Class<?> cls) {
+        try {
+            Class.forName(cls.getName(), true, cls.getClassLoader());
+        } catch (ClassNotFoundException ignore) {
+        }
     }
     
     /**
@@ -113,17 +131,6 @@ public final class Script {
      */
     public String getPath() {
         return mainClass().getName();
-    }
-    
-    /**
-     * Gets the main class of this script, which root-level members occupy.
-     * Custom types and other members may be moved to other classes, depending on the compiler used.
-     * This should not be stored - it will prevent the script unloading safely.
-     *
-     * @return the main class
-     */
-    public Class<? extends CompiledScript> mainClass() {
-        return (Class<? extends CompiledScript>) classes[0];
     }
     
     /**
@@ -187,13 +194,6 @@ public final class Script {
      */
     public Structure[] getMembers() {
         return members;
-    }
-    
-    private void forceLoad(Class<?> cls) {
-        try {
-            Class.forName(cls.getName(), true, cls.getClassLoader());
-        } catch (ClassNotFoundException ignore) {
-        }
     }
     
     /**

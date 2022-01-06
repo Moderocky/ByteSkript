@@ -41,11 +41,6 @@ public class IntegerLiteral extends Literal<Integer> {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return CommonTypes.INTEGER.equals(type) || CommonTypes.NUMBER.equals(type) || CommonTypes.OBJECT.equals(type);
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) {
         final String string = match.matcher().group();
         assert string.length() > 0;
@@ -72,5 +67,10 @@ public class IntegerLiteral extends Literal<Integer> {
         final Matcher matcher = PATTERN.matcher(thing);
         if (matcher.find()) return new Pattern.Match(matcher);
         return null;
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return CommonTypes.INTEGER.equals(type) || CommonTypes.NUMBER.equals(type) || CommonTypes.OBJECT.equals(type);
     }
 }

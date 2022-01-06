@@ -28,6 +28,14 @@ public abstract class EventValueExpression extends Element implements SyntaxElem
         super(provider, StandardElements.EXPRESSION, correct(patterns));
     }
     
+    protected static String[] correct(final String... strings) {
+        final List<String> list = new ArrayList<>();
+        for (String string : strings) {
+            list.add("%Event%-" + string);
+        }
+        return list.toArray(new String[0]);
+    }
+    
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
@@ -44,14 +52,6 @@ public abstract class EventValueExpression extends Element implements SyntaxElem
     @Override
     public boolean allowedIn(State state, Context context) {
         return state == CompileState.STATEMENT && context.hasCurrentUnit();
-    }
-    
-    protected static String[] correct(final String... strings) {
-        final List<String> list = new ArrayList<>();
-        for (String string : strings) {
-            list.add("%Event%-" + string);
-        }
-        return list.toArray(new String[0]);
     }
     
 }

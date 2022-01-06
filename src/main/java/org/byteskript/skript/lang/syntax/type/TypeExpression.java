@@ -48,17 +48,10 @@ public class TypeExpression extends SimpleExpression {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return CommonTypes.CLASS.equals(type) || CommonTypes.TYPE.equals(type) || CommonTypes.OBJECT.equals(type);
-    }
-    
-    public Type getType(String string, Context context) {
-        for (final Map.Entry<String, Type> entry : context.getTypeMap().entrySet()) {
-            if (!entry.getKey().toLowerCase(Locale.ROOT).equals(string.toLowerCase(Locale.ROOT))) continue;
-            return entry.getValue();
-        }
-        if (string.contains("/")) return new Type(string);
-        return null;
+    public void compile(Context context, Pattern.Match match) throws Throwable {
+        final MethodBuilder method = context.getMethod();
+        assert method != null;
+        method.writeCode(WriteInstruction.loadClassConstant(((Type) match.meta())));
     }
     
     @Override
@@ -70,10 +63,17 @@ public class TypeExpression extends SimpleExpression {
     }
     
     @Override
-    public void compile(Context context, Pattern.Match match) throws Throwable {
-        final MethodBuilder method = context.getMethod();
-        assert method != null;
-        method.writeCode(WriteInstruction.loadClassConstant(((Type) match.meta())));
+    public boolean allowAsInputFor(Type type) {
+        return CommonTypes.CLASS.equals(type) || CommonTypes.TYPE.equals(type) || CommonTypes.OBJECT.equals(type);
+    }
+    
+    public Type getType(String string, Context context) {
+        for (final Map.Entry<String, Type> entry : context.getTypeMap().entrySet()) {
+            if (!entry.getKey().toLowerCase(Locale.ROOT).equals(string.toLowerCase(Locale.ROOT))) continue;
+            return entry.getValue();
+        }
+        if (string.contains("/")) return new Type(string);
+        return null;
     }
     
 }

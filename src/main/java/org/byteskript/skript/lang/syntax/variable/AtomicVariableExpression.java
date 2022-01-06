@@ -45,11 +45,6 @@ public class AtomicVariableExpression extends VariableExpression implements Refe
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return true;
-    }
-    
-    @Override
     public Pattern.Match match(String thing, Context context) {
         if (thing.length() < 4) return null;
         if (thing.charAt(1) != '@') return null;
@@ -64,8 +59,18 @@ public class AtomicVariableExpression extends VariableExpression implements Refe
     }
     
     @Override
+    public boolean allowAsInputFor(Type type) {
+        return true;
+    }
+    
+    @Override
     public Type getHolderType() {
         return CommonTypes.VOID;
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.OBJECT;
     }
     
     @Override
@@ -82,11 +87,6 @@ public class AtomicVariableExpression extends VariableExpression implements Refe
         final Method target = handlers.get(context.getHandlerMode());
         assert target != null;
         this.writeCall(method, target, context);
-    }
-    
-    @Override
-    public Type getReturnType() {
-        return CommonTypes.OBJECT;
     }
     
 }

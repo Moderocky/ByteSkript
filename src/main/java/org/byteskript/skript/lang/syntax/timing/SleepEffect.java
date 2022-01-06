@@ -45,12 +45,6 @@ public class SleepEffect extends Effect {
         }
     }
     
-    @Override
-    public Pattern.Match match(String thing, Context context) {
-        if (!thing.equals("wait") && !thing.equals("sleep") && !thing.equals("pause")) return null;
-        return super.match(thing, context);
-    }
-    
     @ForceExtract
     public static void run() {
         if (!(Thread.currentThread() instanceof ScriptThread thread))
@@ -62,5 +56,11 @@ public class SleepEffect extends Effect {
         } catch (InterruptedException ex) {
             throw new ScriptRuntimeError("Sleep effect interrupted.", ex);
         }
+    }
+    
+    @Override
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.equals("wait") && !thing.equals("sleep") && !thing.equals("pause")) return null;
+        return super.match(thing, context);
     }
 }

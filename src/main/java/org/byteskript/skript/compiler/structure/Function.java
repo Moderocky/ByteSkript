@@ -14,12 +14,12 @@ import org.byteskript.skript.runtime.internal.Bootstrapper;
 
 public record Function(String name, Type provider, Type returnType, Type[] arguments, Type result, Type[] parameters) {
     
-    public Function(String name, Type provider, Type returnType, Type... arguments) {
-        this(name, provider, returnType, arguments, returnType, arguments);
-    }
-    
     public Function(String name, Type provider) {
         this(name, provider, CommonTypes.OBJECT);
+    }
+    
+    public Function(String name, Type provider, Type returnType, Type... arguments) {
+        this(name, provider, returnType, arguments, returnType, arguments);
     }
     
     public Function(Type provider, MethodErasure erasure) {
@@ -33,16 +33,16 @@ public record Function(String name, Type provider, Type returnType, Type[] argum
         return WriteInstruction.invokeDynamic(CommonTypes.OBJECT, name, arguments, Bootstrapper.getBootstrapFunction(), source, owner, org.objectweb.asm.Type.getMethodDescriptor(blob, types));
     }
     
-    private org.objectweb.asm.Type convert(Type type) {
-        return org.objectweb.asm.Type.getType(type.descriptorString());
-    }
-    
     private org.objectweb.asm.Type[] convert(Type... arguments) {
         final org.objectweb.asm.Type[] types = new org.objectweb.asm.Type[arguments.length];
         for (int i = 0; i < arguments.length; i++) {
             types[i] = org.objectweb.asm.Type.getType(arguments[i].descriptorString());
         }
         return types;
+    }
+    
+    private org.objectweb.asm.Type convert(Type type) {
+        return org.objectweb.asm.Type.getType(type.descriptorString());
     }
     
 }

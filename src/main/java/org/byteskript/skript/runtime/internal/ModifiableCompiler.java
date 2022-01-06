@@ -30,8 +30,6 @@ public interface ModifiableCompiler {
     
     boolean removeLibrary(Library library);
     
-    Library[] getLibraries();
-    
     default Document[] generateDocumentation() {
         final List<Document> documents = new ArrayList<>();
         for (final Library library : getLibraries()) {
@@ -39,5 +37,7 @@ public interface ModifiableCompiler {
         }
         return documents.toArray(new Document[0]);
     }
+    
+    Library[] getLibraries();
     
 }

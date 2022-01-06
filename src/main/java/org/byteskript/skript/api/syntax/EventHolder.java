@@ -25,12 +25,25 @@ public abstract class EventHolder extends TriggerHolder {
         super(provider, StandardElements.MEMBER, patterns);
     }
     
-    public abstract Class<? extends Event> eventClass();
-    
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
         context.removeFlag(AreaFlag.IN_EVENT);
         super.onSectionExit(context, meta);
+    }
+    
+    @Override
+    public Type returnType(Context context, Pattern.Match match) {
+        return new Type(void.class);
+    }
+    
+    @Override
+    public Type[] parameters(Context context, Pattern.Match match) {
+        return new Type[0];
+    }
+    
+    @Override
+    public String callSiteName(Context context, Pattern.Match match) {
+        return null;
     }
     
     @Override
@@ -56,18 +69,5 @@ public abstract class EventHolder extends TriggerHolder {
         context.addFlag(AreaFlag.IN_EVENT);
     }
     
-    @Override
-    public Type returnType(Context context, Pattern.Match match) {
-        return new Type(void.class);
-    }
-    
-    @Override
-    public Type[] parameters(Context context, Pattern.Match match) {
-        return new Type[0];
-    }
-    
-    @Override
-    public String callSiteName(Context context, Pattern.Match match) {
-        return null;
-    }
+    public abstract Class<? extends Event> eventClass();
 }

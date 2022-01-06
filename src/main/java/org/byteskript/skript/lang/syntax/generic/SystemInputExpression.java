@@ -38,14 +38,14 @@ public class SystemInputExpression extends SimpleExpression {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return true;
-    }
-    
-    @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.endsWith(" input")) return null;
         return super.match(thing, context);
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return true;
     }
     
     @Override
@@ -54,16 +54,16 @@ public class SystemInputExpression extends SimpleExpression {
     }
     
     @Override
+    public Type getReturnType() {
+        return CommonTypes.STRING;
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
         final Method target = ExtractedSyntaxCalls.class.getMethod("getSystemInput");
         this.writeCall(method, target, context);
-    }
-    
-    @Override
-    public Type getReturnType() {
-        return CommonTypes.STRING;
     }
     
 }

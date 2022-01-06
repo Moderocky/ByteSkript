@@ -41,14 +41,21 @@ public class YearsExpression extends SimpleExpression {
         }
     }
     
-    @Override
-    public boolean allowAsInputFor(Type type) {
-        return CommonTypes.DURATION.equals(type) || CommonTypes.OBJECT.equals(type) || super.allowAsInputFor(type);
+    @ForceExtract
+    public static Object find(Object object) {
+        if (!(object instanceof Number number))
+            throw new ScriptRuntimeError("Timespan expression requires number.");
+        return Duration.ofDays(number.longValue() * 365);
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
         return super.match(thing, context);
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return CommonTypes.DURATION.equals(type) || CommonTypes.OBJECT.equals(type) || super.allowAsInputFor(type);
     }
     
     @Override
@@ -59,13 +66,6 @@ public class YearsExpression extends SimpleExpression {
         assert target != null;
         this.writeCall(method, target, context);
         context.setState(CompileState.STATEMENT);
-    }
-    
-    @ForceExtract
-    public static Object find(Object object) {
-        if (!(object instanceof Number number))
-            throw new ScriptRuntimeError("Timespan expression requires number.");
-        return Duration.ofDays(number.longValue() * 365);
     }
     
 }

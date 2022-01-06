@@ -42,6 +42,12 @@ public class ElseSection extends Section {
     }
     
     @Override
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.equals("else")) return null;
+        return super.match(thing, context);
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) {
         if (!(context.getTree(context.getSection(1)) instanceof IfElseTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Else used without preceding if-section.");
@@ -50,12 +56,6 @@ public class ElseSection extends Section {
         final Label next = tree.getNext();
         method.writeCode((writer, visitor) -> visitor.visitLabel(next));
         context.setState(CompileState.CODE_BODY);
-    }
-    
-    @Override
-    public Pattern.Match match(String thing, Context context) {
-        if (!thing.equals("else")) return null;
-        return super.match(thing, context);
     }
     
     @Override

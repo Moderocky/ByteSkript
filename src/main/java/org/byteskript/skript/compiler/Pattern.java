@@ -21,31 +21,10 @@ public class Pattern { // todo remove regex go indexOf impl
     private static final char END_SWITCH = ')';
     private static final char INPUT = '%';
     private static final char ESCAPE = '\\';
-    
+    private static final Type OBJECT = new Type(Object.class);
     protected final String[] patterns;
     protected final PatternMap patternMap = new PatternMap(); // maintains entry order
     protected final Library provider;
-    
-    protected static class PatternMap extends ArrayList<Map.Entry<java.util.regex.Pattern, String[]>> {
-        public void put(java.util.regex.Pattern pattern, String[] lines) {
-            add(new AbstractMap.SimpleEntry<>(pattern, lines));
-        }
-        
-        public List<java.util.regex.Pattern> keySet() {
-            final List<java.util.regex.Pattern> list = new ArrayList<>();
-            for (Map.Entry<java.util.regex.Pattern, String[]> entry : this) {
-                list.add(entry.getKey());
-            }
-            return list;
-        }
-        
-        public String[] get(java.util.regex.Pattern pattern) {
-            for (Map.Entry<java.util.regex.Pattern, String[]> entry : this) {
-                if (entry.getKey().equals(pattern)) return entry.getValue();
-            }
-            return null;
-        }
-    }
     
     public Pattern(String[] patterns, Library provider) {
         assert patterns != null;
@@ -55,13 +34,6 @@ public class Pattern { // todo remove regex go indexOf impl
             assert !pattern.isBlank();
             this.handle(pattern);
         }
-    }
-    
-    public static Matcher fakeMatcher(String thing) {
-        final String solid = java.util.regex.Pattern.quote(thing);
-        final Matcher matcher = java.util.regex.Pattern.compile(solid).matcher(thing);
-        matcher.find();
-        return matcher;
     }
     
     protected void handle(final String string) {
@@ -127,6 +99,13 @@ public class Pattern { // todo remove regex go indexOf impl
         this.patternMap.put(pattern, types.toArray(new String[0]));
     }
     
+    public static Matcher fakeMatcher(String thing) {
+        final String solid = java.util.regex.Pattern.quote(thing);
+        final Matcher matcher = java.util.regex.Pattern.compile(solid).matcher(thing);
+        matcher.find();
+        return matcher;
+    }
+    
     public String name() {
         return patterns[0];
     }
@@ -154,8 +133,6 @@ public class Pattern { // todo remove regex go indexOf impl
         return null;
     }
     
-    private static final Type OBJECT = new Type(Object.class);
-    
     protected Type[] convert(final Context context, final String... strings) {
         final Type[] types = new Type[strings.length];
         for (int i = 0; i < strings.length; i++) {
@@ -170,12 +147,37 @@ public class Pattern { // todo remove regex go indexOf impl
         return types;
     }
     
+    protected static class PatternMap extends ArrayList<Map.Entry<java.util.regex.Pattern, String[]>> {
+        public void put(java.util.regex.Pattern pattern, String[] lines) {
+            add(new AbstractMap.SimpleEntry<>(pattern, lines));
+        }
+        
+        public List<java.util.regex.Pattern> keySet() {
+            final List<java.util.regex.Pattern> list = new ArrayList<>();
+            for (Map.Entry<java.util.regex.Pattern, String[]> entry : this) {
+                list.add(entry.getKey());
+            }
+            return list;
+        }
+        
+        public String[] get(java.util.regex.Pattern pattern) {
+            for (Map.Entry<java.util.regex.Pattern, String[]> entry : this) {
+                if (entry.getKey().equals(pattern)) return entry.getValue();
+            }
+            return null;
+        }
+    }
+    
     public static final class Match {
+        public final int matchedPattern;
         private final Matcher matcher;
         private final Object meta;
         private final Type[] expected;
         private final String[] groups;
-        public final int matchedPattern;
+        
+        public Match(Matcher matcher, Type... expected) {
+            this(matcher, null, expected);
+        }
         
         public Match(Matcher matcher, Object meta, Type... expected) {
             this(matcher, 0, meta, expected);
@@ -191,10 +193,6 @@ public class Pattern { // todo remove regex go indexOf impl
                 list.add(matcher.group(i).trim());
             }
             this.groups = list.toArray(new String[0]);
-        }
-        
-        public Match(Matcher matcher, Type... expected) {
-            this(matcher, null, expected);
         }
         
         public String[] groups() {

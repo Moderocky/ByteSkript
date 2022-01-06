@@ -61,12 +61,6 @@ public class PropertyMember extends Member {
     }
     
     @Override
-    public void onSectionExit(Context context, SectionMeta meta) {
-        context.removeFlag(AreaFlag.IN_PROPERTY);
-        super.onSectionExit(context, meta);
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) {
         final String name = match.matcher().group("name");
         final FieldBuilder field = context.getBuilder().addField(name);
@@ -81,6 +75,12 @@ public class PropertyMember extends Member {
         field.setType(CommonTypes.OBJECT);
         context.addFlag(AreaFlag.IN_PROPERTY);
         context.setState(CompileState.MEMBER_BODY);
+    }
+    
+    @Override
+    public void onSectionExit(Context context, SectionMeta meta) {
+        context.removeFlag(AreaFlag.IN_PROPERTY);
+        super.onSectionExit(context, meta);
     }
     
 }

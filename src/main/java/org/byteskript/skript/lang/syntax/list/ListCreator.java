@@ -42,14 +42,14 @@ public class ListCreator extends SimpleExpression {
         }
     }
     
-    @Override
-    public Type getReturnType() {
-        return CommonTypes.LIST;
-    }
-    
     @ForceInline
     public static DataList create() {
         return new DataList();
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.LIST;
     }
     
 }

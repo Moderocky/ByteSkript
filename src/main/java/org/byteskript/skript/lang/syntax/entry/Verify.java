@@ -45,11 +45,6 @@ public class Verify extends Section {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return false;
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) {
         final MethodBuilder target = context.getMethod();
         final VerifyTree tree = new VerifyTree(context.getSection(1), target, context.getVariables());
@@ -69,6 +64,19 @@ public class Verify extends Section {
         return super.allowedIn(state, context) && context.getParent() instanceof TriggerHolder;
     }
     
+    private WriteInstruction prepareVariables(VerifyTree context) {
+        return (writer, visitor) -> {
+            int i = 0;
+            for (PreVariable variable : context.getVariables()) {
+                if (!variable.skipPreset()) {
+                    visitor.visitInsn(1);
+                    visitor.visitVarInsn(58, i);
+                }
+                i++;
+            }
+        };
+    }
+    
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
         final MethodBuilder method = context.getMethod();
@@ -84,17 +92,9 @@ public class Verify extends Section {
         context.setState(CompileState.MEMBER_BODY);
     }
     
-    private WriteInstruction prepareVariables(VerifyTree context) {
-        return (writer, visitor) -> {
-            int i = 0;
-            for (PreVariable variable : context.getVariables()) {
-                if (!variable.skipPreset()) {
-                    visitor.visitInsn(1);
-                    visitor.visitVarInsn(58, i);
-                }
-                i++;
-            }
-        };
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return false;
     }
     
 }

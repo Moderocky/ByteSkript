@@ -23,18 +23,6 @@ public class SyntaxTree extends ProgrammaticSplitTree {
     private final List<Handler> handlers;
     public HandlerType mode;
     
-    public record Handler(Type type, String pattern) {
-    }
-    
-    public enum Type {
-        EFFECT(Effect.class), EXPRESSION(Expression.class), PROPERTY(Property.class);
-        public final Class<?> annotation;
-        
-        Type(Class<?> annotation) {
-            this.annotation = annotation;
-        }
-    }
-    
     public SyntaxTree(SectionMeta owner) {
         this.owner = owner;
         this.handlers = new ArrayList<>();
@@ -80,5 +68,17 @@ public class SyntaxTree extends ProgrammaticSplitTree {
     @Override
     public boolean isOpen() {
         return false;
+    }
+    
+    public enum Type {
+        EFFECT(Effect.class), EXPRESSION(Expression.class), PROPERTY(Property.class);
+        public final Class<?> annotation;
+        
+        Type(Class<?> annotation) {
+            this.annotation = annotation;
+        }
+    }
+    
+    public record Handler(Type type, String pattern) {
     }
 }

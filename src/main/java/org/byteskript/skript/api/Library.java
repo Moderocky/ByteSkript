@@ -23,8 +23,6 @@ public interface Library {
     
     Collection<PropertyHandler> getProperties();
     
-    SyntaxElement[] getSyntax();
-    
     LanguageElement[] getConstructs();
     
     Type[] getTypes();
@@ -41,5 +39,7 @@ public interface Library {
         }
         return documents.toArray(new Document[0]);
     }
+    
+    SyntaxElement[] getSyntax();
     
 }

@@ -42,11 +42,6 @@ public class TernaryOtherwiseExpression extends SimpleExpression {
         return CommonTypes.OBJECT;
     }
     
-    @Override
-    public boolean allowAsInputFor(Type type) {
-        return super.allowAsInputFor(type) || type.equals(CommonTypes.OBJECT);
-    }
-    
     // switched to raw bytecode form
     // had to use the avatar state for this manipulation :o
     @Override
@@ -67,6 +62,11 @@ public class TernaryOtherwiseExpression extends SimpleExpression {
             visitor.visitInsn(87); // pop
             visitor.visitLabel(second); // x or y
         });
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return super.allowAsInputFor(type) || type.equals(CommonTypes.OBJECT);
     }
     
 }

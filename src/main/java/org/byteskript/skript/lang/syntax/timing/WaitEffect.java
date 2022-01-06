@@ -42,12 +42,6 @@ public class WaitEffect extends Effect {
         }
     }
     
-    @Override
-    public Pattern.Match match(String thing, Context context) {
-        if (!thing.startsWith("wait ")) return null;
-        return super.match(thing, context);
-    }
-    
     @ForceExtract
     public static void run(Object object) {
         if (!(object instanceof Duration duration))
@@ -57,5 +51,11 @@ public class WaitEffect extends Effect {
         } catch (InterruptedException ex) {
             throw new ScriptRuntimeError("Wait effect interrupted.", ex);
         }
+    }
+    
+    @Override
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.startsWith("wait ")) return null;
+        return super.match(thing, context);
     }
 }

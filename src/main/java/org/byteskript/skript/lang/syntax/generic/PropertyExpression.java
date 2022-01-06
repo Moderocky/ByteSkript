@@ -91,11 +91,6 @@ public class PropertyExpression extends RelationalExpression implements Referent
     }
     
     @Override
-    public Type getHolderType() {
-        return CommonTypes.OBJECT;
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final String name = (String) match.meta();
         final MethodBuilder method = context.getMethod();
@@ -120,5 +115,10 @@ public class PropertyExpression extends RelationalExpression implements Referent
         final HandlerType type = context.getHandlerMode();
         final MethodErasure target = context.useHandle(name, type);
         context.getMethod().writeCode(WriteInstruction.invokeStatic(context.getType(), target));
+    }
+    
+    @Override
+    public Type getHolderType() {
+        return CommonTypes.OBJECT;
     }
 }

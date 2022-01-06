@@ -40,6 +40,12 @@ public class ElseIfSection extends Section {
     }
     
     @Override
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.startsWith("else if ")) return null;
+        return super.match(thing, context);
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         if (!(context.getTree(context.getSection(1)) instanceof IfElseTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Else-if used without preceding if-section.");
@@ -51,12 +57,6 @@ public class ElseIfSection extends Section {
         method.writeCode(WriteInstruction.cast(CommonTypes.BOOLEAN));
         method.writeCode(WriteInstruction.invokeVirtual(Boolean.class.getMethod("booleanValue")));
         method.writeCode((writer, visitor) -> visitor.visitJumpInsn(153, next));
-    }
-    
-    @Override
-    public Pattern.Match match(String thing, Context context) {
-        if (!thing.startsWith("else if ")) return null;
-        return super.match(thing, context);
     }
     
     @Override

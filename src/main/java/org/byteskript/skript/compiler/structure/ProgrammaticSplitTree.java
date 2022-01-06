@@ -14,11 +14,11 @@ public abstract class ProgrammaticSplitTree {
     
     public abstract SectionMeta owner();
     
-    public abstract MultiLabel getEnd();
-    
     public Label getNext() {
         return getEnd().use();
     }
+    
+    public abstract MultiLabel getEnd();
     
     public abstract void start(Context context);
     

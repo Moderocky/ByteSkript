@@ -35,19 +35,19 @@ public class ScriptClassLoader extends ClassLoader implements ClassProvider {
         return Skript.LOADER.loadClass(name);
     }
     
-    public Class<?> findClass0(String name) throws ClassNotFoundException {
-        for (final Class<?> thing : loaded) {
-            if (thing.getName().equals(name)) return thing;
-        }
-        return super.findClass(name);
-    }
-    
     @Override
     public Class<?> findClass(String name) throws ClassNotFoundException {
         for (final Class<?> thing : loaded) {
             if (thing.getName().equals(name)) return thing;
         }
         return Skript.LOADER.findClass(name);
+    }
+    
+    public Class<?> findClass0(String name) throws ClassNotFoundException {
+        for (final Class<?> thing : loaded) {
+            if (thing.getName().equals(name)) return thing;
+        }
+        return super.findClass(name);
     }
     
     @Override

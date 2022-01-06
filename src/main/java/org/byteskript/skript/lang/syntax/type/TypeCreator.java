@@ -39,11 +39,6 @@ public class TypeCreator extends SimpleExpression {
         handlers.put(StandardHandlers.FIND, findMethod(TypeCreator.class, "create", Object.class));
     }
     
-    @Override
-    public Type getReturnType() {
-        return CommonTypes.OBJECT;
-    }
-    
     @ForceExtract
     public static Object create(Object object) {
         if (object == null) return null;
@@ -58,6 +53,11 @@ public class TypeCreator extends SimpleExpression {
         } catch (IllegalAccessException ex) {
             throw new ScriptRuntimeError("The type '" + ((Class<?>) object).getSimpleName() + "' does not permit creation.");
         }
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.OBJECT;
     }
     
 }
