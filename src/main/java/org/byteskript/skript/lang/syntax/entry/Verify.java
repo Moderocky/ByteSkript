@@ -13,10 +13,7 @@ import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.api.syntax.TriggerHolder;
-import org.byteskript.skript.compiler.CompileState;
-import org.byteskript.skript.compiler.Context;
-import org.byteskript.skript.compiler.Pattern;
-import org.byteskript.skript.compiler.SkriptLangSpec;
+import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.PreVariable;
 import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.compiler.structure.VerifyTree;
@@ -49,6 +46,8 @@ public class Verify extends Section {
         final MethodBuilder target = context.getMethod();
         final VerifyTree tree = new VerifyTree(context.getSection(1), target, context.getVariables());
         context.createTree(tree);
+        context.addFlag(AreaFlag.IN_TRIGGER); // technically a trigger section
+        context.addFlag(AreaFlag.IN_VERIFIER);
         context.setState(CompileState.CODE_BODY);
         final MethodBuilder method = context.getBuilder()
             .addMethod(target.getErasure().name() + "_verify")
@@ -89,6 +88,8 @@ public class Verify extends Section {
             method.writeCode(WriteInstruction.returnObject());
         }
         context.emptyVariables();
+        context.removeFlag(AreaFlag.IN_TRIGGER);
+        context.removeFlag(AreaFlag.IN_VERIFIER);
         context.setState(CompileState.MEMBER_BODY);
     }
     

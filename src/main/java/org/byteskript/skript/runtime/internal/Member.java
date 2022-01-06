@@ -130,13 +130,13 @@ public class Member {
     public Future<?> run(Skript skript, Object... arguments) {
         final ScriptRunner runner = new ScriptRunner() {
             @Override
-            public Class<? extends CompiledScript> owner() {
-                return script.mainClass();
+            public void start() {
+                invoker.invoke(arguments);
             }
             
             @Override
-            public void start() {
-                invoker.invoke(arguments);
+            public Class<? extends CompiledScript> owner() {
+                return script.mainClass();
             }
         };
         return skript.runScript(runner);

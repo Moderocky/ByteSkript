@@ -38,16 +38,12 @@ public class ExtractionTree extends ProgrammaticSplitTree {
         return owner;
     }
     
-    public MultiLabel getEnd() {
-        return end;
-    }
-    
     public Label getNext() {
         return next;
     }
     
-    public void setNext(Label next) {
-        this.next = next;
+    public MultiLabel getEnd() {
+        return end;
     }
     
     @Override
@@ -77,6 +73,10 @@ public class ExtractionTree extends ProgrammaticSplitTree {
     @Override
     public boolean isOpen() {
         return open;
+    }
+    
+    public void setNext(Label next) {
+        this.next = next;
     }
     
 }

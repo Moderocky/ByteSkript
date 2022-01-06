@@ -23,20 +23,20 @@ import java.util.List;
 import java.util.jar.JarFile;
 
 public abstract class SkriptApp {
-    protected static final File ROOT;
-
-    static {
+    protected static final File ROOT = getRoot();
+    protected static final File SOURCE = new File(ROOT, "skript/");
+    protected static final File RESOURCES = new File(ROOT, "resources/");
+    protected static final File LIBRARIES = new File(ROOT, "libraries/");
+    protected static final File OUTPUT = new File(ROOT, "compiled/");
+    
+    private static File getRoot() {
         try {
-            ROOT = new File(SkriptApp.class.getProtectionDomain().getCodeSource().getLocation()
+            return new File(SkriptApp.class.getProtectionDomain().getCodeSource().getLocation()
                 .toURI()).getParentFile();
         } catch (URISyntaxException e) {
             throw new IllegalStateException("Unable to get root file.", e);
         }
     }
-    protected static final File SOURCE = new File(ROOT, "skript/");
-    protected static final File RESOURCES = new File(ROOT, "resources/");
-    protected static final File LIBRARIES = new File(ROOT, "libraries/");
-    protected static final File OUTPUT = new File(ROOT, "compiled/");
     
     protected static void registerLibraries(final Skript skript) {
         final List<File> files = getFiles(new ArrayList<>(), LIBRARIES.toPath());
@@ -65,8 +65,7 @@ public abstract class SkriptApp {
         final LibraryClassLoader child = new LibraryClassLoader(file, SkriptApp.class.getClassLoader());
         final Class<?> target = Class.forName(main, true, child);
         try {
-            target.getMethod("load", Skript.class)
-                .invoke(null, skript);
+            target.getMethod("load", Skript.class).invoke(null, skript);
         } catch (Throwable ex) {
             throw new ScriptLibraryError("Library '" + file.getName() + "' main class is missing load method:\n" +
                 "static void load(Skript skript)");

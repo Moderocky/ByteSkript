@@ -85,35 +85,6 @@ public class LoopInSection extends Section {
             && context.getMethod() != null;
     }
     
-    @Override
-    public void onSectionExit(Context context, SectionMeta meta) {
-        if (!(context.getTree(context.getSection()) instanceof LoopTree tree))
-            throw new ScriptCompileError(context.lineNumber(), "Unable to balance loop flow tree.");
-        context.setState(CompileState.CODE_BODY);
-        final MethodBuilder method = context.getMethod();
-        final Label top = tree.getTop();
-        method.writeCode((writer, visitor) -> visitor.visitJumpInsn(Opcodes.GOTO, top));
-        method.writeCode(tree.getEnd().instruction());
-    }
-    
-    @Override
-    public void compileInline(Context context, Pattern.Match match) throws Throwable {
-        if (!(context.getTree(context.getSection()) instanceof LoopTree tree))
-            throw new ScriptCompileError(context.lineNumber(), "Illegal mid-statement flow break.");
-        this.compileTogether(context, tree, match);
-    }
-    
-    @Override
-    public void preCompileInline(Context context, Pattern.Match match) throws Throwable {
-        final ElementTree holder = context.getLine().nested()[0];
-        if (!(holder.current() instanceof VariableExpression))
-            throw new ScriptParseError(context.lineNumber(), "The extracted element must be a variable.");
-        holder.type = StandardHandlers.SET;
-        holder.compile = false;
-        final LoopTree tree = new LoopTree(context.getSection());
-        context.createTree(tree);
-    }
-    
     private void compileTogether(Context context, LoopTree tree, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
@@ -142,6 +113,35 @@ public class LoopInSection extends Section {
         final String pattern = match.groups()[0].trim();
         final String name = pattern.substring(1, pattern.length() - 1);
         return context.getVariable(name);
+    }
+    
+    @Override
+    public void onSectionExit(Context context, SectionMeta meta) {
+        if (!(context.getTree(context.getSection()) instanceof LoopTree tree))
+            throw new ScriptCompileError(context.lineNumber(), "Unable to balance loop flow tree.");
+        context.setState(CompileState.CODE_BODY);
+        final MethodBuilder method = context.getMethod();
+        final Label top = tree.getTop();
+        method.writeCode((writer, visitor) -> visitor.visitJumpInsn(Opcodes.GOTO, top));
+        method.writeCode(tree.getEnd().instruction());
+    }
+    
+    @Override
+    public void compileInline(Context context, Pattern.Match match) throws Throwable {
+        if (!(context.getTree(context.getSection()) instanceof LoopTree tree))
+            throw new ScriptCompileError(context.lineNumber(), "Illegal mid-statement flow break.");
+        this.compileTogether(context, tree, match);
+    }
+    
+    @Override
+    public void preCompileInline(Context context, Pattern.Match match) throws Throwable {
+        final ElementTree holder = context.getLine().nested()[0];
+        if (!(holder.current() instanceof VariableExpression))
+            throw new ScriptParseError(context.lineNumber(), "The extracted element must be a variable.");
+        holder.type = StandardHandlers.SET;
+        holder.compile = false;
+        final LoopTree tree = new LoopTree(context.getSection());
+        context.createTree(tree);
     }
     
 }

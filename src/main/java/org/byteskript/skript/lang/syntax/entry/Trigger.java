@@ -40,8 +40,6 @@ public class Trigger extends SectionEntry {
     
     private final WriteInstruction wrap = WriteInstruction
         .invokeStatic(new Type(AtomicVariable.class), new Type(AtomicVariable.class), "wrap", CommonTypes.OBJECT);
-    private final WriteInstruction unwrap = WriteInstruction
-        .invokeStatic(new Type(AtomicVariable.class), CommonTypes.OBJECT, "unwrap", CommonTypes.OBJECT);
     
     public Trigger() {
         super(SkriptLangSpec.LIBRARY, StandardElements.SECTION, "trigger");
@@ -56,6 +54,7 @@ public class Trigger extends SectionEntry {
     public void compile(Context context, Pattern.Match match) {
         final TriggerTree tree = new TriggerTree(context.getSection(1), context.getVariables());
         context.createTree(tree);
+        context.addFlag(AreaFlag.IN_TRIGGER);
         context.setState(CompileState.CODE_BODY);
         final MethodBuilder method = context.getMethod();
         method.removeModifiers(0x0400); // not abstract
@@ -83,7 +82,7 @@ public class Trigger extends SectionEntry {
             }
         };
     }
-
+    
     @Override
     public boolean allowedIn(State state, Context context) {
         return super.allowedIn(state, context) && context.getParent() instanceof TriggerHolder;
@@ -101,6 +100,7 @@ public class Trigger extends SectionEntry {
             method.writeCode(WriteInstruction.returnObject());
         }
         context.emptyVariables();
+        context.removeFlag(AreaFlag.IN_TRIGGER);
         context.setState(CompileState.MEMBER_BODY);
     }
     

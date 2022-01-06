@@ -33,23 +33,8 @@ public abstract class Element implements SyntaxElement {
     }
     
     @Override
-    public String[] getPatterns() {
-        return pattern.getPatterns();
-    }
-    
-    @Override
     public Library getProvider() {
         return provider;
-    }
-    
-    @Override
-    public LanguageElement getType() {
-        return type;
-    }
-    
-    @Override
-    public boolean hasHandler(HandlerType type) {
-        return handlers.containsKey(type) && handlers.get(type) != null;
     }
     
     @Override
@@ -60,6 +45,21 @@ public abstract class Element implements SyntaxElement {
     @Override
     public void setHandler(HandlerType type, Method method) {
         this.handlers.put(type, method);
+    }
+    
+    @Override
+    public boolean hasHandler(HandlerType type) {
+        return handlers.containsKey(type) && handlers.get(type) != null;
+    }
+    
+    @Override
+    public LanguageElement getType() {
+        return type;
+    }
+    
+    @Override
+    public String[] getPatterns() {
+        return pattern.getPatterns();
     }
     
 }

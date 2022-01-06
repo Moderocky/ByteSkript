@@ -32,21 +32,6 @@ public abstract class EventHolder extends TriggerHolder {
     }
     
     @Override
-    public Type returnType(Context context, Pattern.Match match) {
-        return new Type(void.class);
-    }
-    
-    @Override
-    public Type[] parameters(Context context, Pattern.Match match) {
-        return new Type[0];
-    }
-    
-    @Override
-    public String callSiteName(Context context, Pattern.Match match) {
-        return null;
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) {
         final Class<? extends Event> eventClass = eventClass();
         final MethodBuilder method = context.getBuilder()
@@ -67,6 +52,21 @@ public abstract class EventHolder extends TriggerHolder {
             .addValue("event", eventClass.getName())
             .addValue("async", AsyncEvent.class.isAssignableFrom(eventClass));
         context.addFlag(AreaFlag.IN_EVENT);
+    }
+    
+    @Override
+    public String callSiteName(Context context, Pattern.Match match) {
+        return null;
+    }
+    
+    @Override
+    public Type returnType(Context context, Pattern.Match match) {
+        return new Type(void.class);
+    }
+    
+    @Override
+    public Type[] parameters(Context context, Pattern.Match match) {
+        return new Type[0];
     }
     
     public abstract Class<? extends Event> eventClass();

@@ -55,14 +55,14 @@ public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
         return type;
     }
     
-    public void registerSyntax(State state, SyntaxElement element) {
-        this.syntax.putIfAbsent(state, new ArrayList<>());
-        this.syntax.get(state).add(element);
-    }
-    
     public void registerEvent(EventHolder event) {
         this.registerSyntax(CompileState.ROOT, event);
         this.registerValues(event);
+    }
+    
+    public void registerSyntax(State state, SyntaxElement element) {
+        this.syntax.putIfAbsent(state, new ArrayList<>());
+        this.syntax.get(state).add(element);
     }
     
     public void registerProperty(String name, HandlerType type, Method handler) {
