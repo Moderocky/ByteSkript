@@ -282,12 +282,6 @@ public class OperatorHandler {
         }
     }
     
-    public static Boolean equals(Object a, Object b) {
-        if (Objects.equals(a, b)) return true;
-        if (!(a instanceof Number x) || !(b instanceof Number y)) return false;
-        return Double.compare(x.doubleValue(), y.doubleValue()) == 0;
-    }
-    
     public static Boolean contains(Object a, Object b) {
         if (a == null) return false;
         if (b == null) return false;
@@ -303,6 +297,12 @@ public class OperatorHandler {
         if (b instanceof Query query) return query.check(a);
         if (b instanceof Pattern pattern) return pattern.matcher(a + "").matches();
         return equals(a, b); // probably a mistaken use?
+    }
+    
+    public static Boolean equals(Object a, Object b) {
+        if (Objects.equals(a, b)) return true;
+        if (!(a instanceof Number x) || !(b instanceof Number y)) return false;
+        return Double.compare(x.doubleValue(), y.doubleValue()) == 0;
     }
     //endregion
     

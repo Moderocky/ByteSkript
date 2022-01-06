@@ -52,25 +52,25 @@ public class SupplierSection extends ExtractedSection {
     }
     
     @Override
-    public Type getReturnType() {
-        return CommonTypes.SUPPLIER;
-    }
-    
-    @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.contains(" new supplier")) return null;
         return super.match(thing, context);
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return CommonTypes.OBJECT.equals(type) || CommonTypes.SUPPLIER.equals(type) || CommonTypes.EXECUTABLE.equals(type);
+    public Type getReturnType() {
+        return CommonTypes.SUPPLIER;
     }
     
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         if (!context.isSectionHeader())
             throw new ScriptCompileError(context.lineNumber(), "Supplier has no body section.");
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return CommonTypes.OBJECT.equals(type) || CommonTypes.SUPPLIER.equals(type) || CommonTypes.EXECUTABLE.equals(type);
     }
     
     @Override

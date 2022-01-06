@@ -52,6 +52,11 @@ public class NoArgsFunctionMember extends FunctionMember {
     }
     
     @Override
+    public String callSiteName(Context context, Pattern.Match match) {
+        return match.matcher().group("name");
+    }
+    
+    @Override
     public Type returnType(Context context, Pattern.Match match) {
         return CommonTypes.OBJECT;
     }
@@ -59,10 +64,5 @@ public class NoArgsFunctionMember extends FunctionMember {
     @Override
     public Type[] parameters(Context context, Pattern.Match match) {
         return new Type[0];
-    }
-    
-    @Override
-    public String callSiteName(Context context, Pattern.Match match) {
-        return match.matcher().group("name");
     }
 }

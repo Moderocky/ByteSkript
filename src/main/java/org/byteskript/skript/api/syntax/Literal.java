@@ -37,13 +37,13 @@ public abstract class Literal<Type> extends Element implements SyntaxElement {
         if (type != null) method.writeCode(WriteInstruction.cast(type));
     }
     
-    public abstract Type parse(String input);
-    
     @Override
     public boolean allowedIn(State state, Context context) {
         return
             (state == CompileState.STATEMENT || state == CompileState.ENTRY_VALUE)
                 && context.hasCurrentUnit();
     }
+    
+    public abstract Type parse(String input);
     
 }

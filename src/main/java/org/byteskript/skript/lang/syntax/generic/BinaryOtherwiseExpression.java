@@ -40,11 +40,6 @@ public class BinaryOtherwiseExpression extends SimpleExpression {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return super.allowAsInputFor(type) || type.equals(CommonTypes.OBJECT);
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         final Label first = new Label(), second = new Label();
@@ -59,6 +54,11 @@ public class BinaryOtherwiseExpression extends SimpleExpression {
             visitor.visitInsn(87); // pop
             visitor.visitLabel(second); // x or y
         });
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return super.allowAsInputFor(type) || type.equals(CommonTypes.OBJECT);
     }
     
 }

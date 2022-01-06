@@ -41,6 +41,12 @@ public class IfSection extends Section {
     }
     
     @Override
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.startsWith("if ")) return null;
+        return super.match(thing, context);
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final IfElseTree tree = new IfElseTree(context.getSection(1), new MultiLabel());
         context.createTree(tree);
@@ -52,22 +58,6 @@ public class IfSection extends Section {
         method.writeCode(WriteInstruction.invokeVirtual(Boolean.class.getMethod("booleanValue")));
         method.writeCode((writer, visitor) -> visitor.visitJumpInsn(153, next));
         context.setState(CompileState.CODE_BODY);
-    }
-    
-    @Override
-    public void compileInline(Context context, Pattern.Match match) throws Throwable {
-        final MethodBuilder method = context.getMethod();
-        assert method != null;
-        final Label next = context.getCurrentTree().getNext();
-        method.writeCode(WriteInstruction.invokeVirtual(Boolean.class.getMethod("booleanValue")));
-        method.writeCode((writer, visitor) -> visitor.visitJumpInsn(153, next));
-        context.setState(CompileState.CODE_BODY);
-    }
-    
-    @Override
-    public Pattern.Match match(String thing, Context context) {
-        if (!thing.startsWith("if ")) return null;
-        return super.match(thing, context);
     }
     
     @Override
@@ -90,6 +80,16 @@ public class IfSection extends Section {
                 visitor.visitLabel(label);
             });
         }
+    }
+    
+    @Override
+    public void compileInline(Context context, Pattern.Match match) throws Throwable {
+        final MethodBuilder method = context.getMethod();
+        assert method != null;
+        final Label next = context.getCurrentTree().getNext();
+        method.writeCode(WriteInstruction.invokeVirtual(Boolean.class.getMethod("booleanValue")));
+        method.writeCode((writer, visitor) -> visitor.visitJumpInsn(153, next));
+        context.setState(CompileState.CODE_BODY);
     }
     
 }

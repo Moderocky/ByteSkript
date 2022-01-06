@@ -35,14 +35,14 @@ public class MapCreator extends SimpleExpression {
         handlers.put(StandardHandlers.GET, findMethod(this.getClass(), "create"));
     }
     
-    @Override
-    public Type getReturnType() {
-        return CommonTypes.MAP;
-    }
-    
     @ForceInline
     public static DataMap create() {
         return new DataMap();
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.MAP;
     }
     
 }

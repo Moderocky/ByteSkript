@@ -32,6 +32,11 @@ public abstract class Effect extends Element implements SyntaxElement {
     }
     
     @Override
+    public boolean allowAsInputFor(Type type) {
+        return true; // support meta-effects
+    }
+    
+    @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final Method target = handlers.get(StandardHandlers.RUN);
         if (target == null) return;
@@ -52,11 +57,6 @@ public abstract class Effect extends Element implements SyntaxElement {
     @Override
     public boolean allowedIn(State state, Context context) {
         return state == CompileState.CODE_BODY && context.hasCurrentUnit();
-    }
-    
-    @Override
-    public boolean allowAsInputFor(Type type) {
-        return true; // support meta-effects
     }
     
 }

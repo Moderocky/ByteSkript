@@ -42,11 +42,6 @@ public class FloatLiteral extends Literal<Float> {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return CommonTypes.NUMBER.equals(type) || CommonTypes.OBJECT.equals(type);
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) {
         final String string = match.matcher().group();
         assert string.length() > 0;
@@ -74,5 +69,10 @@ public class FloatLiteral extends Literal<Float> {
         final Matcher matcher = PATTERN.matcher(thing);
         if (matcher.find()) return new Pattern.Match(matcher);
         return null;
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return CommonTypes.NUMBER.equals(type) || CommonTypes.OBJECT.equals(type);
     }
 }

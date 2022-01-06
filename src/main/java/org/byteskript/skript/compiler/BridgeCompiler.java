@@ -16,7 +16,6 @@ import org.objectweb.asm.Type;
 
 import java.lang.invoke.*;
 import java.lang.reflect.Method;
-import java.util.Random;
 
 /**
  * The function call-site class compiler.
@@ -25,6 +24,7 @@ import java.util.Random;
  */
 public class BridgeCompiler {
     
+    private static volatile int counter = 0;
     protected final MethodHandles.Lookup lookup;
     protected final String owner;
     protected final MethodType source;
@@ -37,7 +37,9 @@ public class BridgeCompiler {
         this.owner = owner;
         this.source = source;
         this.target = target;
-        this.location = owner + "$" + "Bridge" + new Random().nextInt(100000, 999999) + Math.abs(owner.hashCode());
+        synchronized (BridgeCompiler.class) {
+            this.location = owner + "$" + "Bridge" + ++counter;
+        }
     }
     
     public Class<?> createClass()
@@ -79,16 +81,23 @@ public class BridgeCompiler {
         return generated;
     }
     
-    public CallSite getCallSite()
-        throws NoSuchMethodException, IllegalAccessException {
-        final MethodHandle handle = lookup.findStatic(generated, "bridge", source);
-        return new ConstantCallSite(handle);
+    protected int instructionOffset(Class<?> type) {
+        if (type == int.class) return 1;
+        if (type == boolean.class) return 1;
+        if (type == byte.class) return 1;
+        if (type == short.class) return 1;
+        if (type == long.class) return 2;
+        if (type == float.class) return 3;
+        if (type == double.class) return 4;
+        if (type == void.class) return 6;
+        return 5;
     }
     
-    //region Utilities
-    protected void invoke(MethodVisitor visitor) {
-        final boolean special = target.getDeclaringClass().isInterface();
-        visitor.visitMethodInsn(184, Type.getInternalName(target.getDeclaringClass()), target.getName(), Type.getMethodDescriptor(target), special);
+    protected void boxAtomic(MethodVisitor visitor, Class<?> parameter) {
+        if (parameter == AtomicVariable.class)
+            visitor.visitMethodInsn(184, Type.getInternalName(AtomicVariable.class), "wrap", "(Ljava/lang/Object;)" + Type.getDescriptor(AtomicVariable.class), false);
+        else
+            visitor.visitMethodInsn(184, Type.getInternalName(AtomicVariable.class), "unwrap", "(Ljava/lang/Object;)Ljava/lang/Object;", false);
     }
     
     protected Class<?> getUnboxingType(Class<?> primitive) {
@@ -97,27 +106,6 @@ public class BridgeCompiler {
         if (primitive == void.class) return Void.class;
         if (primitive == char.class) return Character.class;
         return Number.class;
-    }
-    
-    protected Class<?> getWrapperType(Class<?> primitive) {
-        if (!primitive.isPrimitive()) return primitive;
-        if (primitive == byte.class) return Byte.class;
-        if (primitive == short.class) return Short.class;
-        if (primitive == int.class) return Integer.class;
-        if (primitive == long.class) return Long.class;
-        if (primitive == float.class) return Float.class;
-        if (primitive == double.class) return Double.class;
-        if (primitive == char.class) return Character.class;
-        if (primitive == boolean.class) return Boolean.class;
-        if (primitive == void.class) return Void.class;
-        return primitive;
-    }
-    
-    protected void boxAtomic(MethodVisitor visitor, Class<?> parameter) {
-        if (parameter == AtomicVariable.class)
-            visitor.visitMethodInsn(184, Type.getInternalName(AtomicVariable.class), "wrap", "(Ljava/lang/Object;)" + Type.getDescriptor(AtomicVariable.class), false);
-        else
-            visitor.visitMethodInsn(184, Type.getInternalName(AtomicVariable.class), "unwrap", "(Ljava/lang/Object;)Ljava/lang/Object;", false);
     }
     
     protected void unbox(MethodVisitor visitor, Class<?> parameter) {
@@ -140,6 +128,12 @@ public class BridgeCompiler {
             visitor.visitMethodInsn(184, source, "unbox", "(Ljava/lang/Character;)C", false);
     }
     
+    //region Utilities
+    protected void invoke(MethodVisitor visitor) {
+        final boolean special = target.getDeclaringClass().isInterface();
+        visitor.visitMethodInsn(184, Type.getInternalName(target.getDeclaringClass()), target.getName(), Type.getMethodDescriptor(target), special);
+    }
+    
     protected void box(MethodVisitor visitor, Class<?> value) {
         if (value == byte.class)
             visitor.visitMethodInsn(184, Type.getInternalName(Byte.class), "valueOf", "(B)Ljava/lang/Byte;", false);
@@ -159,6 +153,20 @@ public class BridgeCompiler {
             visitor.visitInsn(1);
     }
     
+    protected Class<?> getWrapperType(Class<?> primitive) {
+        if (!primitive.isPrimitive()) return primitive;
+        if (primitive == byte.class) return Byte.class;
+        if (primitive == short.class) return Short.class;
+        if (primitive == int.class) return Integer.class;
+        if (primitive == long.class) return Long.class;
+        if (primitive == float.class) return Float.class;
+        if (primitive == double.class) return Double.class;
+        if (primitive == char.class) return Character.class;
+        if (primitive == boolean.class) return Boolean.class;
+        if (primitive == void.class) return Void.class;
+        return primitive;
+    }
+    
     protected int wideIndexOffset(Class<?>[] params, Class<?> ret) {
         int i = 0;
         for (Class<?> param : params) {
@@ -172,16 +180,10 @@ public class BridgeCompiler {
         return 0;
     }
     
-    protected int instructionOffset(Class<?> type) {
-        if (type == int.class) return 1;
-        if (type == boolean.class) return 1;
-        if (type == byte.class) return 1;
-        if (type == short.class) return 1;
-        if (type == long.class) return 2;
-        if (type == float.class) return 3;
-        if (type == double.class) return 4;
-        if (type == void.class) return 6;
-        return 5;
+    public CallSite getCallSite()
+        throws NoSuchMethodException, IllegalAccessException {
+        final MethodHandle handle = lookup.findStatic(generated, "bridge", source);
+        return new ConstantCallSite(handle);
     }
     //endregion
     

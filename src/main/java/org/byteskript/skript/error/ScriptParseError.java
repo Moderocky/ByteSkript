@@ -18,14 +18,6 @@ public class ScriptParseError extends Error implements ScriptError {
     private final int line;
     private ErrorDetails details;
     
-    public ErrorDetails getDetails() {
-        return details;
-    }
-    
-    public int getLine() {
-        return line;
-    }
-    
     public ScriptParseError(int line) {
         super();
         this.line = line;
@@ -57,11 +49,18 @@ public class ScriptParseError extends Error implements ScriptError {
         this.line = line;
     }
     
+    public ErrorDetails getDetails() {
+        return details;
+    }
+    
+    public int getLine() {
+        return line;
+    }
+    
     @Override
-    public synchronized Throwable fillInStackTrace() {
-        if (System.getProperty("debug_mode") != null)
-            return super.fillInStackTrace();
-        return this;
+    public void printStackTrace(PrintStream stream) {
+        if (details == null) super.printStackTrace(stream);
+        printStackTrace(new OutputWriter(stream, null));
     }
     
     @Override
@@ -71,9 +70,10 @@ public class ScriptParseError extends Error implements ScriptError {
     }
     
     @Override
-    public void printStackTrace(PrintStream stream) {
-        if (details == null) super.printStackTrace(stream);
-        printStackTrace(new OutputWriter(stream, null));
+    public synchronized Throwable fillInStackTrace() {
+        if (System.getProperty("debug_mode") != null)
+            return super.fillInStackTrace();
+        return this;
     }
     
     public void printStackTrace(OutputWriter stream) {

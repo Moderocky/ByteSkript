@@ -74,6 +74,14 @@ public interface SyntaxAnnotationUnwrapper extends Library {
         }
     }
     
+    Type registerType(Class<?> cls);
+    
+    void registerEvent(EventHolder event);
+    
+    void registerSyntax(State state, SyntaxElement element);
+    
+    void registerProperty(String name, HandlerType type, Method handler);
+    
     default void registerValues(EventHolder event) {
         for (Method method : event.eventClass().getMethods()) {
             final EventValue value = method.getAnnotation(EventValue.class);
@@ -87,12 +95,4 @@ public interface SyntaxAnnotationUnwrapper extends Library {
             }
         }
     }
-    
-    Type registerType(Class<?> cls);
-    
-    void registerSyntax(State state, SyntaxElement element);
-    
-    void registerEvent(EventHolder event);
-    
-    void registerProperty(String name, HandlerType type, Method handler);
 }

@@ -35,11 +35,6 @@ public class NoneLiteral extends Literal<Void> {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return true;
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) {
         final MethodBuilder method = context.getMethod();
         assert method != null;
@@ -55,6 +50,11 @@ public class NoneLiteral extends Literal<Void> {
     public Pattern.Match match(String thing, Context context) {
         if (!thing.equals("null") && !thing.equals("none")) return null;
         return super.match(thing, context);
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return true;
     }
     
 }

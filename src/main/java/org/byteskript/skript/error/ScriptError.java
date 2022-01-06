@@ -20,6 +20,10 @@ public interface ScriptError {
     String ANSI_WHITE = "\u001B[37m";
     
     
+    interface Output {
+        void println(String string);
+    }
+    
     record OutputWriter(PrintStream stream, PrintWriter writer) implements Output {
         
         @Override
@@ -28,10 +32,6 @@ public interface ScriptError {
             else writer.println(string);
         }
         
-    }
-    
-    interface Output {
-        void println(String string);
     }
     
 }

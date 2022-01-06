@@ -46,36 +46,6 @@ public class SystemPropertyExpression extends SimpleExpression implements Refere
         }
     }
     
-    @Override
-    public Pattern.Match match(String thing, Context context) {
-        if (!thing.contains("system property ")) return null;
-        return super.match(thing, context);
-    }
-    
-    @Override
-    public Type getReturnType() {
-        return CommonTypes.STRING;
-    }
-    
-    @Override
-    public boolean allowAsInputFor(Type type) {
-        return super.allowAsInputFor(type) || type.equals(CommonTypes.REFERENT);
-    }
-    
-    @Override
-    public Type getHolderType() {
-        return CommonTypes.OBJECT;
-    }
-    
-    @Override
-    public void compile(Context context, Pattern.Match match) throws Throwable {
-        final MethodBuilder method = context.getMethod();
-        assert method != null;
-        final Method target = handlers.get(context.getHandlerMode());
-        assert target != null;
-        this.writeCall(method, target, context);
-    }
-    
     @ForceExtract
     public static String getProperty(String name) {
         return System.getProperty(name);
@@ -89,6 +59,36 @@ public class SystemPropertyExpression extends SimpleExpression implements Refere
     @ForceExtract
     public static String clearProperty(String name) {
         return System.clearProperty(name);
+    }
+    
+    @Override
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.contains("system property ")) return null;
+        return super.match(thing, context);
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return super.allowAsInputFor(type) || type.equals(CommonTypes.REFERENT);
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.STRING;
+    }
+    
+    @Override
+    public void compile(Context context, Pattern.Match match) throws Throwable {
+        final MethodBuilder method = context.getMethod();
+        assert method != null;
+        final Method target = handlers.get(context.getHandlerMode());
+        assert target != null;
+        this.writeCall(method, target, context);
+    }
+    
+    @Override
+    public Type getHolderType() {
+        return CommonTypes.OBJECT;
     }
     
 }

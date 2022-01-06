@@ -42,6 +42,12 @@ public class WhileSection extends Section {
     }
     
     @Override
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.startsWith("while ")) return null;
+        return super.match(thing, context);
+    }
+    
+    @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final WhileTree tree = new WhileTree(context.getSection(1));
         context.createTree(tree);
@@ -50,27 +56,6 @@ public class WhileSection extends Section {
         final Label top = new Label();
         tree.setTop(top);
         method.writeCode((writer, visitor) -> visitor.visitLabel(top));
-    }
-    
-    @Override
-    public void preCompileInline(Context context, Pattern.Match match) throws Throwable {
-        final WhileTree tree = new WhileTree(context.getSection());
-        context.createTree(tree);
-        final MethodBuilder method = context.getMethod();
-        assert method != null;
-        final Label top = new Label();
-        tree.setTop(top);
-        method.writeCode((writer, visitor) -> visitor.visitLabel(top));
-    }
-    
-    @Override
-    public void compileInline(Context context, Pattern.Match match) throws Throwable {
-        final MethodBuilder method = context.getMethod();
-        assert method != null;
-        final Label next = context.getCurrentTree().getNext();
-        method.writeCode(WriteInstruction.invokeVirtual(Boolean.class.getMethod("booleanValue")));
-        method.writeCode((writer, visitor) -> visitor.visitJumpInsn(153, next));
-        context.setState(CompileState.CODE_BODY);
     }
     
     @Override
@@ -84,12 +69,6 @@ public class WhileSection extends Section {
         method.writeCode(WriteInstruction.invokeVirtual(Boolean.class.getMethod("booleanValue")));
         method.writeCode((writer, visitor) -> visitor.visitJumpInsn(153, end));
         context.setState(CompileState.CODE_BODY);
-    }
-    
-    @Override
-    public Pattern.Match match(String thing, Context context) {
-        if (!thing.startsWith("while ")) return null;
-        return super.match(thing, context);
     }
     
     @Override
@@ -108,6 +87,27 @@ public class WhileSection extends Section {
         final Label top = tree.getTop();
         method.writeCode((writer, visitor) -> visitor.visitJumpInsn(167, top));
         method.writeCode(tree.getEnd().instruction());
+    }
+    
+    @Override
+    public void compileInline(Context context, Pattern.Match match) throws Throwable {
+        final MethodBuilder method = context.getMethod();
+        assert method != null;
+        final Label next = context.getCurrentTree().getNext();
+        method.writeCode(WriteInstruction.invokeVirtual(Boolean.class.getMethod("booleanValue")));
+        method.writeCode((writer, visitor) -> visitor.visitJumpInsn(153, next));
+        context.setState(CompileState.CODE_BODY);
+    }
+    
+    @Override
+    public void preCompileInline(Context context, Pattern.Match match) throws Throwable {
+        final WhileTree tree = new WhileTree(context.getSection());
+        context.createTree(tree);
+        final MethodBuilder method = context.getMethod();
+        assert method != null;
+        final Label top = new Label();
+        tree.setTop(top);
+        method.writeCode((writer, visitor) -> visitor.visitLabel(top));
     }
     
 }

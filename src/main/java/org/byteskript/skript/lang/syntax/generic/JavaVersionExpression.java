@@ -42,16 +42,16 @@ public class JavaVersionExpression extends SimpleExpression {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return CommonTypes.INTEGER.equals(type) || CommonTypes.NUMBER.equals(type) || CommonTypes.OBJECT.equals(type);
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
         method.writeCode(WriteInstruction.loadConstant(Skript.JAVA_VERSION));
         method.writeCode(WriteInstruction.invokeStatic(Integer.class.getMethod("valueOf", int.class)));
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return CommonTypes.INTEGER.equals(type) || CommonTypes.NUMBER.equals(type) || CommonTypes.OBJECT.equals(type);
     }
     
 }

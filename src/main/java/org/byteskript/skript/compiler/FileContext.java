@@ -19,33 +19,32 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.function.Consumer;
 
+/**
+ * FileContext keeps track of what's going on during the linear compile pass-through.
+ * This should usually be modified as a {@link Context}.
+ */
 public class FileContext extends Context {
     
-    final Type type;
     protected final Map<String, Type> types = new HashMap<>();
-    protected String indentUnit;
-    public int indent;
-    public int lineNumber;
-    public int lambdaIndex;
-    public int indexShift;
-    public boolean sectionHeader;
-    LanguageElement expected;
-    SyntaxElement currentEffect;
-    private HandlerType mode = StandardHandlers.GET;
+    protected final List<Function> functions = new ArrayList<>();
+    protected final List<ProgrammaticSplitTree> trees = new ArrayList<>();
+    final Type type;
     final List<Consumer<Context>> endOfLine = new ArrayList<>();
     final Map<HandlerType, List<PropertyAccessGenerator>> usedProperties = new HashMap<>();
     final List<ClassBuilder> suppressedClasses = new ArrayList<>();
     final List<Flag> flags = new ArrayList<>();
-    
+    public int indent, lineNumber, lambdaIndex, indexShift;
+    public boolean sectionHeader;
     public ElementTree line;
     public ElementTree current;
-    protected final List<Function> functions = new ArrayList<>();
+    protected String indentUnit;
     protected List<PreVariable> variables = new ArrayList<>();
-    protected final List<ProgrammaticSplitTree> trees = new ArrayList<>();
-    
     protected ClassBuilder writer;
     protected FieldBuilder field;
     protected MethodBuilder method;
+    LanguageElement expected;
+    SyntaxElement currentEffect;
+    private HandlerType mode = StandardHandlers.GET;
     
     public FileContext(Type type) {
         this.type = type;
@@ -102,11 +101,6 @@ public class FileContext extends Context {
     }
     
     @Override
-    public LanguageElement getExpected() {
-        return expected;
-    }
-    
-    @Override
     public Collection<Type> getAvailableTypes() {
         return types.values();
     }
@@ -119,21 +113,6 @@ public class FileContext extends Context {
     @Override
     public Type getType(String name) {
         return types.get(name);
-    }
-    
-    @Override
-    public void registerType(String name, Type type) {
-        types.put(name, type);
-    }
-    
-    @Override
-    public int indent() {
-        return indent;
-    }
-    
-    @Override
-    public String indentUnit() {
-        return indentUnit;
     }
     
     @Override
@@ -188,13 +167,13 @@ public class FileContext extends Context {
     }
     
     @Override
-    public FieldBuilder getField() {
-        return field;
+    public void setMethod(MethodBuilder method) {
+        this.method = method;
     }
     
     @Override
-    public void setMethod(MethodBuilder method) {
-        this.method = method;
+    public FieldBuilder getField() {
+        return field;
     }
     
     @Override
@@ -229,13 +208,23 @@ public class FileContext extends Context {
     }
     
     @Override
-    public List<PreVariable> getVariables() {
-        return variables;
+    public PreVariable getVariable(int slot) {
+        return variables.get(slot);
     }
     
     @Override
-    public PreVariable getVariable(int slot) {
-        return variables.get(slot);
+    public void emptyVariables() {
+        this.variables = new ArrayList<>();
+    }
+    
+    @Override
+    public int getVariableCount() {
+        return variables.size();
+    }
+    
+    @Override
+    public List<PreVariable> getVariables() {
+        return variables;
     }
     
     @Override
@@ -249,16 +238,6 @@ public class FileContext extends Context {
             if (variable.name().equals(name)) return true;
         }
         return false;
-    }
-    
-    @Override
-    public void emptyVariables() {
-        this.variables = new ArrayList<>();
-    }
-    
-    @Override
-    public int getVariableCount() {
-        return variables.size();
     }
     
     @Override
@@ -295,11 +274,6 @@ public class FileContext extends Context {
             if (tree.owner() == meta) return tree;
         }
         return null;
-    }
-    
-    @Override
-    public ProgrammaticSplitTree getCurrentTree() {
-        return trees.isEmpty() ? null : trees.get(0);
     }
     
     @Override
@@ -396,13 +370,18 @@ public class FileContext extends Context {
     }
     
     @Override
+    public HandlerType getHandlerMode() {
+        return mode;
+    }
+    
+    @Override
     public void setHandlerMode(HandlerType type) {
         this.mode = type;
     }
     
     @Override
-    public HandlerType getHandlerMode() {
-        return mode;
+    public ProgrammaticSplitTree getCurrentTree() {
+        return trees.isEmpty() ? null : trees.get(0);
     }
     
     @Override
@@ -435,5 +414,25 @@ public class FileContext extends Context {
     public Function assertDefaultLocalFunction(String name) {
         if (true) throw new RuntimeException("i need to know what's using this"); // todo
         return new Function(name, type);
+    }
+    
+    @Override
+    public LanguageElement getExpected() {
+        return expected;
+    }
+    
+    @Override
+    public void registerType(String name, Type type) {
+        types.put(name, type);
+    }
+    
+    @Override
+    public String indentUnit() {
+        return indentUnit;
+    }
+    
+    @Override
+    public int indent() {
+        return indent;
     }
 }

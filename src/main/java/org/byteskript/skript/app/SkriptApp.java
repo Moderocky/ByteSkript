@@ -24,7 +24,7 @@ import java.util.jar.JarFile;
 
 public abstract class SkriptApp {
     protected static final File ROOT;
-    
+
     static {
         try {
             ROOT = new File(SkriptApp.class.getProtectionDomain().getCodeSource().getLocation()
@@ -33,7 +33,6 @@ public abstract class SkriptApp {
             throw new IllegalStateException("Unable to get root file.", e);
         }
     }
-    
     protected static final File SOURCE = new File(ROOT, "skript/");
     protected static final File RESOURCES = new File(ROOT, "resources/");
     protected static final File LIBRARIES = new File(ROOT, "libraries/");

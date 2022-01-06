@@ -37,22 +37,6 @@ public final class Bootstrapper {
         }
     }
     
-    public static Handle getBootstrap(final boolean isDynamic, final boolean isPrivate) {
-        try {
-            if (isPrivate) {
-                if (isDynamic)
-                    return getHandle(Bootstrapper.class.getMethod("bootstrapPrivateDynamic", MethodHandles.Lookup.class, String.class, MethodType.class, Class.class));
-                return getHandle(Bootstrapper.class.getMethod("bootstrapPrivate", MethodHandles.Lookup.class, String.class, MethodType.class, Class.class));
-            } else {
-                if (isDynamic)
-                    return getHandle(Bootstrapper.class.getMethod("bootstrapDynamic", MethodHandles.Lookup.class, String.class, MethodType.class, Class.class));
-                return getHandle(Bootstrapper.class.getMethod("bootstrap", MethodHandles.Lookup.class, String.class, MethodType.class, Class.class));
-            }
-        } catch (Throwable ex) {
-            throw new ScriptBootstrapError(ex);
-        }
-    }
-    
     private static Handle getHandle(final Method method) {
         final int code;
         if (Modifier.isStatic(method.getModifiers())) code = H_INVOKESTATIC;
@@ -74,6 +58,32 @@ public final class Bootstrapper {
         return builder.toString();
     }
     
+    public static Handle getBootstrap(final boolean isDynamic, final boolean isPrivate) {
+        try {
+            if (isPrivate) {
+                if (isDynamic)
+                    return getHandle(Bootstrapper.class.getMethod("bootstrapPrivateDynamic", MethodHandles.Lookup.class, String.class, MethodType.class, Class.class));
+                return getHandle(Bootstrapper.class.getMethod("bootstrapPrivate", MethodHandles.Lookup.class, String.class, MethodType.class, Class.class));
+            } else {
+                if (isDynamic)
+                    return getHandle(Bootstrapper.class.getMethod("bootstrapDynamic", MethodHandles.Lookup.class, String.class, MethodType.class, Class.class));
+                return getHandle(Bootstrapper.class.getMethod("bootstrap", MethodHandles.Lookup.class, String.class, MethodType.class, Class.class));
+            }
+        } catch (Throwable ex) {
+            throw new ScriptBootstrapError(ex);
+        }
+    }
+    
+    public static CallSite bootstrapFunction(MethodHandles.Lookup caller, String name, MethodType type, String source, Class<?> owner, String args)
+        throws Exception {
+        final org.objectweb.asm.Type[] types = org.objectweb.asm.Type.getArgumentTypes(args);
+        final Class<?>[] arguments = new Class[types.length];
+        for (int i = 0; i < types.length; i++) {
+            arguments[i] = getClass(types[i].getClassName());
+        }
+        return Metafactory.createBridge(caller, name, type, source, owner, arguments);
+    }
+    
     private static Class<?> getClass(String name) throws ClassNotFoundException {
         return switch (name) {
             case "boolean" -> boolean.class;
@@ -87,16 +97,6 @@ public final class Bootstrapper {
             case "double" -> double.class;
             default -> Class.forName(name);
         };
-    }
-    
-    public static CallSite bootstrapFunction(MethodHandles.Lookup caller, String name, MethodType type, String source, Class<?> owner, String args)
-        throws Exception {
-        final org.objectweb.asm.Type[] types = org.objectweb.asm.Type.getArgumentTypes(args);
-        final Class<?>[] arguments = new Class[types.length];
-        for (int i = 0; i < types.length; i++) {
-            arguments[i] = getClass(types[i].getClassName());
-        }
-        return Metafactory.createBridge(caller, name, type, source, owner, arguments);
     }
     
     public static CallSite bootstrap(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner) throws Exception {

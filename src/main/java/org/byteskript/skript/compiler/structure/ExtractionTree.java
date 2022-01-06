@@ -17,10 +17,10 @@ import org.objectweb.asm.Label;
 public class ExtractionTree extends ProgrammaticSplitTree {
     
     private final SectionMeta owner;
-    private boolean open;
-    private Label next;
     private final MethodBuilder parent;
     private final MultiLabel end;
+    private boolean open;
+    private Label next;
     
     public ExtractionTree(SectionMeta owner, MethodBuilder parent, MultiLabel end) {
         this.owner = owner;
@@ -33,6 +33,11 @@ public class ExtractionTree extends ProgrammaticSplitTree {
         return parent;
     }
     
+    @Override
+    public SectionMeta owner() {
+        return owner;
+    }
+    
     public MultiLabel getEnd() {
         return end;
     }
@@ -43,11 +48,6 @@ public class ExtractionTree extends ProgrammaticSplitTree {
     
     public void setNext(Label next) {
         this.next = next;
-    }
-    
-    @Override
-    public SectionMeta owner() {
-        return owner;
     }
     
     @Override

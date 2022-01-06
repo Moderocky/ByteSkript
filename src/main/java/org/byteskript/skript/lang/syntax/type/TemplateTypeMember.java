@@ -50,13 +50,6 @@ public class TemplateTypeMember extends Member {
     }
     
     @Override
-    public void onSectionExit(Context context, SectionMeta meta) {
-        context.removeFlag(AreaFlag.IN_TYPE);
-        context.endSubBuilder();
-        super.onSectionExit(context, meta);
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) {
         final String name = match.matcher().group("name");
         final String path = context.getType().internalName() + "/" + name;
@@ -78,6 +71,13 @@ public class TemplateTypeMember extends Member {
         context.addFlag(AreaFlag.IN_TYPE);
         context.addFlag(AreaFlag.IN_ABSTRACT_TYPE);
         context.setState(CompileState.ROOT); // members can go inside this!
+    }
+    
+    @Override
+    public void onSectionExit(Context context, SectionMeta meta) {
+        context.removeFlag(AreaFlag.IN_TYPE);
+        context.endSubBuilder();
+        super.onSectionExit(context, meta);
     }
     
     @Override

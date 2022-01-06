@@ -17,14 +17,19 @@ import org.objectweb.asm.Label;
 public class IfElseTree extends ProgrammaticSplitTree {
     
     private final SectionMeta owner;
+    private final MultiLabel end;
     private boolean open;
     private Label next;
-    private final MultiLabel end;
     
     public IfElseTree(SectionMeta owner, MultiLabel end) {
         this.owner = owner;
         this.open = true;
         this.end = end;
+    }
+    
+    @Override
+    public SectionMeta owner() {
+        return owner;
     }
     
     public MultiLabel getEnd() {
@@ -37,11 +42,6 @@ public class IfElseTree extends ProgrammaticSplitTree {
     
     public void setNext(Label next) {
         this.next = next;
-    }
-    
-    @Override
-    public SectionMeta owner() {
-        return owner;
     }
     
     @Override

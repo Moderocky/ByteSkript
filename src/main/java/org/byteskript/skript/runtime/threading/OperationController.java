@@ -23,15 +23,15 @@ public class OperationController {
     protected final Skript skript;
     protected boolean state;
     
-    public Skript getSkript() {
-        return skript;
-    }
-    
     public OperationController(final Skript skript, final SkriptThreadProvider provider) {
         this.queue = new AirlockQueue();
         this.provider = provider;
         this.skript = skript;
         this.skript.getProcesses().add(this);
+    }
+    
+    public Skript getSkript() {
+        return skript;
     }
     
     public synchronized void addInstruction(final Instruction<?> runnable) {

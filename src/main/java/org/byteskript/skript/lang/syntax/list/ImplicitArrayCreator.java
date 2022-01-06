@@ -40,29 +40,6 @@ public class ImplicitArrayCreator extends SimpleExpression {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "new array of (...)");
     }
     
-    @Override
-    public void compile(Context context, Pattern.Match match) throws Throwable {
-        final MethodBuilder method = context.getMethod();
-        assert method != null;
-        final int expected = context.getCompileCurrent().nested().length;
-        final ClassBuilder builder = context.getBuilder();
-        final Type[] parameters = new Type[expected];
-        Arrays.fill(parameters, CommonTypes.OBJECT);
-        final MethodErasure erasure = new MethodErasure(CommonTypes.OBJECTS, "lambda$packArray", parameters);
-        if (!builder.hasMatching(erasure)) {
-            final MethodBuilder target = builder.addMatching(erasure)
-                .setModifiers(0x00000002 | 0x00000008 | 0x00001000);
-            target.writeCode(WriteInstruction.newArray(Object.class, parameters.length));
-            for (int i = 0; i < parameters.length; i++) {
-                target.writeCode(WriteInstruction.duplicate());
-                target.writeCode(WriteInstruction.loadObject(i));
-                target.writeCode(WriteInstruction.arrayStoreObject(i));
-            }
-            target.writeCode(WriteInstruction.returnObject());
-        }
-        method.writeCode(WriteInstruction.invokeStatic(builder.getType(), erasure));
-    }
-    
     //region Matcher
     @Override
     public Pattern.Match match(String thing, Context context) {
@@ -89,6 +66,18 @@ public class ImplicitArrayCreator extends SimpleExpression {
         return new Pattern.Match(dummy, null, types.toArray(new Type[0]));
     }
     
+    private int getParams(String params) {
+        if (params.isBlank()) return 0;
+        int nest = 0;
+        int count = 1;
+        for (char c : params.toCharArray()) {
+            if (c == '(') nest++;
+            else if (c == ')') nest--;
+            else if (c == ',' && nest < 1) count++;
+        }
+        return count;
+    }
+    
     private String buildDummyPattern(int params, String thing) {
         final StringBuilder builder = new StringBuilder();
         if (!thing.startsWith("("))
@@ -101,22 +90,33 @@ public class ImplicitArrayCreator extends SimpleExpression {
         return builder.append("\\)").toString();
     }
     
-    private int getParams(String params) {
-        if (params.isBlank()) return 0;
-        int nest = 0;
-        int count = 1;
-        for (char c : params.toCharArray()) {
-            if (c == '(') nest++;
-            else if (c == ')') nest--;
-            else if (c == ',' && nest < 1) count++;
-        }
-        return count;
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.OBJECTS;
     }
     //endregion
     
     @Override
-    public Type getReturnType() {
-        return CommonTypes.OBJECTS;
+    public void compile(Context context, Pattern.Match match) throws Throwable {
+        final MethodBuilder method = context.getMethod();
+        assert method != null;
+        final int expected = context.getCompileCurrent().nested().length;
+        final ClassBuilder builder = context.getBuilder();
+        final Type[] parameters = new Type[expected];
+        Arrays.fill(parameters, CommonTypes.OBJECT);
+        final MethodErasure erasure = new MethodErasure(CommonTypes.OBJECTS, "lambda$packArray", parameters);
+        if (!builder.hasMatching(erasure)) {
+            final MethodBuilder target = builder.addMatching(erasure)
+                .setModifiers(0x00000002 | 0x00000008 | 0x00001000);
+            target.writeCode(WriteInstruction.newArray(Object.class, parameters.length));
+            for (int i = 0; i < parameters.length; i++) {
+                target.writeCode(WriteInstruction.duplicate());
+                target.writeCode(WriteInstruction.loadObject(i));
+                target.writeCode(WriteInstruction.arrayStoreObject(i));
+            }
+            target.writeCode(WriteInstruction.returnObject());
+        }
+        method.writeCode(WriteInstruction.invokeStatic(builder.getType(), erasure));
     }
     
 }

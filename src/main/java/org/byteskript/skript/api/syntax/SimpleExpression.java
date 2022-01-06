@@ -28,6 +28,11 @@ public abstract class SimpleExpression extends Element implements SyntaxElement 
     }
     
     @Override
+    public Type getReturnType() {
+        return CommonTypes.OBJECT;
+    }
+    
+    @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         super.preCompile(context, match);
         final Method target = handlers.get(context.getHandlerMode());
@@ -50,11 +55,6 @@ public abstract class SimpleExpression extends Element implements SyntaxElement 
     @Override
     public boolean allowedIn(State state, Context context) {
         return state == CompileState.STATEMENT && context.hasCurrentUnit();
-    }
-    
-    @Override
-    public Type getReturnType() {
-        return CommonTypes.OBJECT;
     }
     
 }

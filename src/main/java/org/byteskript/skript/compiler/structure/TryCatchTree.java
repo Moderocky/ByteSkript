@@ -17,10 +17,10 @@ import org.objectweb.asm.Label;
 public class TryCatchTree extends ProgrammaticSplitTree {
     
     private final SectionMeta owner;
-    private boolean open;
     private final Label startTry = new Label();
     private final Label startCatch = new Label();
     private final MultiLabel end;
+    private boolean open;
     
     public TryCatchTree(SectionMeta owner, MultiLabel end) {
         this.owner = owner;
@@ -36,13 +36,13 @@ public class TryCatchTree extends ProgrammaticSplitTree {
         return startCatch;
     }
     
-    public MultiLabel getEnd() {
-        return end;
-    }
-    
     @Override
     public SectionMeta owner() {
         return owner;
+    }
+    
+    public MultiLabel getEnd() {
+        return end;
     }
     
     @Override

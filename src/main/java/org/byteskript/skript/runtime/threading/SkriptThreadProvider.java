@@ -15,8 +15,8 @@ import java.util.concurrent.ThreadFactory;
  */
 public class SkriptThreadProvider implements ThreadFactory {
     
-    volatile int counter;
     private final ScriptExceptionHandler handler = new ScriptExceptionHandler();
+    volatile int counter;
     private Skript skript;
     
     public SkriptThreadProvider() {
@@ -26,17 +26,17 @@ public class SkriptThreadProvider implements ThreadFactory {
         this.skript = skript;
     }
     
+    @Override
+    public Thread newThread(Runnable r) {
+        return this.newThread(new OperationController(this.skript, this), r, false);
+    }
+    
     public synchronized ScriptThread newThread(final OperationController controller, Runnable runnable, boolean inheritLocals) {
         final ScriptThread thread = new ScriptThread(skript, controller, Skript.THREAD_GROUP, runnable, Skript.THREAD_GROUP.getName() + "-" + counter++, 0, inheritLocals);
         thread.setUncaughtExceptionHandler(handler);
         if (inheritLocals && Thread.currentThread() instanceof ScriptThread current)
             thread.variables.putAll(current.variables); // inherits locals :)
         return thread;
-    }
-    
-    @Override
-    public Thread newThread(Runnable r) {
-        return this.newThread(new OperationController(this.skript, this), r, false);
     }
     
     public Thread.UncaughtExceptionHandler getHandler() {

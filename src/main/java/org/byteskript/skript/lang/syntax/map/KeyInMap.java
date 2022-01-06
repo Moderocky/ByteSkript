@@ -54,6 +54,15 @@ public class KeyInMap extends RelationalExpression implements Referent {
     }
     
     @Override
+    public void compile(Context context, Pattern.Match match) throws Throwable {
+        final MethodBuilder method = context.getMethod();
+        assert method != null;
+        final Method target = handlers.get(context.getHandlerMode());
+        assert target != null;
+        this.writeCall(method, target, context);
+    }
+    
+    @Override
     public Type getHolderType() {
         return CommonTypes.MAP;
     }
@@ -61,15 +70,6 @@ public class KeyInMap extends RelationalExpression implements Referent {
     @Override
     public boolean allowAsInputFor(Type type) {
         return super.allowAsInputFor(type) || CommonTypes.REFERENT.equals(type);
-    }
-    
-    @Override
-    public void compile(Context context, Pattern.Match match) throws Throwable {
-        final MethodBuilder method = context.getMethod();
-        assert method != null;
-        final Method target = handlers.get(context.getHandlerMode());
-        assert target != null;
-        this.writeCall(method, target, context);
     }
     
     

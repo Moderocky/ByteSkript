@@ -21,10 +21,6 @@ public final class SectionMeta {
         this.data = new ArrayList<>();
     }
     
-    public Section handler() {
-        return handlers.get(0);
-    }
-    
     public List<Section> getHandlers() {
         return handlers;
     }
@@ -37,6 +33,10 @@ public final class SectionMeta {
     public String toString() {
         return "SectionMeta[" +
             "handler=" + handler().name() + ']';
+    }
+    
+    public Section handler() {
+        return handlers.get(0);
     }
     
 }

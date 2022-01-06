@@ -27,41 +27,13 @@ import static mx.kenzie.foundation.WriteInstruction.*;
 
 public interface SyntaxElement {
     
-    Pattern getPattern();
-    
     default Pattern.Match match(String thing, Context context) {
         return getPattern().match(thing, context);
     }
     
-    String[] getPatterns();
+    Pattern getPattern();
     
     Library getProvider();
-    
-    LanguageElement getType();
-    
-    default Type getReturnType() {
-        return CommonTypes.VOID;
-    }
-    
-    default String name() {
-        final Documentation documentation = this.getClass().getAnnotation(Documentation.class);
-        if (documentation == null) return getPattern().name();
-        return documentation.name();
-    }
-    
-    default String description() {
-        final Documentation documentation = this.getClass().getAnnotation(Documentation.class);
-        if (documentation == null) return "None.";
-        return documentation.description();
-    }
-    
-    default String[] examples() {
-        final Documentation documentation = this.getClass().getAnnotation(Documentation.class);
-        if (documentation == null) return new String[0];
-        return documentation.examples();
-    }
-    
-    boolean hasHandler(HandlerType type);
     
     Method getHandler(HandlerType type);
     
@@ -86,6 +58,12 @@ public interface SyntaxElement {
         return type.equals(CommonTypes.OBJECT) || type.equals(getReturnType());
     }
     
+    boolean hasHandler(HandlerType type);
+    
+    default Type getReturnType() {
+        return CommonTypes.VOID;
+    }
+    
     default void preCompile(Context context, Pattern.Match match) throws Throwable {
         // Very few elements require a lookahead.
     }
@@ -94,12 +72,6 @@ public interface SyntaxElement {
     
     default boolean allowedIn(State state, Context context) {
         return true;
-    }
-    
-    class Handlers extends HashMap<HandlerType, Method> {
-        
-        public static final Handlers EMPTY = new Handlers();
-        
     }
     
     default boolean isDelay() {
@@ -182,6 +154,34 @@ public interface SyntaxElement {
     
     default Document createDocument() {
         return new Document(name(), getType().name(), getPatterns(), description(), examples());
+    }
+    
+    default String name() {
+        final Documentation documentation = this.getClass().getAnnotation(Documentation.class);
+        if (documentation == null) return getPattern().name();
+        return documentation.name();
+    }
+    
+    LanguageElement getType();
+    
+    String[] getPatterns();
+    
+    default String description() {
+        final Documentation documentation = this.getClass().getAnnotation(Documentation.class);
+        if (documentation == null) return "None.";
+        return documentation.description();
+    }
+    
+    default String[] examples() {
+        final Documentation documentation = this.getClass().getAnnotation(Documentation.class);
+        if (documentation == null) return new String[0];
+        return documentation.examples();
+    }
+    
+    class Handlers extends HashMap<HandlerType, Method> {
+        
+        public static final Handlers EMPTY = new Handlers();
+        
     }
     
 }

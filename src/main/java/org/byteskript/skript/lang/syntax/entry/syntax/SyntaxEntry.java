@@ -41,11 +41,11 @@ import java.util.regex.Matcher;
 )
 public class SyntaxEntry extends SectionEntry {
     
+    private final Matcher matcher = Pattern.fakeMatcher("syntax");
+    
     public SyntaxEntry() {
         super(SkriptLangSpec.LIBRARY, StandardElements.SECTION, "syntax");
     }
-    
-    private final Matcher matcher = Pattern.fakeMatcher("syntax");
     
     @Override
     public Pattern.Match match(String thing, Context context) {

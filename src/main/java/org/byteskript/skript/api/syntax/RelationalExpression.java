@@ -26,6 +26,11 @@ public abstract class RelationalExpression extends ComplexExpression implements 
     }
     
     @Override
+    public Pattern.Match match(String thing, Context context) {
+        return super.match(thing, context);
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         final Method target = handlers.get(context.getHandlerMode());
@@ -35,11 +40,6 @@ public abstract class RelationalExpression extends ComplexExpression implements 
         if (!context.getHandlerMode().expectReturn()) return;
         final Type type = context.getCompileCurrent().wanted;
         if (type != null) method.writeCode(WriteInstruction.cast(type));
-    }
-    
-    @Override
-    public Pattern.Match match(String thing, Context context) {
-        return super.match(thing, context);
     }
     
     @Override

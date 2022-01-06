@@ -33,29 +33,14 @@ public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
         }
     }
     
-    public void registerSyntax(State state, SyntaxElement element) {
-        this.syntax.putIfAbsent(state, new ArrayList<>());
-        this.syntax.get(state).add(element);
-    }
-    
-    
     public void registerEvents(EventHolder... events) {
         for (EventHolder event : events) {
             this.registerEvent(event);
         }
     }
     
-    public void registerEvent(EventHolder event) {
-        this.registerSyntax(CompileState.ROOT, event);
-        this.registerValues(event);
-    }
-    
     public void registerProperty(PropertyHandler handler) {
         this.properties.add(handler);
-    }
-    
-    public void registerProperty(String name, HandlerType type, Method handler) {
-        this.properties.add(new PropertyHandler(type, handler, name));
     }
     
     public void registerTypes(Class<?>... classes) {
@@ -64,16 +49,30 @@ public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
         }
     }
     
-    public void registerTypes(Type... types) {
-        for (Type type : types) {
-            if (!this.types.contains(type)) this.types.add(type);
-        }
-    }
-    
     public Type registerType(Class<?> cls) {
         final Type type = new Type(cls);
         if (!types.contains(type)) this.types.add(type);
         return type;
+    }
+    
+    public void registerSyntax(State state, SyntaxElement element) {
+        this.syntax.putIfAbsent(state, new ArrayList<>());
+        this.syntax.get(state).add(element);
+    }
+    
+    public void registerEvent(EventHolder event) {
+        this.registerSyntax(CompileState.ROOT, event);
+        this.registerValues(event);
+    }
+    
+    public void registerProperty(String name, HandlerType type, Method handler) {
+        this.properties.add(new PropertyHandler(type, handler, name));
+    }
+    
+    public void registerTypes(Type... types) {
+        for (Type type : types) {
+            if (!this.types.contains(type)) this.types.add(type);
+        }
     }
     
     public Type registerType(String classPath) {
@@ -104,15 +103,6 @@ public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
     }
     
     @Override
-    public SyntaxElement[] getSyntax() {
-        final List<SyntaxElement> elements = new ArrayList<>();
-        for (List<SyntaxElement> value : syntax.values()) {
-            elements.addAll(value);
-        }
-        return elements.toArray(new SyntaxElement[0]);
-    }
-    
-    @Override
     public LanguageElement[] getConstructs() {
         return new LanguageElement[0];
     }
@@ -125,5 +115,14 @@ public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
     @Override
     public Collection<PostCompileClass> getRuntime() {
         return Collections.emptyList();
+    }
+    
+    @Override
+    public SyntaxElement[] getSyntax() {
+        final List<SyntaxElement> elements = new ArrayList<>();
+        for (List<SyntaxElement> value : syntax.values()) {
+            elements.addAll(value);
+        }
+        return elements.toArray(new SyntaxElement[0]);
     }
 }

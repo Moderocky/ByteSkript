@@ -45,12 +45,6 @@ public class WakeEffect extends Effect {
         }
     }
     
-    @Override
-    public Pattern.Match match(String thing, Context context) {
-        if (!thing.startsWith("wake ")) return null;
-        return super.match(thing, context);
-    }
-    
     @ForceExtract
     public static void run(Object object) {
         if (!(object instanceof Thread))
@@ -60,5 +54,11 @@ public class WakeEffect extends Effect {
         synchronized (thread.lock) {
             thread.lock.notify();
         }
+    }
+    
+    @Override
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.startsWith("wake ")) return null;
+        return super.match(thing, context);
     }
 }

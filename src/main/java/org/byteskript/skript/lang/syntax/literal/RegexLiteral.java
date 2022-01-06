@@ -43,11 +43,6 @@ public class RegexLiteral extends Literal<java.util.regex.Pattern> {
     }
     
     @Override
-    public Type getReturnType() {
-        return CommonTypes.STRING;
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final String string = match.matcher().group();
         assert string.length() > 1;
@@ -72,5 +67,10 @@ public class RegexLiteral extends Literal<java.util.regex.Pattern> {
         final Matcher matcher = PATTERN.matcher(thing);
         if (matcher.find()) return new Pattern.Match(matcher);
         return null;
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.STRING;
     }
 }

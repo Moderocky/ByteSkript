@@ -23,14 +23,14 @@ import java.util.function.Supplier;
 
 public class ExtractedSyntaxCalls {
     
+    public static ModifiableCompiler getCompiler() {
+        return findInstance().getCompiler();
+    }
+    
     private static Skript findInstance() {
         final Thread current = Thread.currentThread();
         if (!(current instanceof ScriptThread thread)) return Skript.currentInstance();
         return thread.skript;
-    }
-    
-    public static ModifiableCompiler getCompiler() {
-        return findInstance().getCompiler();
     }
     
     public static DataList getLoadedScripts() {
@@ -46,22 +46,17 @@ public class ExtractedSyntaxCalls {
             private String value;
             
             @Override
-            public void run() throws Throwable {
-                value = new BufferedReader(new InputStreamReader(System.in)).readLine();
+            public String get() {
+                return value;
             }
             
             @Override
-            public String get() {
-                return value;
+            public void run() throws Throwable {
+                value = new BufferedReader(new InputStreamReader(System.in)).readLine();
             }
         };
         runOnMainThread(instruction);
         return instruction.get();
-    }
-    
-    public static String readSystemInput() throws Throwable {
-        final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        return reader.readLine();
     }
     
     public static void runOnMainThread(final Instruction<?> runnable) throws Throwable {
@@ -72,6 +67,11 @@ public class ExtractedSyntaxCalls {
         synchronized (thread.controller) {
             thread.controller.wait();
         }
+    }
+    
+    public static String readSystemInput() throws Throwable {
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        return reader.readLine();
     }
     
     public static void runOnAsyncThread(final Runnable runnable) {

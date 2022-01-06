@@ -20,22 +20,22 @@ public abstract class SimpleEntry extends Element {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return false;
-    }
-    
-    @Override
     public Pattern.Match match(String thing, Context context) {
         return super.match(thing, context);
     }
     
     @Override
-    public boolean allowedIn(State state, Context context) {
-        return state == CompileState.MEMBER_BODY;
+    public CompileState getSubState() {
+        return CompileState.MEMBER_BODY;
     }
     
     @Override
-    public CompileState getSubState() {
-        return CompileState.MEMBER_BODY;
+    public boolean allowAsInputFor(Type type) {
+        return false;
+    }
+    
+    @Override
+    public boolean allowedIn(State state, Context context) {
+        return state == CompileState.MEMBER_BODY;
     }
 }

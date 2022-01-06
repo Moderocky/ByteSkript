@@ -29,13 +29,6 @@ public class GeneratedEntryNode extends Element {
     }
     
     @Override
-    public boolean allowedIn(State state, Context context) {
-        return super.allowedIn(state, context)
-            && context.getSection().handler() instanceof GeneratedEntrySection section
-            && section.getTarget() == target.getDeclaringRecord();
-    }
-    
-    @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final ElementTree tree = context.getCompileCurrent().nested()[0];
         if (!(tree.current() instanceof Literal))
@@ -53,6 +46,13 @@ public class GeneratedEntryNode extends Element {
         assert object == null || target.getType().isInstance(object);
         context.getSection().getData().add(object);
         context.setState(CompileState.AREA_BODY);
+    }
+    
+    @Override
+    public boolean allowedIn(State state, Context context) {
+        return super.allowedIn(state, context)
+            && context.getSection().handler() instanceof GeneratedEntrySection section
+            && section.getTarget() == target.getDeclaringRecord();
     }
     
 }

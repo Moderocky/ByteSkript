@@ -42,6 +42,22 @@ public class RunEffect extends ControlEffect {
         super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "run %Executable%");
     }
     
+    @ForceExtract
+    public static Object run(Object thing)
+        throws Throwable {
+        if (thing instanceof Method method)
+            return method.invoke(null);
+        else if (thing instanceof MethodAccessor<?> runnable)
+            runnable.invoke();
+        else if (thing instanceof Member runnable)
+            runnable.invoke();
+        else if (thing instanceof Runnable runnable)
+            runnable.run();
+        else if (thing instanceof Future future)
+            return future.get();
+        return null;
+    }
+    
     @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.startsWith("run ")) return null;
@@ -64,22 +80,6 @@ public class RunEffect extends ControlEffect {
         }
         method.writeCode(WriteInstruction.pop());
         context.setState(CompileState.CODE_BODY);
-    }
-    
-    @ForceExtract
-    public static Object run(Object thing)
-        throws Throwable {
-        if (thing instanceof Method method)
-            return method.invoke(null);
-        else if (thing instanceof MethodAccessor<?> runnable)
-            runnable.invoke();
-        else if (thing instanceof Member runnable)
-            runnable.invoke();
-        else if (thing instanceof Runnable runnable)
-            runnable.run();
-        else if (thing instanceof Future future)
-            return future.get();
-        return null;
     }
     
     @Override

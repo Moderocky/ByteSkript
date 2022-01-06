@@ -46,15 +46,15 @@ public class ThreadExpression extends SimpleExpression {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return super.allowAsInputFor(type) || CommonTypes.OBJECT.equals(type) || CommonTypes.THREAD.equals(type);
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
         method.writeCode(WriteInstruction.invokeStatic(Thread.class.getMethod("currentThread")));
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return super.allowAsInputFor(type) || CommonTypes.OBJECT.equals(type) || CommonTypes.THREAD.equals(type);
     }
     
 }

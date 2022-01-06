@@ -21,12 +21,6 @@ public abstract class TriggerHolder extends Member {
         super(provider, type, patterns);
     }
     
-    public abstract Type returnType(Context context, Pattern.Match match);
-    
-    public abstract Type[] parameters(Context context, Pattern.Match match);
-    
-    public abstract String callSiteName(Context context, Pattern.Match match);
-    
     @Override
     public void compile(Context context, Pattern.Match match) {
         final MethodBuilder method = context.getBuilder()
@@ -37,5 +31,11 @@ public abstract class TriggerHolder extends Member {
         context.setMethod(method);
         context.setState(CompileState.MEMBER_BODY);
     }
+    
+    public abstract String callSiteName(Context context, Pattern.Match match);
+    
+    public abstract Type returnType(Context context, Pattern.Match match);
+    
+    public abstract Type[] parameters(Context context, Pattern.Match match);
     
 }

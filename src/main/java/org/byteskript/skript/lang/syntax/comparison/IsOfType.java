@@ -42,14 +42,6 @@ public class IsOfType extends RelationalExpression {
         }
     }
     
-    @Override
-    public Pattern.Match match(String thing, Context context) {
-        if (!thing.contains(" is a")
-            && !thing.contains(" are a")
-        ) return null;
-        return super.match(thing, context);
-    }
-    
     @ForceExtract
     public static Boolean check(Object object, Object type) {
         if (type instanceof Class cls) return cls.isInstance(object);
@@ -57,12 +49,11 @@ public class IsOfType extends RelationalExpression {
     }
     
     @Override
-    public void preCompile(Context context, Pattern.Match match) throws Throwable {
-        super.preCompile(context, match);
-        final ElementTree tree = context.getCompileCurrent().nested()[1];
-        if (tree.current() instanceof TypeExpression) {
-            tree.compile = false;
-        }
+    public Pattern.Match match(String thing, Context context) {
+        if (!thing.contains(" is a")
+            && !thing.contains(" are a")
+        ) return null;
+        return super.match(thing, context);
     }
     
     @Override
@@ -81,6 +72,15 @@ public class IsOfType extends RelationalExpression {
             this.writeCall(method, target, context);
         }
         context.setState(CompileState.STATEMENT);
+    }
+    
+    @Override
+    public void preCompile(Context context, Pattern.Match match) throws Throwable {
+        super.preCompile(context, match);
+        final ElementTree tree = context.getCompileCurrent().nested()[1];
+        if (tree.current() instanceof TypeExpression) {
+            tree.compile = false;
+        }
     }
     
     @Override

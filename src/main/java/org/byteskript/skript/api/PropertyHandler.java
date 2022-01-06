@@ -17,6 +17,16 @@ public record PropertyHandler(String name, HandlerType type, Type holder, Type v
         this(name, type, createHolder(method), createValue(type, method), method);
     }
     
+    private static Type createHolder(Method method) {
+        if (Modifier.isStatic(method.getModifiers())) {
+            final Class<?>[] classes = method.getParameterTypes();
+            assert classes.length > 0;
+            return new Type(classes[0]);
+        } else {
+            return new Type(method.getDeclaringClass());
+        }
+    }
+    
     private static Type createValue(HandlerType type, Method method) {
         if (type.expectInputs()) {
             final Class<?>[] classes = method.getParameterTypes();
@@ -26,16 +36,6 @@ public record PropertyHandler(String name, HandlerType type, Type holder, Type v
             return new Type(method.getReturnType());
         } else {
             return new Type(void.class);
-        }
-    }
-    
-    private static Type createHolder(Method method) {
-        if (Modifier.isStatic(method.getModifiers())) {
-            final Class<?>[] classes = method.getParameterTypes();
-            assert classes.length > 0;
-            return new Type(classes[0]);
-        } else {
-            return new Type(method.getDeclaringClass());
         }
     }
     

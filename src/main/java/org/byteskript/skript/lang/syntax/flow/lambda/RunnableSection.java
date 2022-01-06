@@ -51,25 +51,25 @@ public class RunnableSection extends ExtractedSection {
     }
     
     @Override
-    public Type getReturnType() {
-        return CommonTypes.RUNNABLE;
-    }
-    
-    @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.contains(" new runnable")) return null;
         return super.match(thing, context);
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return CommonTypes.OBJECT.equals(type) || CommonTypes.RUNNABLE.equals(type) || CommonTypes.EXECUTABLE.equals(type);
+    public Type getReturnType() {
+        return CommonTypes.RUNNABLE;
     }
     
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         if (!context.isSectionHeader())
             throw new ScriptCompileError(context.lineNumber(), "Runnable has no body section.");
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return CommonTypes.OBJECT.equals(type) || CommonTypes.RUNNABLE.equals(type) || CommonTypes.EXECUTABLE.equals(type);
     }
     
     @Override

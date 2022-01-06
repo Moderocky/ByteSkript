@@ -34,6 +34,7 @@ import java.util.regex.Matcher;
 public class ExternalFunctionExpression extends SimpleExpression {
     
     private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")\\((?<params>.*)\\) from (?<location>.+)");
+    private final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("^" + SkriptLangSpec.IDENTIFIER.pattern() + "(?:/" + SkriptLangSpec.IDENTIFIER.pattern() + ")*$");
     
     public ExternalFunctionExpression() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "function(...) from %Source%");
@@ -44,6 +45,59 @@ public class ExternalFunctionExpression extends SimpleExpression {
         if (!thing.contains(") from ")) return null;
         if (!thing.contains("(")) return null;
         return createMatch(thing, context);
+    }
+    
+    private Pattern.Match createMatch(String thing, Context context) {
+        final Matcher matcher = PATTERN.matcher(thing);
+        if (!matcher.find()) return null;
+        final String name = matcher.group("name");
+        final String params = matcher.group("params");
+        final String location = matcher.group("location");
+        if (!pattern.matcher(location).matches()) return null;
+        if (location.contains("\"")) return null;
+        final Type[] parameters = getParams(params);
+        final Matcher dummy = java.util.regex.Pattern.compile(buildDummyPattern(name, parameters.length, location))
+            .matcher(thing);
+        dummy.find();
+        final List<Type> types = new ArrayList<>();
+        for (int i = 0; i < parameters.length; i++) {
+            types.add(CommonTypes.OBJECT);
+        }
+        return new Pattern.Match(dummy, new FunctionDetails(name, parameters, location), types.toArray(new Type[0]));
+    }
+    
+    private Type[] getParams(String params) {
+        if (params.isBlank()) return new Type[0];
+        int nest = 0;
+        final List<Type> types = new ArrayList<>();
+        int count = 1;
+        boolean atomic = false;
+        for (char c : params.toCharArray()) {
+            if (c == '(') nest++;
+            else if (c == ')') nest--;
+            else if (c == '@' && nest < 1) atomic = true;
+            else if (c == ',' && nest < 1) {
+                count++;
+                if (atomic) types.add(CommonTypes.ATOMIC);
+                else types.add(CommonTypes.OBJECT);
+                atomic = false;
+            }
+        }
+        if (atomic) types.add(CommonTypes.ATOMIC);
+        else types.add(CommonTypes.OBJECT);
+        return types.toArray(new Type[0]);
+    }
+    
+    private String buildDummyPattern(String name, int params, String location) {
+        final StringBuilder builder = new StringBuilder()
+            .append(name).append("\\(");
+        if (params > 0) {
+            for (int i = 0; i < params; i++) {
+                if (i > 0) builder.append(", ");
+                builder.append("(.+)");
+            }
+        }
+        return builder.append("\\) from ").append(location).toString();
     }
     
     @Override
@@ -70,61 +124,6 @@ public class ExternalFunctionExpression extends SimpleExpression {
     }
     
     private record FunctionDetails(String name, Type[] arguments, String location) {
-    }
-    
-    private final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("^" + SkriptLangSpec.IDENTIFIER.pattern() + "(?:/" + SkriptLangSpec.IDENTIFIER.pattern() + ")*$");
-    
-    private Pattern.Match createMatch(String thing, Context context) {
-        final Matcher matcher = PATTERN.matcher(thing);
-        if (!matcher.find()) return null;
-        final String name = matcher.group("name");
-        final String params = matcher.group("params");
-        final String location = matcher.group("location");
-        if (!pattern.matcher(location).matches()) return null;
-        if (location.contains("\"")) return null;
-        final Type[] parameters = getParams(params);
-        final Matcher dummy = java.util.regex.Pattern.compile(buildDummyPattern(name, parameters.length, location))
-            .matcher(thing);
-        dummy.find();
-        final List<Type> types = new ArrayList<>();
-        for (int i = 0; i < parameters.length; i++) {
-            types.add(CommonTypes.OBJECT);
-        }
-        return new Pattern.Match(dummy, new FunctionDetails(name, parameters, location), types.toArray(new Type[0]));
-    }
-    
-    private String buildDummyPattern(String name, int params, String location) {
-        final StringBuilder builder = new StringBuilder()
-            .append(name).append("\\(");
-        if (params > 0) {
-            for (int i = 0; i < params; i++) {
-                if (i > 0) builder.append(", ");
-                builder.append("(.+)");
-            }
-        }
-        return builder.append("\\) from ").append(location).toString();
-    }
-    
-    private Type[] getParams(String params) {
-        if (params.isBlank()) return new Type[0];
-        int nest = 0;
-        final List<Type> types = new ArrayList<>();
-        int count = 1;
-        boolean atomic = false;
-        for (char c : params.toCharArray()) {
-            if (c == '(') nest++;
-            else if (c == ')') nest--;
-            else if (c == '@' && nest < 1) atomic = true;
-            else if (c == ',' && nest < 1) {
-                count++;
-                if (atomic) types.add(CommonTypes.ATOMIC);
-                else types.add(CommonTypes.OBJECT);
-                atomic = false;
-            }
-        }
-        if (atomic) types.add(CommonTypes.ATOMIC);
-        else types.add(CommonTypes.OBJECT);
-        return types.toArray(new Type[0]);
     }
     
 }

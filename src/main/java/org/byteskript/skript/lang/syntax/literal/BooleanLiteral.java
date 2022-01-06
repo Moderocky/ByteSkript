@@ -35,11 +35,6 @@ public class BooleanLiteral extends Literal<Boolean> {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return true;
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
@@ -57,6 +52,11 @@ public class BooleanLiteral extends Literal<Boolean> {
     public Pattern.Match match(String thing, Context context) {
         if (!thing.equals("true") && !thing.equals("false")) return null;
         return super.match(thing, context);
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return true;
     }
     
 }

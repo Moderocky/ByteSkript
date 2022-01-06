@@ -36,6 +36,22 @@ public class Metafactory {
         return compiler.getCallSite();
     }
     
+    private static Method findTarget(MethodHandles.Lookup caller, String name, Class<?> owner, Class<?>... parameters)
+        throws Exception {
+        final Method[] methods = owner.getMethods();
+        for (final Method method : methods) {
+            if (!method.getName().equals(name)) continue;
+            if (Arrays.equals(method.getParameterTypes(), parameters)) return method;
+        }
+        for (final Method method : methods) {
+            if (!Modifier.isStatic(method.getModifiers())) continue; // can only hit statics for now
+            if (!method.getName().equals(name)) continue;
+            if (parameters.length == method.getParameterCount()) return method;
+        }
+        throw new ScriptRuntimeError("Unable to find function '" + name + Arrays.toString(parameters).replace('[', '(')
+            .replace(']', ')') + "'");
+    }
+    
     public static Object callFunction(String name, Object target, Object[] parameters) {
         final MethodAccessor<Object> accessor = Mirror.of(target).useProvider(Skript.LOADER).method(name, parameters);
         if (accessor == null) throw new ScriptRuntimeError("Unable to find function '" + name + "' from " + target);
@@ -53,22 +69,6 @@ public class Metafactory {
             .findStatic(OperatorHandler.class, "concat", type)
             .withVarargs(true);
         return new ConstantCallSite(handle);
-    }
-    
-    private static Method findTarget(MethodHandles.Lookup caller, String name, Class<?> owner, Class<?>... parameters)
-        throws Exception {
-        final Method[] methods = owner.getMethods();
-        for (final Method method : methods) {
-            if (!method.getName().equals(name)) continue;
-            if (Arrays.equals(method.getParameterTypes(), parameters)) return method;
-        }
-        for (final Method method : methods) {
-            if (!Modifier.isStatic(method.getModifiers())) continue; // can only hit statics for now
-            if (!method.getName().equals(name)) continue;
-            if (parameters.length == method.getParameterCount()) return method;
-        }
-        throw new ScriptRuntimeError("Unable to find function '" + name + Arrays.toString(parameters).replace('[', '(')
-            .replace(']', ')') + "'");
     }
     
 }

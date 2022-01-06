@@ -49,16 +49,14 @@ public final class ExampleController extends Thread implements Runnable {
         }
     }
     
-    public Skript skript() {
-        return skript;
+    @Override
+    public String toString() {
+        return "ExampleController[" +
+            "skript=" + skript + ']';
     }
     
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (ExampleController) obj;
-        return Objects.equals(this.skript, that.skript);
+    public Skript skript() {
+        return skript;
     }
     
     @Override
@@ -67,9 +65,11 @@ public final class ExampleController extends Thread implements Runnable {
     }
     
     @Override
-    public String toString() {
-        return "ExampleController[" +
-            "skript=" + skript + ']';
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (ExampleController) obj;
+        return Objects.equals(this.skript, that.skript);
     }
     
     

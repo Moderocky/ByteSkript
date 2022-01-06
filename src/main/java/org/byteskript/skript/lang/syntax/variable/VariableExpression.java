@@ -48,11 +48,6 @@ public class VariableExpression extends SimpleExpression implements Referent {
     }
     
     @Override
-    public boolean allowAsInputFor(Type type) {
-        return true;
-    }
-    
-    @Override
     public Pattern.Match match(String thing, Context context) {
         if (thing.length() < 3) return null;
         if (thing.charAt(0) != '{') return null;
@@ -69,8 +64,23 @@ public class VariableExpression extends SimpleExpression implements Referent {
     }
     
     @Override
+    public boolean allowAsInputFor(Type type) {
+        return true;
+    }
+    
+    @Override
     public Type getHolderType() {
         return CommonTypes.VOID;
+    }
+    
+    public PreVariable getVariable(Context context, Pattern.Match match) {
+        final String name = match.matcher().group("name");
+        return context.getVariable(name);
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.OBJECT;
     }
     
     @Override
@@ -87,16 +97,6 @@ public class VariableExpression extends SimpleExpression implements Referent {
             method.writeCode(WriteInstruction.pushNull());
             method.writeCode(variable.store(slot));
         }
-    }
-    
-    public PreVariable getVariable(Context context, Pattern.Match match) {
-        final String name = match.matcher().group("name");
-        return context.getVariable(name);
-    }
-    
-    @Override
-    public Type getReturnType() {
-        return CommonTypes.OBJECT;
     }
     
 }
