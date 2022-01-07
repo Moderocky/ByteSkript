@@ -16,13 +16,16 @@ import org.junit.Test;
 public class ThreadingTest extends SkriptTest {
     
     private static final Skript skript = new Skript();
+    private static final Skript skript2 = new Skript();
     private static Script script;
+    private static Script script2;
     
     @BeforeClass
     public static void start() throws Throwable {
         final PostCompileClass cls = skript.compileScript(ProvidedFunctionsTest.class.getClassLoader()
             .getResourceAsStream("flow.bsk"), "skript.flow");
         script = skript.loadScript(cls);
+        script2 = skript2.loadScript(cls);
     }
     
     @Test
@@ -30,6 +33,17 @@ public class ThreadingTest extends SkriptTest {
         final Member function = script.getFunction("sleep_flow");
         assert function != null;
         function.run(skript).get();
+    }
+    
+    @Test
+    public void multipleProcess() throws Throwable {
+        final Member function = script.getFunction("sleep_flow");
+        final Member function2 = script2.getFunction("sleep_flow");
+        function.run(skript).get();
+        function.run(skript2).get();
+        function2.run(skript2).get();
+        assert script.mainClass() != script2.mainClass();
+        assert script.skriptInstance() != script2.skriptInstance();
     }
     
 }

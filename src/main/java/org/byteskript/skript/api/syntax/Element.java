@@ -15,6 +15,9 @@ import org.byteskript.skript.compiler.Pattern;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+/**
+ * The basic syntax element class, which all existing syntax uses.
+ */
 public abstract class Element implements SyntaxElement {
     
     protected final Library provider;

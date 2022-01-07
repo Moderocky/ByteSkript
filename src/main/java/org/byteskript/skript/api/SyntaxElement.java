@@ -25,16 +25,51 @@ import java.util.function.Consumer;
 
 import static mx.kenzie.foundation.WriteInstruction.*;
 
+/**
+ * A syntax element.
+ * This instance controls the matching and compiling for a specific element.
+ * The library it comes from controls where it can be matched.
+ */
 public interface SyntaxElement {
     
+    /**
+     * Attempts to match this element to a source string.
+     * The context can be accessed, but should not be modified here.
+     * If the source does not match this element, return `null`.
+     * If the source does match this element, return a match object with the match data in.
+     * <p>
+     * Complex patterns are advised to override this and attempt faster
+     * checks with {@link String#contains(CharSequence)} before running the super matcher.
+     * This will circumvent a complex regex having to be checked every time.
+     *
+     * @param thing   the source
+     * @param context the context of this source
+     * @return the match result
+     */
     default Pattern.Match match(String thing, Context context) {
-        return getPattern().match(thing, context);
+        return this.getPattern().match(thing, context);
     }
     
+    /**
+     * The pattern metadata object.
+     *
+     * @return the pattern
+     */
     Pattern getPattern();
     
+    /**
+     * The library that provides this syntax element.
+     *
+     * @return the provider
+     */
     Library getProvider();
     
+    /**
+     * For basic syntax, this can return a method that will be used as a handle.
+     *
+     * @param type the handler mode
+     * @return the method handle
+     */
     Method getHandler(HandlerType type);
     
     void setHandler(HandlerType type, Method method);
@@ -60,14 +95,35 @@ public interface SyntaxElement {
     
     boolean hasHandler(HandlerType type);
     
+    /**
+     * The return type of this element, used for type tracking during compilation.
+     *
+     * @return the return type
+     */
     default Type getReturnType() {
         return CommonTypes.VOID;
     }
     
+    /**
+     * This is called during the first compiler pass, Out->In, L->R.
+     * Simple elements will not need this, but lookahead or re-ordering operations can be run here.
+     *
+     * @param context the compiler context
+     * @param match   the match used
+     * @throws Throwable to avoid unnecessary try/catch blocks
+     */
     default void preCompile(Context context, Pattern.Match match) throws Throwable {
         // Very few elements require a lookahead.
     }
     
+    /**
+     * This is called during the second compiler pass, In->Out, L->R.
+     * Non-trivial syntax may need to override this to provide special behaviour.
+     *
+     * @param context the compiler context
+     * @param match   the match used
+     * @throws Throwable to avoid unnecessary try/catch blocks
+     */
     void compile(Context context, Pattern.Match match) throws Throwable;
     
     default boolean allowedIn(State state, Context context) {
@@ -86,6 +142,15 @@ public interface SyntaxElement {
         context.addSkipInstruction(consumer);
     }
     
+    /**
+     * This writes a smart method call for the syntax, obeying rewrite rules.
+     * This can perform inlining, extraction and basic rewrites.
+     * This also has access to the bridge compiler.
+     *
+     * @param builder the method builder to use
+     * @param method  the target method
+     * @param context the compiler context
+     */
     default void writeCall(final MethodBuilder builder, final Method method, final Context context) {
         final ForceInline inline = method.getAnnotation(ForceInline.class);
         final ForceExtract extract = method.getAnnotation(ForceExtract.class);
@@ -133,6 +198,9 @@ public interface SyntaxElement {
         }
     }
     
+    /**
+     * A wrapped version of {@link Class#getMethod(String, Class[])} to avoid catching exceptions.
+     */
     default Method findMethod(Class<?> owner, String name, Class<?>... parameters) {
         try {
             return owner.getMethod(name, parameters);
@@ -168,7 +236,7 @@ public interface SyntaxElement {
     
     default String description() {
         final Documentation documentation = this.getClass().getAnnotation(Documentation.class);
-        if (documentation == null) return "None.";
+        if (documentation == null) return "No description.";
         return documentation.description();
     }
     
@@ -179,9 +247,7 @@ public interface SyntaxElement {
     }
     
     class Handlers extends HashMap<HandlerType, Method> {
-        
-        public static final Handlers EMPTY = new Handlers();
-        
+    
     }
     
 }

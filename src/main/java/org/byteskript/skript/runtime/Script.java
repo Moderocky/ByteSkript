@@ -89,7 +89,7 @@ public final class Script {
     }
     
     void verify() {
-        this.forceLoad(mainClass());
+        this.forceLoad(this.mainClass());
         for (final Map.Entry<String, Member> entry : functions.entrySet()) {
             final Member value = entry.getValue();
             final String name = entry.getKey();

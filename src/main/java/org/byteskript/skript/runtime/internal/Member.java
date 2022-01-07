@@ -19,6 +19,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.Future;
 
+/**
+ * A handle for a function, event, etc. inside a script.
+ * Keeping strong references to this is not advised, since it will prevent safe unloading.
+ * The member can be triggered safely from this.
+ */
 public class Member {
     
     protected final Script script;
@@ -123,10 +128,46 @@ public class Member {
         return Mirror.of(owner).useProvider(Skript.findLoader()).method(name, parameters);
     }
     
+    /**
+     * Gets the script instance that provided this member.
+     *
+     * @return the owning script
+     */
     public Script getScript() {
         return script;
     }
     
+    /**
+     * Triggers this member in a new script thread.
+     * This will be run in the runtime from which the member was originally loaded.
+     *
+     * @param arguments the (function) arguments to pass
+     * @return a future governing this process
+     */
+    public Future<?> run(Object... arguments) {
+        final ScriptRunner runner = new ScriptRunner() {
+            @Override
+            public void start() {
+                invoker.invoke(arguments);
+            }
+            
+            @Override
+            public Class<? extends CompiledScript> owner() {
+                return script.mainClass();
+            }
+        };
+        return script.skriptInstance().runScript(runner);
+    }
+    
+    /**
+     * Triggers this member in a new script thread.
+     * This allows running in a different script runtime.
+     * This is potentially unsafe - alternative class versions can bleed between runtimes.
+     *
+     * @param skript    the Skript runtime
+     * @param arguments the (function) arguments to pass
+     * @return a future governing this process
+     */
     public Future<?> run(Skript skript, Object... arguments) {
         final ScriptRunner runner = new ScriptRunner() {
             @Override
@@ -142,6 +183,10 @@ public class Member {
         return skript.runScript(runner);
     }
     
+    /**
+     * Triggers this member's verifier with a set of `null` parameters.
+     * Rather than returning a boolean result, this will throw an error if the verifier fails.
+     */
     public void verify() {
         if (verifier == null) return;
         verifier.invoke(new Object[parameters]);
