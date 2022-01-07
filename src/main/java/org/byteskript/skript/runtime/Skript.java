@@ -41,8 +41,8 @@ public final class Skript {
     
     public static final ThreadGroup THREAD_GROUP = new ThreadGroup("skript");
     public static final int JAVA_VERSION = 61;
-    public static final RuntimeClassLoader LOADER = new RuntimeClassLoader(Skript.class.getClassLoader());
     static final GlobalVariableMap VARIABLES = new GlobalVariableMap();
+    private static final RuntimeClassLoader LOADER = new RuntimeClassLoader(Skript.class.getClassLoader());
     private static Skript skript;
     final ExecutorService executor;
     final SkriptThreadProvider factory;
@@ -51,11 +51,9 @@ public final class Skript {
     final ModifiableCompiler compiler;
     final List<OperationController> processes;
     final Map<Class<? extends Event>, EventHandler> events;
-    final SkriptMirror mirror = new SkriptMirror(LOADER);
+    final RuntimeClassLoader parent = new RuntimeClassLoader(LOADER);
     final WeakList<ScriptClassLoader> loaders = new WeakList<>();
     final List<Script> scripts = new ArrayList<>(); // the only strong reference, be careful!
-    
-    //region Class Loaders
     
     /**
      * Create a Skript runtime with a custom (non-default) Skript compiler.
@@ -102,6 +100,47 @@ public final class Skript {
     }
     
     /**
+     * Gets the parent class-loader local to this thread.
+     * This is only usable from a script thread.
+     *
+     * @return the local runtime loader
+     */
+    @ThreadSpecific
+    public static RuntimeClassLoader localLoader() {
+        final Thread current = Thread.currentThread();
+        if (!(current instanceof ScriptThread thread))
+            throw new ScriptRuntimeError("Not running on a script thread.");
+        return thread.skript.parent;
+    }
+    
+    /**
+     * Finds an arbitrary parent class-loader.
+     * This will use the most recently-created Skript runtime.
+     * This is unsafe, since it is unlikely to be the required loader.
+     *
+     * @return potentially null class-loader
+     */
+    @Deprecated
+    public static RuntimeClassLoader currentLoader() {
+        return skript.parent;
+    }
+    
+    /**
+     * Attempts to find the parent class-loader.
+     * This will look for a local loader but default to the most-recently-created.
+     * This is designed for internal use.
+     *
+     * @return an arbitrary class-loader
+     */
+    @ThreadSpecific
+    public static RuntimeClassLoader findLoader() {
+        final Thread current = Thread.currentThread();
+        if (current instanceof ScriptThread thread)
+            return thread.skript.parent;
+        return skript.parent;
+    }
+    
+    /**
      * This is the map of global `{!var}` variables.
      * This is a modifiable and atomic map.
      * Destroying this map's contents without warning is not advised.
@@ -114,7 +153,6 @@ public final class Skript {
     public static GlobalVariableMap getVariables() {
         return VARIABLES;
     }
-    //endregion
     
     /**
      * This returns the Skript instance that launched the current thread.
@@ -157,8 +195,6 @@ public final class Skript {
         return path.substring(0, index).replace(File.separatorChar, '.');
     }
     
-    //region Runtime Instances
-    
     private static List<File> getFiles(List<File> files, Path root) {
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(root)) {
             for (Path path : stream) {
@@ -173,6 +209,16 @@ public final class Skript {
             e.printStackTrace();
         }
         return files;
+    }
+    
+    /**
+     * Gets the parent class-loader attached to this Skript runtime.
+     * This is used to search available libraries and scripts for classes.
+     *
+     * @return this runtime loader
+     */
+    public RuntimeClassLoader getLoader() {
+        return parent;
     }
     
     /**
@@ -195,9 +241,6 @@ public final class Skript {
     public Future<?> getOnAsyncThread(final Instruction<?> runnable) {
         return executor.submit(runnable::get);
     }
-    //endregion
-    
-    //region Thread Control
     
     /**
      * Submits this instruction to a background thread.
@@ -232,9 +275,6 @@ public final class Skript {
     public Collection<OperationController> getProcesses() {
         return processes;
     }
-    //endregion
-    
-    //region Script Control
     
     /**
      * Runs a script with a completing future.
@@ -353,9 +393,6 @@ public final class Skript {
             return null;
         }
     }
-    //endregion
-    
-    //region Libraries
     
     /**
      * Registers a single class library, typically compiled from a script to load
@@ -378,7 +415,6 @@ public final class Skript {
         compiler.addLibrary(library);
     }
     
-    //region File Utilities
     private static String getClassName(InputStream is)
         throws IOException {
         final DataInputStream stream = new DataInputStream(is);
@@ -428,9 +464,6 @@ public final class Skript {
     public ModifiableCompiler getCompiler() {
         return compiler;
     }
-    //endregion
-    
-    //region Script Compiling
     
     /**
      * Returns an array of all registered libraries.
@@ -598,9 +631,6 @@ public final class Skript {
             if (script.mainClass() == main) this.unloadScript(script);
         }
     }
-    //endregion
-    
-    //region Script Loading
     
     /**
      * Unloads a script. This is a destructive operation.
@@ -845,9 +875,6 @@ public final class Skript {
         throws IOException {
         return loadScript(this.loadClass(name, stream.readAllBytes()));
     }
-    //endregion
-    
-    //region Timings
     
     /**
      * Loads a script from its compiled class file.
@@ -904,7 +931,6 @@ public final class Skript {
     public ExecutorService getExecutor() {
         return executor;
     }
-    //endregion
     
     /**
      * Schedules a task to be run at some point in the future.
@@ -919,7 +945,7 @@ public final class Skript {
     
     /**
      * This class handles the class-loading delegation for libraries and scripts.
-     * It should not be interacted with directly, see {@link Skript#LOADER} for an instance.
+     * It should not be interacted with directly, see {@link Skript#getLoader()} for an instance.
      */
     public static class RuntimeClassLoader extends ClassLoader implements ClassProvider {
         protected RuntimeClassLoader(ClassLoader parent) {
@@ -987,6 +1013,5 @@ public final class Skript {
             return super.loadClass(name, bytecode);
         }
     }
-    //endregion
     
 }

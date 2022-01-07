@@ -17,7 +17,7 @@ public class ScriptClassLoader extends ClassLoader implements ClassProvider {
     final List<Class<?>> loaded = new ArrayList<>();
     
     public ScriptClassLoader() {
-        super(Skript.LOADER);
+        super(Skript.findLoader());
     }
     
     public Class<?> loadClass0(String name) throws ClassNotFoundException {
@@ -32,7 +32,7 @@ public class ScriptClassLoader extends ClassLoader implements ClassProvider {
         for (final Class<?> thing : loaded) {
             if (thing.getName().equals(name)) return thing;
         }
-        return Skript.LOADER.loadClass(name);
+        return Skript.findLoader().loadClass(name);
     }
     
     @Override
@@ -40,7 +40,7 @@ public class ScriptClassLoader extends ClassLoader implements ClassProvider {
         for (final Class<?> thing : loaded) {
             if (thing.getName().equals(name)) return thing;
         }
-        return Skript.LOADER.findClass(name);
+        return Skript.findLoader().findClass(name);
     }
     
     public Class<?> findClass0(String name) throws ClassNotFoundException {

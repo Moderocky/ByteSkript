@@ -192,10 +192,11 @@ public final class skript {
     private static Mirror<?> mirror(Object owner) {
         if (owner == null) return null;
         if (owner instanceof Class<?> type) {
-            if (type.getName().startsWith("skript")) return Mirror.of(type).useProvider(Skript.LOADER);
+            if (type.getName().startsWith("skript")) return Mirror.of(type).useProvider(Skript.findLoader());
             return Mirror.of(type);
         } else {
-            if (owner.getClass().getName().startsWith("skript")) return Mirror.of(owner).useProvider(Skript.LOADER);
+            if (owner.getClass().getName().startsWith("skript"))
+                return Mirror.of(owner).useProvider(Skript.findLoader());
             return Mirror.of(owner);
         }
     }

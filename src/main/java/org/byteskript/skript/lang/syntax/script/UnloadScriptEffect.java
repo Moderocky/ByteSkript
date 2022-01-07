@@ -44,7 +44,7 @@ public class UnloadScriptEffect extends Effect {
         else if (object instanceof Script script)
             Skript.localInstance().unloadScript(script);
         else if (object instanceof String name)
-            Skript.localInstance().unloadScript(Skript.LOADER.findClass(name.replace('/', '.')));
+            Skript.localInstance().unloadScript(Skript.localLoader().findClass(name.replace('/', '.')));
     }
     
 }

@@ -53,7 +53,8 @@ public class Metafactory {
     }
     
     public static Object callFunction(String name, Object target, Object[] parameters) {
-        final MethodAccessor<Object> accessor = Mirror.of(target).useProvider(Skript.LOADER).method(name, parameters);
+        final MethodAccessor<Object> accessor = Mirror.of(target).useProvider(Skript.findLoader())
+            .method(name, parameters);
         if (accessor == null) throw new ScriptRuntimeError("Unable to find function '" + name + "' from " + target);
         return accessor.invoke(parameters);
     }

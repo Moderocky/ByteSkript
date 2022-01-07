@@ -11,7 +11,6 @@ import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Member;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.SectionMeta;
-import org.byteskript.skript.error.ScriptError;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.runtime.data.SourceData;
 import org.byteskript.skript.runtime.internal.ConsoleColour;

@@ -31,7 +31,7 @@ public class Member {
         this.script = script;
         this.async = async;
         this.parameters = method.getParameterCount();
-        final Mirror<?> mirror = Mirror.of(script.mainClass()).useProvider(Skript.LOADER);
+        final Mirror<?> mirror = Mirror.of(script.mainClass()).useProvider(script.skriptInstance().getLoader());
         this.invoker = mirror.method(method);
         this.verifier = mirror.method(method.getName() + "_verify", method.getParameterTypes());
     }
@@ -79,7 +79,7 @@ public class Member {
     }
     
     public static MethodAccessor<Object> findFunction(Object owner, String name) {
-        return Mirror.of(owner).useProvider(Skript.LOADER).method(name);
+        return Mirror.of(owner).useProvider(Skript.findLoader()).method(name);
     }
     
     public static MethodAccessor<Object> getFunction(Object source, String pattern) {
@@ -120,7 +120,7 @@ public class Member {
     public static MethodAccessor<Object> findFunction(Object owner, String name, Number arguments) {
         final Class<?>[] parameters = new Class[arguments.intValue()];
         Arrays.fill(parameters, Object.class);
-        return Mirror.of(owner).useProvider(Skript.LOADER).method(name, parameters);
+        return Mirror.of(owner).useProvider(Skript.findLoader()).method(name, parameters);
     }
     
     public Script getScript() {

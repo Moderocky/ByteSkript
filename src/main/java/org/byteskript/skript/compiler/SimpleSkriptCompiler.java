@@ -263,8 +263,9 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     }
     
     @Override
+    @Deprecated
     public Class<?> load(byte[] bytecode, String name) {
-        return Skript.LOADER.loadClass(name, bytecode);
+        return Skript.currentLoader().loadClass(name, bytecode);
     }
     
     @Override
