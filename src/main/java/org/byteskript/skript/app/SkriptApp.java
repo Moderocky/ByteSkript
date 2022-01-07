@@ -68,7 +68,7 @@ public abstract class SkriptApp {
             target.getMethod("load", Skript.class).invoke(null, skript);
         } catch (Throwable ex) {
             throw new ScriptLibraryError("Library '" + file.getName() + "' main class is missing load method:\n" +
-                "static void load(Skript skript)");
+                "public static void load(Skript skript)\n");
         }
     }
     

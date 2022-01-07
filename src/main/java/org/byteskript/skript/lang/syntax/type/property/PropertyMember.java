@@ -14,6 +14,7 @@ import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.error.ScriptError;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.runtime.data.SourceData;
+import org.byteskript.skript.runtime.internal.ConsoleColour;
 
 import java.time.Instant;
 import java.util.regex.Matcher;
@@ -56,7 +57,7 @@ public class PropertyMember extends Member {
         if (matcher.find() && matcher.group("name") != null)
             return new Pattern.Match(matcher);
         context.getError()
-            .addHint(this, "Property names must be " + ScriptError.ANSI_CYAN + "[a-z0-9_]" + ScriptError.ANSI_RESET + " and start with a letter.");
+            .addHint(this, "Property names must be " + ConsoleColour.CYAN + "[a-z0-9_]" + ConsoleColour.RESET + " and start with a letter.");
         return null;
     }
     

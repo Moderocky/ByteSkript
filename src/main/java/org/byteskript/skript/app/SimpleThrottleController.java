@@ -11,12 +11,7 @@ import org.byteskript.skript.runtime.internal.Instruction;
 import org.byteskript.skript.runtime.threading.AirlockQueue;
 import org.byteskript.skript.runtime.threading.OperationController;
 
-public final class SimpleThrottleController extends Thread implements Runnable {
-    private final Skript skript;
-    
-    public SimpleThrottleController(Skript skript) {
-        this.skript = skript;
-    }
+public record SimpleThrottleController(Skript skript) implements Runnable {
     
     @Override
     public void run() {
@@ -39,16 +34,12 @@ public final class SimpleThrottleController extends Thread implements Runnable {
                 }
             }
             try {
-                Thread.sleep(50);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 break;
             }
         }
-    }
-    
-    public Skript skript() {
-        return skript;
     }
     
 }

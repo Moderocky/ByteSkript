@@ -6,13 +6,14 @@
 
 package org.byteskript.skript.runtime.threading;
 
-import org.byteskript.skript.error.ScriptError;
 import org.byteskript.skript.error.ScriptParseError;
+
+import static org.byteskript.skript.runtime.internal.ConsoleColour.*;
 
 /**
  * This produces nice, detailed error messages.
  */
-public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler, ScriptError {
+public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler {
     
     @Override
     public void uncaughtException(Thread source, Throwable throwable) {
@@ -26,17 +27,17 @@ public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler, 
             System.err.println("An error occurred while running a script.");
             System.err.println("\t" + throwable.getMessage());
             if (start != null)
-                System.err.println("This program started in: " + BLACK_BACKGROUND + ANSI_YELLOW + start.getName()
-                    .replace('.', '/') + ".bsk" + ANSI_RESET);
+                System.err.println("This program started in: " + BLACK_BACKGROUND + YELLOW + start.getName()
+                    .replace('.', '/') + ".bsk" + RESET);
             final StackTraceElement[] elements = throwable.getStackTrace();
             if (elements == null || elements.length < 1) return;
             System.err.println("The error came from:");
             if (elements[0].getClassName().startsWith("skript.")) {
-                System.err.println("\t'" + ANSI_RED + elements[0].getClassName() + ANSI_RESET + "' line " + ANSI_CYAN + elements[0].getLineNumber() + ANSI_RESET);
-                System.err.println("\t(This is from Skript code.)" + ANSI_RESET);
+                System.err.println("\t'" + RED + elements[0].getClassName() + RESET + "' line " + CYAN + elements[0].getLineNumber() + RESET);
+                System.err.println("\t(This is from Skript code.)" + RESET);
             } else {
-                System.err.println("\t'" + ANSI_RED + elements[0].getClassName() + ANSI_RESET + "' line " + ANSI_CYAN + elements[0].getLineNumber() + ANSI_RESET);
-                System.err.println("\t(This is from a Java library.)" + ANSI_RESET);
+                System.err.println("\t'" + RED + elements[0].getClassName() + RESET + "' line " + CYAN + elements[0].getLineNumber() + RESET);
+                System.err.println("\t(This is from a Java library.)" + RESET);
             }
             System.err.println("Below is the list of trigger calls that caused this error.");
             System.err.println("The top line was the most recent call.");
@@ -49,33 +50,33 @@ public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler, 
                 if (method.startsWith("verify$")) {
                     error
                         .append("\tverifier ")
-                        .append(ANSI_PURPLE)
+                        .append(PURPLE)
                         .append(method.substring(7))
-                        .append(ANSI_RESET);
+                        .append(RESET);
                 } else if (method.startsWith("event$")) {
                     error
                         .append("\tevent ")
-                        .append(ANSI_PURPLE)
+                        .append(PURPLE)
                         .append(method.substring(6))
-                        .append(ANSI_RESET);
+                        .append(RESET);
                 } else {
                     error
                         .append("\tfunction ")
-                        .append(ANSI_PURPLE)
+                        .append(PURPLE)
                         .append(method)
-                        .append(ANSI_RESET)
+                        .append(RESET)
                         .append("(...)");
                 }
                 error
                     .append(" in '")
                     .append(BLACK_BACKGROUND)
-                    .append(ANSI_YELLOW)
+                    .append(YELLOW)
                     .append(this.getScriptName(element))
-                    .append(ANSI_RESET)
+                    .append(RESET)
                     .append("' at line ")
-                    .append(ANSI_CYAN)
+                    .append(CYAN)
                     .append(element.getLineNumber())
-                    .append(ANSI_RESET);
+                    .append(RESET);
                 System.err.println(error);
             }
         } else {

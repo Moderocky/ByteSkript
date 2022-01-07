@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.byteskript.skript.app.ByteSkriptApp.Colour.*;
+import static org.byteskript.skript.runtime.internal.ConsoleColour.*;
 
 public class ByteSkriptApp extends SkriptApp {
     protected static final Skript SKRIPT = new Skript();
@@ -72,34 +72,6 @@ public class ByteSkriptApp extends SkriptApp {
         if (!OUTPUT.exists()) OUTPUT.mkdirs();
         if (!LIBRARIES.exists()) LIBRARIES.mkdirs();
         if (!RESOURCES.exists()) RESOURCES.mkdirs();
-    }
-    
-    enum Colour {
-        RESET("\033[0m"),
-        BLACK("\033[0;30m"),
-        RED("\033[0;31m"),
-        GREEN("\033[0;32m"),
-        YELLOW("\033[0;33m"),
-        BLUE("\033[0;34m"),
-        PURPLE("\033[0;35m"),
-        CYAN("\033[0;36m"),
-        CYAN_UNDERLINED("\033[4;36m"),
-        BRIGHT_PURPLE("\033[0;95m");
-        
-        private final String code;
-        
-        Colour(String code) {
-            this.code = code;
-        }
-        
-        @Override
-        public String toString() {
-            if (System.console() == null || System.getenv().get("TERM") != null) {
-                return code;
-            } else {
-                return "";
-            }
-        }
     }
     
 }
