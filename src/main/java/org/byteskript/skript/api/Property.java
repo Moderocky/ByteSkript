@@ -32,7 +32,7 @@ public interface Property extends Referent {
     default void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        final Method target = getHandler(StandardHandlers.GET);
+        final Method target = this.getHandler(StandardHandlers.GET);
         if (target == null) throw new ScriptCompileError(context.lineNumber(), "Referent has no get handler.");
         if (target.getReturnType() == void.class)
             throw new ScriptCompileError(context.lineNumber(), "Referent get handler must not have a void return.");

@@ -9,6 +9,6 @@ package org.byteskript.skript.runtime.type;
 @FunctionalInterface
 public interface Query {
     
-    boolean check(Object vaue);
+    boolean check(Object value);
     
 }

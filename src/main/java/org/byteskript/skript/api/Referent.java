@@ -17,6 +17,9 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 
 import java.lang.reflect.Method;
 
+/**
+ * This syntax is designed to be set or altered in some way.
+ */
 public interface Referent extends SyntaxElement {
     
     Type getHolderType();

@@ -43,14 +43,14 @@ public interface SyntaxAnnotationUnwrapper extends Library {
             if (section == null) break entry_section;
             final GeneratedEntrySection box = new GeneratedEntrySection(this, (Class<Record>) owner, section.value());
             this.registerSyntax(CompileState.MEMBER_BODY, box);
-            for (RecordComponent component : owner.getRecordComponents()) {
+            for (final RecordComponent component : owner.getRecordComponents()) {
                 final EntryNode node = component.getAnnotation(EntryNode.class);
                 if (node == null) continue;
                 final GeneratedEntryNode thing = new GeneratedEntryNode(this, component, node.value());
                 this.registerSyntax(CompileState.AREA_BODY, thing);
             }
         }
-        for (Method method : owner.getDeclaredMethods()) {
+        for (final Method method : owner.getDeclaredMethods()) {
             effect:
             {
                 final Effect effect = method.getAnnotation(Effect.class);
@@ -83,7 +83,7 @@ public interface SyntaxAnnotationUnwrapper extends Library {
     void registerProperty(String name, HandlerType type, Method handler);
     
     default void registerValues(EventHolder event) {
-        for (Method method : event.eventClass().getMethods()) {
+        for (final Method method : event.eventClass().getMethods()) {
             final EventValue value = method.getAnnotation(EventValue.class);
             if (value == null) continue;
             if (method.getParameterTypes().length == 0 && method.getReturnType() != void.class) {
