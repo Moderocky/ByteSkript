@@ -277,6 +277,35 @@ public final class Skript {
     }
     
     /**
+     * Runs a runnable on a script thread.
+     * This is designed for running anonymous script chunks.
+     * This can also be used to run code that did not originate from a script as though it did.
+     *
+     * @param executable the runnable code
+     * @return a future for the script's halting completion
+     */
+    public Future<?> runScript(final Runnable executable) {
+        final OperationController controller = new OperationController(skript, factory);
+        final ScriptFinishFuture future = new ScriptFinishFuture(this);
+        final Runnable runnable = () -> {
+            final ScriptThread thread = (ScriptThread) Thread.currentThread();
+            future.thread = thread;
+            thread.variables.clear();
+            thread.initiator = null;
+            thread.event = null;
+            try {
+                executable.run();
+            } catch (ThreadDeath ignore) {
+                // This is likely from an exit the current process effect, we don't want to make noise
+            } finally {
+                future.finish();
+            }
+        };
+        factory.newThread(controller, runnable, true).start();
+        return future;
+    }
+    
+    /**
      * Runs a script with a completing future.
      * This is designed for use in places like JUnit tests that require throttling.
      * This is not designed for throttling the main thread, since the airlock queue will already do this!
