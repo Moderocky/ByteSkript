@@ -100,18 +100,22 @@ public interface SyntaxElement {
         """)
     void compile(Context context, Pattern.Match match) throws Throwable;
     
+    @Ignore
     default boolean allowedIn(State state, Context context) {
         return true;
     }
     
+    @Ignore
     default boolean isDelay() {
         return false;
     }
     
+    @Ignore
     default boolean requiresMainThread() {
         return false;
     }
     
+    @Ignore
     default void addSkipInstruction(Context context, Consumer<Context> consumer) {
         context.addSkipInstruction(consumer);
     }
@@ -196,22 +200,27 @@ public interface SyntaxElement {
         return new Document(name(), getType().name(), getPatterns(), description(), examples());
     }
     
+    @Ignore
     default String name() {
         final Documentation documentation = this.getClass().getAnnotation(Documentation.class);
         if (documentation == null) return getPattern().name();
         return documentation.name();
     }
     
+    @Ignore
     LanguageElement getType();
     
+    @Ignore
     String[] getPatterns();
     
+    @Ignore
     default String description() {
         final Documentation documentation = this.getClass().getAnnotation(Documentation.class);
         if (documentation == null) return "No description.";
         return documentation.description();
     }
     
+    @Ignore
     default String[] examples() {
         final Documentation documentation = this.getClass().getAnnotation(Documentation.class);
         if (documentation == null) return new String[0];

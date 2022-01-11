@@ -26,7 +26,7 @@
 <section id="class:Bootstrapper"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0">
 <h3 class="mb-0">Bootstrapper</h3><p><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A regular class.">Class</strong></p></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><div class="row p-2"></div><p>The bootstrapper handles resolving call-sites for dynamic method calls.
 This is used by functions in conjunction with the meta-factory.</p>
@@ -34,8 +34,7 @@ This is used by functions in conjunction with the meta-factory.</p>
 <p>This is an adapted copy of Krow's bootstrapper.</p>
 
 </div>
-<div class="col-lg-4 col-sm-12"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Extends</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.Object">Object</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Cannot be overridden or modified.">final</span> </p></div>
-</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Extends</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.Object">Object</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Cannot be overridden or modified.">final</span> </p></div></div></div>
 </div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
 Bootstrapper.bootstrap(caller, name, type, owner);
@@ -49,14 +48,14 @@ Bootstrapper.bootstrapPrivate(caller, name, type, owner);
 </section><h2 class="border-bottom pb-2 mb-0">Constructors</h2><br /><section id="constructor:Bootstrapper(0)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0"><span class="text-secondary">new </span>Bootstrapper<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="Creates an instance of this class.">Constructor</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.</div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.internal.Bootstrapper">Bootstrapper</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0"><span class="text-secondary">new </span>Bootstrapper<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="Creates an instance of this class.">Constructor</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.</div><div class="col-md-4 d-none d-lg-block"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.internal.Bootstrapper">Bootstrapper</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><br /><h2 class="border-bottom pb-2 mb-0">Methods</h2><br /><section id="method:bootstrap(4)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrap<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrap<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Finds an existing call-site for a regular static method.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params751870154" aria-expanded="false" aria-controls="params751870154">Parameters</button><div class="collapse" id="params751870154">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1582797472" aria-expanded="false" aria-controls="params1582797472">Parameters</button><div class="collapse" id="params1582797472">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -70,14 +69,15 @@ Bootstrapper.bootstrapPrivate(caller, name, type, owner);
 <tr><th scope="row">4</th><td>Class</td><td>owner</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:bootstrapFunction(6)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapFunction<span class="text-secondary"> (Lookup, String, MethodType, String, Class, String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapFunction<span class="text-secondary"> (Lookup, String, MethodType, String, Class, String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>This writes the call-site for invoking a Skript function from a script.</p>
 <p>The metafactory is invoked to create a new bridge stub.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params352073410" aria-expanded="false" aria-controls="params352073410">Parameters</button><div class="collapse" id="params352073410">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params644166178" aria-expanded="false" aria-controls="params644166178">Parameters</button><div class="collapse" id="params644166178">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -95,13 +95,14 @@ Bootstrapper.bootstrapPrivate(caller, name, type, owner);
 <tr><th scope="row">6</th><td>String</td><td>args</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:bootstrapPrivateDynamic(4)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapPrivateDynamic<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapPrivateDynamic<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Finds an existing call-site for a private dynamic method.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params609453550" aria-expanded="false" aria-controls="params609453550">Parameters</button><div class="collapse" id="params609453550">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params892529689" aria-expanded="false" aria-controls="params892529689">Parameters</button><div class="collapse" id="params892529689">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -115,13 +116,14 @@ Bootstrapper.bootstrapPrivate(caller, name, type, owner);
 <tr><th scope="row">4</th><td>Class</td><td>owner</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:bootstrapPrivate(4)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapPrivate<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapPrivate<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Finds an existing call-site for a private static method.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1566841235" aria-expanded="false" aria-controls="params1566841235">Parameters</button><div class="collapse" id="params1566841235">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1757676444" aria-expanded="false" aria-controls="params1757676444">Parameters</button><div class="collapse" id="params1757676444">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -135,13 +137,14 @@ Bootstrapper.bootstrapPrivate(caller, name, type, owner);
 <tr><th scope="row">4</th><td>Class</td><td>owner</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:bootstrapDynamic(4)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapDynamic<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapDynamic<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Finds an existing call-site for a regular dynamic method.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params738254679" aria-expanded="false" aria-controls="params738254679">Parameters</button><div class="collapse" id="params738254679">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params182738614" aria-expanded="false" aria-controls="params182738614">Parameters</button><div class="collapse" id="params182738614">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -155,19 +158,21 @@ Bootstrapper.bootstrapPrivate(caller, name, type, owner);
 <tr><th scope="row">4</th><td>Class</td><td>owner</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:getBootstrapFunction(0)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getBootstrapFunction<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getBootstrapFunction<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Gets the handle for a Skript function.</p>
-</div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.objectweb.asm.Handle">Handle</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.objectweb.asm.Handle">Handle</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:getBootstrap(2)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getBootstrap<span class="text-secondary"> (boolean, boolean)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getBootstrap<span class="text-secondary"> (boolean, boolean)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Gets the handle for a regular method, used for writing a dynamic call-site.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params761680160" aria-expanded="false" aria-controls="params761680160">Parameters</button><div class="collapse" id="params761680160">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params94345706" aria-expanded="false" aria-controls="params94345706">Parameters</button><div class="collapse" id="params94345706">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -177,15 +182,16 @@ Bootstrapper.bootstrapPrivate(caller, name, type, owner);
 <tr><th scope="row">2</th><td>boolean</td><td>isPrivate</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.objectweb.asm.Handle">Handle</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.objectweb.asm.Handle">Handle</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:bootstrapStaticFieldSetter(4)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapStaticFieldSetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapStaticFieldSetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Finds an existing call-site for a static field.</p>
 <p>Rather than using the variable handle, this returns a method call-site.
 This allows the field to be treated like a method by the compiler.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params2102488229" aria-expanded="false" aria-controls="params2102488229">Parameters</button><div class="collapse" id="params2102488229">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params670035812" aria-expanded="false" aria-controls="params670035812">Parameters</button><div class="collapse" id="params670035812">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -199,15 +205,16 @@ This allows the field to be treated like a method by the compiler.</p>
 <tr><th scope="row">4</th><td>Class</td><td>owner</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:bootstrapStaticFieldGetter(4)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapStaticFieldGetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapStaticFieldGetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Finds an existing call-site for a static field.</p>
 <p>Rather than using the variable handle, this returns a method call-site.
 This allows the field to be treated like a method by the compiler.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1223378897" aria-expanded="false" aria-controls="params1223378897">Parameters</button><div class="collapse" id="params1223378897">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1870647526" aria-expanded="false" aria-controls="params1870647526">Parameters</button><div class="collapse" id="params1870647526">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -221,15 +228,16 @@ This allows the field to be treated like a method by the compiler.</p>
 <tr><th scope="row">4</th><td>Class</td><td>owner</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:bootstrapPrivateStaticFieldSetter(4)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapPrivateStaticFieldSetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapPrivateStaticFieldSetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Finds an existing call-site for a static field.</p>
 <p>Rather than using the variable handle, this returns a method call-site.
 This allows the field to be treated like a method by the compiler.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params15299250" aria-expanded="false" aria-controls="params15299250">Parameters</button><div class="collapse" id="params15299250">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1204167249" aria-expanded="false" aria-controls="params1204167249">Parameters</button><div class="collapse" id="params1204167249">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -243,15 +251,16 @@ This allows the field to be treated like a method by the compiler.</p>
 <tr><th scope="row">4</th><td>Class</td><td>owner</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:bootstrapPrivateStaticFieldGetter(4)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapPrivateStaticFieldGetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapPrivateStaticFieldGetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Finds an existing call-site for a static field.</p>
 <p>Rather than using the variable handle, this returns a method call-site.
 This allows the field to be treated like a method by the compiler.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params894736902" aria-expanded="false" aria-controls="params894736902">Parameters</button><div class="collapse" id="params894736902">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1047503754" aria-expanded="false" aria-controls="params1047503754">Parameters</button><div class="collapse" id="params1047503754">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -265,15 +274,16 @@ This allows the field to be treated like a method by the compiler.</p>
 <tr><th scope="row">4</th><td>Class</td><td>owner</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:bootstrapFieldSetter(4)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapFieldSetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapFieldSetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Finds an existing call-site for a static field.</p>
 <p>Rather than using the variable handle, this returns a method call-site.
 This allows the field to be treated like a method by the compiler.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params757740435" aria-expanded="false" aria-controls="params757740435">Parameters</button><div class="collapse" id="params757740435">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1722023916" aria-expanded="false" aria-controls="params1722023916">Parameters</button><div class="collapse" id="params1722023916">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -287,15 +297,16 @@ This allows the field to be treated like a method by the compiler.</p>
 <tr><th scope="row">4</th><td>Class</td><td>owner</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:bootstrapFieldGetter(4)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapFieldGetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapFieldGetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Finds an existing call-site for a static field.</p>
 <p>Rather than using the variable handle, this returns a method call-site.
 This allows the field to be treated like a method by the compiler.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params950856207" aria-expanded="false" aria-controls="params950856207">Parameters</button><div class="collapse" id="params950856207">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params2009787198" aria-expanded="false" aria-controls="params2009787198">Parameters</button><div class="collapse" id="params2009787198">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -309,15 +320,16 @@ This allows the field to be treated like a method by the compiler.</p>
 <tr><th scope="row">4</th><td>Class</td><td>owner</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:bootstrapPrivateFieldSetter(4)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapPrivateFieldSetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapPrivateFieldSetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Finds an existing call-site for a static field.</p>
 <p>Rather than using the variable handle, this returns a method call-site.
 This allows the field to be treated like a method by the compiler.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params209262332" aria-expanded="false" aria-controls="params209262332">Parameters</button><div class="collapse" id="params209262332">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params32017212" aria-expanded="false" aria-controls="params32017212">Parameters</button><div class="collapse" id="params32017212">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -331,15 +343,16 @@ This allows the field to be treated like a method by the compiler.</p>
 <tr><th scope="row">4</th><td>Class</td><td>owner</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:bootstrapPrivateFieldGetter(4)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapPrivateFieldGetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">bootstrapPrivateFieldGetter<span class="text-secondary"> (Lookup, String, MethodType, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Finds an existing call-site for a static field.</p>
 <p>Rather than using the variable handle, this returns a method call-site.
 This allows the field to be treated like a method by the compiler.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params468971880" aria-expanded="false" aria-controls="params468971880">Parameters</button><div class="collapse" id="params468971880">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1121454968" aria-expanded="false" aria-controls="params1121454968">Parameters</button><div class="collapse" id="params1121454968">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -353,7 +366,8 @@ This allows the field to be treated like a method by the compiler.</p>
 <tr><th scope="row">4</th><td>Class</td><td>owner</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.invoke.CallSite">CallSite</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><br />
 </main>
 

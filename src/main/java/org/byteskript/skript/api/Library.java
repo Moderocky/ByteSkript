@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.api;
 
+import mx.kenzie.autodoc.api.note.Description;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
 import mx.kenzie.foundation.language.PostCompileClass;
@@ -15,23 +16,56 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Description("""
+    A library that provides syntax or runtime dependencies to the Skript implementation.
+    
+    Most implementations should use [ModifiableLibrary](ModifiableLibrary.html) instead
+    - it is both safer and easier to use.
+    
+    The library tells the Skript runtime what syntax is available.
+    """)
 public interface Library {
     
+    @Description("The library name.")
     String name();
     
+    @Description("""
+        Allows the library to filter syntax by the current context.
+        
+        This is designed to make matching faster, since the library knows how to
+        exclude clearly-incorrect syntax from being checked for a match.
+        
+        The version in [ModifiableLibrary](ModifiableLibrary.html) is recommended,
+        but libraries may implement a faster version.
+        """)
     Collection<SyntaxElement> getHandlers(final State state, final LanguageElement expected, final Context context);
     
+    @Description("""
+        Return any property handlers this library provides.
+        
+        These are different from regular syntax, since they are
+        compiled directly into the Property Handler expression.
+        """)
     Collection<PropertyHandler> getProperties();
     
+    @Description("Any custom language constructs provided by this library.")
     LanguageElement[] getConstructs();
     
+    @Description("""
+        Types provided by this library.
+        
+        These types can be written with their simple name in scripts,
+        as can be done with `String` and `Number` by default,
+        rather than needing the full `a/b/c/Type` path.
+        """)
     Type[] getTypes();
     
-    /**
-     * Runtime dependencies to be included in complete archives.
-     */
+    @Description("Runtime dependencies to be included in complete archive.")
     Collection<PostCompileClass> getRuntime();
     
+    @Description("""
+        Generates documentation for all available syntax to be exported to a processor.
+        """)
     default Document[] generateDocumentation() {
         final List<Document> documents = new ArrayList<>();
         for (final SyntaxElement syntax : this.getSyntax()) {
@@ -40,6 +74,10 @@ public interface Library {
         return documents.toArray(new Document[0]);
     }
     
+    @Description("""
+        All syntax elements available in this library, without filtering.
+        This is used by documentation scraping or special lookups to find the source of an error.
+        """)
     SyntaxElement[] getSyntax();
     
 }

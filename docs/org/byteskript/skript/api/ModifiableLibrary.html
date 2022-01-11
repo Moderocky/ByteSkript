@@ -25,26 +25,32 @@
 </div>
 <div class="dropdown m-1 d-inline">
 <button class="btn btn-primary dropdown-toggle" type="button" id="methodMenu" data-bs-toggle="dropdown" aria-expanded="false">Methods</button>
-<ul class="dropdown-menu" aria-labelledby="methodMenu"><li><a class="dropdown-item" href="#method:getRuntime(0)">getRuntime</a></li><li><a class="dropdown-item" href="#method:name(0)">name</a></li><li><a class="dropdown-item" href="#method:getProperties(0)">getProperties</a></li><li><a class="dropdown-item" href="#method:getHandlers(3)">getHandlers</a></li><li><a class="dropdown-item" href="#method:registerType(1)">registerType</a></li><li><a class="dropdown-item" href="#method:registerType(1)">registerType</a></li><li><a class="dropdown-item" href="#method:registerEvent(1)">registerEvent</a></li><li><a class="dropdown-item" href="#method:registerSyntax(2)">registerSyntax</a></li><li><a class="dropdown-item" href="#method:registerSyntax(2)">registerSyntax</a></li><li><a class="dropdown-item" href="#method:registerProperty(1)">registerProperty</a></li><li><a class="dropdown-item" href="#method:registerProperty(3)">registerProperty</a></li><li><a class="dropdown-item" href="#method:getConstructs(0)">getConstructs</a></li><li><a class="dropdown-item" href="#method:getSyntax(0)">getSyntax</a></li><li><a class="dropdown-item" href="#method:getTypes(0)">getTypes</a></li><li><a class="dropdown-item" href="#method:registerEvents(1)">registerEvents</a></li><li><a class="dropdown-item" href="#method:registerTypes(1)">registerTypes</a></li><li><a class="dropdown-item" href="#method:registerTypes(1)">registerTypes</a></li>
+<ul class="dropdown-menu" aria-labelledby="methodMenu"><li><a class="dropdown-item" href="#method:registerSyntax(2)">registerSyntax</a></li><li><a class="dropdown-item" href="#method:registerProperty(1)">registerProperty</a></li><li><a class="dropdown-item" href="#method:registerEvents(1)">registerEvents</a></li><li><a class="dropdown-item" href="#method:registerTypes(1)">registerTypes</a></li><li><a class="dropdown-item" href="#method:registerTypes(1)">registerTypes</a></li>
 </ul>
 </div></div></div></div></div></div>
 <section id="class:ModifiableLibrary"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0">
 <h3 class="mb-0">ModifiableLibrary</h3><p><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A regular class.">Class</strong></p></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><div class="row p-2"></div>No description is available for this element.
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><div class="row p-2"></div><p>A modifiable syntax library.</p>
+<p>This is the most basic <a href="Library.html">Library</a> implementation,
+and the one recommended for most providers to use.</p>
+<p>The built-in Skript language specification extends this.</p>
+<p>Syntax instances must be registered to the library before it is given to the compiler.</p>
+
 </div>
-<div class="col-lg-4 col-sm-12"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Extends</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.Object">Object</strong></p><h6 class="border-bottom pb-2 mb-0">Implements</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.api.SyntaxAnnotationUnwrapper">SyntaxAnnotationUnwrapper</strong></p><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.api.Library">Library</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div>
-</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Extends</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.Object">Object</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Implements</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.api.SyntaxAnnotationUnwrapper">SyntaxAnnotationUnwrapper</strong><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.api.Library">Library</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
 </div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div>
 </div>
 </section><h2 class="border-bottom pb-2 mb-0">Constructors</h2><br /><section id="constructor:ModifiableLibrary(1)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0"><span class="text-secondary">new </span>ModifiableLibrary<span class="text-secondary"> (String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="Creates an instance of this class.">Constructor</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params297226609" aria-expanded="false" aria-controls="params297226609">Parameters</button><div class="collapse" id="params297226609">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0"><span class="text-secondary">new </span>ModifiableLibrary<span class="text-secondary"> (String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="Creates an instance of this class.">Constructor</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Create a new library instance with the given name.</p>
+<p>This is designed to be extended/overridden.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params297226609" aria-expanded="false" aria-controls="params297226609">Parameters</button><div class="collapse" id="params297226609">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -52,103 +58,41 @@
 <tr><th scope="row">1</th><td>String</td><td>string</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.api.ModifiableLibrary">ModifiableLibrary</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
+</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.api.ModifiableLibrary">ModifiableLibrary</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><br /><h2 class="border-bottom pb-2 mb-0">Fields</h2><br /><section id="field:syntax"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">syntax</h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A value-holding member.">Field</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.</div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.Map">Map</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from extending classes.">protected</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Cannot be overridden or modified.">final</span> </p></div></div></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">syntax</h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A value-holding member.">Field</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>A state/syntax map for filtering syntax.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.Map">Map</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from extending classes.">protected</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Cannot be overridden or modified.">final</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="field:properties"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">properties</h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A value-holding member.">Field</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.</div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.List">List</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from extending classes.">protected</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Cannot be overridden or modified.">final</span> </p></div></div></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">properties</h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A value-holding member.">Field</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>A list of registered properties.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.List">List</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from extending classes.">protected</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Cannot be overridden or modified.">final</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="field:types"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">types</h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A value-holding member.">Field</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.</div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.List">List</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from extending classes.">protected</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Cannot be overridden or modified.">final</span> </p></div></div></div>
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">types</h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A value-holding member.">Field</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>A list of registered types.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.List">List</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from extending classes.">protected</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Cannot be overridden or modified.">final</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="field:name"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">name</h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A value-holding member.">Field</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.</div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.String">String</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from extending classes.">protected</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Cannot be overridden or modified.">final</span> </p></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><hr /><br /><h2 class="border-bottom pb-2 mb-0">Methods</h2><br /><section id="method:getRuntime(0)"><div class="row mb-2">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">name</h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A value-holding member.">Field</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>This library's name for debugging and error messages.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.String">String</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from extending classes.">protected</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Cannot be overridden or modified.">final</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><hr /><br /><h2 class="border-bottom pb-2 mb-0">Methods</h2><br /><section id="method:registerSyntax(2)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getRuntime<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.</div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.Collection">Collection</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:name(0)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">name<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.</div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.String">String</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:getProperties(0)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getProperties<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.</div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.Collection">Collection</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:getHandlers(3)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getHandlers<span class="text-secondary"> (State, LanguageElement, Context)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1783537326" aria-expanded="false" aria-controls="params1783537326">Parameters</button><div class="collapse" id="params1783537326">
-<table class="table table-borderless">
-<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
-</tr></thead>
-<tbody>
-<tr><th scope="row">1</th><td>State</td><td>state</td>
-</tr>
-<tr><th scope="row">2</th><td>LanguageElement</td><td>expected</td>
-</tr>
-<tr><th scope="row">3</th><td>Context</td><td>context</td>
-</tr>
-</tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.Collection">Collection</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerType(1)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerType<span class="text-secondary"> (String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1954449140" aria-expanded="false" aria-controls="params1954449140">Parameters</button><div class="collapse" id="params1954449140">
-<table class="table table-borderless">
-<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
-</tr></thead>
-<tbody>
-<tr><th scope="row">1</th><td>String</td><td>classPath</td>
-</tr>
-</tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="mx.kenzie.foundation.Type">Type</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerType(1)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerType<span class="text-secondary"> (Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1954449140" aria-expanded="false" aria-controls="params1954449140">Parameters</button><div class="collapse" id="params1954449140">
-<table class="table table-borderless">
-<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
-</tr></thead>
-<tbody>
-<tr><th scope="row">1</th><td>Class</td><td>cls</td>
-</tr>
-</tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="mx.kenzie.foundation.Type">Type</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerEvent(1)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerEvent<span class="text-secondary"> (EventHolder)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1173532474" aria-expanded="false" aria-controls="params1173532474">Parameters</button><div class="collapse" id="params1173532474">
-<table class="table table-borderless">
-<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
-</tr></thead>
-<tbody>
-<tr><th scope="row">1</th><td>EventHolder</td><td>event</td>
-</tr>
-</tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerSyntax(2)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerSyntax<span class="text-secondary"> (State, SyntaxElement...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params231747305" aria-expanded="false" aria-controls="params231747305">Parameters</button><div class="collapse" id="params231747305">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerSyntax<span class="text-secondary"> (State, SyntaxElement...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers syntax elements for a given compile-state.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params159259014" aria-expanded="false" aria-controls="params159259014">Parameters</button><div class="collapse" id="params159259014">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -158,27 +102,14 @@
 <tr><th scope="row">2</th><td>SyntaxElement[]</td><td>elements</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerSyntax(2)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerSyntax<span class="text-secondary"> (State, SyntaxElement)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params231747305" aria-expanded="false" aria-controls="params231747305">Parameters</button><div class="collapse" id="params231747305">
-<table class="table table-borderless">
-<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
-</tr></thead>
-<tbody>
-<tr><th scope="row">1</th><td>State</td><td>state</td>
-</tr>
-<tr><th scope="row">2</th><td>SyntaxElement</td><td>element</td>
-</tr>
-</tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerProperty(1)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerProperty<span class="text-secondary"> (PropertyHandler)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1497477911" aria-expanded="false" aria-controls="params1497477911">Parameters</button><div class="collapse" id="params1497477911">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerProperty<span class="text-secondary"> (PropertyHandler)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers special property expressions.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params653687670" aria-expanded="false" aria-controls="params653687670">Parameters</button><div class="collapse" id="params653687670">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -186,44 +117,14 @@
 <tr><th scope="row">1</th><td>PropertyHandler</td><td>handler</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerProperty(3)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerProperty<span class="text-secondary"> (String, HandlerType, Method)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1497477911" aria-expanded="false" aria-controls="params1497477911">Parameters</button><div class="collapse" id="params1497477911">
-<table class="table table-borderless">
-<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
-</tr></thead>
-<tbody>
-<tr><th scope="row">1</th><td>String</td><td>name</td>
-</tr>
-<tr><th scope="row">2</th><td>HandlerType</td><td>type</td>
-</tr>
-<tr><th scope="row">3</th><td>Method</td><td>handler</td>
-</tr>
-</tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:getConstructs(0)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getConstructs<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.</div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="[Lorg.byteskript.skript.api.LanguageElement;">LanguageElement[]</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:getSyntax(0)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getSyntax<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.</div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="[Lorg.byteskript.skript.api.SyntaxElement;">SyntaxElement[]</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:getTypes(0)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getTypes<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.</div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="[Lmx.kenzie.foundation.Type;">Type[]</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerEvents(1)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerEvents<span class="text-secondary"> (EventHolder...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params634297107" aria-expanded="false" aria-controls="params634297107">Parameters</button><div class="collapse" id="params634297107">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerEvents<span class="text-secondary"> (EventHolder...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers event holders.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params356473385" aria-expanded="false" aria-controls="params356473385">Parameters</button><div class="collapse" id="params356473385">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -231,25 +132,14 @@
 <tr><th scope="row">1</th><td>EventHolder[]</td><td>events</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerTypes(1)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerTypes<span class="text-secondary"> (Type...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1120291097" aria-expanded="false" aria-controls="params1120291097">Parameters</button><div class="collapse" id="params1120291097">
-<table class="table table-borderless">
-<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
-</tr></thead>
-<tbody>
-<tr><th scope="row">1</th><td>Type[]</td><td>types</td>
-</tr>
-</tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerTypes(1)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerTypes<span class="text-secondary"> (Class...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1120291097" aria-expanded="false" aria-controls="params1120291097">Parameters</button><div class="collapse" id="params1120291097">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerTypes<span class="text-secondary"> (Class...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers types to this library.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params2136344592" aria-expanded="false" aria-controls="params2136344592">Parameters</button><div class="collapse" id="params2136344592">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -257,7 +147,24 @@
 <tr><th scope="row">1</th><td>Class[]</td><td>classes</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Return Type</h6><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div><div class="col-md-6 col-lg-12 my-3 p-3 bg-body rounded shadow-sm"><h6 class="border-bottom pb-2 mb-0">Modifiers</h6><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerTypes(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerTypes<span class="text-secondary"> (Type...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers types to this library.</p>
+<p>This version accepts Foundation types.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params110992469" aria-expanded="false" aria-controls="params110992469">Parameters</button><div class="collapse" id="params110992469">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Type[]</td><td>types</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><br />
 </main>
 

@@ -42,11 +42,21 @@ import java.util.concurrent.*;
     """)
 public final class Skript {
     
-    @Ignore
+    @Description("""
+        The script thread group.
+        
+        If you are implementing a special thread provider that script code will use,
+        it should use this group to for more accurate clean-up and profiling.
+        """)
+    @GenerateExample
     public static final ThreadGroup THREAD_GROUP = new ThreadGroup("skript");
     @Ignore
     public static final int JAVA_VERSION = 61;
-    @Ignore
+    @Description("""
+        The global variable map.
+        This is obtainable through the [getter method](method:getVariables(0)).
+        """)
+    @GenerateExample
     static final GlobalVariableMap VARIABLES = new GlobalVariableMap();
     private static final RuntimeClassLoader LOADER = new RuntimeClassLoader(Skript.class.getClassLoader());
     private static Skript skript;

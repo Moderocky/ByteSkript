@@ -6,13 +6,21 @@
 
 package org.byteskript.skript.api;
 
+import mx.kenzie.autodoc.api.note.Description;
+import mx.kenzie.autodoc.api.note.Example;
 import mx.kenzie.foundation.Type;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+@Description("""
+    A property handler.
+    """)
 public record PropertyHandler(String name, HandlerType type, Type holder, Type value, Method method) {
     
+    @Example("""
+        new PropertyHandler(StandardHandlers.GET, method, "name");
+        """)
     public PropertyHandler(HandlerType type, Method method, String name) {
         this(name, type, createHolder(method), createValue(type, method), method);
     }

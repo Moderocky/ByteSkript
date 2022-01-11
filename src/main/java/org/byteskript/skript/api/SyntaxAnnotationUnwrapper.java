@@ -10,7 +10,6 @@ import mx.kenzie.autodoc.api.note.Ignore;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.automatic.*;
-import org.byteskript.skript.api.note.Property;
 import org.byteskript.skript.api.note.*;
 import org.byteskript.skript.api.syntax.EventHolder;
 import org.byteskript.skript.compiler.CompileState;

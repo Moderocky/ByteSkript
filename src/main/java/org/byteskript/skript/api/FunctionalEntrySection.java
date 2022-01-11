@@ -6,8 +6,10 @@
 
 package org.byteskript.skript.api;
 
+import mx.kenzie.autodoc.api.note.Ignore;
 import org.byteskript.skript.compiler.Context;
 
+@Ignore
 public interface FunctionalEntrySection {
     
     void compile(Context context) throws Throwable;
