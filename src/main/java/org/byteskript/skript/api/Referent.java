@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.api;
 
+import mx.kenzie.autodoc.api.note.Description;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
@@ -17,9 +18,7 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 
 import java.lang.reflect.Method;
 
-/**
- * This syntax is designed to be set or altered in some way.
- */
+@Description("This syntax is designed to be set or altered in some way.")
 public interface Referent extends SyntaxElement {
     
     Type getHolderType();

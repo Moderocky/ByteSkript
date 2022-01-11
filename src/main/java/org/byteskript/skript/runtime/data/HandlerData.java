@@ -6,6 +6,9 @@
 
 package org.byteskript.skript.runtime.data;
 
+import mx.kenzie.autodoc.api.note.Ignore;
+
+@Ignore
 public @interface HandlerData {
     
     String type();

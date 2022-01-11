@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Ignore;
 import org.byteskript.skript.api.Event;
 import org.byteskript.skript.runtime.Script;
 import org.byteskript.skript.runtime.Skript;
@@ -14,6 +15,7 @@ import org.byteskript.skript.runtime.threading.ScriptRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+@Ignore
 public class EventHandler {
     
     protected final List<ScriptRunner> triggers = new ArrayList<>();

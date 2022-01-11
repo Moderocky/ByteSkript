@@ -6,6 +6,9 @@
 
 package org.byteskript.skript.api;
 
+import mx.kenzie.autodoc.api.note.Ignore;
+
+@Ignore
 public abstract class AsyncEvent extends Event {
     
     @Override

@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Ignore;
 import org.byteskript.skript.error.ScriptAssertionError;
 import org.byteskript.skript.error.ScriptRuntimeError;
 import org.byteskript.skript.runtime.type.Query;
@@ -18,6 +19,7 @@ import java.util.regex.Pattern;
  * <p>
  * The boxing methods are used for null=0 handling by the bridge compiler.
  */
+@Ignore
 public class OperatorHandler {
     
     //region Unboxing

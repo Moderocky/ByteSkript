@@ -94,6 +94,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>mx.kenzie</groupId>
+            <artifactId>autodocs</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>22.0.0</version>

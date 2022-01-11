@@ -6,6 +6,9 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Ignore;
+
+@Ignore
 public interface Instruction<Type> {
     
     default Type get() {

@@ -6,10 +6,18 @@
 
 package org.byteskript.skript.runtime.type;
 
+import mx.kenzie.autodoc.api.note.Description;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+@Description("""
+    The map implementation used by Skript maps.
+    This is an extension of Java's HashMap.
+    
+    Currently, this has no special behaviour.
+    """)
 public class DataMap extends HashMap<Object, Object> implements Serializable {
     
     public static DataList getKeys(Map target) {

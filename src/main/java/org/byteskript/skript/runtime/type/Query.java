@@ -6,6 +6,9 @@
 
 package org.byteskript.skript.runtime.type;
 
+import mx.kenzie.autodoc.api.note.Ignore;
+
+@Ignore
 @FunctionalInterface
 public interface Query {
     

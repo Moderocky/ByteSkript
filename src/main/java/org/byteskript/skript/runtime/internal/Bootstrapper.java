@@ -6,6 +6,8 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Description;
+import mx.kenzie.autodoc.api.note.GenerateExample;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.error.ScriptBootstrapError;
 import org.objectweb.asm.Handle;
@@ -16,19 +18,21 @@ import java.lang.reflect.Modifier;
 
 import static org.objectweb.asm.Opcodes.*;
 
-/**
- * The bootstrapper handles resolving call-sites for dynamic method calls.
- * This is used by functions in conjunction with the meta-factory.
- * <p>
- * Methods in this are used by name from dynamic invocation.
- * <p>
- * This is an adapted copy of Krow's bootstrapper.
- *
- * @author Moderocky
- */
+@Description("""
+    The bootstrapper handles resolving call-sites for dynamic method calls.
+    This is used by functions in conjunction with the meta-factory.
+    
+    Methods in this are used by name from dynamic invocation.
+    
+    This is an adapted copy of Krow's bootstrapper.
+    """)
+@GenerateExample
 @SuppressWarnings("unused")
 public final class Bootstrapper {
     
+    @Description("""
+        Gets the handle for a Skript function.
+        """)
     public static Handle getBootstrapFunction() {
         try {
             return getHandle(Bootstrapper.class.getMethod("bootstrapFunction", MethodHandles.Lookup.class, String.class, MethodType.class, String.class, Class.class, String.class));
@@ -58,6 +62,9 @@ public final class Bootstrapper {
         return builder.toString();
     }
     
+    @Description("""
+        Gets the handle for a regular method, used for writing a dynamic call-site.
+        """)
     public static Handle getBootstrap(final boolean isDynamic, final boolean isPrivate) {
         try {
             if (isPrivate) {
@@ -74,6 +81,11 @@ public final class Bootstrapper {
         }
     }
     
+    @Description("""
+        This writes the call-site for invoking a Skript function from a script.
+        
+        The metafactory is invoked to create a new bridge stub.
+        """)
     public static CallSite bootstrapFunction(MethodHandles.Lookup caller, String name, MethodType type, String source, Class<?> owner, String args)
         throws Exception {
         final org.objectweb.asm.Type[] types = org.objectweb.asm.Type.getArgumentTypes(args);
@@ -99,16 +111,19 @@ public final class Bootstrapper {
         };
     }
     
+    @Description("Finds an existing call-site for a regular static method.")
     public static CallSite bootstrap(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner) throws Exception {
         final MethodHandle handle = caller.findStatic(owner, name, type);
         return new ConstantCallSite(handle);
     }
     
+    @Description("Finds an existing call-site for a private static method.")
     public static CallSite bootstrapPrivate(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner) throws Exception {
         final MethodHandle handle = MethodHandles.privateLookupIn(owner, caller).findStatic(owner, name, type);
         return new ConstantCallSite(handle);
     }
     
+    @Description("Finds an existing call-site for a regular dynamic method.")
     public static CallSite bootstrapDynamic(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner) throws Exception {
         final MethodHandle handle;
         final MethodType end = type.dropParameterTypes(0, 1);
@@ -116,6 +131,7 @@ public final class Bootstrapper {
         return new ConstantCallSite(handle);
     }
     
+    @Description("Finds an existing call-site for a private dynamic method.")
     public static CallSite bootstrapPrivateDynamic(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner) throws Exception {
         final MethodHandle handle;
         final MethodType end = type.dropParameterTypes(0, 1);
@@ -123,18 +139,36 @@ public final class Bootstrapper {
         return new ConstantCallSite(handle);
     }
     
+    @Description("""
+        Finds an existing call-site for a static field.
+        
+        Rather than using the variable handle, this returns a method call-site.
+        This allows the field to be treated like a method by the compiler.
+        """)
     public static CallSite bootstrapStaticFieldSetter(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner) throws Exception {
         final MethodHandle handle = caller.findStaticVarHandle(owner, name, type.parameterType(0))
             .toMethodHandle(VarHandle.AccessMode.SET);
         return new ConstantCallSite(handle);
     }
     
+    @Description("""
+        Finds an existing call-site for a static field.
+        
+        Rather than using the variable handle, this returns a method call-site.
+        This allows the field to be treated like a method by the compiler.
+        """)
     public static CallSite bootstrapStaticFieldGetter(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner) throws Exception {
         final MethodHandle handle = caller.findStaticVarHandle(owner, name, type.returnType())
             .toMethodHandle(VarHandle.AccessMode.GET);
         return new ConstantCallSite(handle);
     }
     
+    @Description("""
+        Finds an existing call-site for a static field.
+        
+        Rather than using the variable handle, this returns a method call-site.
+        This allows the field to be treated like a method by the compiler.
+        """)
     public static CallSite bootstrapPrivateStaticFieldSetter(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner)
         throws Exception {
         final MethodHandle handle = MethodHandles.privateLookupIn(owner, caller)
@@ -143,6 +177,12 @@ public final class Bootstrapper {
         return new ConstantCallSite(handle);
     }
     
+    @Description("""
+        Finds an existing call-site for a static field.
+        
+        Rather than using the variable handle, this returns a method call-site.
+        This allows the field to be treated like a method by the compiler.
+        """)
     public static CallSite bootstrapPrivateStaticFieldGetter(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner)
         throws Exception {
         final MethodHandle handle = MethodHandles.privateLookupIn(owner, caller)
@@ -151,18 +191,36 @@ public final class Bootstrapper {
         return new ConstantCallSite(handle);
     }
     
+    @Description("""
+        Finds an existing call-site for a static field.
+        
+        Rather than using the variable handle, this returns a method call-site.
+        This allows the field to be treated like a method by the compiler.
+        """)
     public static CallSite bootstrapFieldSetter(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner) throws Exception {
         final MethodHandle handle = caller.findStaticVarHandle(owner, name, type.parameterType(0))
             .toMethodHandle(VarHandle.AccessMode.SET);
         return new ConstantCallSite(handle);
     }
     
+    @Description("""
+        Finds an existing call-site for a static field.
+        
+        Rather than using the variable handle, this returns a method call-site.
+        This allows the field to be treated like a method by the compiler.
+        """)
     public static CallSite bootstrapFieldGetter(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner) throws Exception {
         final MethodHandle handle = caller.findStaticVarHandle(owner, name, type.returnType())
             .toMethodHandle(VarHandle.AccessMode.GET);
         return new ConstantCallSite(handle);
     }
     
+    @Description("""
+        Finds an existing call-site for a static field.
+        
+        Rather than using the variable handle, this returns a method call-site.
+        This allows the field to be treated like a method by the compiler.
+        """)
     public static CallSite bootstrapPrivateFieldSetter(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner)
         throws Exception {
         final MethodHandle handle = MethodHandles.privateLookupIn(owner, caller)
@@ -171,6 +229,12 @@ public final class Bootstrapper {
         return new ConstantCallSite(handle);
     }
     
+    @Description("""
+        Finds an existing call-site for a static field.
+        
+        Rather than using the variable handle, this returns a method call-site.
+        This allows the field to be treated like a method by the compiler.
+        """)
     public static CallSite bootstrapPrivateFieldGetter(MethodHandles.Lookup caller, String name, MethodType type, Class<?> owner)
         throws Exception {
         final MethodHandle handle = MethodHandles.privateLookupIn(owner, caller)

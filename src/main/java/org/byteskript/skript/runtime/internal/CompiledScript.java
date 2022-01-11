@@ -6,9 +6,11 @@
 
 package org.byteskript.skript.runtime.internal;
 
-/**
- * Script main classes should extend this class.
- * As it is internal, this is not assured.
- */
+import mx.kenzie.autodoc.api.note.Description;
+
+@Description("""
+    Script main classes should extend this class.
+    As it is internal, this is not assured.
+    """)
 public abstract class CompiledScript {
 }

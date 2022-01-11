@@ -6,10 +6,12 @@
 
 package org.byteskript.skript.runtime.event;
 
+import mx.kenzie.autodoc.api.note.Ignore;
 import org.byteskript.skript.api.Event;
 import org.byteskript.skript.api.note.EventValue;
 import org.byteskript.skript.runtime.Script;
 
+@Ignore
 public class Load extends Event {
     
     protected final Script script;
@@ -28,6 +30,7 @@ public class Load extends Event {
         return script.getPath();
     }
     
+    @Ignore
     public static class LoadThis extends Event {
         
         protected final Script script;

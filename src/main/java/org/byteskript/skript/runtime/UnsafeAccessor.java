@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.runtime;
 
+import mx.kenzie.autodoc.api.note.Ignore;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
@@ -13,6 +14,7 @@ import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 
 @SuppressWarnings({"removal"})
+@Ignore
 class UnsafeAccessor {
     
     private static final Unsafe UNSAFE;

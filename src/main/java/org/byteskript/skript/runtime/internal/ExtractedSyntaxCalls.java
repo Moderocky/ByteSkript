@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Ignore;
 import mx.kenzie.mirror.MethodAccessor;
 import org.byteskript.skript.error.ScriptRuntimeError;
 import org.byteskript.skript.runtime.Script;
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.function.Supplier;
 
+@Ignore
 public class ExtractedSyntaxCalls {
     
     public static ModifiableCompiler getCompiler() {

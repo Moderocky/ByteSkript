@@ -6,11 +6,14 @@
 
 package org.byteskript.skript.runtime.data;
 
+import mx.kenzie.autodoc.api.note.Ignore;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+@Ignore
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EventData {

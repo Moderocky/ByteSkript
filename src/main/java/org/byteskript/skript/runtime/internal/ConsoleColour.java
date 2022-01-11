@@ -6,6 +6,9 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Ignore;
+
+@Ignore
 public enum ConsoleColour {
     RESET("\033[0m"),
     BLACK("\033[0;30m"),

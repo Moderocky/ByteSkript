@@ -6,10 +6,12 @@
 
 package org.byteskript.skript.api;
 
-/**
- * Compiler flags to provide trivial information to the matcher.
- * This should be implemented by an enum.
- */
+import mx.kenzie.autodoc.api.note.Description;
+
+@Description("""
+    Compiler flags to provide trivial information to the matcher.
+    This should be implemented by an enum.
+    """)
 public interface Flag {
     
     String name();

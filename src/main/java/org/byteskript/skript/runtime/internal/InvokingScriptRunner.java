@@ -6,8 +6,10 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Ignore;
 import org.byteskript.skript.runtime.threading.ScriptRunner;
 
+@Ignore
 public record InvokingScriptRunner(Class<? extends CompiledScript> owner, Member method,
                                    Object... parameters) implements ScriptRunner {
     

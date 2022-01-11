@@ -6,8 +6,8 @@
 
 package org.byteskript.skript.api;
 
-/**
- * A miniature record for holding documentation for a syntax element.
- */
-public record Document(String name, String type, String[] patterns, String description, String[] examples) {
+import mx.kenzie.autodoc.api.note.Description;
+
+@Description("A miniature record for holding documentation for a syntax element.")
+public record Document(String name, String type, String[] patterns, String description, String... examples) {
 }

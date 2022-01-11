@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Ignore;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
@@ -14,6 +15,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+@Ignore
 public class WeakList<Type> extends ArrayList<WeakReference<Type>> {
     
     public Type getActual(int index) {

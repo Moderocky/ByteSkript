@@ -6,11 +6,13 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Ignore;
 import org.byteskript.skript.error.ScriptRuntimeError;
 import org.byteskript.skript.runtime.threading.ScriptThread;
 
 import java.util.HashMap;
 
+@Ignore
 public class ThreadVariableMap extends HashMap<String, Object> {
     
     public static Object getVariable(Object name) {

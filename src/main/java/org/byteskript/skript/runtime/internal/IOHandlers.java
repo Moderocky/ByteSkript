@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Ignore;
 import org.byteskript.skript.api.note.Effect;
 import org.byteskript.skript.api.note.Expression;
 import org.byteskript.skript.api.note.ForceBridge;
@@ -15,6 +16,7 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+@Ignore
 @Deprecated(forRemoval = true)
 public class IOHandlers {
     

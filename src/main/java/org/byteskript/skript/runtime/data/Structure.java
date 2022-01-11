@@ -6,7 +6,10 @@
 
 package org.byteskript.skript.runtime.data;
 
+import mx.kenzie.autodoc.api.note.Ignore;
+
 import java.lang.reflect.AnnotatedElement;
 
+@Ignore
 public record Structure(String type, String name, AnnotatedElement element) {
 }

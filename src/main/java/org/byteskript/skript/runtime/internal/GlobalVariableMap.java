@@ -6,10 +6,16 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Description;
 import org.byteskript.skript.runtime.Skript;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+@Description("""
+    The map that holds global variables.
+    
+    This is thread-safe.
+    """)
 public class GlobalVariableMap extends ConcurrentHashMap<String, Object> {
     
     public static Object getVariable(Object name) {

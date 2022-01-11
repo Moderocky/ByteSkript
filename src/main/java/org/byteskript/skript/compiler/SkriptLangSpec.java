@@ -301,9 +301,9 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
     
     private Class<?>[] findClasses(final String namespace) throws IOException, ClassNotFoundException {
         final List<Class<?>> classes = new ArrayList<>();
-        final CodeSource src = ScriptRunner.class.getProtectionDomain().getCodeSource();
-        if (src != null) {
-            final URL jar = src.getLocation();
+        final CodeSource source = ScriptRunner.class.getProtectionDomain().getCodeSource();
+        if (source != null) {
+            final URL jar = source.getLocation();
             try (final ZipInputStream zip = new ZipInputStream(jar.openStream())) {
                 while (true) {
                     final ZipEntry entry = zip.getNextEntry();

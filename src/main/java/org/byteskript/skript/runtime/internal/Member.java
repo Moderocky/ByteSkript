@@ -6,6 +6,8 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Description;
+import mx.kenzie.autodoc.api.note.Ignore;
 import mx.kenzie.mirror.MethodAccessor;
 import mx.kenzie.mirror.Mirror;
 import org.byteskript.skript.error.ScriptRuntimeError;
@@ -19,11 +21,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.Future;
 
-/**
- * A handle for a function, event, etc. inside a script.
- * Keeping strong references to this is not advised, since it will prevent safe unloading.
- * The member can be triggered safely from this.
- */
+@Description("""
+    A handle for a function, event, etc. inside a script.
+    
+    Keeping strong references to this is not advised, since it will prevent safe unloading.
+    The member can be triggered safely from this.
+    """)
 public class Member {
     
     protected final Script script;
@@ -32,6 +35,7 @@ public class Member {
     protected MethodAccessor<?> verifier;
     protected int parameters;
     
+    @Ignore
     public Member(Script script, Method method, boolean async) {
         this.script = script;
         this.async = async;
@@ -41,6 +45,7 @@ public class Member {
         this.verifier = mirror.method(method.getName() + "_verify", method.getParameterTypes());
     }
     
+    @Ignore
     public static Object runAsync(Object thing, Object args) {
         final Object[] arguments;
         final Thread current = Thread.currentThread();
@@ -60,10 +65,17 @@ public class Member {
         return null;
     }
     
+    @Description("""
+        Invokes this member directly.
+        
+        This will not run on a script thread, so may not function properly.
+        See [run](method:run(1)) for the safe invocation method.
+        """)
     public Object invoke(Object... arguments) {
         return invoker.invoke(arguments);
     }
     
+    @Ignore
     public static Object runAsync(Object thing) {
         final Thread current = Thread.currentThread();
         if (!(current instanceof ScriptThread thread))
@@ -83,10 +95,12 @@ public class Member {
         return null;
     }
     
+    @Ignore
     public static MethodAccessor<Object> findFunction(Object owner, String name) {
         return Mirror.of(owner).useProvider(Skript.findLoader()).method(name);
     }
     
+    @Ignore
     public static MethodAccessor<Object> getFunction(Object source, String pattern) {
         final String clean = pattern.trim();
         final Object owner;
@@ -122,28 +136,24 @@ public class Member {
         return count;
     }
     
+    @Ignore
     public static MethodAccessor<Object> findFunction(Object owner, String name, Number arguments) {
         final Class<?>[] parameters = new Class[arguments.intValue()];
         Arrays.fill(parameters, Object.class);
         return Mirror.of(owner).useProvider(Skript.findLoader()).method(name, parameters);
     }
     
-    /**
-     * Gets the script instance that provided this member.
-     *
-     * @return the owning script
-     */
+    @Description("Gets the script instance that provided this member.")
     public Script getScript() {
         return script;
     }
     
-    /**
-     * Triggers this member in a new script thread.
-     * This will be run in the runtime from which the member was originally loaded.
-     *
-     * @param arguments the (function) arguments to pass
-     * @return a future governing this process
-     */
+    @Description("""
+        Triggers this member in a new script thread.
+        This will be run in the runtime from which the member was originally loaded.
+        
+        This is the safe and correct way to trigger a function from a Java process.
+        """)
     public Future<?> run(Object... arguments) {
         final ScriptRunner runner = new ScriptRunner() {
             @Override
@@ -159,15 +169,12 @@ public class Member {
         return script.skriptInstance().runScript(runner);
     }
     
-    /**
-     * Triggers this member in a new script thread.
-     * This allows running in a different script runtime.
-     * This is potentially unsafe - alternative class versions can bleed between runtimes.
-     *
-     * @param skript    the Skript runtime
-     * @param arguments the (function) arguments to pass
-     * @return a future governing this process
-     */
+    @Description("""
+        Triggers this member in a new script thread.
+        This allows running in a different script runtime.
+        
+        This is potentially unsafe - alternative class versions can bleed between runtimes.
+        """)
     public Future<?> run(Skript skript, Object... arguments) {
         final ScriptRunner runner = new ScriptRunner() {
             @Override
@@ -187,6 +194,9 @@ public class Member {
      * Triggers this member's verifier with a set of `null` parameters.
      * Rather than returning a boolean result, this will throw an error if the verifier fails.
      */
+    @Description("""
+        Triggers this member's verifier with a set of `null` parameters.
+        Rather than returning a boolean result, this will throw an error if the verifier fails.""")
     public void verify() {
         if (verifier == null) return;
         verifier.invoke(new Object[parameters]);

@@ -6,6 +6,10 @@
 
 package org.byteskript.skript.runtime;
 
+import mx.kenzie.autodoc.api.note.Description;
+import mx.kenzie.autodoc.api.note.Example;
+import mx.kenzie.autodoc.api.note.GenerateExample;
+import mx.kenzie.autodoc.api.note.Ignore;
 import org.byteskript.skript.api.Event;
 import org.byteskript.skript.error.ScriptLoadError;
 import org.byteskript.skript.runtime.data.EventData;
@@ -21,14 +25,25 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.*;
 
-/**
- * A handle representation of a script containing its metadata and defined classes.
- * <p>
- * This can be used to find insights about a script or find a particular function handle.
- * <p>
- * These should not be stored - they can be arbitrarily graveyarded without any notification
- * by the unloader, in which case this will become a dead spot in memory.
- */
+@Description("""
+    A handle representation of a script containing its metadata and defined classes.
+    
+    This can be used to find insights about a script or find a particular function handle.
+    
+    These should not be stored - they can be arbitrarily graveyarded without any notification
+    by the unloader, in which case this will become a dead spot in memory.
+    """)
+@Example("""
+    final PostCompileClass data = skript.compileScript(code, "skript.myscript");
+    final Script script = skript.loadScript(data);
+    final Member function = script.getFunction("my_func");
+    function.run();
+    """)
+@Example("""
+    final PostCompileClass data = skript.compileScript(code, "skript.myscript");
+    final Script script = skript.loadScript(data);
+    skript.runEvent(new MyEvent(), script);
+    """)
 public final class Script {
     private final File sourceFile;
     private final Class<?>[] classes;
@@ -38,10 +53,12 @@ public final class Script {
     private final Structure[] members;
     private final Skript skript;
     
+    @Ignore
     Script(Skript skript, File sourceFile, Class<?>... classes) {
         this(true, skript, sourceFile, classes);
     }
     
+    @Ignore
     Script(boolean init, Skript skript, File sourceFile, Class<?>... classes) {
         this.skript = skript;
         this.sourceFile = sourceFile;
@@ -77,17 +94,17 @@ public final class Script {
         }
     }
     
-    /**
-     * Gets the main class of this script, which root-level members occupy.
-     * Custom types and other members may be moved to other classes, depending on the compiler used.
-     * This should not be stored - it will prevent the script unloading safely.
-     *
-     * @return the main class
-     */
+    @Description("""
+        Gets the main class of this script, which root-level members occupy.
+        Custom types and other members may be moved to other classes, depending on the compiler used.
+        
+        This should not be stored - it will prevent the script unloading safely.
+        """)
     public Class<? extends CompiledScript> mainClass() {
         return (Class<? extends CompiledScript>) classes[0];
     }
     
+    @Ignore
     void verify() {
         this.forceLoad(this.mainClass());
         for (final Map.Entry<String, Member> entry : functions.entrySet()) {
@@ -101,6 +118,7 @@ public final class Script {
         }
     }
     
+    @Ignore
     void load(Skript skript) {
         skript.runEvent(new Load.LoadThis(this), this);
         skript.runEvent(new Load(this));
@@ -113,94 +131,75 @@ public final class Script {
         }
     }
     
-    /**
-     * The simple name of the main class for this script.
-     * This will be something in the format `script`
-     *
-     * @return the simple name
-     */
+    @Description("""
+        The simple name of the main class for this script.
+        This will be something in the format `script`.
+        """)
+    @GenerateExample
     public String getSimpleName() {
         return mainClass().getSimpleName();
     }
     
-    /**
-     * The path of the main class for this script.
-     * This will be something in the format `skript.path.to.script`
-     *
-     * @return the path
-     */
+    @Description("""
+        The path of the main class for this script.
+        This will be something in the format `skript.path.to.script`
+        """)
+    @Example("assert script.getPath().startsWith(myPathName);")
     public String getPath() {
         return mainClass().getName();
     }
     
-    /**
-     * Whether this script has a known source file.
-     *
-     * @return the source file
-     */
+    @Description("Whether this script has a known source file.")
+    @GenerateExample
     public boolean hasSourceFile() {
         return sourceFile != null && sourceFile.exists() && sourceFile.isFile();
     }
     
-    /**
-     * Returns a handle for the function with this name.
-     * Multiple functions may have the same name, this will return an arbitrary one.
-     *
-     * @param name the function name
-     * @return the function
-     */
+    @Description("""
+        Returns a handle for the function with this name.
+        Multiple functions may have the same name, this will return an arbitrary one.
+        """)
+    @GenerateExample
     public Member getFunction(String name) {
         return functions.get(name);
     }
     
-    /**
-     * Finds source data annotations for members in this script.
-     *
-     * @return member data
-     */
+    @Description("Finds source data annotations for members in this script.")
     public Collection<SourceData> getMemberData() {
         return data;
     }
     
-    /**
-     * Returns the known source file for this script.
-     *
-     * @return potentially null source file
-     */
+    @Description("""
+        Returns the known source file for this script.
+        This may not exist for some implementations.
+        """)
+    @GenerateExample
     public File sourceFile() {
         return sourceFile;
     }
     
-    /**
-     * Returns the known classes for this script.
-     * This will include the main class and any custom types, etc.
-     *
-     * @return the classes
-     */
+    @Description("""
+        Returns the known classes for this script.
+        This will include the main class and any custom types, etc.
+        """)
     public Class<?>[] classes() {
         return classes;
     }
     
     @Override
+    @Ignore
     public String toString() {
         return "Script[" +
             "name=" + name + ']';
     }
     
-    /**
-     * Returns the structures for all members, used for data collection.
-     *
-     * @return all found structures
-     */
+    @Description("Returns the structures for all members, used for data collection.")
     public Structure[] getMembers() {
         return members;
     }
     
-    /**
-     * Returns the Skript runtime that created this script.
-     *
-     * @return the runtime
-     */
+    @Description("Returns the Skript runtime that created this script.")
+    @GenerateExample
     public Skript skriptInstance() {
         return skript;
     }

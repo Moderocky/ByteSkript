@@ -6,12 +6,14 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Ignore;
 import mx.kenzie.mirror.ClassProvider;
 import org.byteskript.skript.runtime.Skript;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Ignore
 public class ScriptClassLoader extends ClassLoader implements ClassProvider {
     
     final List<Class<?>> loaded = new ArrayList<>();

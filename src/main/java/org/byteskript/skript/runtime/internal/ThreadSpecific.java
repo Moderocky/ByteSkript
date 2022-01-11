@@ -6,12 +6,12 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Description;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Denotes behaviour that is thread-specific.
- */
+@Description("Denotes behaviour that is thread-specific.")
 @Retention(RetentionPolicy.CLASS)
 public @interface ThreadSpecific {
 }

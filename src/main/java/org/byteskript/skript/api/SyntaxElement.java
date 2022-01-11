@@ -6,6 +6,8 @@
 
 package org.byteskript.skript.api;
 
+import mx.kenzie.autodoc.api.note.Description;
+import mx.kenzie.autodoc.api.note.Ignore;
 import mx.kenzie.foundation.*;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.note.Documentation;
@@ -25,51 +27,35 @@ import java.util.function.Consumer;
 
 import static mx.kenzie.foundation.WriteInstruction.*;
 
-/**
- * A syntax element.
- * This instance controls the matching and compiling for a specific element.
- * The library it comes from controls where it can be matched.
- */
+@Description("""
+    A syntax element.
+    This instance controls the matching and compiling for a specific element.
+    The library it comes from controls where it can be matched.
+    """)
 public interface SyntaxElement {
     
-    /**
-     * Attempts to match this element to a source string.
-     * The context can be accessed, but should not be modified here.
-     * If the source does not match this element, return `null`.
-     * If the source does match this element, return a match object with the match data in.
-     * <p>
-     * Complex patterns are advised to override this and attempt faster
-     * checks with {@link String#contains(CharSequence)} before running the super matcher.
-     * This will circumvent a complex regex having to be checked every time.
-     *
-     * @param thing   the source
-     * @param context the context of this source
-     * @return the match result
-     */
+    @Description("""
+        Attempts to match this element to a source string.
+        The context can be accessed, but should not be modified here.
+        
+        If the source does not match this element, return `null`.
+        If the source does match this element, return a match object with the match data in.
+        
+        Complex patterns are advised to override this and attempt faster
+        checks with `string.contains(part)` before running the super matcher.
+        This will circumvent a complex regex having to be checked every time.
+        """)
     default Pattern.Match match(String thing, Context context) {
         return this.getPattern().match(thing, context);
     }
     
-    /**
-     * The pattern metadata object.
-     *
-     * @return the pattern
-     */
+    @Description("The pattern metadata object.")
     Pattern getPattern();
     
-    /**
-     * The library that provides this syntax element.
-     *
-     * @return the provider
-     */
+    @Description("The library that provides this syntax element.")
     Library getProvider();
     
-    /**
-     * For basic syntax, this can return a method that will be used as a handle.
-     *
-     * @param type the handler mode
-     * @return the method handle
-     */
+    @Description("For basic syntax, this can return a method that will be used as a handle.")
     Method getHandler(HandlerType type);
     
     void setHandler(HandlerType type, Method method);
@@ -95,35 +81,23 @@ public interface SyntaxElement {
     
     boolean hasHandler(HandlerType type);
     
-    /**
-     * The return type of this element, used for type tracking during compilation.
-     *
-     * @return the return type
-     */
+    @Description("The return type of this element, used for type tracking during compilation.")
     default Type getReturnType() {
         return CommonTypes.VOID;
     }
     
-    /**
-     * This is called during the first compiler pass, Out->In, L->R.
-     * Simple elements will not need this, but lookahead or re-ordering operations can be run here.
-     *
-     * @param context the compiler context
-     * @param match   the match used
-     * @throws Throwable to avoid unnecessary try/catch blocks
-     */
+    @Description("""
+        This is called during the first compiler pass, Out->In, L->R.
+        Simple elements will not need this, but lookahead or re-ordering operations can be run here.
+        """)
     default void preCompile(Context context, Pattern.Match match) throws Throwable {
         // Very few elements require a lookahead.
     }
     
-    /**
-     * This is called during the second compiler pass, In->Out, L->R.
-     * Non-trivial syntax may need to override this to provide special behaviour.
-     *
-     * @param context the compiler context
-     * @param match   the match used
-     * @throws Throwable to avoid unnecessary try/catch blocks
-     */
+    @Description("""
+        This is called during the second compiler pass, In->Out, L->R.
+        Non-trivial syntax may need to override this to provide special behaviour.
+        """)
     void compile(Context context, Pattern.Match match) throws Throwable;
     
     default boolean allowedIn(State state, Context context) {
@@ -142,15 +116,11 @@ public interface SyntaxElement {
         context.addSkipInstruction(consumer);
     }
     
-    /**
-     * This writes a smart method call for the syntax, obeying rewrite rules.
-     * This can perform inlining, extraction and basic rewrites.
-     * This also has access to the bridge compiler.
-     *
-     * @param builder the method builder to use
-     * @param method  the target method
-     * @param context the compiler context
-     */
+    @Description("""
+        This writes a smart method call for the syntax, obeying rewrite rules.
+        This can perform inlining, extraction and basic rewrites.
+        This also has access to the bridge compiler.
+        """)
     default void writeCall(final MethodBuilder builder, final Method method, final Context context) {
         final ForceInline inline = method.getAnnotation(ForceInline.class);
         final ForceExtract extract = method.getAnnotation(ForceExtract.class);
@@ -198,9 +168,9 @@ public interface SyntaxElement {
         }
     }
     
-    /**
-     * A wrapped version of {@link Class#getMethod(String, Class[])} to avoid catching exceptions.
-     */
+    @Description("""
+        A wrapped version of `class.getMethod(...)` to avoid catching exceptions.
+        """)
     default Method findMethod(Class<?> owner, String name, Class<?>... parameters) {
         try {
             return owner.getMethod(name, parameters);
@@ -209,17 +179,19 @@ public interface SyntaxElement {
         }
     }
     
-    /**
-     * For script reassembly - taking the post-parse structure and generating a (new) text script from it.
-     *
-     * @param inputs the (probably-expression) inputs that go into this line
-     * @return the string that would parse as this syntax, containing the inputs
-     * @throws ScriptReassemblyError if you do not wish to support this / the inputs are wrong
-     */
+    @Description("""
+        For script reassembly - taking the post-parse structure and generating a (new) text script from it.
+        
+        This has not been implemented yet.
+        """)
+    @Deprecated
     default String assemble(int line, String... inputs) throws ScriptReassemblyError {
         throw new ScriptReassemblyError(line, "Not supported yet.");
     }
     
+    @Description("""
+        Create the Skript documentation for this syntax.
+        """)
     default Document createDocument() {
         return new Document(name(), getType().name(), getPatterns(), description(), examples());
     }
@@ -246,6 +218,7 @@ public interface SyntaxElement {
         return documentation.examples();
     }
     
+    @Ignore
     class Handlers extends HashMap<HandlerType, Method> {
     
     }

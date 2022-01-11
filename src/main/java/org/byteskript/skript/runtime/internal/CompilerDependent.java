@@ -6,12 +6,14 @@
 
 package org.byteskript.skript.runtime.internal;
 
+import mx.kenzie.autodoc.api.note.Description;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Denotes behaviour that is dependent on a specific compiler being available.
- */
+@Description("""
+    Denotes behaviour that is dependent on a specific compiler being available.
+    """)
 @Retention(RetentionPolicy.CLASS)
 public @interface CompilerDependent {
 }

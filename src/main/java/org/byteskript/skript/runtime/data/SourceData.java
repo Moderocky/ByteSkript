@@ -6,9 +6,12 @@
 
 package org.byteskript.skript.runtime.data;
 
+import mx.kenzie.autodoc.api.note.Ignore;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+@Ignore
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SourceData {
     

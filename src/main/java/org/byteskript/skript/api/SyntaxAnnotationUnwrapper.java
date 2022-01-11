@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.api;
 
+import mx.kenzie.autodoc.api.note.Ignore;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.automatic.*;
@@ -19,6 +20,7 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 import java.lang.reflect.Method;
 import java.lang.reflect.RecordComponent;
 
+@Ignore
 public interface SyntaxAnnotationUnwrapper extends Library {
     
     default void generateSyntaxFrom(Class<?> owner) {
