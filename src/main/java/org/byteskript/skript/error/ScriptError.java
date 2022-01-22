@@ -11,7 +11,6 @@ import java.io.PrintWriter;
 
 public interface ScriptError {
     
-    
     interface Output {
         void println(String string);
     }

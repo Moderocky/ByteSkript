@@ -68,13 +68,13 @@ public class BasicInlineController extends RewriteController {
     }
     
     @Override
-    public void write(String s, int i, Object o) {
-    }
-    
-    @Override
     public WriteInstruction jumpToEnd() {
         final Label to = label.use();
         return (writer, method) -> method.visitJumpInsn(167, to);
+    }
+    
+    @Override
+    public void write(String s, int i, Object o) {
     }
     
     @Override

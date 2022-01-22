@@ -25,7 +25,7 @@
 </div>
 <div class="dropdown m-1 d-inline">
 <button class="btn btn-primary dropdown-toggle" type="button" id="methodMenu" data-bs-toggle="dropdown" aria-expanded="false">Methods</button>
-<ul class="dropdown-menu" aria-labelledby="methodMenu"><li><a class="dropdown-item" href="#method:registerSyntax(2)">registerSyntax</a></li><li><a class="dropdown-item" href="#method:registerProperty(1)">registerProperty</a></li><li><a class="dropdown-item" href="#method:registerEvents(1)">registerEvents</a></li><li><a class="dropdown-item" href="#method:registerTypes(1)">registerTypes</a></li><li><a class="dropdown-item" href="#method:registerTypes(1)">registerTypes</a></li>
+<ul class="dropdown-menu" aria-labelledby="methodMenu"><li><a class="dropdown-item" href="#method:registerEvents(1)">registerEvents</a></li><li><a class="dropdown-item" href="#method:registerTypes(1)">registerTypes</a></li><li><a class="dropdown-item" href="#method:registerTypes(1)">registerTypes</a></li><li><a class="dropdown-item" href="#method:registerSyntax(2)">registerSyntax</a></li><li><a class="dropdown-item" href="#method:registerProperty(1)">registerProperty</a></li>
 </ul>
 </div></div></div></div></div></div>
 <section id="class:ModifiableLibrary"><div class="row mb-2">
@@ -87,12 +87,58 @@ and the one recommended for most providers to use.</p>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>This library's name for debugging and error messages.</p>
 </div>
 <div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.String">String</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from extending classes.">protected</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Cannot be overridden or modified.">final</span> </p></div></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><hr /><br /><h2 class="border-bottom pb-2 mb-0">Methods</h2><br /><section id="method:registerSyntax(2)"><div class="row mb-2">
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><hr /><br /><h2 class="border-bottom pb-2 mb-0">Methods</h2><br /><section id="method:registerEvents(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerEvents<span class="text-secondary"> (EventHolder...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers event holders.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params159259014" aria-expanded="false" aria-controls="params159259014">Parameters</button><div class="collapse" id="params159259014">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>EventHolder[]</td><td>events</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerTypes(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerTypes<span class="text-secondary"> (Type...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers types to this library.</p>
+<p>This version accepts Foundation types.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params653687670" aria-expanded="false" aria-controls="params653687670">Parameters</button><div class="collapse" id="params653687670">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Type[]</td><td>types</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerTypes(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerTypes<span class="text-secondary"> (Class...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers types to this library.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params356473385" aria-expanded="false" aria-controls="params356473385">Parameters</button><div class="collapse" id="params356473385">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Class[]</td><td>classes</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerSyntax(2)"><div class="row mb-2">
 <div class="col-lg-8 col-md-12 col-sm-12">
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
 <div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerSyntax<span class="text-secondary"> (State, SyntaxElement...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers syntax elements for a given compile-state.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params159259014" aria-expanded="false" aria-controls="params159259014">Parameters</button><div class="collapse" id="params159259014">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params2136344592" aria-expanded="false" aria-controls="params2136344592">Parameters</button><div class="collapse" id="params2136344592">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -109,7 +155,7 @@ and the one recommended for most providers to use.</p>
 <div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
 <div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerProperty<span class="text-secondary"> (PropertyHandler)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
 <div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers special property expressions.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params653687670" aria-expanded="false" aria-controls="params653687670">Parameters</button><div class="collapse" id="params653687670">
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params110992469" aria-expanded="false" aria-controls="params110992469">Parameters</button><div class="collapse" id="params110992469">
 <table class="table table-borderless">
 <thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
 </tr></thead>
@@ -119,52 +165,6 @@ and the one recommended for most providers to use.</p>
 </tbody>
 </table></div></div></div>
 <div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerEvents(1)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerEvents<span class="text-secondary"> (EventHolder...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers event holders.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params356473385" aria-expanded="false" aria-controls="params356473385">Parameters</button><div class="collapse" id="params356473385">
-<table class="table table-borderless">
-<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
-</tr></thead>
-<tbody>
-<tr><th scope="row">1</th><td>EventHolder[]</td><td>events</td>
-</tr>
-</tbody>
-</table></div></div></div>
-<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerTypes(1)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerTypes<span class="text-secondary"> (Class...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers types to this library.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params2136344592" aria-expanded="false" aria-controls="params2136344592">Parameters</button><div class="collapse" id="params2136344592">
-<table class="table table-borderless">
-<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
-</tr></thead>
-<tbody>
-<tr><th scope="row">1</th><td>Class[]</td><td>classes</td>
-</tr>
-</tbody>
-</table></div></div></div>
-<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div></div>
-</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:registerTypes(1)"><div class="row mb-2">
-<div class="col-lg-8 col-md-12 col-sm-12">
-<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerTypes<span class="text-secondary"> (Type...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
-<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers types to this library.</p>
-<p>This version accepts Foundation types.</p>
-<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params110992469" aria-expanded="false" aria-controls="params110992469">Parameters</button><div class="collapse" id="params110992469">
-<table class="table table-borderless">
-<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
-</tr></thead>
-<tbody>
-<tr><th scope="row">1</th><td>Type[]</td><td>types</td>
-</tr>
-</tbody>
-</table></div></div></div>
-<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div></div>
 </div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><br />
 </main>
 

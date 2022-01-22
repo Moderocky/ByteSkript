@@ -6,19 +6,20 @@
 
 package org.byteskript.skript.app;
 
+import mx.kenzie.foundation.assembler.JarBuilder;
+import mx.kenzie.foundation.assembler.Manifest;
 import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.api.Library;
 import org.byteskript.skript.runtime.Skript;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+
+import static org.byteskript.skript.runtime.internal.ConsoleColour.*;
+import static org.byteskript.skript.runtime.internal.ConsoleColour.RESET;
 
 public final class ScriptJarBuilder extends SkriptApp {
     private static final Skript SKRIPT = new Skript();
@@ -29,54 +30,29 @@ public final class ScriptJarBuilder extends SkriptApp {
         final PostCompileClass[] scripts = SKRIPT.compileScripts(SOURCE);
         final File jar = new File(OUTPUT, name + ".jar");
         compileResource(jar, scripts);
+        System.out.println(RESET + "Available scripts have been compiled to " + CYAN + CYAN_UNDERLINED + "skripts/" + jar.getName() + RESET);
     }
     
     static void compileResource(File jar, PostCompileClass... classes) throws IOException {
+        if (!jar.exists()) jar.createNewFile();
         final List<File> resources = getFiles(new ArrayList<>(), RESOURCES.toPath());
         final List<PostCompileClass> runtime = new ArrayList<>();
         scrapeRuntimeResources(runtime);
-        try (
-            final ZipOutputStream out = new ZipOutputStream(new FileOutputStream(jar))) {
-            writeResources(out, runtime.toArray(new PostCompileClass[0]));
-            writeResources(out, classes);
-            for (final File resource : resources) {
-                final ZipEntry entry = new ZipEntry(resource.getName());
-                out.putNextEntry(entry);
+        try (final JarBuilder builder = new JarBuilder(jar)) {
+            builder.write(runtime.toArray(new PostCompileClass[0]));
+            builder.write(classes);
+            for (final File resource : resources)
                 try (final FileInputStream stream = new FileInputStream(resource)) {
-                    final byte[] data = stream.readAllBytes();
-                    out.write(data, 0, data.length);
+                    builder.write(resource.getName(), stream);
                 }
-                out.closeEntry();
-            }
-            manifest:
-            {
-                final ZipEntry entry = new ZipEntry("META-INF/MANIFEST.MF");
-                out.putNextEntry(entry);
-                final String version = ScriptJarBuilder.class.getPackage().getImplementationVersion();
-                final byte[] data = ("Manifest-Version: 1.0\n" +
-                    ("Main-Class: " + ScriptRunner.class.getName() + "\n") +
-                    "Archiver-Version: Zip\n" +
-                    "Created-By: Skript Compiler " + version + "\n" +
-                    "Built-By: Skript Jar Builder\n").getBytes(StandardCharsets.UTF_8);
-                out.write(data, 0, data.length);
-                out.closeEntry();
-            }
+            final String version = ScriptJarBuilder.class.getPackage().getImplementationVersion();
+            builder.manifest(new Manifest(ScriptRunner.class.getName(), "Skript Compiler " + version, "Skript Jar Builder"));
         }
     }
     
     static void scrapeRuntimeResources(final List<PostCompileClass> runtime) {
         for (final Library library : SKRIPT.getLoadedLibraries()) {
             runtime.addAll(library.getRuntime());
-        }
-    }
-    
-    private static void writeResources(ZipOutputStream out, PostCompileClass[] classes) throws IOException {
-        for (final PostCompileClass result : classes) {
-            final ZipEntry entry = new ZipEntry(result.internalName() + ".class");
-            out.putNextEntry(entry);
-            final byte[] data = result.code();
-            out.write(data, 0, data.length);
-            out.closeEntry();
         }
     }
     

@@ -6,7 +6,7 @@
 
     <groupId>org.byteskript</groupId>
     <artifactId>byteskript</artifactId>
-    <version>1.0.11</version>
+    <version>1.0.12</version>
     <name>ByteSkript</name>
     <description>A compiled JVM implementation of the Skript language.</description>
 
@@ -35,6 +35,7 @@
                                     <mainClass>
                                         org.byteskript.skript.app.ByteSkriptApp
                                     </mainClass>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
@@ -67,7 +68,7 @@
         <dependency>
             <groupId>mx.kenzie</groupId>
             <artifactId>foundation</artifactId>
-            <version>1.1.4</version>
+            <version>1.1.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
