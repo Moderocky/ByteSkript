@@ -56,7 +56,7 @@ public class NoArgsFunctionExpression extends SimpleExpression {
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        final String name = (String) match.meta();
+        final String name = match.meta();
         final Function function = context.getDefaultFunction(name, 0);
         method.writeCode(function.invoke(context.getType().internalName()));
     }

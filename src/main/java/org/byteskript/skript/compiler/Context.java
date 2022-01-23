@@ -172,11 +172,11 @@ public abstract class Context {
     public abstract boolean hasFunction(String name, int arguments);
     
     public Function getDefaultFunction(String name, int arguments) {
-        final Function function = getFunction(name, arguments);
+        final Function function = this.getFunction(name, arguments);
         if (function != null) return function;
         final Type[] types = new Type[arguments];
         Arrays.fill(types, CommonTypes.OBJECT); // assert all types are actually object :)
-        return new Function(name, getType(), CommonTypes.OBJECT, types);
+        return new Function(name, this.getType(), CommonTypes.OBJECT, types);
     }
     
     public abstract Function getFunction(String name, int arguments);
@@ -184,8 +184,6 @@ public abstract class Context {
     public abstract Type getType();
     
     public abstract void registerFunction(Function function);
-    
-    public abstract Function assertDefaultLocalFunction(String name);
     
     public void addLibrary(Library provider) {
         this.libraries.add(provider);

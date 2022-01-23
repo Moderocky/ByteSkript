@@ -51,7 +51,7 @@ public class TypeExpression extends SimpleExpression {
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        method.writeCode(WriteInstruction.loadClassConstant(((Type) match.meta())));
+        method.writeCode(WriteInstruction.loadClassConstant(match.meta()));
     }
     
     @Override

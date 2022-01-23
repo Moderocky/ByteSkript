@@ -150,7 +150,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         }
         if (storeSection) {
             context.sectionHeader = true;
-            for (SyntaxElement element : effect.list()) {
+            for (final SyntaxElement element : effect.list()) {
                 if (element instanceof Section section) {
                     context.createUnit(element.getType());
                     context.addSection(section);
@@ -158,7 +158,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
                 }
             }
         } else {
-            for (SyntaxElement element : effect.list()) {
+            for (final SyntaxElement element : effect.list()) {
                 if (element instanceof Section section) {
                     context.appendSection(section);
                     break;

@@ -27,7 +27,7 @@ public class FinalEntry extends SimpleEntry {
     
     @Override
     public void compile(Context context, Pattern.Match match) {
-        final String name = (String) match.meta();
+        final String name = match.meta();
         final boolean value = Boolean.parseBoolean(name);
         if (value) context.getField().addModifiers(0x0010);
         else context.getField().removeModifiers(0x0010);

@@ -42,7 +42,7 @@ public class ModeEntry extends SimpleEntry {
     
     @Override
     public void compile(Context context, Pattern.Match match) {
-        final String mode = (String) match.meta();
+        final String mode = match.meta();
         final SyntaxTree tree = ((SyntaxTree) context.getCurrentTree());
         tree.mode = StandardHandlers.valueOf(mode.toUpperCase(Locale.ROOT));
         context.setState(CompileState.MEMBER_BODY);

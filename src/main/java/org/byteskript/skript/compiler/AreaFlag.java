@@ -16,6 +16,7 @@ public enum AreaFlag implements Flag {
     IN_PROPERTY,
     IN_TYPE,
     IN_ABSTRACT_TYPE,
-    IN_EVENT
+    IN_EVENT,
+    IN_DICTIONARY
     
 }

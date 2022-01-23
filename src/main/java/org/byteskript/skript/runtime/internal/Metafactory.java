@@ -43,8 +43,7 @@ public class Metafactory {
         return compiler.getCallSite();
     }
     
-    private static Method findTarget(MethodHandles.Lookup caller, String name, Class<?> owner, Class<?>... parameters)
-        throws Exception {
+    private static Method findTarget(MethodHandles.Lookup caller, String name, Class<?> owner, Class<?>... parameters) {
         final Method[] methods = owner.getMethods();
         for (final Method method : methods) {
             if (!method.getName().equals(name)) continue;
@@ -56,7 +55,7 @@ public class Metafactory {
             if (parameters.length == method.getParameterCount()) return method;
         }
         throw new ScriptRuntimeError("Unable to find function '" + name + Arrays.toString(parameters).replace('[', '(')
-            .replace(']', ')') + "'");
+            .replace(']', ')') + "' from " + owner.getSimpleName());
     }
     
     @Ignore

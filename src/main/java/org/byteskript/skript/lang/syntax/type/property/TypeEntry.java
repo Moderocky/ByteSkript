@@ -33,7 +33,7 @@ public class TypeEntry extends SimpleEntry {
     
     @Override
     public void compile(Context context, Pattern.Match match) {
-        final String name = (String) match.meta();
+        final String name = match.meta();
         final Type type = context.getType(name);
         if (type != null) context.getField().setType(type);
         else context.getField().setType(new Type(name.replace('.', '/')));

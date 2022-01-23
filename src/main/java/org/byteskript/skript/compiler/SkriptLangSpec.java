@@ -24,6 +24,9 @@ import org.byteskript.skript.lang.syntax.control.AddEffect;
 import org.byteskript.skript.lang.syntax.control.DeleteEffect;
 import org.byteskript.skript.lang.syntax.control.RemoveEffect;
 import org.byteskript.skript.lang.syntax.control.SetEffect;
+import org.byteskript.skript.lang.syntax.dictionary.DictionaryMember;
+import org.byteskript.skript.lang.syntax.dictionary.ImportFunctionEffect;
+import org.byteskript.skript.lang.syntax.dictionary.ImportTypeEffect;
 import org.byteskript.skript.lang.syntax.entry.*;
 import org.byteskript.skript.lang.syntax.entry.syntax.*;
 import org.byteskript.skript.lang.syntax.event.AnyLoadEvent;
@@ -119,7 +122,8 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new PropertyMember(),
             new FunctionMember(),
             new NoArgsFunctionMember(),
-            new Template()
+            new Template(),
+            new DictionaryMember()
         );
         registerSyntax(CompileState.MEMBER_BODY,
             new Verify(),
@@ -168,7 +172,9 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new TryEffect(),
             new ClearList(),
             new LoadScriptEffect(),
-            new UnloadScriptEffect()
+            new UnloadScriptEffect(),
+            new ImportTypeEffect(),
+            new ImportFunctionEffect()
         );
         registerSyntax(CompileState.STATEMENT,
             new NoneLiteral(),

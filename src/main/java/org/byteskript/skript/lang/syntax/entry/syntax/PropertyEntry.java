@@ -38,7 +38,7 @@ public class PropertyEntry extends SimpleEntry {
     
     @Override
     public void compile(Context context, Pattern.Match match) {
-        final String pattern = (String) match.meta();
+        final String pattern = match.meta();
         final SyntaxTree tree = ((SyntaxTree) context.getCurrentTree());
         tree.addHandler(new SyntaxTree.Handler(SyntaxTree.Type.PROPERTY, pattern));
         context.setState(CompileState.MEMBER_BODY);

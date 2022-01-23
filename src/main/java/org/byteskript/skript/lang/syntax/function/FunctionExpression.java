@@ -100,7 +100,7 @@ public class FunctionExpression extends SimpleExpression {
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
-        final FunctionDetails details = ((FunctionDetails) match.meta());
+        final FunctionDetails details = match.meta();
         final Function function = context.getDefaultFunction(details.name, details.arguments);
         method.writeCode(function.invoke(context.getType().internalName()));
     }

@@ -1,4 +1,8 @@
 
+function to_be_imported:
+    trigger:
+        return "hello"
+
 function generic_expressions:
     trigger:
         set {var} to {blob} otherwise "hello"
@@ -24,7 +28,6 @@ function generic_expressions:
         set {regex} to /.+/
         assert {regex} exists: "Regex literal failed to load."
         assert "blob blob" matches {regex}: "Regex failed to match anything."
-
 
 function test_system:
     trigger:

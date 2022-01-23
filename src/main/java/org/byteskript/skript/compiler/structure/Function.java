@@ -12,6 +12,8 @@ import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.runtime.internal.Bootstrapper;
 
+import java.util.Arrays;
+
 public record Function(String name, Type provider, Type returnType, Type[] arguments, Type result, Type[] parameters) {
     
     public Function(String name, Type provider) {
@@ -24,6 +26,12 @@ public record Function(String name, Type provider, Type returnType, Type[] argum
     
     public Function(Type provider, MethodErasure erasure) {
         this(erasure.name(), provider, erasure.returnType(), erasure.parameterTypes(), erasure.returnType(), erasure.parameterTypes());
+    }
+    
+    public Function copy(int arguments) {
+        final Type[] types = new Type[arguments];
+        Arrays.fill(types, CommonTypes.OBJECT);
+        return new Function(name, provider, returnType, types);
     }
     
     public WriteInstruction invoke(String source) {

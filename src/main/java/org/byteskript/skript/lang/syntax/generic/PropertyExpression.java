@@ -92,7 +92,7 @@ public class PropertyExpression extends RelationalExpression implements Referent
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
-        final String name = (String) match.meta();
+        final String name = match.meta();
         final MethodBuilder method = context.getMethod();
         final ElementTree tree = context.getCompileCurrent().nested()[0];
         if (tree != null && context.hasFlag(AreaFlag.IN_TYPE) && tree.current() instanceof ThisThingExpression) {

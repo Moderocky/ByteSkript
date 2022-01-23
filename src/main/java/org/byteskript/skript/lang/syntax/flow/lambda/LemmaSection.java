@@ -24,15 +24,7 @@ import org.byteskript.skript.lang.element.StandardElements;
     description = """
         Creates a section of re-usable code.
         """,
-    examples = {
-        """
-            set {var} to a new runnable:
-                print "hello"
-            run {var}
-            run a new runnable:
-                print "bye"
-                    """
-    }
+    examples = {}
 )
 public class LemmaSection extends ExtractedSection {
     

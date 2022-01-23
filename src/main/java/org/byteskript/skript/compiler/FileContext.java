@@ -270,7 +270,7 @@ public class FileContext extends Context {
     
     @Override
     public ProgrammaticSplitTree getTree(SectionMeta meta) {
-        for (ProgrammaticSplitTree tree : trees) {
+        for (final ProgrammaticSplitTree tree : trees) {
             if (tree.owner() == meta) return tree;
         }
         return null;
@@ -278,7 +278,7 @@ public class FileContext extends Context {
     
     @Override
     public synchronized void closeAllTrees() {
-        for (ProgrammaticSplitTree tree : trees.toArray(new ProgrammaticSplitTree[0])) {
+        for (final ProgrammaticSplitTree tree : trees.toArray(new ProgrammaticSplitTree[0])) {
             tree.close(this);
         }
         this.trees.clear();
@@ -394,8 +394,11 @@ public class FileContext extends Context {
     
     @Override
     public Function getFunction(String name, int arguments) {
-        for (Function function : functions) {
+        for (final Function function : functions) {
             if (function.name().equals(name) && function.arguments().length == arguments) return function;
+        }
+        for (final Function function : functions) { // zero-functions may be imported
+            if (function.name().equals(name) && function.arguments().length == 0) return function.copy(arguments);
         }
         return null;
     }
@@ -407,13 +410,7 @@ public class FileContext extends Context {
     
     @Override
     public void registerFunction(Function function) {
-        functions.add(0, function);
-    }
-    
-    @Override
-    public Function assertDefaultLocalFunction(String name) {
-        if (true) throw new RuntimeException("i need to know what's using this"); // todo
-        return new Function(name, type);
+        this.functions.add(0, function);
     }
     
     @Override

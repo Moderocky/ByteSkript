@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.byteskript.skript.runtime.internal.ConsoleColour.*;
-import static org.byteskript.skript.runtime.internal.ConsoleColour.RESET;
 
 public final class ScriptJarBuilder extends SkriptApp {
     private static final Skript SKRIPT = new Skript();

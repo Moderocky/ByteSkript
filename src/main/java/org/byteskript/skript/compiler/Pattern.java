@@ -203,8 +203,9 @@ public class Pattern { // todo remove regex go indexOf impl
             return matcher;
         }
         
-        public Object meta() {
-            return meta;
+        @SuppressWarnings("unchecked")
+        public <Thing> Thing meta() {
+            return (Thing) meta;
         }
         
         public Type[] expected() {

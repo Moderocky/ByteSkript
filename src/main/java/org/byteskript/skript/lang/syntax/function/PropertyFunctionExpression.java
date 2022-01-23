@@ -119,7 +119,7 @@ public class PropertyFunctionExpression extends SimpleExpression {
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        final FunctionDetails details = ((FunctionDetails) match.meta());
+        final FunctionDetails details = match.meta();
         assert details != null;
         final int expected = context.getCompileCurrent().nested().length - 1; // DON'T pack source
         final ClassBuilder builder = context.getBuilder();
