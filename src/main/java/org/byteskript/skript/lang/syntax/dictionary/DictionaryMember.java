@@ -7,11 +7,26 @@
 package org.byteskript.skript.lang.syntax.dictionary;
 
 import mx.kenzie.foundation.MethodBuilder;
+import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Member;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.lang.element.StandardElements;
 
+@Documentation(
+    name = "Dictionary",
+    description = """
+        Tells the compiler about available resources in other files.
+        Allows remote types and functions to be 'imported' to avoid using their fully-qualified names in code.
+        """,
+    examples = {
+        """
+            dictionary:
+                import type skript/otherscript/MyType
+                import function "cool_func" from skript/otherscript
+            """
+    }
+)
 public class DictionaryMember extends Member {
     
     public DictionaryMember() {
