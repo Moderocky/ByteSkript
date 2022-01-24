@@ -11,11 +11,14 @@ import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.api.Document;
 import org.byteskript.skript.api.Library;
+import org.byteskript.skript.runtime.Skript;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 @Description("""
     This is a template for a modifiable compiler.
@@ -26,12 +29,6 @@ import java.util.List;
 public interface ModifiableCompiler {
     
     Class<?> load(byte[] bytecode, String name);
-    
-    PostCompileClass[] compile(InputStream stream, Type name);
-    
-    PostCompileClass[] compile(InputStream file, String path);
-    
-    PostCompileClass[] compile(String file, Type path);
     
     boolean addLibrary(Library library);
     
@@ -49,5 +46,27 @@ public interface ModifiableCompiler {
     }
     
     Library[] getLibraries();
+    
+    default Promise<PostCompileClass[]> compileAsync(InputStream stream, Type name, Skript skript) {
+        return this.background(() -> compile(stream, name), skript);
+    }
+    
+    default Promise<PostCompileClass[]> background(Supplier<PostCompileClass[]> supplier, Skript skript) {
+        return new Promise<>(CompletableFuture.supplyAsync(supplier, skript.getExecutor()));
+    }
+    
+    PostCompileClass[] compile(InputStream stream, Type name);
+    
+    default Promise<PostCompileClass[]> compileAsync(InputStream file, String path, Skript skript) {
+        return this.background(() -> compile(file, path), skript);
+    }
+    
+    PostCompileClass[] compile(InputStream file, String path);
+    
+    default Promise<PostCompileClass[]> compileAsync(String file, Type path, Skript skript) {
+        return this.background(() -> compile(file, path), skript);
+    }
+    
+    PostCompileClass[] compile(String file, Type path);
     
 }

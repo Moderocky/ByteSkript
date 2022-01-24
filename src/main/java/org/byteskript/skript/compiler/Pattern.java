@@ -212,6 +212,10 @@ public class Pattern { // todo remove regex go indexOf impl
             return expected;
         }
         
+        public boolean equals(String string) {
+            return matcher.group().equals(string);
+        }
+        
     }
     
 }

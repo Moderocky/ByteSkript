@@ -27,14 +27,14 @@ public abstract class SkriptCompiler implements Compiler<SkriptLangSpec>, Modifi
     
     public abstract Class<?> load(byte[] bytecode, String name);
     
+    public abstract boolean addLibrary(Library library);
+    
+    public abstract boolean removeLibrary(Library library);
+    
     public abstract PostCompileClass[] compile(InputStream stream, Type name);
     
     public abstract PostCompileClass[] compile(InputStream file, String path);
     
     public abstract PostCompileClass[] compile(String file, Type path);
-    
-    public abstract boolean addLibrary(Library library);
-    
-    public abstract boolean removeLibrary(Library library);
     
 }

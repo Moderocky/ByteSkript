@@ -59,6 +59,7 @@ public final class Script {
     }
     
     @Ignore
+    @SuppressWarnings("unchecked")
     Script(boolean init, Skript skript, File sourceFile, Class<?>... classes) {
         this.skript = skript;
         this.sourceFile = sourceFile;

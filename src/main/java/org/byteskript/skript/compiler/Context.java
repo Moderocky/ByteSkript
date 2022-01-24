@@ -169,6 +169,15 @@ public abstract class Context {
         }
     }
     
+    public void destroySections() {
+        for (final SectionMeta section : sections) {
+            for (final Section handler : section.getHandlers()) {
+                handler.onSectionExit(this, section);
+            }
+        }
+        this.sections.clear();
+    }
+    
     public abstract boolean hasFunction(String name, int arguments);
     
     public Function getDefaultFunction(String name, int arguments) {
@@ -200,6 +209,10 @@ public abstract class Context {
     public void destroyUnit() {
         if (units.isEmpty()) return;
         units.remove(0);
+    }
+    
+    public void destroyUnits() {
+        units.clear();
     }
     
     public void createUnit(final LanguageElement element) {

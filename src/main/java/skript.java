@@ -79,7 +79,7 @@ public final class skript {
         return Math.toRadians(number);
     }
     
-    public static Number abs(Object object) {
+    public static Number abs(Object object) { // the instance-checks make sure the correct absolute is used
         if (object == null) return 0;
         if (object instanceof Byte number) return Math.abs(number);
         if (object instanceof Short number) return Math.abs(number);

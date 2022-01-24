@@ -182,11 +182,9 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
                 context.destroySection();
                 context.destroyUnit();
                 context.indent--;
-            }
-            if (actual == 0) { // allow different indentation per member
-                context.setIndentUnit(null);
-            }
-        } else if (actual != expected) throw new ScriptParseError(context.lineNumber(), "Wrong indent.");
+            } // allow different indentation per member
+            if (actual == 0) context.setIndentUnit(null);
+        } else if (actual != expected) throw new ScriptParseError(context.lineNumber(), "Incorrect indentation.");
         final String statement = line.trim();
         if (statement.isBlank()) return null;
         if (line.endsWith(":")) {
@@ -239,7 +237,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             if (!handler.allowAsInputFor(expected)) continue;
             final Pattern.Match match = handler.match(expression, context);
             if (match == null) continue;
-            if (!match.matcher().group().equals(expression)) continue;
+            if (!match.equals(expression)) continue;
             final Type[] types = match.expected();
             final String[] inputs = match.groups();
             if (inputs.length < types.length) continue;
@@ -269,6 +267,18 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     }
     
     @Override
+    public boolean addLibrary(Library library) {
+        if (libraries.contains(library)) return false;
+        this.libraries.add(0, library); // need to make sure it goes before skript
+        return true;
+    }
+    
+    @Override
+    public boolean removeLibrary(Library library) {
+        return libraries.remove(library);
+    }
+    
+    @Override
     public PostCompileClass[] compile(InputStream stream, Type name) {
         return compile(unstream(stream), name);
     }
@@ -282,12 +292,10 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         final FileContext context = new FileContext(path);
         context.libraries.addAll(libraries);
         for (final Library library : libraries) {
-            for (final Type type : library.getTypes()) {
-                context.registerType(type);
-            }
+            for (final Type type : library.getTypes()) context.registerType(type);
         }
         final List<String> lines = this.removeComments(source);
-        for (String line : lines) {
+        for (final String line : lines) {
             context.lineNumber++;
             context.line = null;
             if (line.isBlank()) continue;
@@ -302,30 +310,14 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
                 throw new ScriptCompileError(context.lineNumber, "Unknown error during compilation:", ex);
             }
         }
-        for (int i = 0; i < context.units.size(); i++) {
-            context.destroyUnit();
-        }
-        for (int i = 0; i < context.sections.size(); i++) {
-            context.destroySection();
-        }
+        context.destroyUnits();
+        context.destroySections();
         return context.compile();
     }
     
-    @Override
-    public boolean addLibrary(Library library) {
-        if (libraries.contains(library)) return false;
-        libraries.add(0, library); // need to make sure it goes before skript
-        return true;
-    }
-    
-    @Override
-    public boolean removeLibrary(Library library) {
-        return libraries.remove(library);
-    }
-    
     int trueIndent(final String line, final String unit) {
-        int indent = 0, offset = 0;
         if (unit == null) return 0;
+        int indent = 0, offset = 0;
         final int length = unit.length();
         while (line.startsWith(unit, offset)) {
             indent++;
