@@ -37,4 +37,8 @@ public abstract class SkriptCompiler implements Compiler<SkriptLangSpec>, Modifi
     
     public abstract PostCompileClass[] compile(String file, Type path);
     
+    @Override
+    public SkriptCompiler clone() {
+        return this; // non-cloneable implementation
+    }
 }

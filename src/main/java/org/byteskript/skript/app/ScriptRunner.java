@@ -25,7 +25,7 @@ public class ScriptRunner {
     
     public static void main(String... args) throws IOException, ClassNotFoundException {
         final Class<?>[] classes = findClasses("skript/");
-        for (Class<?> source : classes) {
+        for (final Class<?> source : classes) {
             final Script script = SKRIPT.loadScript(source);
             SCRIPTS.add(script);
         }

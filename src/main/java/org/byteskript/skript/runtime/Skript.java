@@ -30,7 +30,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Description("""
     This class is the entry-point for any program or library using ByteSkript.
@@ -591,44 +590,6 @@ public final class Skript {
             }
         }
         return scripts.toArray(new PostCompileClass[0]);
-    }
-    
-    @Description("""
-        Compiles all scripts in the root file to code representations.
-        These representations may be loaded, written to files or otherwise used.
-        """)
-    @GenerateExample
-    @CompilerDependent
-    public Promise<PostCompileClass[]> compileScriptsAsync(final File root) throws IOException {
-        if (!root.exists()) throw new ScriptLoadError("Root folder does not exist.");
-        if (!root.isDirectory()) throw new ScriptLoadError("Root must be a folder.");
-        final List<File> files = getFiles(new ArrayList<>(), root.toPath());
-        final CompletableFuture<PostCompileClass[]> future = new CompletableFuture<>();
-        final Promise<PostCompileClass[]> promise = new Promise<>(future);
-        final Collection<PostCompileClass> scripts = Collections.synchronizedCollection(new ArrayList<>());
-        final AtomicInteger integer = new AtomicInteger();
-        for (final File file : files) {
-            if (file == null) continue;
-            if (!file.getName().endsWith(".bsk")) continue;
-            try (final InputStream stream = new FileInputStream(file)) {
-                final String name = this.getClassName(file, root);
-                this.compileComplexScriptAsync(stream, name)
-                    .whenComplete(output -> {
-                        scripts.addAll(Arrays.asList(output));
-                        integer.incrementAndGet();
-                    });
-            }
-        }
-        final int expected = files.size();
-        future.completeAsync(() -> {
-            while (integer.get() < expected) {
-                try {
-                    Thread.sleep(5);
-                } catch (InterruptedException e) {}
-            }
-            return scripts.toArray(new PostCompileClass[0]);
-        }, this.executor);
-        return promise;
     }
     
     @Description("""

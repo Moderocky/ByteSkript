@@ -22,7 +22,7 @@ public class PropertiesTest extends SkriptTest {
     public static void start() throws Throwable {
         final PostCompileClass[] classes = skript.compileComplexScript(TypesTest.class.getClassLoader()
             .getResourceAsStream("properties.bsk"), "skript.properties");
-        for (PostCompileClass cls : classes) {
+        for (final PostCompileClass cls : classes) {
             if (script == null)
                 script = skript.loadScript(cls);
             else skript.loadScript(cls);

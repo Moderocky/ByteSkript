@@ -109,6 +109,14 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         return libraries.toArray(new Library[0]);
     }
     
+    @Override
+    public SimpleSkriptCompiler clone() {
+        final SimpleSkriptCompiler compiler = new SimpleSkriptCompiler();
+        compiler.libraries.clear();
+        compiler.libraries.addAll(this.libraries);
+        return compiler;
+    }
+    
     protected void compileLine(final String line, final FileContext context) {
         final ElementTree tree = parseLine(line, context);
         if (tree == null) return;

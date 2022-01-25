@@ -26,7 +26,7 @@ import java.util.function.Supplier;
     
     Compilers will already have to implement the majority of these methods from the Compiler interface.
     """)
-public interface ModifiableCompiler {
+public interface ModifiableCompiler extends Cloneable {
     
     Class<?> load(byte[] bytecode, String name);
     
@@ -68,5 +68,7 @@ public interface ModifiableCompiler {
     }
     
     PostCompileClass[] compile(String file, Type path);
+    
+    ModifiableCompiler clone();
     
 }
