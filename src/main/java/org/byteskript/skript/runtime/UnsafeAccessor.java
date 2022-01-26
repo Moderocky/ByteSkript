@@ -7,8 +7,10 @@
 package org.byteskript.skript.runtime;
 
 import mx.kenzie.autodoc.api.note.Ignore;
+import org.byteskript.skript.error.ScriptRuntimeError;
 import sun.misc.Unsafe;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
@@ -45,6 +47,15 @@ class UnsafeAccessor {
                 final long offset = UNSAFE.objectFieldOffset(field);
                 UNSAFE.putObject(object, offset, null);
             }
+        }
+    }
+    
+    protected static Class<?> loadAnonymous(byte[] bytecode) {
+        final MethodHandles.Lookup lookup = MethodHandles.lookup();
+        try {
+            return lookup.defineHiddenClass(bytecode, true, MethodHandles.Lookup.ClassOption.NESTMATE).lookupClass();
+        } catch (IllegalAccessException ex) {
+            throw new ScriptRuntimeError(ex);
         }
     }
     

@@ -38,6 +38,15 @@ public abstract class SkriptApp {
         }
     }
     
+    protected static File getJar() {
+        try {
+            return new File(SkriptApp.class.getProtectionDomain().getCodeSource().getLocation()
+                .toURI());
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException("Unable to find source file.", e);
+        }
+    }
+    
     protected static void registerLibraries(final Skript skript) {
         final List<File> files = getFiles(new ArrayList<>(), LIBRARIES.toPath());
         for (final File file : files) {
