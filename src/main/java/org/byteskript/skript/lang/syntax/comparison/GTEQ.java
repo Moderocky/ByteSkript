@@ -29,7 +29,7 @@ import org.byteskript.skript.runtime.internal.OperatorHandler;
 public class GTEQ extends RelationalExpression {
     
     public GTEQ() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% (is greater than or equal to|>=) ?%Object%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object%( is greater than or equal to | ?>= ?)%Object%");
         try {
             handlers.put(StandardHandlers.FIND, OperatorHandler.class.getMethod("gteq", Object.class, Object.class));
             handlers.put(StandardHandlers.GET, OperatorHandler.class.getMethod("gteq", Object.class, Object.class));

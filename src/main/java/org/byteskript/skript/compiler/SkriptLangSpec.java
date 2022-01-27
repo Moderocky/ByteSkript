@@ -27,7 +27,10 @@ import org.byteskript.skript.lang.syntax.control.SetEffect;
 import org.byteskript.skript.lang.syntax.dictionary.DictionaryMember;
 import org.byteskript.skript.lang.syntax.dictionary.ImportFunctionEffect;
 import org.byteskript.skript.lang.syntax.dictionary.ImportTypeEffect;
-import org.byteskript.skript.lang.syntax.entry.*;
+import org.byteskript.skript.lang.syntax.entry.ReturnType;
+import org.byteskript.skript.lang.syntax.entry.Template;
+import org.byteskript.skript.lang.syntax.entry.Trigger;
+import org.byteskript.skript.lang.syntax.entry.Verify;
 import org.byteskript.skript.lang.syntax.entry.syntax.*;
 import org.byteskript.skript.lang.syntax.event.AnyLoadEvent;
 import org.byteskript.skript.lang.syntax.event.CurrentEventExpression;
@@ -249,7 +252,6 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new AnyLoadEvent()
         );
         generateSyntaxFrom(IOHandlers.class);
-        generateSyntaxFrom(JavaRelay.class);
         try {
             registerProperty("keys", GET, DataMap.class.getMethod("getKeys", Map.class));
             registerProperty("values", GET, DataMap.class.getMethod("getValues", Map.class));

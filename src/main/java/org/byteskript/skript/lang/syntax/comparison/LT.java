@@ -29,7 +29,7 @@ import org.byteskript.skript.runtime.internal.OperatorHandler;
 public class LT extends RelationalExpression {
     
     public LT() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% (is less than|<) ?%Object%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object%( is less than | ?< ?)%Object%");
         try {
             handlers.put(StandardHandlers.FIND, OperatorHandler.class.getMethod("lt", Object.class, Object.class));
             handlers.put(StandardHandlers.GET, OperatorHandler.class.getMethod("lt", Object.class, Object.class));

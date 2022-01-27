@@ -1,11 +1,7 @@
 
-
-function relay:
-    java method target:
-        owner: "org/byteskript/skript/test/SectionsTest"
-        name: "blob"
-        descriptor: "(Ljava/lang/String;)Ljava/lang/Object;"
-
+function relay(thing):
+    trigger:
+        return "hello " + {thing}
 
 function relay_test:
     trigger:

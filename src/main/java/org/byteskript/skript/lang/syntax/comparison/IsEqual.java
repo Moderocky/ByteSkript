@@ -31,13 +31,14 @@ import java.lang.reflect.Method;
 public class IsEqual extends RelationalExpression {
     
     public IsEqual() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% (is|is equal to|are|=|==) %Object%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% (is|is equal to|are) %Object%",
+            "%Object% ?(=|==) ?%Object%");
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.contains(" is ")
-            && !thing.contains(" =")
+            && !thing.contains("=")
             && !thing.contains(" are ")
         ) return null;
         return super.match(thing, context);

@@ -31,15 +31,18 @@ import java.util.Objects;
 public class NotEqual extends RelationalExpression {
     
     public NotEqual() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% (isn't|is not|aren't|are not|≠|!=) %Object%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION,
+            "%Object% (isn't|is not|aren't|are not) %Object%",
+            "%Object% ?(≠|!=) ?%Object%"
+        );
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.contains(" is")
             && !thing.contains(" are")
-            && !thing.contains(" ≠ ")
-            && !thing.contains(" != ")
+            && !thing.contains("≠")
+            && !thing.contains("!=")
         ) return null;
         return super.match(thing, context);
     }
