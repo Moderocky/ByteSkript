@@ -15,8 +15,6 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 import org.byteskript.skript.runtime.Script;
 import org.byteskript.skript.runtime.Skript;
 
-import java.io.IOException;
-
 @Documentation(
     name = "Unload Script",
     description = """
@@ -38,7 +36,7 @@ public class UnloadScriptEffect extends Effect {
     }
     
     @ForceExtract
-    public static void unloadScript(Object object) throws IOException {
+    public static void unloadScript(Object object) {
         if (object instanceof Class main)
             Skript.localInstance().unloadScript(main);
         else if (object instanceof Script script)

@@ -4,7 +4,7 @@
  * https://github.com/Moderocky/ByteSkript/blob/master/LICENSE
  */
 
-package org.byteskript.skript.lang.syntax.flow.error;
+package org.byteskript.skript.lang.syntax.test;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.WriteInstruction;
@@ -18,25 +18,28 @@ import org.byteskript.skript.compiler.structure.MultiLabel;
 import org.byteskript.skript.compiler.structure.TryCatchTree;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
+import org.byteskript.skript.runtime.internal.ExtractedSyntaxCalls;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
 
 @Documentation(
-    name = "Inline Try",
+    name = "Inline Test",
     description = """
-        Attempts the following effect, failing silently if an error occurs.
+        Attempts the following effect only during a `test` phase.
+        Errors caused by side-effects from the test will be ignored outside the test phase.
+        
         This is a meta-effect and follows an unusual pattern.
         """,
     examples = {
         """
-            try: assert 1 is 2
+            test: print "hello!"
                 """
     }
 )
-public class TryEffect extends Effect {
+public class TestEffect extends Effect {
     
-    public TryEffect() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "try[ to]: %Effect%");
+    public TestEffect() {
+        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "test: %Effect%");
     }
     
     @Override
@@ -49,32 +52,34 @@ public class TryEffect extends Effect {
         final TryCatchTree tree = new TryCatchTree(context.getSection(1), new MultiLabel());
         context.createTree(tree);
         tree.start(context);
+        final MethodBuilder method = context.getMethod();
+        final Label label = tree.getEnd().use();
+        method.writeCode(WriteInstruction.invoke(ExtractedSyntaxCalls.class.getMethod("isTest")));
+        method.writeCode((writer, visitor) -> visitor.visitJumpInsn(153, label));
         super.preCompile(context, match);
     }
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
-        if (!(context.getCurrentTree() instanceof TryCatchTree tree))
-            throw new ScriptCompileError(context.lineNumber(), "Inline 'try' cannot be used on a section header.");
+        final TryCatchTree tree = context.findTree(TryCatchTree.class);
         final Label label = tree.getEnd().use();
         final Label next = tree.getStartCatch();
         final MethodBuilder method = context.getMethod();
-        if (method == null) throw new ScriptCompileError(context.lineNumber(), "Try effect used outside method.");
+        if (method == null) throw new ScriptCompileError(context.lineNumber(), "Test effect used outside method.");
         context.getMethod().writeCode(((writer, visitor) -> {
             visitor.visitJumpInsn(Opcodes.GOTO, label);
             visitor.visitLabel(next);
         }));
-        method.writeCode(WriteInstruction.pop());
+        method.writeCode(WriteInstruction.invoke(ExtractedSyntaxCalls.class.getMethod("handleTestError", Throwable.class)));
         tree.close(context);
         context.setState(CompileState.CODE_BODY);
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        if (!thing.startsWith("try")) return null;
-        if (!thing.contains(":")) return null;
+        if (!thing.startsWith("test: ")) return null;
         if (thing.endsWith(":")) {
-            context.getError().addHint(this, "Section headers cannot be used in the 'try-to' effect.");
+            context.getError().addHint(this, "Section headers cannot be used in the 'test' effect.");
             return null;
         }
         return super.match(thing, context);

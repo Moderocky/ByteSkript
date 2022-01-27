@@ -59,6 +59,7 @@ import org.byteskript.skript.lang.syntax.map.KeyInMap;
 import org.byteskript.skript.lang.syntax.map.MapCreator;
 import org.byteskript.skript.lang.syntax.maths.*;
 import org.byteskript.skript.lang.syntax.script.*;
+import org.byteskript.skript.lang.syntax.test.TestEffect;
 import org.byteskript.skript.lang.syntax.timing.*;
 import org.byteskript.skript.lang.syntax.type.*;
 import org.byteskript.skript.lang.syntax.type.property.FinalEntry;
@@ -172,6 +173,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new ContinueEffect(),
             new BreakIfEffect(),
             new BreakEffect(),
+            new TestEffect(),
             new TryEffect(),
             new ClearList(),
             new LoadScriptEffect(),
@@ -181,14 +183,21 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         );
         registerSyntax(CompileState.STATEMENT,
             new NoneLiteral(),
-            new ImplicitArrayCreator(),
-            new BracketExpression(),
-            new BooleanLiteral(),
-            new ThisThingExpression(),
+            new StringLiteral(),
+            new RegexLiteral(),
+            new IntegerLiteral(),
+            new LongLiteral(),
+            new FloatLiteral(),
+            new DoubleLiteral(),
+            new DoubleLiteral()
+        );
+        registerSyntax(CompileState.STATEMENT,
             new ThreadVariableExpression(),
             new AtomicVariableExpression(),
             new GlobalVariableExpression(),
-            new VariableExpression(),
+            new VariableExpression()
+        );
+        registerSyntax(CompileState.STATEMENT,
             new IsArray(),
             new IsOfType(),
             new Exists(),
@@ -199,11 +208,21 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new NotEqual(),
             new IsEqual(),
             new Contains(),
-            new Matches(),
+            new Matches()
+        );
+        registerSyntax(CompileState.STATEMENT,
+            new ThreadVariableExpression(),
+            new AtomicVariableExpression(),
+            new GlobalVariableExpression(),
+            new VariableExpression()
+        );
+        registerSyntax(CompileState.STATEMENT,
+            new ImplicitArrayCreator(),
+            new BracketExpression(),
+            new BooleanLiteral(),
+            new ThisThingExpression(),
             new TernaryOtherwiseExpression(),
             new BinaryOtherwiseExpression(),
-            new StringLiteral(),
-            new RegexLiteral(),
             new SupplierSection(),
             new RunnableSection(),
             new ThreadExpression(),
@@ -235,11 +254,6 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new WeeksExpression(),
             new MonthsExpression(),
             new YearsExpression(),
-            new IntegerLiteral(),
-            new LongLiteral(),
-            new FloatLiteral(),
-            new DoubleLiteral(),
-            new DoubleLiteral(),
             new MapCreator(),
             new ListCreator(),
             new IndexOfList(),

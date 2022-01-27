@@ -17,9 +17,10 @@ import java.security.PrivilegedExceptionAction;
 
 @SuppressWarnings({"removal"})
 @Ignore
+public
 class UnsafeAccessor {
     
-    private static final Unsafe UNSAFE;
+    protected static final Unsafe UNSAFE;
     
     static {
         try {

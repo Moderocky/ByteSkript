@@ -11,6 +11,7 @@ import mx.kenzie.mirror.MethodAccessor;
 import org.byteskript.skript.error.ScriptRuntimeError;
 import org.byteskript.skript.runtime.Script;
 import org.byteskript.skript.runtime.Skript;
+import org.byteskript.skript.runtime.UnsafeAccessor;
 import org.byteskript.skript.runtime.threading.ScriptThread;
 import org.byteskript.skript.runtime.type.DataList;
 
@@ -23,7 +24,7 @@ import java.util.concurrent.Future;
 import java.util.function.Supplier;
 
 @Ignore
-public class ExtractedSyntaxCalls {
+public class ExtractedSyntaxCalls extends UnsafeAccessor {
     
     public static ModifiableCompiler getCompiler() {
         return findInstance().getCompiler();
@@ -33,6 +34,18 @@ public class ExtractedSyntaxCalls {
         final Thread current = Thread.currentThread();
         if (!(current instanceof ScriptThread thread)) return Skript.currentInstance();
         return thread.skript;
+    }
+    
+    public static void handleTestError(Throwable throwable) {
+        if (isTest()) UNSAFE.throwException(throwable);
+    }
+    
+    public static boolean isTest() {
+        return "true".equals(System.getProperty("skript.test_mode"));
+    }
+    
+    public static void setTest(boolean boo) {
+        System.setProperty("skript.test_mode", boo + "");
     }
     
     public static DataList getLoadedScripts() {

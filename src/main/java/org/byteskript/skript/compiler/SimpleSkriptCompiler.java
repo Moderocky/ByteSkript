@@ -241,6 +241,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             final Type[] types = match.expected();
             final String[] inputs = match.groups();
             if (inputs.length < types.length) continue;
+            context.setState(handler.getSubState()); // anticipate inner-effect state change
             details.expressionMatched = handler;
             inner:
             for (int i = 0; i < types.length; i++) {

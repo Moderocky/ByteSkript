@@ -8,6 +8,7 @@ package org.byteskript.skript.app;
 
 import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.runtime.Skript;
+import org.byteskript.skript.runtime.internal.ExtractedSyntaxCalls;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,13 +26,17 @@ public class ByteSkriptApp extends SkriptApp {
             makeFiles();
             System.out.println(RESET + "Welcome to " + BRIGHT_PURPLE + "ByteSkript" + RESET + "!");
             System.out.println(RESET + "Available arguments:");
-            System.out.println(RESET + "\trun        | " + CYAN + "Run scripts in the " + CYAN_UNDERLINED + "skripts/" + CYAN + " directory.");
-            System.out.println(RESET + "\trun <file> | " + CYAN + "Run a single script in isolation.");
-            System.out.println(RESET + "\tcompile    | " + CYAN + "Compile library class files for all scripts.");
-            System.out.println(RESET + "\t           | " + CYAN + "Syntax-providing classes can be moved to the " + CYAN_UNDERLINED + "libraries/" + CYAN + " folder.");
-            System.out.println(RESET + "\tjar <name> | " + CYAN + "Build a Jar file in " + CYAN_UNDERLINED + "compiled/" + CYAN + " from all your scripts.");
-            System.out.println(RESET + "\t           | " + CYAN + "This will include files in " + CYAN_UNDERLINED + "resources/" + CYAN);
-            System.out.println(RESET + "\tclean      | " + CYAN + "Cleans the " + CYAN_UNDERLINED + "compiled/" + CYAN + " folder.");
+            System.out.println(RESET + "\trun <file>  | " + CYAN + "Run scripts in the " + CYAN_UNDERLINED + "skripts/" + CYAN + " directory.");
+            System.out.println(RESET + "\t            | " + CYAN + "If a file-arg is given, only this script will be run.");
+            System.out.println(RESET + "\tcompile     | " + CYAN + "Compile library class files for all scripts.");
+            System.out.println(RESET + "\t            | " + CYAN + "Syntax-providing classes can be moved to the " + CYAN_UNDERLINED + "libraries/" + CYAN + " folder.");
+            System.out.println(RESET + "\tjar <name>  | " + CYAN + "Build a Jar file in " + CYAN_UNDERLINED + "compiled/" + CYAN + " from all your scripts.");
+            System.out.println(RESET + "\t            | " + CYAN + "This will include files in " + CYAN_UNDERLINED + "resources/" + CYAN);
+            System.out.println(RESET + "\tclean       | " + CYAN + "Cleans the " + CYAN_UNDERLINED + "compiled/" + CYAN + " folder.");
+            System.out.println(RESET + "\ttest <file> | " + CYAN + "Runs available scripts in test mode.");
+            System.out.println(RESET + "\t            | " + CYAN + "Test-only features will be available here.");
+            System.out.println(RESET + "\t            | " + CYAN + "If a file-arg is given, only this script will be tested.");
+            System.out.println(RESET + "\tdebug       | " + CYAN + "Generates a debug information file (for bug reports!)");
             System.out.print(RESET);
             System.out.println("Visit https://docs.byteskript.org for help and tutorials.");
         } else if (args[0].equalsIgnoreCase("clean")) {
@@ -64,6 +69,23 @@ public class ByteSkriptApp extends SkriptApp {
             ScriptJarBuilder.main(arguments);
         } else if (args[0].equalsIgnoreCase("compile")) {
             ScriptCompiler.main();
+        } else if (args[0].equalsIgnoreCase("test") && args.length < 2) {
+            ExtractedSyntaxCalls.setTest(true);
+            ScriptLoader.main();
+        } else if (args[0].equalsIgnoreCase("test")) {
+            ExtractedSyntaxCalls.setTest(true);
+            final String name = args[1];
+            final File file = new File(name);
+            registerLibraries(SKRIPT);
+            try (final InputStream stream = new FileInputStream(file)) {
+                final PostCompileClass[] classes = SKRIPT.compileComplexScript(stream, "skript." + file.getName());
+                for (final PostCompileClass type : classes) {
+                    SKRIPT.loadScript(type);
+                }
+            }
+            new SimpleThrottleController(SKRIPT).run();
+        } else if (args[0].equalsIgnoreCase("debug")) {
+            System.out.println(RESET + "This function is currently unavailable." + RESET);
         }
     }
     

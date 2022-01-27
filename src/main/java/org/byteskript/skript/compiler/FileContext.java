@@ -262,7 +262,7 @@ public class FileContext extends Context {
     
     @Override
     public <Tree extends ProgrammaticSplitTree> Tree findTree(Class<Tree> type) {
-        for (ProgrammaticSplitTree tree : this.trees) {
+        for (final ProgrammaticSplitTree tree : this.trees) {
             if (type.isInstance(tree)) return (Tree) tree;
         }
         return null;
