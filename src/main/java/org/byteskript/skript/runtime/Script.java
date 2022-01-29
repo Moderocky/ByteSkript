@@ -10,12 +10,10 @@ import mx.kenzie.autodoc.api.note.Description;
 import mx.kenzie.autodoc.api.note.Example;
 import mx.kenzie.autodoc.api.note.GenerateExample;
 import mx.kenzie.autodoc.api.note.Ignore;
+import mx.kenzie.mirror.Mirror;
 import org.byteskript.skript.api.Event;
 import org.byteskript.skript.error.ScriptLoadError;
-import org.byteskript.skript.runtime.data.EventData;
-import org.byteskript.skript.runtime.data.Function;
-import org.byteskript.skript.runtime.data.SourceData;
-import org.byteskript.skript.runtime.data.Structure;
+import org.byteskript.skript.runtime.data.*;
 import org.byteskript.skript.runtime.event.Load;
 import org.byteskript.skript.runtime.internal.CompiledScript;
 import org.byteskript.skript.runtime.internal.InvokingScriptRunner;
@@ -23,7 +21,10 @@ import org.byteskript.skript.runtime.internal.Member;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 @Description("""
     A handle representation of a script containing its metadata and defined classes.
@@ -52,6 +53,7 @@ public final class Script {
     private final Collection<SourceData> data;
     private final Structure[] members;
     private final Skript skript;
+    private final List<ScheduledFuture<?>> tasks;
     
     @Ignore
     Script(Skript skript, File sourceFile, Class<?>... classes) {
@@ -67,13 +69,14 @@ public final class Script {
         this.name = mainClass().getName();
         this.functions = new HashMap<>();
         this.data = new ArrayList<>();
+        this.tasks = new ArrayList<>();
         final List<Structure> structures = new ArrayList<>();
         for (final Class<?> type : classes) {
             if (!type.isAnnotationPresent(SourceData.class)) continue;
             final SourceData data = type.getAnnotation(SourceData.class);
             structures.add(new Structure(data.type(), data.name(), type));
         }
-        for (Method method : mainClass().getDeclaredMethods()) {
+        for (final Method method : this.mainClass().getDeclaredMethods()) {
             if (method.isAnnotationPresent(SourceData.class)) {
                 final SourceData data = method.getDeclaredAnnotation(SourceData.class);
                 structures.add(new Structure(data.type(), data.name(), method));
@@ -121,6 +124,16 @@ public final class Script {
     
     @Ignore
     void load(Skript skript) {
+        for (final Structure structure : members) {
+            if (!structure.type().equals("every")) continue;
+            final PeriodicalData data = structure.element().getAnnotation(PeriodicalData.class);
+            if (data == null) continue;
+            final Member member = new Member(this, ((Method) structure.element()), false);
+            final Duration duration = Mirror.of(this.mainClass()).useProvider(skript.getLoader())
+                .<Duration>method(data.control()).invoke();
+            final ScheduledFuture<?> future = skript.scheduler.scheduleAtFixedRate(member::invoke, duration.toMillis(), duration.toMillis(), TimeUnit.MILLISECONDS);
+            this.tasks.add(future);
+        }
         skript.runEvent(new Load.LoadThis(this), this);
         skript.runEvent(new Load(this));
     }
@@ -203,5 +216,14 @@ public final class Script {
     @GenerateExample
     public Skript skriptInstance() {
         return skript;
+    }
+    
+    @Ignore
+    public void stop() {
+        for (final ScheduledFuture<?> task : this.tasks) {
+            try {
+                task.cancel(true);
+            } catch (Throwable ignore) {}
+        }
     }
 }

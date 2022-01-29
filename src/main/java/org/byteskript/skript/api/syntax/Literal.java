@@ -40,8 +40,7 @@ public abstract class Literal<Type> extends Element implements SyntaxElement {
     @Override
     public boolean allowedIn(State state, Context context) {
         return
-            (state == CompileState.STATEMENT || state == CompileState.ENTRY_VALUE)
-                && context.hasCurrentUnit();
+            (state == CompileState.STATEMENT || state == CompileState.ENTRY_VALUE); // remove unit check
     }
     
     public abstract Type parse(String input);

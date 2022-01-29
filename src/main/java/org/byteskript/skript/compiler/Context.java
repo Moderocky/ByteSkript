@@ -238,7 +238,7 @@ public abstract class Context {
     }
     
     public Collection<SyntaxElement> getHandlers() {
-        return getHandlers(getState(), getExpected());
+        return this.getHandlers(this.getState(), this.getExpected());
     }
     
     public State getState() {
@@ -250,8 +250,8 @@ public abstract class Context {
     }
     
     public void registerType(Type type) {
-        if (type.isArray()) registerType(type.componentType().getSimpleName() + "s", type);
-        else registerType(type.getSimpleName(), type);
+        if (type.isArray()) this.registerType(type.componentType().getSimpleName() + "s", type);
+        else this.registerType(type.getSimpleName(), type);
     }
     
     public abstract void registerType(String name, Type type);

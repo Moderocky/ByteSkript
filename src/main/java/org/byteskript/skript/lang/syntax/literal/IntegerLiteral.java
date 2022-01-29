@@ -9,6 +9,7 @@ package org.byteskript.skript.lang.syntax.literal;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
+import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Literal;
 import org.byteskript.skript.compiler.CommonTypes;
@@ -53,6 +54,11 @@ public class IntegerLiteral extends Literal<Integer> {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
+    }
+    
+    @Override
+    public boolean allowedIn(State state, Context context) {
+        return super.allowedIn(state, context);
     }
     
     @Override

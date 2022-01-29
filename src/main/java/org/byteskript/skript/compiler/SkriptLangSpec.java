@@ -127,7 +127,8 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new FunctionMember(),
             new NoArgsFunctionMember(),
             new Template(),
-            new DictionaryMember()
+            new DictionaryMember(),
+            new EveryMember()
         );
         registerSyntax(CompileState.MEMBER_BODY,
             new Verify(),

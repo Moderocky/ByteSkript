@@ -641,7 +641,7 @@ public final class Skript {
         """)
     @GenerateExample
     public void unloadScript(Class<?> main) {
-        for (Script script : scripts.toArray(new Script[0])) {
+        for (final Script script : scripts.toArray(new Script[0])) {
             if (script.mainClass() == main) this.unloadScript(script);
         }
     }
@@ -653,6 +653,7 @@ public final class Skript {
         """)
     @GenerateExample
     public void unloadScript(Script script) {
+        script.stop();
         synchronized (events) {
             for (final EventHandler value : events.values()) {
                 for (final ScriptRunner trigger : value.getTriggers().toArray(new ScriptRunner[0])) {

@@ -44,10 +44,9 @@ public class MinutesExpression extends SimpleExpression {
     
     @ForceExtract
     public static Object find(Object object) {
-        if (!(object instanceof Number)) {
+        if (!(object instanceof final Number number)) {
             throw new ScriptRuntimeError("Timespan expression requires number.");
         } else {
-            final Number number = (Number) object;
             return Duration.ofMinutes(number.longValue());
         }
     }

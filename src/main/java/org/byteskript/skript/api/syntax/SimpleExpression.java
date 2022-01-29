@@ -54,7 +54,7 @@ public abstract class SimpleExpression extends Element implements SyntaxElement 
     
     @Override
     public boolean allowedIn(State state, Context context) {
-        return state == CompileState.STATEMENT && context.hasCurrentUnit();
+        return state == CompileState.STATEMENT; // removed unit check
     }
     
 }
