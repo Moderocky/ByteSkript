@@ -131,8 +131,7 @@ public final class Skript {
     @ThreadSpecific
     public static RuntimeClassLoader localLoader() {
         final Thread current = Thread.currentThread();
-        if (!(current instanceof ScriptThread thread))
-            throw new ScriptRuntimeError("Not running on a script thread.");
+        if (!(current instanceof ScriptThread thread)) throw new ScriptRuntimeError("Not running on a script thread.");
         return thread.skript.parent;
     }
     
@@ -183,8 +182,7 @@ public final class Skript {
     @ThreadSpecific
     public static Skript localInstance() {
         final Thread current = Thread.currentThread();
-        if (!(current instanceof ScriptThread thread))
-            throw new ScriptRuntimeError("Not running on a script thread.");
+        if (!(current instanceof ScriptThread thread)) throw new ScriptRuntimeError("Not running on a script thread.");
         return thread.skript;
     }
     
@@ -441,9 +439,9 @@ public final class Skript {
         compiler.addLibrary(library);
     }
     
-    private static String getClassName(InputStream is)
+    private static String getClassName(InputStream input)
         throws IOException {
-        final DataInputStream stream = new DataInputStream(is);
+        final DataInputStream stream = new DataInputStream(input);
         stream.readLong();
         final int paths = (stream.readShort() & 0xffff) - 1;
         final int[] classes = new int[paths];

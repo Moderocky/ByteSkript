@@ -9,9 +9,11 @@ package org.byteskript.skript.compiler;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.HandlerType;
 import org.byteskript.skript.api.SyntaxElement;
+import org.byteskript.skript.api.syntax.Literal;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.handler.StandardHandlers;
+import org.byteskript.skript.lang.syntax.variable.VariableExpression;
 
 import java.util.*;
 
@@ -149,10 +151,22 @@ public final class ElementTree {
     
     @Override
     public String toString() {
-        return "ElementTree{" +
-            "current=" + current.name() +
-            ", nested=" + Arrays.toString(nested) +
-            ", compile=" + compile +
-            '}';
+        final StringBuilder builder = new StringBuilder();
+        builder.append(current.getClass().getSimpleName());
+        builder.append('(');
+        if (current instanceof Literal<?>) {
+            builder.append(match.matcher().group());
+        } else if (current instanceof VariableExpression) {
+            builder.append(match.matcher().group("name"));
+        } else {
+            boolean comma = false;
+            for (final ElementTree tree : nested) {
+                if (comma) builder.append(',');
+                builder.append(tree.toString());
+                comma = true;
+            }
+        }
+        builder.append(')');
+        return builder.toString();
     }
 }

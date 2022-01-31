@@ -6,7 +6,7 @@
 
     <groupId>org.byteskript</groupId>
     <artifactId>byteskript</artifactId>
-    <version>1.0.15</version>
+    <version>1.0.16</version>
     <name>ByteSkript</name>
     <description>A compiled JVM implementation of the Skript language.</description>
 
@@ -87,6 +87,12 @@
             <groupId>mx.kenzie</groupId>
             <artifactId>mirror</artifactId>
             <version>5.0.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>mx.kenzie</groupId>
+            <artifactId>jupiter</artifactId>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

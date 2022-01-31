@@ -85,7 +85,9 @@ public class ByteSkriptApp extends SkriptApp {
             }
             new SimpleThrottleController(SKRIPT).run();
         } else if (args[0].equalsIgnoreCase("debug")) {
-            System.out.println(RESET + "This function is currently unavailable." + RESET);
+            System.out.println(RESET + "Generating a debug report of your current scripts." + RESET);
+            ScriptDebugger.main();
+            System.out.println(RESET + "This has been stored in " + CYAN + CYAN_UNDERLINED + "debug.txt" + RESET + ".");
         }
     }
     

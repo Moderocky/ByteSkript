@@ -48,7 +48,7 @@ public interface ModifiableCompiler extends Cloneable {
     Library[] getLibraries();
     
     default Promise<PostCompileClass[]> compileAsync(InputStream stream, Type name, Skript skript) {
-        return this.background(() -> compile(stream, name), skript);
+        return this.background(() -> this.compile(stream, name), skript);
     }
     
     default Promise<PostCompileClass[]> background(Supplier<PostCompileClass[]> supplier, Skript skript) {

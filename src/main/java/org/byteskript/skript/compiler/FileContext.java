@@ -33,7 +33,7 @@ public class FileContext extends Context {
     final Map<HandlerType, List<PropertyAccessGenerator>> usedProperties = new HashMap<>();
     final List<ClassBuilder> suppressedClasses = new ArrayList<>();
     final List<Flag> flags = new ArrayList<>();
-    public int indent, lineNumber, lambdaIndex, indexShift;
+    public int indent, lineIndent, lineNumber, lambdaIndex, indexShift;
     public boolean sectionHeader;
     public ElementTree line;
     public ElementTree current;

@@ -9,6 +9,7 @@ package org.byteskript.skript.compiler;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.language.PostCompileClass;
+import mx.kenzie.jupiter.stream.Stream;
 import org.byteskript.skript.api.Library;
 import org.byteskript.skript.api.SyntaxElement;
 import org.byteskript.skript.api.syntax.InnerModifyExpression;
@@ -24,6 +25,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 
@@ -31,6 +33,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     private static volatile int anonymous = 0;
     protected final List<Library> libraries = new ArrayList<>();
     protected final java.util.regex.Pattern whitespace = java.util.regex.Pattern.compile("(?<=^)[\\t ]+(?=\\S)");
+    private final String regex = "\\s+$";
     
     public SimpleSkriptCompiler(final Library... libraries) {
         this.libraries.addAll(List.of(libraries));
@@ -80,21 +83,20 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     protected List<String> removeComments(final String string) {
         final List<String> original = string.lines().toList(); // stream of sadness :(
         final List<String> lines = new ArrayList<>();
-        final String regex = "\\s+$";
-        boolean inComment = false;
+        boolean comment = false;
         for (final String old : original) {
             String line = old;
-            if (inComment) {
+            if (comment) {
                 if (line.contains("*/")) {
                     line = line.substring(line.indexOf("*/") + 2); // keep last part of line
-                    inComment = false;
+                    comment = false;
                 } else {
                     line = ""; // inside a commented block
                 }
             } else {
                 if (line.contains("//")) line = line.substring(0, line.indexOf("//")); // keep first part of line
                 if (line.contains("/*")) {
-                    inComment = true;
+                    comment = true;
                     line = line.substring(0, line.indexOf("/*")); // first part of line not in comment
                 }
             }
@@ -104,19 +106,35 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         return lines;
     }
     
+    protected String stripLine(final String old, AtomicBoolean comment) {
+        String line = old;
+        if (comment.get()) {
+            if (line.contains("*/")) {
+                line = line.substring(line.indexOf("*/") + 2); // keep last part of line
+                comment.set(false);
+            } else line = ""; // inside a commented block
+        } else {
+            if (line.contains("//")) line = line.substring(0, line.indexOf("//")); // keep first part of line
+            if (line.contains("/*")) {
+                comment.set(true);
+                line = line.substring(0, line.indexOf("/*")); // first part of line not in comment
+            }
+        }
+        return line.replaceAll(regex, ""); // trim trailing whitespace
+        
+    }
+    
     @Override
     public Library[] getLibraries() {
         return libraries.toArray(new Library[0]);
     }
     
     protected void compileLine(final String line, final FileContext context) {
-        final ElementTree tree = parseLine(line, context);
+        final ElementTree tree = this.parseLine(line, context);
         if (tree == null) return;
         tree.preCompile(context);
         tree.compile(context);
-        for (Consumer<Context> consumer : context.endOfLine) {
-            consumer.accept(context);
-        }
+        for (final Consumer<Context> consumer : context.endOfLine) consumer.accept(context);
         context.endOfLine.clear();
         context.currentEffect = null;
         context.sectionHeader = false;
@@ -177,6 +195,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             context.setIndentUnit(unit);
         }
         final int actual = this.trueIndent(line, context.indentUnit());
+        context.lineIndent = actual;
         if (actual < expected) {
             for (int i = 0; i < (expected - actual); i++) {
                 context.destroySection();
@@ -280,36 +299,45 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     }
     
     @Override
-    public PostCompileClass[] compile(InputStream stream, Type name) {
-        return compile(unstream(stream), name);
+    public PostCompileClass[] compile(InputStream stream, Type path) {
+        final FileContext context = new FileContext(path);
+        context.libraries.addAll(libraries);
+        for (final Library library : libraries) {
+            for (final Type type : library.getTypes()) context.registerType(type);
+        }
+        final AtomicBoolean comment = new AtomicBoolean(false);
+        for (final String line : Stream.controller(stream).lines()) {
+            context.lineNumber++;
+            context.line = null;
+            final String stripped = this.stripLine(line, comment);
+            if (stripped.isBlank()) continue;
+            this.compileLine(context, stripped);
+        }
+        context.destroyUnits();
+        context.destroySections();
+        return context.compile();
     }
     
+    @Override
     public PostCompileClass[] compile(InputStream source, String path) {
         if (path == null) return this.compile(source);
-        return compile(unstream(source), new Type(path));
+        return compile(source, new Type(path));
     }
     
+    @Override
     public PostCompileClass[] compile(String source, Type path) {
         final FileContext context = new FileContext(path);
         context.libraries.addAll(libraries);
         for (final Library library : libraries) {
             for (final Type type : library.getTypes()) context.registerType(type);
         }
-        final List<String> lines = this.removeComments(source);
-        for (final String line : lines) {
+        final AtomicBoolean comment = new AtomicBoolean(false);
+        for (final String line : source.lines().toList()) {
             context.lineNumber++;
             context.line = null;
-            if (line.isBlank()) continue;
-            if (context.getMethod() != null) {
-                context.getMethod().writeCode(WriteInstruction.lineNumber(context.lineNumber));
-            }
-            try {
-                this.compileLine(line, context);
-            } catch (ScriptParseError | ScriptCompileError ex) {
-                throw ex;
-            } catch (Throwable ex) {
-                throw new ScriptCompileError(context.lineNumber, "Unknown error during compilation:", ex);
-            }
+            final String stripped = this.stripLine(line, comment);
+            if (stripped.isBlank()) continue;
+            this.compileLine(context, stripped);
         }
         context.destroyUnits();
         context.destroySections();
@@ -322,6 +350,19 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         compiler.libraries.clear();
         compiler.libraries.addAll(this.libraries);
         return compiler;
+    }
+    
+    private void compileLine(FileContext context, String stripped) {
+        if (context.getMethod() != null) {
+            context.getMethod().writeCode(WriteInstruction.lineNumber(context.lineNumber));
+        }
+        try {
+            this.compileLine(stripped, context);
+        } catch (ScriptParseError | ScriptCompileError ex) {
+            throw ex;
+        } catch (Throwable ex) {
+            throw new ScriptCompileError(context.lineNumber, "Unknown error during compilation:", ex);
+        }
     }
     
     int trueIndent(final String line, final String unit) {
