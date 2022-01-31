@@ -28,3 +28,9 @@ language specification, goals and licence.
 * [Foundation](https://github.com/Moderocky/Foundation) \
   A class-building framework to simplify method creation.\
   Used for compiling simple syntax.
+* [Jupiter](https://github.com/Moderocky/Jupiter) \
+  An I/O-based library for buffers and memory management.\
+  Used for lazy-iteration and efficient data disposal.
+* [AutoDocs](https://github.com/Moderocky/AutoDocs) \
+  A web-documentation generator.\
+  Used for generating the [API docs](https://apidocs.byteskript.org/org/byteskript/skript/).
