@@ -38,7 +38,7 @@ public class InlineController extends RewriteController {
             final SyntaxElement element = inputs[i].current();
             if (element.getClass() != VariableExpression.class) continue;
             final VariableExpression expression = (VariableExpression) inputs[i].current();
-            special.put(i, expression.getVariable(context, inputs[i].match()));
+            this.special.put(i, expression.getVariable(context, inputs[i].match()));
         }
         final MethodBuilder builder = context.getMethod();
         for (int i = method.getParameterTypes().length - 1; i >= 0; i--) {
@@ -47,7 +47,7 @@ public class InlineController extends RewriteController {
                 continue;
             }
             final PreVariable var = new PreVariable("$unspec_" + i);
-            context.forceUnspecVariable(var);
+            this.context.forceUnspecVariable(var);
             final int slot = context.slotOf(var);
             builder.writeCode(WriteInstruction.storeObject(slot));
         }
@@ -88,15 +88,6 @@ public class InlineController extends RewriteController {
     @Override
     public WriteInstruction return0(int opcode) {
         return this.jumpToEnd();
-//        if (opcode < 177) {
-//            int slot = this.returnSlot();
-//            return (writer, visitor) -> {
-//                visitor.visitVarInsn(opcode - 118, slot);
-//                this.jumpToEnd().accept(writer, visitor);
-//            };
-//        } else {
-//            return this.jumpToEnd();
-//        }
     }
     
     @Override
