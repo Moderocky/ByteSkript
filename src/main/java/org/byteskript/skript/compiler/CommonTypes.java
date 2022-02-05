@@ -9,6 +9,7 @@ package org.byteskript.skript.compiler;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.Event;
 import org.byteskript.skript.api.Referent;
+import org.byteskript.skript.runtime.config.ConfigMap;
 import org.byteskript.skript.runtime.type.AtomicVariable;
 import org.byteskript.skript.runtime.type.Executable;
 
@@ -42,6 +43,7 @@ public class CommonTypes {
     
     public static final Type LIST = new Type(List.class);
     public static final Type MAP = new Type(Map.class);
+    public static final Type CONFIG = new Type(ConfigMap.class);
     public static final Type REFERENT = new Type(Referent.class);
     public static final Type RUNNABLE = new Type(Runnable.class);
     public static final Type SUPPLIER = new Type(Supplier.class);

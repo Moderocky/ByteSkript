@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.control;
 
 import mx.kenzie.foundation.MethodBuilder;
+import org.byteskript.skript.api.Deletable;
 import org.byteskript.skript.api.HandlerType;
 import org.byteskript.skript.api.Referent;
 import org.byteskript.skript.api.note.Documentation;
@@ -58,7 +59,8 @@ public class DeleteEffect extends ControlEffect {
         if (target == null)
             throw new ScriptParseError(context.lineNumber(), "Syntax '" + inputs[0].current()
                 .name() + "' cannot be deleted.");
-        inputs[0].compile = false;
+        
+        if (!(inputs[0].current() instanceof Deletable)) inputs[0].compile = false;
         super.preCompile(context, match);
     }
     

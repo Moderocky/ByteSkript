@@ -121,7 +121,6 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             }
         }
         return line.replaceAll(regex, ""); // trim trailing whitespace
-        
     }
     
     @Override
@@ -146,7 +145,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         context.error = details;
         details.file = context.getType().internalName() + ".bsk";
         try {
-            effect = assembleStatement(statement, context, details);
+            effect = this.assembleStatement(statement, context, details);
             context.line = effect;
         } catch (ScriptParseError ex) {
             if (ex.getDetails() == null)

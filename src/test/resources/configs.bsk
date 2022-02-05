@@ -1,0 +1,13 @@
+
+
+function test:
+    trigger:
+        set {conf} to hello.csk:
+            add "key: bean" to {conf}
+            assert "key" from {conf} is "bean"
+            add "key: value" to {conf}
+            assert "key" from {conf} is "value"
+            set "thing" from {conf} to "hello there!"
+            assert "thing" from {conf} is "hello there!"
+        delete hello.csk
+

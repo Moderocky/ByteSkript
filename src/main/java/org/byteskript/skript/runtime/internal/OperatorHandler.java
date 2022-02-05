@@ -9,6 +9,7 @@ package org.byteskript.skript.runtime.internal;
 import mx.kenzie.autodoc.api.note.Ignore;
 import org.byteskript.skript.error.ScriptAssertionError;
 import org.byteskript.skript.error.ScriptRuntimeError;
+import org.byteskript.skript.runtime.config.ConfigMap;
 import org.byteskript.skript.runtime.type.Query;
 
 import java.util.*;
@@ -74,7 +75,8 @@ public class OperatorHandler {
     }
     
     public static Object addObject(Object value, Object to) {
-        if (to instanceof Collection collection) return collection.add(value);
+        if (to instanceof ConfigMap map) ConfigMap.add(value + "", map);
+        else if (to instanceof Collection collection) return collection.add(value);
         return null;
     }
     

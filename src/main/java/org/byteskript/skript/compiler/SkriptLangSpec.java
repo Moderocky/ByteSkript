@@ -20,6 +20,10 @@ import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.error.ScriptRuntimeError;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.syntax.comparison.*;
+import org.byteskript.skript.lang.syntax.config.ConfigCreator;
+import org.byteskript.skript.lang.syntax.config.ConfigFile;
+import org.byteskript.skript.lang.syntax.config.KeyInConfig;
+import org.byteskript.skript.lang.syntax.config.SaveConfigEffect;
 import org.byteskript.skript.lang.syntax.control.AddEffect;
 import org.byteskript.skript.lang.syntax.control.DeleteEffect;
 import org.byteskript.skript.lang.syntax.control.RemoveEffect;
@@ -162,6 +166,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new AddEffect(),
             new DeleteEffect(),
             new RemoveEffect(),
+            new SaveConfigEffect(),
             new AssertWithErrorEffect(),
             new AssertEffect(),
             new ExitEffect(),
@@ -255,6 +260,9 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new WeeksExpression(),
             new MonthsExpression(),
             new YearsExpression(),
+            new ConfigFile(),
+            new ConfigCreator(),
+            new KeyInConfig(),
             new MapCreator(),
             new ListCreator(),
             new IndexOfList(),
