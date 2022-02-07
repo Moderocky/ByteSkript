@@ -77,6 +77,10 @@ public abstract class Context {
     
     public abstract SyntaxElement currentEffect();
     
+    /**
+     * Force an unspecified variable into the register.
+     * Used to store internal details without upsetting index-order.
+     */
     public abstract PreVariable forceUnspecVariable(PreVariable variable);
     
     public abstract PreVariable getVariable(String name);

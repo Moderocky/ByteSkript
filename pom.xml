@@ -6,7 +6,7 @@
 
     <groupId>org.byteskript</groupId>
     <artifactId>byteskript</artifactId>
-    <version>1.0.17</version>
+    <version>1.0.18</version>
     <name>ByteSkript</name>
     <description>A compiled JVM implementation of the Skript language.</description>
 
@@ -46,6 +46,19 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <configuration>
+                    <name>ByteSkript</name>
+                    <appVersion>${project.version}</appVersion>
+                    <vendor>byteskript.org</vendor>
+                    <mainClass>org.byteskript.skript.app.ScriptLoader</mainClass>
+                    <mainJar>ByteSkript.jar</mainJar>
+                    <input>target/jar</input>
+                    <destination>target/dist</destination>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -112,6 +125,11 @@
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.panteleyev</groupId>
+            <artifactId>jpackage-maven-plugin</artifactId>
+            <version>1.5.1</version>
         </dependency>
     </dependencies>
 
