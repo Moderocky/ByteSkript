@@ -47,19 +47,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.panteleyev</groupId>
-                <artifactId>jpackage-maven-plugin</artifactId>
-                <configuration>
-                    <name>ByteSkript</name>
-                    <appVersion>${project.version}</appVersion>
-                    <vendor>byteskript.org</vendor>
-                    <mainClass>org.byteskript.skript.app.ScriptLoader</mainClass>
-                    <mainJar>ByteSkript.jar</mainJar>
-                    <input>target/jar</input>
-                    <destination>target/dist</destination>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
@@ -81,7 +68,7 @@
         <dependency>
             <groupId>mx.kenzie</groupId>
             <artifactId>foundation</artifactId>
-            <version>1.1.5</version>
+            <version>1.1.6</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

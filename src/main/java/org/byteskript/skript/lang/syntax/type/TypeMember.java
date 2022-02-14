@@ -69,8 +69,17 @@ public class TypeMember extends Member {
             .addValue("line", context.lineNumber())
             .addValue("compiled", Instant.now().getEpochSecond());
         builder.setModifiers(0x0001 | 0x0020);
+        final WriteInstruction instruction = (writer, visitor) -> {
+            final Type parent = builder.getSuperclass();
+            if (parent == null)
+                visitor.visitMethodInsn(183, "java/lang/Object", "<init>", "()V", false);
+            else {
+                final String internal = builder.getSuperclass().internalName();
+                visitor.visitMethodInsn(183, internal, "<init>", "()V", false);
+            }
+        };
         builder.addMethod("<init>")
-            .writeCode(WriteInstruction.loadThis(), WriteInstruction.superObject(), WriteInstruction.returnEmpty());
+            .writeCode(WriteInstruction.loadThis(), instruction, WriteInstruction.returnEmpty());
         context.useSubBuilder(builder);
         context.addFlag(AreaFlag.IN_TYPE);
         context.setState(CompileState.ROOT); // members can go inside this!

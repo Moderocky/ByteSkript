@@ -28,6 +28,9 @@ type Box:
         trigger:
             return "Hello?"
 
+type Crate:
+    extend: Box
+
 function basic_use:
     trigger:
         set {thing} to a new Box
@@ -42,6 +45,11 @@ function basic_use:
         set {boolean} to bonk() from {thing}
         assert {boolean} is true: "Member function didn't return correctly."
         assert another_func() from {thing} is 10: "Template default function didn't return correctly."
+        set {thing} to a new Crate
+        assert {thing} exists: "Type creation failed."
+        assert {thing} is a Crate: "Type self-comparison failed."
+        assert {thing} is a Box: "Type super-comparison failed."
+        assert {thing} is a Thing: "Type super template-comparison failed."
 
 template type Shape:
     function get_sides:
