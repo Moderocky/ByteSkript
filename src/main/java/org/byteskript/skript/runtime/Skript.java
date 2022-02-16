@@ -293,8 +293,8 @@ public final class Skript {
         final Converter.Data data = new Converter.Data(from, to);
         if (converters.containsKey(data)) return (Converter<From, To>) converters.get(data);
         for (final Converter.Data found : converters.keySet()) {
-            if (from.isAssignableFrom(found.from()) && to.isAssignableFrom(found.to()))
-                return (Converter<From, To>) converters.get(data);
+            if (found.from().isAssignableFrom(from) && found.to().isAssignableFrom(to))
+                return (Converter<From, To>) converters.get(found);
         }
         return null;
     }

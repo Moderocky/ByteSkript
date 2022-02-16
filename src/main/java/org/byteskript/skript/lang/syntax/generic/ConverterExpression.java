@@ -22,12 +22,12 @@ import java.lang.reflect.Method;
 public class ConverterExpression extends SimpleExpression {
     
     public ConverterExpression() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% [parsed] as %Type%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% [parsed] as a[n] %Type%");
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        if (!thing.contains(" as ")) return null;
+        if (!thing.contains(" as a")) return null;
         return super.match(thing, context);
     }
     

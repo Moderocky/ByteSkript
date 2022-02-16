@@ -2,5 +2,13 @@
 function test:
     trigger:
         set {thing} to "10"
-        set {number} to {thing} as integer
+        set {number} to {thing} as an integer
         assert {number} is a number
+        set {number} to {thing} as a number
+        assert {number} is a number
+        set {thing} to {number} as a string
+        assert {thing} is a string
+        set {thing} to "java.lang.Object" as a class
+        assert {thing} is a class
+        set {thing} to {thing} as a string
+        assert {thing} is a string
