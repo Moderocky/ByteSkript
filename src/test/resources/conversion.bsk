@@ -1,0 +1,6 @@
+
+function test:
+    trigger:
+        set {thing} to "10"
+        set {number} to {thing} as integer
+        assert {number} is a number

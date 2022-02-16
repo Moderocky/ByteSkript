@@ -14,6 +14,7 @@ import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.api.syntax.EventHolder;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
+import org.byteskript.skript.runtime.type.Converter;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -38,6 +39,8 @@ public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
     protected final List<Type> types = new ArrayList<>();
     @Description("This library's name for debugging and error messages.")
     protected final String name;
+    @Ignore
+    protected final Map<Converter.Data, Converter<?, ?>> converters = new HashMap<>();
     
     @Description("""
         Create a new library instance with the given name.
@@ -117,6 +120,11 @@ public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
         }
     }
     
+    public <From, To> void registerConverter(Class<From> from, Class<To> to, Converter<From, To> converter) {
+        final Converter.Data data = new Converter.Data(from, to);
+        this.converters.put(data, converter);
+    }
+    
     @Ignore
     public Type registerType(String classPath) {
         final Type type = new Type(classPath);
@@ -174,5 +182,11 @@ public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
             elements.addAll(value);
         }
         return elements.toArray(new SyntaxElement[0]);
+    }
+    
+    @Override
+    @Ignore
+    public Map<Converter.Data, Converter<?, ?>> getConverters() {
+        return converters;
     }
 }

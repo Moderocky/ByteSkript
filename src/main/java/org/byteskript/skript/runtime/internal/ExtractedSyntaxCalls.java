@@ -13,6 +13,7 @@ import org.byteskript.skript.runtime.Script;
 import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.UnsafeAccessor;
 import org.byteskript.skript.runtime.threading.ScriptThread;
+import org.byteskript.skript.runtime.type.Converter;
 import org.byteskript.skript.runtime.type.DataList;
 
 import java.io.BufferedReader;
@@ -34,6 +35,14 @@ public class ExtractedSyntaxCalls extends UnsafeAccessor {
         final Thread current = Thread.currentThread();
         if (!(current instanceof ScriptThread thread)) return Skript.currentInstance();
         return thread.skript;
+    }
+    
+    public static Object convert(Object from, Object object) {
+        if (!(object instanceof Class<?> to)) throw new ScriptRuntimeError("Object must be converted to a type.");
+        if (from.getClass().isAssignableFrom(to)) return from;
+        final Converter converter = findInstance().getConverter(from.getClass(), to);
+        if (converter == null) return from;
+        return converter.convert(from);
     }
     
     public static void handleTestError(Throwable throwable) {

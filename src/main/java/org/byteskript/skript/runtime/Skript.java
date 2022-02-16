@@ -22,6 +22,7 @@ import org.byteskript.skript.error.ScriptLoadError;
 import org.byteskript.skript.error.ScriptRuntimeError;
 import org.byteskript.skript.runtime.internal.*;
 import org.byteskript.skript.runtime.threading.*;
+import org.byteskript.skript.runtime.type.Converter;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -80,6 +81,8 @@ public final class Skript {
     final WeakList<ScriptClassLoader> loaders = new WeakList<>();
     @Ignore
     final List<Script> scripts = new ArrayList<>(); // the only strong reference, be careful!
+    @Ignore
+    final Map<Converter.Data, Converter<?, ?>> converters;
     
     @Description("""
         Create a Skript runtime with a custom (non-default) Skript compiler.
@@ -106,12 +109,16 @@ public final class Skript {
         this.compiler = compiler;
         this.factory = threadProvider;
         this.factory.setSkriptInstance(this);
-        executor = Executors.newCachedThreadPool(factory);
+        this.executor = Executors.newCachedThreadPool(factory);
         this.mainThread = main;
         this.scheduler = new ScheduledThreadPoolExecutor(4, factory);
         this.processes = new ArrayList<>();
         this.events = new HashMap<>();
+        this.converters = new HashMap<>();
         skript = this;
+        if (compiler != null) {
+            this.converters.putAll(compiler.getConverters());
+        }
     }
     
     @Description("""
@@ -186,25 +193,6 @@ public final class Skript {
         return thread.skript;
     }
     
-    private static Skript findInstance() {
-        final Thread current = Thread.currentThread();
-        if (!(current instanceof ScriptThread thread)) return currentInstance();
-        return thread.skript;
-    }
-    
-    @Description("""
-        This returns the most recently-created Skript runtime.
-        It is designed to be an entry-point for programs that attach in an unusual way, and have
-        no other way of getting the current Skript instance.
-        
-        Multiple or zero runtimes may exist - this should not be depended upon.
-        """)
-    @Deprecated
-    @GenerateExample
-    public static Skript currentInstance() {
-        return skript;
-    }
-    
     private static String createClassName(String name, String path) {
         final int index = name.lastIndexOf('.');
         if (path.startsWith(File.separator)) path = path.substring(1);
@@ -226,6 +214,89 @@ public final class Skript {
             e.printStackTrace();
         }
         return files;
+    }
+    
+    @Deprecated
+    public static Class<?> findAnyClass(String name) {
+        {
+            final Class<?> found = getClass(name, Skript.class);
+            if (found != null) return found;
+        }
+        final Skript skript = findInstance();
+        {
+            final Class<?> found = skript.getClass(name);
+            if (found != null) return found;
+        }
+        {
+            for (final Script script : skript.scripts) {
+                for (final Class<?> type : script.classes()) {
+                    if (type.getName().equals(name)) return type;
+                }
+            }
+            for (final Script script : skript.scripts) {
+                for (final Class<?> type : script.classes()) {
+                    if (type.getSimpleName().equals(name)) return type;
+                }
+            }
+        }
+        return null;
+    }
+    
+    private static Class<?> getClass(String name, Class<?> owner) {
+        try {
+            return Class.forName(name, false, owner.getClassLoader());
+        } catch (ClassNotFoundException ex) {
+            return null;
+        }
+    }
+    
+    private static Skript findInstance() {
+        final Thread current = Thread.currentThread();
+        if (!(current instanceof ScriptThread thread)) return currentInstance();
+        return thread.skript;
+    }
+    
+    @Description("""
+        This searches the app class loader and all library class loaders for the given class.
+        This does not search script class loaders.
+        """)
+    @GenerateExample
+    public Class<?> getClass(String name) {
+        final Class<?> found = getClass(name, Skript.class);
+        if (found != null) return found;
+        for (Library library : compiler.getLibraries()) {
+            final Class<?> test = getClass(name, library.getClass());
+            if (test != null) return test;
+        }
+        return null;
+    }
+    
+    @Description("""
+        This returns the most recently-created Skript runtime.
+        It is designed to be an entry-point for programs that attach in an unusual way, and have
+        no other way of getting the current Skript instance.
+        
+        Multiple or zero runtimes may exist - this should not be depended upon.
+        """)
+    @Deprecated
+    @GenerateExample
+    public static Skript currentInstance() {
+        return skript;
+    }
+    
+    public <From, To> void registerConverter(Class<From> from, Class<To> to, Converter<From, To> converter) {
+        final Converter.Data data = new Converter.Data(from, to);
+        this.converters.put(data, converter);
+    }
+    
+    public <From, To> Converter<From, To> getConverter(Class<From> from, Class<To> to) {
+        final Converter.Data data = new Converter.Data(from, to);
+        if (converters.containsKey(data)) return (Converter<From, To>) converters.get(data);
+        for (final Converter.Data found : converters.keySet()) {
+            if (from.isAssignableFrom(found.from()) && to.isAssignableFrom(found.to()))
+                return (Converter<From, To>) converters.get(data);
+        }
+        return null;
     }
     
     @Description("""
@@ -395,29 +466,6 @@ public final class Skript {
     public void registerEventHandler(final Class<? extends Event> event, final ScriptRunner runner) {
         this.events.putIfAbsent(event, new EventHandler());
         this.events.get(event).add(runner);
-    }
-    
-    @Description("""
-        This searches the app class loader and all library class loaders for the given class.
-        This does not search script class loaders.
-        """)
-    @GenerateExample
-    public Class<?> getClass(String name) {
-        final Class<?> found = getClass(name, Skript.class);
-        if (found != null) return found;
-        for (Library library : compiler.getLibraries()) {
-            final Class<?> test = getClass(name, library.getClass());
-            if (test != null) return test;
-        }
-        return null;
-    }
-    
-    private static Class<?> getClass(String name, Class<?> owner) {
-        try {
-            return Class.forName(name, false, owner.getClassLoader());
-        } catch (ClassNotFoundException ex) {
-            return null;
-        }
     }
     
     @Description("""

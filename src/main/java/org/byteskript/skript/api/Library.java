@@ -11,10 +11,9 @@ import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
 import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.compiler.Context;
+import org.byteskript.skript.runtime.type.Converter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Description("""
     A library that provides syntax or runtime dependencies to the Skript implementation.
@@ -79,5 +78,9 @@ public interface Library {
         This is used by documentation scraping or special lookups to find the source of an error.
         """)
     SyntaxElement[] getSyntax();
+    
+    default Map<Converter.Data, Converter<?, ?>> getConverters() {
+        return new HashMap<>();
+    }
     
 }

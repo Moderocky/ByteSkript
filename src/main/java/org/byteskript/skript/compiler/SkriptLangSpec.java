@@ -71,6 +71,7 @@ import org.byteskript.skript.lang.syntax.variable.AtomicVariableExpression;
 import org.byteskript.skript.lang.syntax.variable.GlobalVariableExpression;
 import org.byteskript.skript.lang.syntax.variable.ThreadVariableExpression;
 import org.byteskript.skript.lang.syntax.variable.VariableExpression;
+import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.internal.IOHandlers;
 import org.byteskript.skript.runtime.type.DataList;
 import org.byteskript.skript.runtime.type.DataMap;
@@ -121,6 +122,13 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             CommonTypes.METHOD,
             CommonTypes.FIELD
         );
+        registerConverter(String.class, Integer.class, Integer::valueOf);
+        registerConverter(String.class, Double.class, Double::valueOf);
+        registerConverter(String.class, Long.class, Long::valueOf);
+        registerConverter(String.class, Number.class, Double::valueOf);
+        registerConverter(String.class, Error.class, Error::new);
+        registerConverter(String.class, Class.class, Skript::findAnyClass);
+        registerConverter(Object.class, String.class, Object::toString);
         registerSyntax(CompileState.ROOT,
             new TypeMember(),
             new TemplateTypeMember(),
@@ -233,6 +241,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new NewLineExpression(),
             new ResultOfExpression(), // must try before property
             new PropertyExpression(),
+            new ConverterExpression(),
             new SystemInputExpression(),
             new SystemPropertyExpression(),
             new ExternalFunctionExpression(),

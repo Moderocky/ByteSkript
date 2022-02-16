@@ -12,11 +12,10 @@ import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.api.Document;
 import org.byteskript.skript.api.Library;
 import org.byteskript.skript.runtime.Skript;
+import org.byteskript.skript.runtime.type.Converter;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -46,6 +45,10 @@ public interface ModifiableCompiler extends Cloneable {
     }
     
     Library[] getLibraries();
+    
+    default Map<Converter.Data, Converter<?, ?>> getConverters() {
+        return new HashMap<>();
+    }
     
     default Promise<PostCompileClass[]> compileAsync(InputStream stream, Type name, Skript skript) {
         return this.background(() -> this.compile(stream, name), skript);

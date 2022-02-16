@@ -11,8 +11,11 @@ import mx.kenzie.foundation.language.Compiler;
 import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.api.Library;
 import org.byteskript.skript.runtime.internal.ModifiableCompiler;
+import org.byteskript.skript.runtime.type.Converter;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class SkriptCompiler implements Compiler<SkriptLangSpec>, ModifiableCompiler {
     
@@ -30,6 +33,15 @@ public abstract class SkriptCompiler implements Compiler<SkriptLangSpec>, Modifi
     public abstract boolean addLibrary(Library library);
     
     public abstract boolean removeLibrary(Library library);
+    
+    @Override
+    public Map<Converter.Data, Converter<?, ?>> getConverters() {
+        final Map<Converter.Data, Converter<?, ?>> map = new HashMap<>();
+        for (final Library library : this.getLibraries()) {
+            map.putAll(library.getConverters());
+        }
+        return map;
+    }
     
     public abstract PostCompileClass[] compile(InputStream stream, Type name);
     
