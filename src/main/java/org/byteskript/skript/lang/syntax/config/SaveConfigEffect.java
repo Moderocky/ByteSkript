@@ -14,6 +14,8 @@ import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.runtime.config.ConfigMap;
 
+import java.util.Map;
+
 @Documentation(
     name = "Save Config",
     description = """
@@ -29,21 +31,23 @@ import org.byteskript.skript.runtime.config.ConfigMap;
 public class SaveConfigEffect extends Effect {
     
     public SaveConfigEffect() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "save config %Object%");
-    }
-    
-    @Override
-    public void preCompile(Context context, Pattern.Match match) throws Throwable {
-        final MethodBuilder method = context.getMethod();
-        method.writeCode(WriteInstruction.getField(System.class.getField("out")));
-        super.preCompile(context, match);
+        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "save config %Object% to %Object%", "save config %Object%");
     }
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
-        method.writeCode(WriteInstruction.cast(CommonTypes.CONFIG));
-        method.writeCode(WriteInstruction.invokeVirtual(ConfigMap.class.getMethod("save")));
+        if (match.matchedPattern == 1) {
+            method.writeCode(WriteInstruction.cast(CommonTypes.CONFIG));
+            method.writeCode(WriteInstruction.invokeVirtual(ConfigMap.class.getMethod("save")));
+        } else {
+            method.writeCode(WriteInstruction.cast(CommonTypes.CONFIG)); // orig, new
+            method.writeCode(WriteInstruction.duplicateDrop2()); // new, orig, new
+            method.writeCode(WriteInstruction.swap());  // new, new, orig
+            method.writeCode(WriteInstruction.cast(CommonTypes.CONFIG)); // new, new, orig
+            method.writeCode(WriteInstruction.invokeVirtual(ConfigMap.class.getMethod("putAll", Map.class))); // new
+            method.writeCode(WriteInstruction.invokeVirtual(ConfigMap.class.getMethod("save")));
+        }
         context.setState(CompileState.CODE_BODY);
     }
     
