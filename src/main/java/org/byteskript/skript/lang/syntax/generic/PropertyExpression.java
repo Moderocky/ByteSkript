@@ -63,7 +63,7 @@ public class PropertyExpression extends RelationalExpression implements Referent
         final Matcher matcher = pattern.matcher(thing);
         if (!matcher.find()) return null;
         final String name = matcher.group("name");
-        final Matcher dummy = createDummy(thing, i, matcher);
+        final Matcher dummy = this.createDummy(thing, i, matcher);
         dummy.find();
         return new Pattern.Match(dummy, name, CommonTypes.OBJECT);
     }

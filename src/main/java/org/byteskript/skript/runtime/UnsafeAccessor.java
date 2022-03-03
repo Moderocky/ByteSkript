@@ -25,9 +25,9 @@ class UnsafeAccessor {
     static {
         try {
             UNSAFE = java.security.AccessController.doPrivileged((PrivilegedExceptionAction<Unsafe>) () -> {
-                final Field f = Unsafe.class.getDeclaredField("theUnsafe");
-                f.setAccessible(true);
-                return (Unsafe) f.get(null);
+                final Field field = Unsafe.class.getDeclaredField("theUnsafe");
+                field.setAccessible(true);
+                return (Unsafe) field.get(null);
             });
         } catch (PrivilegedActionException e) {
             throw new RuntimeException(e);

@@ -70,14 +70,12 @@ public class ExternalFunctionExpression extends SimpleExpression {
         if (params.isBlank()) return new Type[0];
         int nest = 0;
         final List<Type> types = new ArrayList<>();
-        int count = 1;
         boolean atomic = false;
         for (char c : params.toCharArray()) {
             if (c == '(') nest++;
             else if (c == ')') nest--;
             else if (c == '@' && nest < 1) atomic = true;
             else if (c == ',' && nest < 1) {
-                count++;
                 if (atomic) types.add(CommonTypes.ATOMIC);
                 else types.add(CommonTypes.OBJECT);
                 atomic = false;
@@ -89,8 +87,7 @@ public class ExternalFunctionExpression extends SimpleExpression {
     }
     
     private String buildDummyPattern(String name, int params, String location) {
-        final StringBuilder builder = new StringBuilder()
-            .append(name).append("\\(");
+        final StringBuilder builder = new StringBuilder().append(name).append("\\(");
         if (params > 0) {
             for (int i = 0; i < params; i++) {
                 if (i > 0) builder.append(", ");
@@ -107,9 +104,8 @@ public class ExternalFunctionExpression extends SimpleExpression {
     
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
-        for (final ElementTree tree : context.getCompileCurrent().nested()) {
-            tree.takeAtomic = true;
-        }
+        final ElementTree[] trees = context.getCompileCurrent().nested();
+        for (final ElementTree tree : trees) tree.takeAtomic = true;
         super.preCompile(context, match);
     }
     

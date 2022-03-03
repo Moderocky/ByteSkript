@@ -106,7 +106,10 @@ public class ConfigFile extends Section implements Referent, Deletable {
     
     @Override
     public boolean allowAsInputFor(Type type) {
-        return CommonTypes.OBJECT.equals(type) || CommonTypes.REFERENT.equals(type) || CommonTypes.CONFIG.equals(type) || super.allowAsInputFor(type);
+        return CommonTypes.OBJECT.equals(type)
+            || CommonTypes.REFERENT.equals(type)
+            || CommonTypes.CONFIG.equals(type)
+            || super.allowAsInputFor(type);
     }
     
     @Override
@@ -121,6 +124,7 @@ public class ConfigFile extends Section implements Referent, Deletable {
         public ConfigTree(SectionMeta owner) {
             super(owner);
         }
+        
     }
     
 }
