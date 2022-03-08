@@ -46,7 +46,7 @@ public class AddExpression extends RelationalExpression {
     
     @Override
     public Type getReturnType() {
-        return CommonTypes.NUMBER;
+        return CommonTypes.OBJECT;
     }
     
     @Override

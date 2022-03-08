@@ -42,7 +42,7 @@ public class SubtractExpression extends RelationalExpression {
     
     @Override
     public Type getReturnType() {
-        return CommonTypes.NUMBER;
+        return CommonTypes.OBJECT;
     }
     
     @Override
