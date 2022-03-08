@@ -23,7 +23,6 @@ public class TypesTest extends SkriptTest {
         final PostCompileClass[] classes = skript.compileComplexScript(TypesTest.class.getClassLoader()
             .getResourceAsStream("types.bsk"), "skript.types");
         for (PostCompileClass cls : classes) {
-            debug(cls);
             if (script == null)
                 script = skript.loadScript(cls);
             else skript.loadScript(cls);
