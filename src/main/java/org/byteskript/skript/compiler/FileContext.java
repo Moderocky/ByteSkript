@@ -54,6 +54,7 @@ public class FileContext extends Context {
             .addModifiers(Modifier.FINAL)
             .setSuperclass(CompiledScript.class);
         this.addSkriptFunctions();
+        this.registerType("none", new Type(void.class)); // special overridden case
 //        writer.setComputation(1); // todo
     }
     
@@ -420,7 +421,7 @@ public class FileContext extends Context {
     
     @Override
     public void registerType(String name, Type type) {
-        types.put(name, type);
+        this.types.put(name, type);
     }
     
     @Override

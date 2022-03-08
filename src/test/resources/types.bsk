@@ -97,3 +97,18 @@ function java_implement:
         assert {var} is "hello": "Supplier get method failed."
         set {var} to result of {getter}
         assert {var} is "hello": "Supplier result-of failed."
+
+type Runnable:
+    template: java/lang/Runnable
+    function run:
+        return: none
+        trigger:
+            assert {_var} is 1: "Variable failed to transfer."
+            set {_var} to 2
+
+function runnable:
+    trigger:
+        set {thing} to a new Runnable
+        set {_var} to 1
+        run {thing}
+        assert {_var} is 2: "Runnable failed to run."

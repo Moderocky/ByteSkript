@@ -100,7 +100,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
     
     private SkriptLangSpec() {
         super("Skript");
-        registerTypes(
+        this.registerTypes(
             CommonTypes.CLASS,
             CommonTypes.TYPE,
             CommonTypes.INTEGER,

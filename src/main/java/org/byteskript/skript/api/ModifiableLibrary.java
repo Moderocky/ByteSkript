@@ -115,7 +115,7 @@ public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
         This version accepts Foundation types.
         """)
     public void registerTypes(Type... types) {
-        for (Type type : types) {
+        for (final Type type : types) {
             if (!this.types.contains(type)) this.types.add(type);
         }
     }

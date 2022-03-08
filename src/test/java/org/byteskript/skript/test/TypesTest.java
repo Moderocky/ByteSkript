@@ -23,10 +23,18 @@ public class TypesTest extends SkriptTest {
         final PostCompileClass[] classes = skript.compileComplexScript(TypesTest.class.getClassLoader()
             .getResourceAsStream("types.bsk"), "skript.types");
         for (PostCompileClass cls : classes) {
+            debug(cls);
             if (script == null)
                 script = skript.loadScript(cls);
             else skript.loadScript(cls);
         }
+    }
+    
+    @Test
+    public void runnable() throws Throwable {
+        final Member function = script.getFunction("runnable");
+        assert function != null;
+        function.run(skript).get();
     }
     
     @Test
