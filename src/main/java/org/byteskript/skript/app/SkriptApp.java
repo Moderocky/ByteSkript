@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -75,7 +76,7 @@ public abstract class SkriptApp {
         final Class<?> target = Class.forName(main, true, child);
         try {
             target.getMethod("load", Skript.class).invoke(null, skript);
-        } catch (Throwable ex) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
             throw new ScriptLibraryError("Library '" + file.getName() + "' main class is missing load method:\n" +
                 "public static void load(Skript skript)\n");
         }
