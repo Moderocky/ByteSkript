@@ -69,7 +69,9 @@ public class IfSection extends Section {
     
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
-        final ProgrammaticSplitTree current = context.getCurrentTree();
+        final ProgrammaticSplitTree current;
+        if (context.getTree(context.getSection()) instanceof IfElseTree found) current = found;
+        else current = context.getCurrentTree();
         if (current instanceof IfElseTree tree) {
             context.setState(CompileState.CODE_BODY);
             final MethodBuilder method = context.getMethod();

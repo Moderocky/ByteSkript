@@ -15,6 +15,7 @@ import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;
+import org.byteskript.skript.compiler.structure.ProgrammaticSplitTree;
 import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.compiler.structure.WhileTree;
 import org.byteskript.skript.error.ScriptCompileError;
@@ -80,7 +81,10 @@ public class WhileSection extends Section {
     
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
-        if (!(context.getTree(context.getSection()) instanceof WhileTree tree))
+        final ProgrammaticSplitTree current;
+        if (context.getTree(context.getSection()) instanceof WhileTree found) current = found;
+        else current = context.getCurrentTree();
+        if (!(current instanceof WhileTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Unable to balance while flow tree.");
         context.setState(CompileState.CODE_BODY);
         final MethodBuilder method = context.getMethod();

@@ -45,7 +45,6 @@ public class FileContext extends Context {
     LanguageElement expected;
     SyntaxElement currentEffect;
     private HandlerType mode = StandardHandlers.GET;
-    
     public FileContext(Type type) {
         this.type = type;
         this.state = CompileState.ROOT;
@@ -70,6 +69,10 @@ public class FileContext extends Context {
         } catch (Throwable ex) {
             throw new RuntimeException("Unable to load Skript functions.", ex);
         }
+    }
+    
+    public List<ProgrammaticSplitTree> getTrees() {
+        return trees;
     }
     
     public PostCompileClass[] compile() {

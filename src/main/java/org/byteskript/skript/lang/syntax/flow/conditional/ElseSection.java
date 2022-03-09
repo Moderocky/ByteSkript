@@ -15,6 +15,7 @@ import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.compiler.structure.IfElseTree;
+import org.byteskript.skript.compiler.structure.ProgrammaticSplitTree;
 import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
@@ -67,7 +68,10 @@ public class ElseSection extends Section {
     
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
-        if (!(context.getTree(context.getSection()) instanceof IfElseTree tree))
+        final ProgrammaticSplitTree current;
+        if (context.getTree(context.getSection()) instanceof IfElseTree found) current = found;
+        else current = context.getCurrentTree();
+        if (!(current instanceof IfElseTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Unable to balance if/else flow tree.");
         context.setState(CompileState.CODE_BODY);
         tree.close(context);

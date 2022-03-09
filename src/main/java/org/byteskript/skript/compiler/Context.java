@@ -163,6 +163,11 @@ public abstract class Context {
         return sections.get(0).handler();
     }
     
+    public void destroySections() {
+        do destroySection();
+        while (!sections.isEmpty());
+    }
+    
     public void destroySection() {
         if (sections.isEmpty()) return;
         final SectionMeta meta = sections.remove(0);
@@ -171,15 +176,6 @@ public abstract class Context {
             final Section section = handlers[i];
             section.onSectionExit(this, meta);
         }
-    }
-    
-    public void destroySections() {
-        for (final SectionMeta section : sections) {
-            for (final Section handler : section.getHandlers()) {
-                handler.onSectionExit(this, section);
-            }
-        }
-        this.sections.clear();
     }
     
     public abstract boolean hasFunction(String name, int arguments);

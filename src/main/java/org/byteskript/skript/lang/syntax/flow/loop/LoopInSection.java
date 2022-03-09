@@ -14,6 +14,7 @@ import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.LoopTree;
 import org.byteskript.skript.compiler.structure.PreVariable;
+import org.byteskript.skript.compiler.structure.ProgrammaticSplitTree;
 import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.error.ScriptParseError;
@@ -117,7 +118,10 @@ public class LoopInSection extends Section {
     
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
-        if (!(context.getTree(context.getSection()) instanceof LoopTree tree))
+        final ProgrammaticSplitTree current;
+        if (context.getTree(context.getSection()) instanceof LoopTree found) current = found;
+        else current = context.getCurrentTree();
+        if (!(current instanceof LoopTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Unable to balance loop flow tree.");
         context.setState(CompileState.CODE_BODY);
         final MethodBuilder method = context.getMethod();
