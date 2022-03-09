@@ -26,7 +26,7 @@ public class ByteSkriptApp extends SkriptApp {
             makeFiles();
             System.out.println(RESET + "Welcome to " + BRIGHT_PURPLE + "ByteSkript" + RESET + "!");
             System.out.println(RESET + "Available arguments:");
-            System.out.println(RESET + "\trun <file>  | " + CYAN + "Run scripts in the " + CYAN_UNDERLINED + "skripts/" + CYAN + " directory.");
+            System.out.println(RESET + "\trun <file>  | " + CYAN + "Run scripts in the " + CYAN_UNDERLINED + "skript/" + CYAN + " directory.");
             System.out.println(RESET + "\t            | " + CYAN + "If a file-arg is given, only this script will be run.");
             System.out.println(RESET + "\tcompile     | " + CYAN + "Compile library class files for all scripts.");
             System.out.println(RESET + "\t            | " + CYAN + "Syntax-providing classes can be moved to the " + CYAN_UNDERLINED + "libraries/" + CYAN + " folder.");
@@ -36,7 +36,8 @@ public class ByteSkriptApp extends SkriptApp {
             System.out.println(RESET + "\ttest <file> | " + CYAN + "Runs available scripts in test mode.");
             System.out.println(RESET + "\t            | " + CYAN + "Test-only features will be available here.");
             System.out.println(RESET + "\t            | " + CYAN + "If a file-arg is given, only this script will be tested.");
-            System.out.println(RESET + "\tdebug       | " + CYAN + "Generates a debug information file (for bug reports!)");
+            System.out.println(RESET + "\tdebug       | " + CYAN + "Generates a debug information file for all scripts (for bug reports!)");
+            System.out.println(RESET + "\tdebug <file>| " + CYAN + "Generates a debug information file for a given script (for bug reports!)");
             System.out.print(RESET);
             System.out.println("Visit https://docs.byteskript.org for help and tutorials.");
         } else if (args[0].equalsIgnoreCase("clean")) {
@@ -85,8 +86,15 @@ public class ByteSkriptApp extends SkriptApp {
             }
             new SimpleThrottleController(SKRIPT).run();
         } else if (args[0].equalsIgnoreCase("debug")) {
-            System.out.println(RESET + "Generating a debug report of your current scripts." + RESET);
-            ScriptDebugger.main();
+            if (args.length < 2) {
+                System.out.println(RESET + "Generating a debug report of your current scripts." + RESET);
+                ScriptDebugger.main();
+            } else {
+                final String name = args[1];
+                System.out.println(RESET + "Generating a debug report of " + CYAN + CYAN_UNDERLINED + name + RESET + "." + RESET);
+                final File file = new File(name);
+                ScriptDebugger.debug(file);
+            }
             System.out.println(RESET + "This has been stored in " + CYAN + CYAN_UNDERLINED + "debug.txt" + RESET + ".");
         }
     }

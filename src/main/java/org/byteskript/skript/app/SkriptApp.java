@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -52,11 +51,10 @@ public abstract class SkriptApp {
         final List<File> files = getFiles(new ArrayList<>(), LIBRARIES.toPath());
         for (final File file : files) {
             if (file.getName().endsWith(".jar")) {
-                try {
-                    final JarFile jar = new JarFile(file);
+                try (final JarFile jar = new JarFile(file)) {
                     final String main = jar.getManifest().getMainAttributes().getValue("Main-Class");
                     if (main == null)
-                        throw new ScriptLibraryError("Library '" + file.getName() + "' is missing main class in manifest.");
+                        throw new ScriptLibraryError("Library '" + file.getName() + "' is missing a main class in its Jar manifest.");
                     callLibrary(file, main, skript);
                 } catch (Throwable ex) {
                     ex.printStackTrace();
@@ -64,8 +62,8 @@ public abstract class SkriptApp {
             } else if (file.getName().endsWith(".class")) {
                 try (final InputStream stream = new FileInputStream(file)) {
                     skript.registerLibraryClass(stream.readAllBytes());
-                } catch (IOException exception) {
-                    throw new ScriptLibraryError("Error while loading library '" + file.getName() + "'", exception);
+                } catch (Throwable exception) {
+                    throw new ScriptLibraryError("Error while loading class library '" + file.getName() + "'", exception);
                 }
             }
         }
@@ -76,9 +74,14 @@ public abstract class SkriptApp {
         final Class<?> target = Class.forName(main, true, child);
         try {
             target.getMethod("load", Skript.class).invoke(null, skript);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-            throw new ScriptLibraryError("Library '" + file.getName() + "' main class is missing load method:\n" +
+        } catch (NoSuchMethodException ex) {
+            throw new ScriptLibraryError("Library '" + file.getName() + "' main class is missing a load method:\n" +
                 "public static void load(Skript skript)\n");
+        } catch (IllegalAccessException ex) {
+            throw new ScriptLibraryError("Library '" + file.getName() + "' main class has no public load method:\n" +
+                "public static void load(Skript skript)\n");
+        } catch (Throwable ex) {
+            throw new ScriptLibraryError("Error encountered while loading '" + file.getName() + "':", ex);
         }
     }
     

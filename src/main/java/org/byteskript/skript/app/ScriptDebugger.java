@@ -11,6 +11,7 @@ import org.byteskript.skript.compiler.DebugSkriptCompiler;
 import org.byteskript.skript.runtime.Skript;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -22,6 +23,17 @@ public class ScriptDebugger extends SkriptApp {
             final Skript skript = new Skript(new DebugSkriptCompiler(Stream.controller(stream)));
             registerLibraries(skript);
             skript.compileScripts(SOURCE);
+        }
+    }
+    
+    public static void debug(File file) throws IOException {
+        final File debug = new File(ROOT, "debug.txt");
+        try (final FileOutputStream stream = new FileOutputStream(debug)) {
+            try (final FileInputStream input = new FileInputStream(file)) {
+                final Skript skript = new Skript(new DebugSkriptCompiler(Stream.controller(stream)));
+                registerLibraries(skript);
+                skript.compileScript(input, "skript/" + file.getName());
+            }
         }
     }
 }

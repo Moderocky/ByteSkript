@@ -45,6 +45,7 @@ public class FileContext extends Context {
     LanguageElement expected;
     SyntaxElement currentEffect;
     private HandlerType mode = StandardHandlers.GET;
+    
     public FileContext(Type type) {
         this.type = type;
         this.state = CompileState.ROOT;
