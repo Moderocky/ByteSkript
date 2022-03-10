@@ -143,7 +143,7 @@ public interface SyntaxElement {
             else sub = context.getBuilder().addMatching(target);
             sub.setModifiers(0x00000002 | 0x00000008 | 0x00001000 | 0x00000040);
             int index = 0;
-            for (Type input : inputs) {
+            for (final Type input : inputs) {
                 sub.writeCode(loadObject(index));
                 sub.writeCode(cast(input));
                 index++;

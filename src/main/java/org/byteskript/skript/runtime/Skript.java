@@ -284,11 +284,29 @@ public final class Skript {
         return skript;
     }
     
-    public <From, To> void registerConverter(Class<From> from, Class<To> to, Converter<From, To> converter) {
-        final Converter.Data data = new Converter.Data(from, to);
-        this.converters.put(data, converter);
+    /**
+     * A utility method to handle converting types for syntax.
+     * This will throw an error if conversion is impossible.
+     */
+    public static <To> To convert(Object from, Class<To> to) {
+        return convert(from, to, true);
     }
     
+    /**
+     * A utility method to handle converting types for syntax.
+     * If the fail parameter is true, this will throw an error, otherwise returning null.
+     */
+    @SuppressWarnings("unchecked")
+    public static <From, To> To convert(From from, Class<To> to, boolean fail) {
+        if (to.isInstance(from)) return to.cast(from);
+        final Skript instance = findInstance();
+        final Converter<From, To> converter = (Converter<From, To>) instance.getConverter(from.getClass(), to);
+        if (converter != null) return converter.convert(from);
+        if (fail) throw new ScriptRuntimeError("Unable convert '" + from + "' to type " + to.getSimpleName() + ".");
+        else return null;
+    }
+    
+    @SuppressWarnings("unchecked")
     public <From, To> Converter<From, To> getConverter(Class<From> from, Class<To> to) {
         final Converter.Data data = new Converter.Data(from, to);
         if (converters.containsKey(data)) return (Converter<From, To>) converters.get(data);
@@ -297,6 +315,11 @@ public final class Skript {
                 return (Converter<From, To>) converters.get(found);
         }
         return null;
+    }
+    
+    public <From, To> void registerConverter(Class<From> from, Class<To> to, Converter<From, To> converter) {
+        final Converter.Data data = new Converter.Data(from, to);
+        this.converters.put(data, converter);
     }
     
     @Description("""
