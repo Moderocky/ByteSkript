@@ -58,7 +58,7 @@ public class DebugSkriptCompiler extends SimpleSkriptCompiler {
     
     @Override
     protected FileContext createContext(Type path) {
-        return new FileContext(path, 0);
+        return new FileContext(path, 1);
     }
     
     protected void debug(ElementTree tree, FileContext context) {

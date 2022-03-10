@@ -127,7 +127,7 @@ public class LoopInSection extends Section {
         final MethodBuilder method = context.getMethod();
         final Label top = tree.getTop();
         method.writeCode((writer, visitor) -> visitor.visitJumpInsn(Opcodes.GOTO, top));
-        method.writeCode(tree.getEnd().instruction());
+        tree.close(context);
     }
     
     @Override

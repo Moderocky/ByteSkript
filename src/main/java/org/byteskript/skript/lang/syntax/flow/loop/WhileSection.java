@@ -87,10 +87,7 @@ public class WhileSection extends Section {
         if (!(current instanceof WhileTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Unable to balance while flow tree.");
         context.setState(CompileState.CODE_BODY);
-        final MethodBuilder method = context.getMethod();
-        final Label top = tree.getTop();
-        method.writeCode((writer, visitor) -> visitor.visitJumpInsn(167, top));
-        method.writeCode(tree.getEnd().instruction());
+        tree.close(context);
     }
     
     @Override

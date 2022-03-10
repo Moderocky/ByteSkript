@@ -97,7 +97,7 @@ public class LoopTimesSection extends Section {
         final int slot = tree.slot;
         method.writeCode(WriteInstruction.loadSmall(slot));
         method.writeCode((writer, visitor) -> visitor.visitJumpInsn(Opcodes.IFGT, top));
-        method.writeCode(tree.getEnd().instruction());
+        tree.close(context);
     }
     
     @Override

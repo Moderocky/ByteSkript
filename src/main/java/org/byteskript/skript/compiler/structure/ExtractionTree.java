@@ -10,8 +10,6 @@ import mx.kenzie.foundation.MethodBuilder;
 import org.byteskript.skript.api.SyntaxElement;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.error.ScriptCompileError;
-import org.byteskript.skript.lang.syntax.flow.conditional.ElseIfSection;
-import org.byteskript.skript.lang.syntax.flow.conditional.ElseSection;
 import org.objectweb.asm.Label;
 
 public class ExtractionTree extends ProgrammaticSplitTree {
@@ -67,7 +65,7 @@ public class ExtractionTree extends ProgrammaticSplitTree {
     
     @Override
     public boolean permit(SyntaxElement element) {
-        return element instanceof ElseIfSection || element instanceof ElseSection;
+        return false;
     }
     
     @Override

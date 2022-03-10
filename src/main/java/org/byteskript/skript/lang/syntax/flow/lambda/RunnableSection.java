@@ -9,7 +9,6 @@ package org.byteskript.skript.lang.syntax.flow.lambda;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.MethodErasure;
 import mx.kenzie.foundation.Type;
-import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.ExtractedSection;
 import org.byteskript.skript.compiler.CommonTypes;
@@ -78,17 +77,13 @@ public class RunnableSection extends ExtractedSection {
         context.addInnerClass(Type.of("java/lang/invoke/MethodHandles$Lookup"), Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL);
         final MethodBuilder method = context.getMethod();
         final int index = context.getLambdaIndex();
-        final int load = context.getVariableCount();
         context.increaseLambdaIndex();
         final String internal = context.getType().internalName();
         final String name = "lambda$L" + index;
         final MethodBuilder child = context.getBuilder().addMethod(name)
             .setModifiers(Modifier.PUBLIC | Modifier.STATIC | 0x00001000)
             .setReturnType(new Type(void.class));
-        for (int i = 0; i < load; i++) {
-            child.addParameter(CommonTypes.OBJECT);
-            method.writeCode(WriteInstruction.loadObject(i));
-        }
+        SupplierSection.extractVariables(context, method, child);
         final MethodErasure target = child.getErasure();
         final MethodErasure creator = new MethodErasure(CommonTypes.RUNNABLE, "run", child.getErasure()
             .parameterTypes());

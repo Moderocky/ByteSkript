@@ -80,6 +80,14 @@ function loop_flow:
             if {item} is greater than 2:
                 continue loop
             assert {item} is less than 3: "Continue-loop instruction failed."
+        set {var} to a new runnable:
+            set {count} to 0
+            loop 4 times:
+                set {phase} to {count} as a string
+                set {tag} to "a" + {phase}
+                assert {tag} is a string
+                set {count} to {count} + 1
+        run {var}
 
 function while_flow:
     trigger:
@@ -104,7 +112,6 @@ function while_flow:
                 set {tag} to "a" + {phase}
                 assert {tag} is a string
                 set {count} to {count} + 1
-            assert true is true // todo - currently un-fixable
         run {var}
         return "ended"
 
