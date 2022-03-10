@@ -56,6 +56,11 @@ public class DebugSkriptCompiler extends SimpleSkriptCompiler {
         return super.compile(source, path);
     }
     
+    @Override
+    protected FileContext createContext(Type path) {
+        return new FileContext(path, 0);
+    }
+    
     protected void debug(ElementTree tree, FileContext context) {
         try {
             this.controller.write("\n");

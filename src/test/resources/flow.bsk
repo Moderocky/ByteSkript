@@ -97,6 +97,15 @@ function while_flow:
             while {count} is less than 10:
                 set {count} to {count} + 1
             assert {count} is 10: "While loop failed to count properly."
+        set {var} to a new runnable:
+            set {count} to 0
+            while {count} < 10:
+                set {phase} to {count} as a string
+                set {tag} to "a" + {phase}
+                assert {tag} is a string
+                set {count} to {count} + 1
+            assert true is true // todo - currently un-fixable
+        run {var}
         return "ended"
 
 function test_run:

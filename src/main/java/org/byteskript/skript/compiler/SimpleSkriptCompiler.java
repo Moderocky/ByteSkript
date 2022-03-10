@@ -299,7 +299,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     
     @Override
     public PostCompileClass[] compile(InputStream stream, Type path) {
-        final FileContext context = new FileContext(path);
+        final FileContext context = this.createContext(path);
         context.libraries.addAll(libraries);
         for (final Library library : libraries) {
             for (final Type type : library.getTypes()) context.registerType(type);
@@ -325,7 +325,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     
     @Override
     public PostCompileClass[] compile(String source, Type path) {
-        final FileContext context = new FileContext(path);
+        final FileContext context = this.createContext(path);
         context.libraries.addAll(libraries);
         for (final Library library : libraries) {
             for (final Type type : library.getTypes()) context.registerType(type);
@@ -349,6 +349,10 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         compiler.libraries.clear();
         compiler.libraries.addAll(this.libraries);
         return compiler;
+    }
+    
+    protected FileContext createContext(Type path) {
+        return new FileContext(path);
     }
     
     private void compileLine(FileContext context, String stripped) {

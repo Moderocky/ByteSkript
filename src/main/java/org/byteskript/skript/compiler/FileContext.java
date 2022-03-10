@@ -47,6 +47,10 @@ public class FileContext extends Context {
     private HandlerType mode = StandardHandlers.GET;
     
     public FileContext(Type type) {
+        this(type, -1);
+    }
+    
+    public FileContext(Type type, int computation) {
         this.type = type;
         this.state = CompileState.ROOT;
         this.writer = new ClassBuilder(type, SkriptLangSpec.JAVA_VERSION)
@@ -55,7 +59,7 @@ public class FileContext extends Context {
             .setSuperclass(CompiledScript.class);
         this.addSkriptFunctions();
         this.registerType("none", new Type(void.class)); // special overridden case
-//        writer.setComputation(1); // todo
+        if (computation > -1) writer.setComputation(computation);
     }
     
     private void addSkriptFunctions() {
@@ -85,7 +89,17 @@ public class FileContext extends Context {
         final List<PostCompileClass> classes = new ArrayList<>();
         classes.add(new PostCompileClass(writer.compile(), writer.getName(), writer.getInternalName()));
         for (ClassBuilder builder : writer.getSuppressed()) {
-            classes.add(new PostCompileClass(builder.compile(), builder.getName(), builder.getInternalName()));
+            try {
+                classes.add(new PostCompileClass(builder.compile(), builder.getName(), builder.getInternalName()));
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                if (ex.getStackTrace()[0].getClassName().endsWith("Frame")) {
+                    throw new ScriptCompileError(-1, """
+                        Error during assembly phase.
+                        This error cannot be directly triaged, but likely comes from a malformed syntax (in which case the library-maintainer needs to fix it.)
+                        Experienced developers may check the `debug` output to see where the stack calculation error is.
+                        """);
+                }
+            }
         }
         return classes.toArray(new PostCompileClass[0]);
     }

@@ -10,7 +10,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.note.Documentation;
-import org.byteskript.skript.api.syntax.SimpleExpression;
+import org.byteskript.skript.api.syntax.Literal;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
@@ -36,15 +36,12 @@ import java.util.regex.Matcher;
                 """
     }
 )
-public class TypeExpression extends SimpleExpression {
+public class TypeExpression extends Literal<Class<?>> {
+    
+    private final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("^\\p{javaJavaIdentifierStart}[\\p{javaJavaIdentifierPart}./]+$");
     
     public TypeExpression() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "type");
-    }
-    
-    @Override
-    public Type getReturnType() {
-        return CommonTypes.CLASS;
     }
     
     @Override
@@ -55,7 +52,18 @@ public class TypeExpression extends SimpleExpression {
     }
     
     @Override
+    public Class<?> parse(String input) {
+        try {
+            return Class.forName(input.replace('/', '.'));
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
+    
+    @Override
     public Pattern.Match match(String thing, Context context) {
+        if (thing.contains("\"")) return null;
+        if (!pattern.matcher(thing).matches()) return null;
         final Type type = this.getType(thing, context);
         if (type == null) return null;
         final Matcher matcher = Pattern.fakeMatcher(thing);
@@ -65,6 +73,11 @@ public class TypeExpression extends SimpleExpression {
     @Override
     public boolean allowAsInputFor(Type type) {
         return CommonTypes.CLASS.equals(type) || CommonTypes.TYPE.equals(type) || CommonTypes.OBJECT.equals(type);
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.CLASS;
     }
     
     public Type getType(String string, Context context) {

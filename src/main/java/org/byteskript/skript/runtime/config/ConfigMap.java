@@ -41,64 +41,6 @@ public class ConfigMap extends LinkedHashMap<String, ConfigEntry> {
         }
     }
     
-    protected void readLines(InputStreamController controller) {
-        final AtomicBoolean comment = new AtomicBoolean(false);
-        for (final String thing : controller.lines()) {
-            final String line = this.stripLine(thing, comment);
-            if (line.isEmpty()) continue;
-            final int index = line.indexOf(':');
-            if (index < 0) continue;
-            final ConfigEntry entry = new ConfigEntry();
-            entry.comments = comments.toArray(new String[0]);
-            entry.key = line.substring(0, index).trim();
-            entry.value = line.substring(index + 1).trim();
-            this.put(entry);
-            this.comments.clear();
-        }
-        
-    }
-    
-    protected String stripLine(final String old, AtomicBoolean comment) {
-        String line = old;
-        boolean started = false;
-        do {
-            if (!comment.get()) {
-                if (line.contains("//")) {
-                    final String string = line.substring(line.indexOf("//") + 2).trim();
-                    line = line.substring(0, line.indexOf("//")); // keep first part of line
-                    this.comments.add(string);
-                }
-                if (line.contains("/*")) {
-                    started = true;
-                    comment.set(true);
-                    final String string = line.substring(line.indexOf("/*") + 2);
-                    line = line.substring(0, line.indexOf("/*")); // first part of line not in comment
-                    this.current.append(string);
-                }
-            }
-            if (comment.get()) {
-                if (line.contains("*/")) {
-                    if (!started) this.current.append(System.lineSeparator());
-                    final String string = line.substring(0, line.indexOf("*/"));
-                    line = line.substring(line.indexOf("*/") + 2); // keep last part of line
-                    this.current.append(string);
-                    this.comments.add(current.toString().trim());
-                    this.current = new StringBuilder();
-                    comment.set(false);
-                } else {
-                    if (!started) this.current.append(System.lineSeparator());
-                    this.current.append(line);
-                    line = ""; // inside a commented block
-                }
-            }
-        } while (line.contains("/*") || line.contains("*/") || line.contains("//"));
-        return line.trim(); // for now just trim lines, no indented areas
-    }
-    
-    public ConfigEntry put(ConfigEntry value) {
-        return super.put(value.key, value);
-    }
-    
     public ConfigMap(InputStream stream) throws IOException {
         this.file = null;
         try (final InputStreamController controller = Stream.controller(stream)) {
@@ -162,6 +104,70 @@ public class ConfigMap extends LinkedHashMap<String, ConfigEntry> {
         if (!(target instanceof ConfigMap map))
             throw new ScriptRuntimeError("The target must be a config.");
         set(key + "", map, null);
+    }
+    
+    protected void readLines(InputStreamController controller) {
+        final AtomicBoolean comment = new AtomicBoolean(false);
+        for (final String thing : controller.lines()) {
+            final String line = this.stripLine(thing, comment);
+            if (line.isEmpty()) continue;
+            final int index = this.findSplitter(line, 0);
+            if (index < 0) continue;
+            final ConfigEntry entry = new ConfigEntry();
+            entry.comments = comments.toArray(new String[0]);
+            entry.key = line.substring(0, index).trim();
+            entry.value = line.substring(index + 1).trim();
+            this.put(entry);
+            this.comments.clear();
+        }
+    }
+    
+    private int findSplitter(String line, int from) {
+        final int index = line.indexOf(':', from);
+        if (index < 1) return -1; // illegal :line
+        if (line.charAt(index - 1) != '\\') return index;
+        return this.findSplitter(line, index); // ke\:y: value
+    }
+    
+    protected String stripLine(final String old, AtomicBoolean comment) {
+        String line = old;
+        boolean started = false;
+        do {
+            if (!comment.get()) {
+                if (line.contains("//")) {
+                    final String string = line.substring(line.indexOf("//") + 2).trim();
+                    line = line.substring(0, line.indexOf("//")); // keep first part of line
+                    this.comments.add(string);
+                }
+                if (line.contains("/*")) {
+                    started = true;
+                    comment.set(true);
+                    final String string = line.substring(line.indexOf("/*") + 2);
+                    line = line.substring(0, line.indexOf("/*")); // first part of line not in comment
+                    this.current.append(string);
+                }
+            }
+            if (comment.get()) {
+                if (line.contains("*/")) {
+                    if (!started) this.current.append(System.lineSeparator());
+                    final String string = line.substring(0, line.indexOf("*/"));
+                    line = line.substring(line.indexOf("*/") + 2); // keep last part of line
+                    this.current.append(string);
+                    this.comments.add(current.toString().trim());
+                    this.current = new StringBuilder();
+                    comment.set(false);
+                } else {
+                    if (!started) this.current.append(System.lineSeparator());
+                    this.current.append(line);
+                    line = ""; // inside a commented block
+                }
+            }
+        } while (line.contains("/*") || line.contains("*/") || line.contains("//"));
+        return line.trim(); // for now just trim lines, no indented areas
+    }
+    
+    public ConfigEntry put(ConfigEntry value) {
+        return super.put(value.key, value);
     }
     
     public void delete() {

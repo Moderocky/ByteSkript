@@ -22,6 +22,7 @@ public class FlowTest extends SkriptTest {
     public static void start() throws Throwable {
         final PostCompileClass cls = skript.compileScript(FlowTest.class.getClassLoader()
             .getResourceAsStream("flow.bsk"), "skript.flow");
+        debug(cls); //todo
         script = skript.loadScript(cls);
     }
     

@@ -35,7 +35,9 @@ public abstract class ExtractedSection extends Section {
     
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
-        final ProgrammaticSplitTree current = context.getCurrentTree();
+        final ProgrammaticSplitTree current;
+        if (context.getTree(context.getSection()) instanceof ExtractionTree found) current = found;
+        else current = context.getCurrentTree();
         if (!(current instanceof ExtractionTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Unable to close section flow tree.");
         context.setState(CompileState.CODE_BODY);
