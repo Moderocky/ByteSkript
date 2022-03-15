@@ -151,7 +151,7 @@ public final class Script {
         """)
     @GenerateExample
     public String getSimpleName() {
-        return mainClass().getSimpleName();
+        return this.mainClass().getSimpleName();
     }
     
     @Description("""
