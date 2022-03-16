@@ -43,6 +43,7 @@ public abstract class BasicTree extends ProgrammaticSplitTree {
     public void close(Context context) {
         if (end.uses.size() > 0)
             context.getMethod().writeCode(end.instruction());
+        context.removeTree(this);
     }
     
     @Override

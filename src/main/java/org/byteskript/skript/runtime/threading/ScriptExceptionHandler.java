@@ -7,6 +7,8 @@
 package org.byteskript.skript.runtime.threading;
 
 import org.byteskript.skript.error.ScriptParseError;
+import org.byteskript.skript.runtime.Skript;
+import org.byteskript.skript.runtime.data.ScriptData;
 
 import static org.byteskript.skript.runtime.internal.ConsoleColour.*;
 
@@ -88,7 +90,12 @@ public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler {
     
     private String getScriptName(final StackTraceElement element) {
         final String location = element.getClassName();
-        return location.replace('.', '/') + ".bsk";
+        try {
+            final Class<?> owner = Skript.localInstance().getClass(location);
+            return owner.getAnnotation(ScriptData.class).sourceFile();
+        } catch (Throwable ex) {
+            return location.replace('.', '/') + ".bsk";
+        }
     }
     
 }

@@ -12,6 +12,7 @@ import org.byteskript.skript.api.*;
 import org.byteskript.skript.compiler.structure.*;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.handler.StandardHandlers;
+import org.byteskript.skript.runtime.data.ScriptData;
 import org.byteskript.skript.runtime.internal.CompiledScript;
 
 import java.lang.reflect.Method;
@@ -42,6 +43,7 @@ public class FileContext extends Context {
     protected ClassBuilder writer;
     protected FieldBuilder field;
     protected MethodBuilder method;
+    protected String sourceFile;
     LanguageElement expected;
     SyntaxElement currentEffect;
     private HandlerType mode = StandardHandlers.GET;
@@ -52,6 +54,7 @@ public class FileContext extends Context {
     
     public FileContext(Type type, int computation) {
         this.type = type;
+        this.sourceFile = type.getTypeName().replace('.', '/') + ".bsk";
         this.state = CompileState.ROOT;
         this.writer = new ClassBuilder(type, SkriptLangSpec.JAVA_VERSION)
             .addModifiers(Modifier.PUBLIC)
@@ -81,6 +84,7 @@ public class FileContext extends Context {
     }
     
     public PostCompileClass[] compile() {
+        this.writer.addAnnotation(ScriptData.class).addValue("sourceFile", sourceFile);
         for (List<PropertyAccessGenerator> value : usedProperties.values()) {
             for (PropertyAccessGenerator generator : value) {
                 generator.compile(this);

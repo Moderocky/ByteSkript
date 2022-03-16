@@ -90,13 +90,16 @@ public class ConfigFile extends Section implements Referent, Deletable {
     
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
-        final ConfigTree tree = context.findTree(ConfigTree.class);
+        final ConfigTree current;
+        if (context.getTree(context.getSection()) instanceof ConfigTree found) current = found;
+        else if (context.getCurrentTree() instanceof ConfigTree found) current = found;
+        else return;
         final MethodBuilder method = context.getMethod();
-        if (tree == null) return;
-        final int slot = context.slotOf(tree.variable);
+        final int slot = context.slotOf(current.variable);
         method.writeCode(WriteInstruction.loadObject(slot));
         final Method target = this.findMethod(ConfigMap.class, "save");
         method.writeCode(WriteInstruction.invoke(target));
+        current.close(context);
     }
     
     @Override
