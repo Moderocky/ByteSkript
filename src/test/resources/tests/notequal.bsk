@@ -1,0 +1,16 @@
+
+function test:
+    trigger:
+        assert (1, 2, 3) is not (1, 2, 4): "Equality check failed."
+        assert "hello" is not "there": "Equality check failed."
+        assert ("hello" is not "hello") is false: "Equality check failed."
+        assert 1 is not 2: "Equality check failed."
+        assert (1 is not 1) is false: "Equality check failed."
+        assert -1 is not -2: "Equality check failed."
+        assert 1 is not 1.1: "Equality check failed."
+        assert 1.1 is not 1: "Equality check failed."
+        set {var} to "hello"
+        assert {var} is not "there": "Equality check failed."
+        assert ({var} is not "hello") is false: "Equality check failed."
+        assert {var} is not {x}: "Equality check failed."
+        return true

@@ -1,0 +1,8 @@
+
+function test:
+    trigger:
+        assert (1, 2, 3) is an array: "Is array check failed."
+        set {var1} to (1, 2, 3)
+        assert {var1} is an array: "Is array check failed."
+        assert ({x} is an array) is false: "Is array check failed."
+        return true

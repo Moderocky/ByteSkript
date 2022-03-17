@@ -416,7 +416,7 @@ public final class Skript {
         """)
     @GenerateExample
     public Future<?> runScript(final ScriptRunner runner) {
-        return runScript(runner, null);
+        return this.runScript(runner, null);
     }
     
     @Description("""
@@ -437,6 +437,7 @@ public final class Skript {
             thread.event = event;
             try {
                 runner.run();
+                future.value(runner.result());
             } catch (ThreadDeath ignore) {
                 // This is likely from an exit the current process effect, we don't want to make noise
             } finally {

@@ -1,0 +1,8 @@
+
+function test:
+    trigger:
+        assert 4 > 3: "Greater than smaller check failed."
+        assert (4 > 4) is false: "Greater than self check failed."
+        assert (4 > 5) is false: "Greater than larger check failed."
+        assert 5 > -2: "Greater than negative check failed."
+        return true

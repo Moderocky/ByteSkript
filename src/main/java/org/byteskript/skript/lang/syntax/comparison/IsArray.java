@@ -6,12 +6,16 @@
 
 package org.byteskript.skript.lang.syntax.comparison;
 
-import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.RelationalExpression;
-import org.byteskript.skript.compiler.*;
+import org.byteskript.skript.compiler.CommonTypes;
+import org.byteskript.skript.compiler.Context;
+import org.byteskript.skript.compiler.Pattern;
+import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
+import org.byteskript.skript.lang.handler.StandardHandlers;
+import org.byteskript.skript.runtime.internal.OperatorHandler;
 
 @Documentation(
     name = "Is Array",
@@ -27,24 +31,20 @@ import org.byteskript.skript.lang.element.StandardElements;
 public class IsArray extends RelationalExpression {
     
     public IsArray() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% (is|are) a[n] array");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% (is|are) a[n]  array");
+        try {
+            handlers.put(StandardHandlers.FIND, OperatorHandler.class.getMethod("isArray", Object.class));
+            handlers.put(StandardHandlers.GET, OperatorHandler.class.getMethod("isArray", Object.class));
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        // todo something is wrong with this syntax
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.endsWith(" array")) return null;
         return super.match(thing, context);
-    }
-    
-    @Override
-    public void compile(Context context, Pattern.Match match) throws Throwable {
-        final MethodBuilder method = context.getMethod();
-        method.writeCode((writer, visitor) -> {
-            visitor.visitMethodInsn(182, "java/lang/Object", "getClass", "()Ljava/lang/Class;", false);
-            visitor.visitMethodInsn(182, "java/lang/Class", "isArray", "()Z", false);
-            visitor.visitMethodInsn(184, "java/lang/Boolean", "valueOf", "(Z)Ljava/lang/Boolean;", false);
-        });
-        context.setState(CompileState.STATEMENT);
     }
     
     @Override

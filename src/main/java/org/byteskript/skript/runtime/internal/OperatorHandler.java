@@ -209,7 +209,13 @@ public class OperatorHandler {
     }
     //endregion
     
-    //region Comparisons
+    public static Boolean equals(Object a, Object b) {
+        if (Objects.equals(a, b)) return true;
+        if (isArray(a) && isArray(b)) return Arrays.equals((Object[]) a, (Object[]) b);
+        if (!(a instanceof Number x) || !(b instanceof Number y)) return false;
+        return Double.compare(x.doubleValue(), y.doubleValue()) == 0;
+    }
+    
     public static Boolean gt(Object a, Object b) {
         if (!(a instanceof Number x) || !(b instanceof Number y)) {
             throw new ScriptRuntimeError("Provided inputs must be numerical.");
@@ -303,10 +309,10 @@ public class OperatorHandler {
         return equals(a, b); // probably a mistaken use?
     }
     
-    public static Boolean equals(Object a, Object b) {
-        if (Objects.equals(a, b)) return true;
-        if (!(a instanceof Number x) || !(b instanceof Number y)) return false;
-        return Double.compare(x.doubleValue(), y.doubleValue()) == 0;
+    //region Comparisons
+    public static Boolean isArray(Object a) {
+        if (a == null) return false;
+        return a.getClass().isArray();
     }
     //endregion
     

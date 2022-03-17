@@ -1,0 +1,13 @@
+
+function test:
+    trigger:
+        assert "hello" exists: "Exists check failed."
+        assert "" exists: "Exists check failed."
+        assert {x} exists is false: "Exists check failed."
+        assert true exists: "Exists check failed."
+        assert false exists: "Exists check failed."
+        set {var} to true
+        assert {var} exists: "Exists check failed."
+        assert 1 exists: "Exists check failed."
+        assert (1, 2, 3) exists: "Exists check failed."
+        return true

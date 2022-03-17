@@ -1,0 +1,18 @@
+
+function test:
+    trigger:
+        assert "hello" contains "h": "Contains string part failed."
+        assert "hello" contains "ello": "Contains string part failed."
+        assert "hello" contains "hello": "Contains string self failed."
+        assert "hello" contains "there" is false: "Contains string incorrectly succeeded."
+        assert "hello" contains "helo" is false: "Contains string incorrectly succeeded."
+        assert (1, 2, 3) contains 1: "Contains array failed."
+        assert (1, 2, 3) contains 3: "Contains array failed."
+        assert (1, 2, 3) contains 4 is false: "Contains array failed."
+        set {list} to a new list
+        add 1 to {list}
+        add 2 to {list}
+        assert {list} contains 1: "Contains list failed."
+        assert {list} contains 2: "Contains list failed."
+        assert {x} contains {x} is false: "Nothing contains nothing."
+        return true

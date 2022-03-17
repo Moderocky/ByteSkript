@@ -14,14 +14,21 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class ScriptFinishFuture implements Future<Void> {
+public class ScriptFinishFuture implements Future<Object> {
     
     private final Skript skript;
     private final Object lock = new Object();
     public ScriptThread thread;
+    protected Object value;
     
     public ScriptFinishFuture(Skript skript) {
         this.skript = skript;
+    }
+    
+    public void value(Object object) {
+        synchronized (this) {
+            this.value = object;
+        }
     }
     
     public void finish() {
@@ -49,18 +56,22 @@ public class ScriptFinishFuture implements Future<Void> {
     }
     
     @Override
-    public Void get() throws InterruptedException, ExecutionException {
+    public Object get() throws InterruptedException, ExecutionException {
         synchronized (lock) {
             lock.wait();
         }
-        return null;
+        synchronized (this) {
+            return value;
+        }
     }
     
     @Override
-    public Void get(long timeout, @NotNull TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+    public Object get(long timeout, @NotNull TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
         synchronized (lock) {
             lock.wait(unit.toMillis(timeout));
         }
-        return null;
+        synchronized (this) {
+            return value;
+        }
     }
 }
