@@ -52,10 +52,10 @@ public class GenericTest extends SkriptTest {
             final String part = file.toString().substring(file.toString().indexOf("/tests/") + 7);
             final String name = part.substring(0, part.length() - 4).replace(File.separatorChar, '.');
             try (final InputStream stream = Files.newInputStream(file)) {
-                final PostCompileClass cls;
+                final PostCompileClass[] classes;
                 synchronized (this) {
                     try {
-                        cls = skript.compileScript(stream, "skript." + name);
+                        classes = skript.compileComplexScript(stream, "skript." + name);
                     } catch (Throwable ex) {
                         System.err.println("Error in '" + name + "':");
                         ex.printStackTrace(System.err);
@@ -63,7 +63,7 @@ public class GenericTest extends SkriptTest {
                         continue;
                     }
                     try {
-                        final Script script = skript.loadScript(cls);
+                        final Script script = skript.loadScripts(classes).iterator().next();
                         final boolean result = (boolean) script.getFunction("test").run(skript).get();
                         assert result : "Test failed.";
                     } catch (Throwable ex) {
@@ -72,11 +72,11 @@ public class GenericTest extends SkriptTest {
                         failure++;
                     }
                 }
-                final File test = new File("target/test-scripts/" + cls.name() + ".class");
+                final File test = new File("target/test-scripts/" + classes[0].name() + ".class");
                 test.getParentFile().mkdirs();
                 if (!test.exists()) test.createNewFile();
                 try (final OutputStream output = new FileOutputStream(test)) {
-                    output.write(cls.code());
+                    output.write(classes[0].code());
                 }
             }
         }

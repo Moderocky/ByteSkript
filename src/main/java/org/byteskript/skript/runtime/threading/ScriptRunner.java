@@ -21,11 +21,11 @@ public interface ScriptRunner extends Runnable {
         thread.variables.clear();
     }
     
+    void start();
+    
     default Object result() {
         return null;
     }
-    
-    void start();
     
     Class<? extends CompiledScript> owner();
     

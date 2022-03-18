@@ -1,0 +1,26 @@
+
+template type Legume:
+    function empty_func:
+
+template type Pulse:
+    template: Legume
+
+type Bean:
+    template: Pulse
+
+function test:
+    trigger:
+        assert "hello" is a string: "Type check failed."
+        assert "hello" is an object: "Type check failed."
+        assert 1 is a number: "Type check failed."
+        assert 1 is an integer: "Type check failed."
+        assert -1 is an integer: "Type check failed."
+        assert 1.0 is a number: "Type check failed."
+        assert 1.0 is a double: "Type check failed."
+        set {var} to "hello"
+        assert {var} is a string: "Type check failed."
+        set {bean} to a new bean
+        assert {bean} is a bean: "Type check failed."
+        assert {bean} is a pulse: "Type check failed."
+        assert {bean} is a legume: "Type check failed."
+        return true

@@ -1,0 +1,15 @@
+
+function test:
+    trigger:
+        assert "hello" matches /hello/
+        assert "hello" matches /.+/
+        assert "hello" matches /h.llo/
+        assert "hello" matches /[a-z]{5}/
+        assert "there" matches /[a-z]{5}/
+        assert ("hello" matches /[a-z]{6}/) is false
+        set {var} to "hello there"
+        assert ({var} matches /hello/) is false
+        assert {var} matches /hello there/
+        assert {var} matches /hello .+/
+        assert {var} matches /[a-z]{5} [a-z]{5}/
+        return true

@@ -177,16 +177,16 @@ public class Member {
         """)
     public Future<?> run(Skript skript, Object... arguments) {
         final ScriptRunner runner = new ScriptRunner() {
-    
+            
             private Object value;
-    
+            
             @Override
             public Object result() {
                 synchronized (this) {
                     return value;
                 }
             }
-    
+            
             @Override
             public void start() {
                 final Object result = invoker.invoke(arguments);
@@ -194,7 +194,7 @@ public class Member {
                     this.value = result;
                 }
             }
-    
+            
             @Override
             public Class<? extends CompiledScript> owner() {
                 return script.mainClass();
