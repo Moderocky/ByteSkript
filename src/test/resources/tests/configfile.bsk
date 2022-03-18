@@ -1,0 +1,10 @@
+
+function test:
+    trigger:
+        assert hello.csk exists
+        set {config} to hello.csk:
+            add "hello: there" to {config}
+        assert {config} exists
+        delete {config}
+        delete hello.csk
+        return true

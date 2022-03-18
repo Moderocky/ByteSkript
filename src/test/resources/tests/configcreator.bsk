@@ -1,0 +1,9 @@
+
+function test:
+    trigger:
+        assert a new config exists
+        set {var} to a new config
+        assert {var} exists
+        assert {var} is an object
+        delete hello.csk
+        return true
