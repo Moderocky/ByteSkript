@@ -48,20 +48,12 @@ public class AddEffect extends ControlEffect {
         if (target == null)
             throw new ScriptParseError(context.lineNumber(), "Syntax '" + inputs[1].current()
                 .name() + "' cannot be added to.");
-        inputs[1].type = StandardHandlers.ADD; // todo
+        inputs[1].type = StandardHandlers.ADD;
         super.preCompile(context, match);
     }
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
-//        final MethodBuilder method = context.getMethod();
-//        assert method != null;
-//        final ElementTree tree = context.getCompileCurrent();
-//        final ElementTree[] inputs = tree.nested();
-//        final Referent referent = (Referent) inputs[1].current();
-//        final Method target = referent.getHandler(StandardHandlers.ADD);
-//        assert target != null;
-//        this.writeCall(method, target, context);
         context.setState(CompileState.CODE_BODY);
     }
     

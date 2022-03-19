@@ -48,21 +48,12 @@ public class RemoveEffect extends ControlEffect {
         if (target == null)
             throw new ScriptParseError(context.lineNumber(), "Syntax '" + inputs[1].current()
                 .name() + "' cannot be removed from.");
-        inputs[1].type = StandardHandlers.REMOVE; // todo
-//        inputs[1].compile = false;
+        inputs[1].type = StandardHandlers.REMOVE;
         super.preCompile(context, match);
     }
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
-//        final MethodBuilder method = context.getMethod();
-//        assert method != null;
-//        final ElementTree tree = context.getCompileCurrent();
-//        final ElementTree[] inputs = tree.nested();
-//        final Referent referent = (Referent) inputs[1].current();
-//        final Method target = referent.getHandler(StandardHandlers.REMOVE);
-//        assert target != null;
-//        this.writeCall(method, target, context);
         context.setState(CompileState.CODE_BODY);
     }
     
