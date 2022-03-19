@@ -181,17 +181,17 @@ public class Member {
             private Object value;
             
             @Override
-            public Object result() {
-                synchronized (this) {
-                    return value;
-                }
-            }
-            
-            @Override
             public void start() {
                 final Object result = invoker.invoke(arguments);
                 synchronized (this) {
                     this.value = result;
+                }
+            }
+            
+            @Override
+            public Object result() {
+                synchronized (this) {
+                    return value;
                 }
             }
             

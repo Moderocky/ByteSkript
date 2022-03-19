@@ -75,43 +75,17 @@ public class OperatorHandler {
     }
     
     public static Object addObject(Object value, Object to) {
-        if (to instanceof ConfigMap map) ConfigMap.add(value + "", map);
-        else if (to instanceof Collection collection) return collection.add(value);
-        return null;
+        if (to instanceof ConfigMap map) {
+            ConfigMap.add(value + "", map);
+            return map;
+        } else if (to instanceof Collection collection) {
+            collection.add(value);
+            return collection;
+        } else if (to instanceof Object[] array)
+            throw new ScriptRuntimeError("The value '" + value + "' cannot be added to an array.\n"
+                + "\t(Arrays cannot be added to - try using a list instead.)");
+        else return add(to, value);
     }
-    
-    public static Iterator<?> acquireIterator(Object thing) {
-        if (thing instanceof Iterable<?> iterable) return iterable.iterator();
-        if (thing instanceof Object[] array) return Arrays.asList(array).iterator();
-        if (thing instanceof Map<?, ?> map) return map.values().iterator();
-        if (thing == null) return Collections.emptyIterator();
-        return Collections.singletonList(thing).iterator();
-    }
-    
-    /**
-     * Moved from {@link org.byteskript.skript.lang.syntax.flow.AssertEffect}
-     */
-    public static void assertion(Object object, Class<?> script, int line) {
-        if (object == null)
-            throw new ScriptAssertionError(script, line);
-        else if (object instanceof Boolean boo && !boo)
-            throw new ScriptAssertionError(script, line);
-        else if (object instanceof Number number && number.intValue() == 0)
-            throw new ScriptAssertionError(script, line);
-    }
-    
-    /**
-     * Moved from {@link org.byteskript.skript.lang.syntax.flow.AssertWithErrorEffect}
-     */
-    public static void assertion(Object object, Object message, Class<?> script, int line) {
-        if (object == null)
-            throw new ScriptAssertionError(script, line, message + "");
-        else if (object instanceof Boolean boo && !boo)
-            throw new ScriptAssertionError(script, line, message + "");
-        else if (object instanceof Number number && number.intValue() == 0)
-            throw new ScriptAssertionError(script, line, message + "");
-    }
-    //endregion
     
     //region Calculations
     public static Object add(Object a, Object b) {
@@ -132,6 +106,19 @@ public class OperatorHandler {
                 return x.longValue() + y.longValue();
             }
         }
+    }
+    
+    public static Object removeObject(Object value, Object to) {
+        if (to instanceof Map map) {
+            map.remove(value);
+            return map;
+        } else if (to instanceof Collection collection) {
+            collection.remove(value);
+            return collection;
+        } else if (to instanceof Object[] array)
+            throw new ScriptRuntimeError("The value '" + value + "' cannot be added to an array.\n"
+                + "\t(Arrays cannot be added to - try using a list instead.)");
+        else return subtract(to, value);
     }
     
     public static Object subtract(Object a, Object b) {
@@ -156,6 +143,39 @@ public class OperatorHandler {
                 return x.longValue() - y.longValue();
             }
         }
+    }
+    
+    public static Iterator<?> acquireIterator(Object thing) {
+        if (thing instanceof Iterable<?> iterable) return iterable.iterator();
+        if (thing instanceof Object[] array) return Arrays.asList(array).iterator();
+        if (thing instanceof Map<?, ?> map) return map.values().iterator();
+        if (thing == null) return Collections.emptyIterator();
+        return Collections.singletonList(thing).iterator();
+    }
+    //endregion
+    
+    /**
+     * Moved from {@link org.byteskript.skript.lang.syntax.flow.AssertEffect}
+     */
+    public static void assertion(Object object, Class<?> script, int line) {
+        if (object == null)
+            throw new ScriptAssertionError(script, line);
+        else if (object instanceof Boolean boo && !boo)
+            throw new ScriptAssertionError(script, line);
+        else if (object instanceof Number number && number.intValue() == 0)
+            throw new ScriptAssertionError(script, line);
+    }
+    
+    /**
+     * Moved from {@link org.byteskript.skript.lang.syntax.flow.AssertWithErrorEffect}
+     */
+    public static void assertion(Object object, Object message, Class<?> script, int line) {
+        if (object == null)
+            throw new ScriptAssertionError(script, line, message + "");
+        else if (object instanceof Boolean boo && !boo)
+            throw new ScriptAssertionError(script, line, message + "");
+        else if (object instanceof Number number && number.intValue() == 0)
+            throw new ScriptAssertionError(script, line, message + "");
     }
     
     public static Object multiply(Object a, Object b) {

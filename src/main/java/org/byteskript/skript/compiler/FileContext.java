@@ -91,7 +91,17 @@ public class FileContext extends Context {
             }
         }
         final List<PostCompileClass> classes = new ArrayList<>();
-        classes.add(new PostCompileClass(writer.compile(), writer.getName(), writer.getInternalName()));
+        try {
+            classes.add(new PostCompileClass(writer.compile(), writer.getName(), writer.getInternalName()));
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            if (ex.getStackTrace()[0].getClassName().endsWith("Frame")) {
+                throw new ScriptCompileError(-1, """
+                    Error during assembly phase.
+                    This error cannot be directly triaged, but likely comes from a malformed syntax (in which case the library-maintainer needs to fix it.)
+                    Experienced developers may check the `debug` output to see where the stack calculation error is.
+                    """);
+            }
+        }
         for (ClassBuilder builder : writer.getSuppressed()) {
             try {
                 classes.add(new PostCompileClass(builder.compile(), builder.getName(), builder.getInternalName()));

@@ -42,6 +42,8 @@ public class GlobalVariableExpression extends VariableExpression implements Refe
             handlers.put(StandardHandlers.FIND, GlobalVariableMap.class.getMethod("getVariable", Object.class));
             handlers.put(StandardHandlers.SET, GlobalVariableMap.class.getMethod("setVariable", Object.class, Object.class));
             handlers.put(StandardHandlers.DELETE, GlobalVariableMap.class.getMethod("deleteVariable", Object.class));
+            handlers.put(StandardHandlers.ADD, GlobalVariableMap.class.getMethod("addVariable", Object.class, Object.class));
+            handlers.put(StandardHandlers.REMOVE, GlobalVariableMap.class.getMethod("removeVariable", Object.class, Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

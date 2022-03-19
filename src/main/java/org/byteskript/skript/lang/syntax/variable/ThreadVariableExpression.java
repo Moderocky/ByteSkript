@@ -42,6 +42,8 @@ public class ThreadVariableExpression extends VariableExpression implements Refe
             handlers.put(StandardHandlers.FIND, ThreadVariableMap.class.getMethod("getVariable", Object.class));
             handlers.put(StandardHandlers.SET, ThreadVariableMap.class.getMethod("setVariable", Object.class, Object.class));
             handlers.put(StandardHandlers.DELETE, ThreadVariableMap.class.getMethod("deleteVariable", Object.class));
+            handlers.put(StandardHandlers.ADD, ThreadVariableMap.class.getMethod("addVariable", Object.class, Object.class));
+            handlers.put(StandardHandlers.REMOVE, ThreadVariableMap.class.getMethod("removeVariable", Object.class, Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

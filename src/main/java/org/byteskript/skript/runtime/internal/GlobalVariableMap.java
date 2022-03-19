@@ -18,6 +18,18 @@ import java.util.concurrent.ConcurrentHashMap;
     """)
 public class GlobalVariableMap extends ConcurrentHashMap<String, Object> {
     
+    public static void deleteVariable(Object name) {
+        if (name == null) return;
+        Skript.getVariables().remove(name + "");
+    }
+    
+    public static void addVariable(Object name, Object value) {
+        if (name == null) return;
+        if (value == null) return;
+        final Object original = getVariable(name);
+        setVariable(name, OperatorHandler.addObject(value, original));
+    }
+    
     public static Object getVariable(Object name) {
         if (name == null) return null;
         return Skript.getVariables().get(name + "");
@@ -29,9 +41,11 @@ public class GlobalVariableMap extends ConcurrentHashMap<String, Object> {
         else Skript.getVariables().put(name + "", value);
     }
     
-    public static void deleteVariable(Object name) {
+    public static void removeVariable(Object name, Object value) {
         if (name == null) return;
-        Skript.getVariables().remove(name + "");
+        if (value == null) return;
+        final Object original = getVariable(name);
+        setVariable(name, OperatorHandler.subtract(original, value));
     }
     
 }

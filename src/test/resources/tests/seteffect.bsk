@@ -1,0 +1,14 @@
+
+function test:
+    trigger:
+        set {var} to "hello"
+        assert {var} is "hello"
+        set {var} to "there"
+        assert {var} is "there"
+        set {var} to null
+        assert {var} is not "hello"
+        set {_var} to "hello"
+        assert {_var} is "hello"
+        delete {_var}
+        assert {_var} is not "hello"
+        return true

@@ -42,6 +42,7 @@ public class VariableExpression extends SimpleExpression implements Referent {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "variable");
         try {
             handlers.put(StandardHandlers.ADD, OperatorHandler.class.getMethod("addObject", Object.class, Object.class));
+            handlers.put(StandardHandlers.REMOVE, OperatorHandler.class.getMethod("removeObject", Object.class, Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -95,6 +96,10 @@ public class VariableExpression extends SimpleExpression implements Referent {
             method.writeCode(variable.load(slot));
         } else if (context.getHandlerMode().equals(StandardHandlers.DELETE)) {
             method.writeCode(WriteInstruction.pushNull());
+            method.writeCode(variable.store(slot));
+        } else {
+            method.writeCode(variable.load(slot));
+            this.writeCall(method, handlers.get(context.getHandlerMode()), context);
             method.writeCode(variable.store(slot));
         }
     }

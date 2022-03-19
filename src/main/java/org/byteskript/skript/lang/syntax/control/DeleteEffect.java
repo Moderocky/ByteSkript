@@ -46,7 +46,7 @@ public class DeleteEffect extends ControlEffect {
     
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
-        final ElementTree tree = context.getLine();
+        final ElementTree tree = context.getCompileCurrent();
         final ElementTree[] inputs = tree.nested();
         assert inputs.length == 1;
         inputs[0].type = StandardHandlers.DELETE;
@@ -68,7 +68,7 @@ public class DeleteEffect extends ControlEffect {
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        final ElementTree tree = context.getLine();
+        final ElementTree tree = context.getCompileCurrent();
         final ElementTree[] inputs = tree.nested();
         if (!(inputs[0].current() instanceof VariableExpression)) { // variables have to handle their own deletion
             final Referent referent = (Referent) inputs[0].current();

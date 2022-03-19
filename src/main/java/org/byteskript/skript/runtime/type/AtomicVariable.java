@@ -10,6 +10,7 @@ import mx.kenzie.autodoc.api.note.Description;
 import mx.kenzie.autodoc.api.note.GenerateExample;
 import mx.kenzie.autodoc.api.note.Warning;
 import org.byteskript.skript.error.ScriptRuntimeError;
+import org.byteskript.skript.runtime.internal.OperatorHandler;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -57,6 +58,22 @@ public class AtomicVariable extends AtomicReference<Object> {
     public static void set(Object value, Object atomic) {
         if (atomic instanceof AtomicVariable variable) variable.set(value);
         else throw new ScriptRuntimeError(atomic + " is not an atomic variable.");
+    }
+    
+    public static void add(Object value, Object atomic) {
+        if (!(atomic instanceof AtomicVariable variable))
+            throw new ScriptRuntimeError(atomic + " is not an atomic variable.");
+        final Object original = variable.get();
+        if (original == null) variable.set(value);
+        else variable.set(OperatorHandler.add(original, value));
+    }
+    
+    public static void remove(Object value, Object atomic) {
+        if (!(atomic instanceof AtomicVariable variable))
+            throw new ScriptRuntimeError(atomic + " is not an atomic variable.");
+        final Object original = variable.get();
+        if (original == null && value instanceof Number) variable.set(OperatorHandler.subtract(0, value));
+        else variable.set(OperatorHandler.subtract(original, value));
     }
     
     @Description("""

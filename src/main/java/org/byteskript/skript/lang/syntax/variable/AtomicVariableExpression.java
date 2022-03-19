@@ -39,6 +39,8 @@ public class AtomicVariableExpression extends VariableExpression implements Refe
             handlers.put(StandardHandlers.FIND, AtomicVariable.class.getMethod("get", Object.class));
             handlers.put(StandardHandlers.SET, AtomicVariable.class.getMethod("set", Object.class, Object.class));
             handlers.put(StandardHandlers.DELETE, AtomicVariable.class.getMethod("delete", Object.class));
+            handlers.put(StandardHandlers.ADD, AtomicVariable.class.getMethod("add", Object.class, Object.class));
+            handlers.put(StandardHandlers.REMOVE, AtomicVariable.class.getMethod("remove", Object.class, Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

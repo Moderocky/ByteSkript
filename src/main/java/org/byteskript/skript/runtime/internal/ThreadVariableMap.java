@@ -15,6 +15,19 @@ import java.util.HashMap;
 @Ignore
 public class ThreadVariableMap extends HashMap<String, Object> {
     
+    public static void deleteVariable(Object name) {
+        if (name == null) return;
+        if (!(Thread.currentThread() instanceof ScriptThread thread))
+            throw new ScriptRuntimeError("Code is not being run on a script thread - thread variables are unavailable here.");
+        thread.variables.remove(name + "");
+    }
+    
+    public static void addVariable(Object name, Object value) {
+        final Object original = getVariable(name);
+        if (original == null) setVariable(name, value);
+        else setVariable(name, OperatorHandler.add(original, value));
+    }
+    
     public static Object getVariable(Object name) {
         if (name == null) return null;
         if (!(Thread.currentThread() instanceof ScriptThread thread))
@@ -30,11 +43,10 @@ public class ThreadVariableMap extends HashMap<String, Object> {
         else thread.variables.put(name + "", value);
     }
     
-    public static void deleteVariable(Object name) {
-        if (name == null) return;
-        if (!(Thread.currentThread() instanceof ScriptThread thread))
-            throw new ScriptRuntimeError("Code is not being run on a script thread - thread variables are unavailable here.");
-        thread.variables.remove(name + "");
+    public static void removeVariable(Object name, Object value) {
+        final Object original = getVariable(name);
+        if (original == null && value instanceof Number) setVariable(name, OperatorHandler.subtract(0, value));
+        else setVariable(name, OperatorHandler.subtract(original, value));
     }
     
 }

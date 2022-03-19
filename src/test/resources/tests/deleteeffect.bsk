@@ -1,0 +1,16 @@
+
+function test:
+    trigger:
+        set {var} to "hello"
+        assert {var} is "hello"
+        delete {var}
+        assert {var} is not "hello"
+        set {_var} to "hello"
+        assert {_var} is "hello"
+        delete {_var}
+        assert {_var} is not "hello"
+        set {@var} to 10
+        assert {@var} is 10
+        delete {@var}
+        assert {@var} exists is false
+        return true
