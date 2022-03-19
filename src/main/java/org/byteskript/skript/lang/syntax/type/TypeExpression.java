@@ -17,7 +17,6 @@ import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 
@@ -82,7 +81,7 @@ public class TypeExpression extends Literal<Class<?>> {
     
     public Type getType(String string, Context context) {
         for (final Map.Entry<String, Type> entry : context.getTypeMap().entrySet()) {
-            if (!entry.getKey().toLowerCase(Locale.ROOT).equals(string.toLowerCase(Locale.ROOT))) continue;
+            if (!entry.getKey().equalsIgnoreCase(string)) continue;
             return entry.getValue();
         }
         if (string.contains("/")) return new Type(string);

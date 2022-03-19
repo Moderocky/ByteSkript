@@ -49,8 +49,6 @@ public abstract class Context {
     
     public abstract Map<String, Type> getTypeMap();
     
-    public abstract Type getType(String name);
-    
     public abstract void setIndentUnit(String string);
     
     public abstract ClassBuilder getBuilder();
@@ -269,4 +267,11 @@ public abstract class Context {
     
     public abstract int indent();
     
+    public Type findType(String internal) {
+        final Type type = this.getType(internal);
+        if (type != null) return type;
+        return new Type(internal);
+    }
+    
+    public abstract Type getType(String name);
 }

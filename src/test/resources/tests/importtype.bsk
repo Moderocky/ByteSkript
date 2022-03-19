@@ -1,0 +1,14 @@
+dictionary:
+    import type java/util/Objects
+    import type java/lang/System
+    import function "equals" from java/util/Objects
+
+function test:
+    trigger:
+        set {var} to nanoTime() from System
+        assert {var} > 0
+        set {var} to equals("hello", "there") from Objects
+        assert {var} is false
+        set {var} to equals("hello", "hello") from Objects
+        assert {var} is true
+        return true

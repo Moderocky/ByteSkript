@@ -114,7 +114,7 @@ public class ExternalFunctionExpression extends SimpleExpression {
         final MethodBuilder method = context.getMethod();
         final FunctionDetails details = match.meta();
         assert details != null : "No details found, parsing errored.";
-        final Type location = new Type(details.location);
+        final Type location = context.findType(details.location);
         final Function function = new Function(details.name, location, CommonTypes.OBJECT, details.arguments);
         method.writeCode(function.invoke(context.getType().internalName()));
     }

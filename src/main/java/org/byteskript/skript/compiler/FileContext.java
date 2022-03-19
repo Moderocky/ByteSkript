@@ -144,11 +144,6 @@ public class FileContext extends Context {
     }
     
     @Override
-    public Type getType(String name) {
-        return types.get(name);
-    }
-    
-    @Override
     public void setIndentUnit(String string) {
         this.indentUnit = string;
     }
@@ -464,5 +459,10 @@ public class FileContext extends Context {
     @Override
     public int indent() {
         return indent;
+    }
+    
+    @Override
+    public Type getType(String name) {
+        return types.get(name);
     }
 }
