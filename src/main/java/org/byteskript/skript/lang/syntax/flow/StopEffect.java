@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.flow;
 
 import mx.kenzie.foundation.MethodBuilder;
+import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Effect;
@@ -42,8 +43,12 @@ public class StopEffect extends Effect {
     public void compile(Context context, Pattern.Match match) {
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        method.writeCode(WriteInstruction.pushNull());
-        method.writeCode(WriteInstruction.returnObject());
+        if (method.getErasure().returnType().equals(new Type(void.class))) {
+            method.writeCode(WriteInstruction.returnEmpty());
+        } else {
+            method.writeCode(WriteInstruction.pushNull());
+            method.writeCode(WriteInstruction.returnObject());
+        }
         context.setState(CompileState.CODE_BODY);
     }
     

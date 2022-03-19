@@ -1,0 +1,5 @@
+
+function test:
+    trigger:
+        assert true
+        return true

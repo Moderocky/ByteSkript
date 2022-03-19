@@ -1,0 +1,13 @@
+
+on load:
+    trigger:
+        set {!event} to the current event
+        assert event exists
+        assert event-script is "skript.currentevent"
+
+function test:
+    trigger:
+        while {!event} is null:
+            wait 1 millisecond
+        assert {!event} exists
+        return true

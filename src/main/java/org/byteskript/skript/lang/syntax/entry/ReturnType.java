@@ -37,7 +37,7 @@ public class ReturnType extends SimpleEntry {
     @Override
     public void compile(Context context, Pattern.Match match) {
         final String name = match.meta();
-        final Type type = context.getType(name);
+        final Type type = context.findType(name);
         if (type != null) context.getMethod().setReturnType(type);
         else context.getMethod().setReturnType(new Type(name.replace('.', '/')));
         context.setState(CompileState.MEMBER_BODY);

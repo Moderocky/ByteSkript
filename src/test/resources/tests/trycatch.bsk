@@ -1,0 +1,16 @@
+
+function test:
+    trigger:
+        set {var} to 3
+        try:
+            assert {var} is 4
+            set {var} to 4
+        assert {var} is 3
+        try:
+            assert {var} is 4
+            set {var} to 4
+        catch {error}:
+            set {var} to 5
+        assert {var} is 5
+        assert {error} exists
+        return true

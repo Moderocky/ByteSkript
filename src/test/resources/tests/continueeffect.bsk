@@ -1,0 +1,16 @@
+
+function test:
+    trigger:
+        set {var} to 0
+        loop 2 times:
+            continue loop
+            assert false
+        assert true
+        set {var} to 0
+        while {var} < 5:
+            assert true
+            add 1 to {var}
+            continue loop
+            assert false
+        assert {var} is 5
+        return true

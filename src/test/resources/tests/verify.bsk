@@ -1,0 +1,14 @@
+
+function there:
+    verify:
+        assert true is true
+        assert 1 is 1
+        assert 1 > 0
+        assert 0 < 1
+    trigger:
+        return "there"
+
+function test:
+    trigger:
+        assert "hello " + there() is "hello there"
+        return true

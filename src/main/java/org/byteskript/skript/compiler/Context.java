@@ -105,8 +105,6 @@ public abstract class Context {
     
     public abstract <Tree extends ProgrammaticSplitTree> Tree findTree(Class<Tree> type);
     
-    public abstract ProgrammaticSplitTree getTree(SectionMeta meta);
-    
     public abstract void closeAllTrees();
     
     public abstract void removeTree(ProgrammaticSplitTree tree);
@@ -174,7 +172,11 @@ public abstract class Context {
             final Section section = handlers[i];
             section.onSectionExit(this, meta);
         }
+        final ProgrammaticSplitTree tree = this.getTree(meta);
+        if (tree != null) tree.close(this);
     }
+    
+    public abstract ProgrammaticSplitTree getTree(SectionMeta meta);
     
     public abstract boolean hasFunction(String name, int arguments);
     

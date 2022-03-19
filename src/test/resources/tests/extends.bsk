@@ -1,0 +1,18 @@
+
+type Square:
+    function something:
+        return: String
+        trigger:
+            return "hello"
+
+type Box:
+    extend: Square
+
+function test:
+    trigger:
+        set {var} to a new Box
+        assert {var} is a Box
+        assert {var} is a Square
+        set {var} to a new Square
+        assert {var} is a Square
+        return true

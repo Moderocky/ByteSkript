@@ -1,0 +1,31 @@
+
+function give (supplier):
+    trigger:
+        return result of {supplier}
+
+function test:
+    trigger:
+        set {@var} to 1
+        set {_var} to 1
+        set {!var} to 1
+        set {lvar} to 1
+        set {var} to a new supplier:
+            set {@var} to 2
+            set {_var} to 2
+            set {!var} to 2
+            set {lvar} to 2
+            return true
+        assert {@var} is 1
+        assert {_var} is 1
+        assert {!var} is 1
+        assert {lvar} is 1
+        assert result of {var} is true
+        assert {@var} is 2
+        assert {_var} is 2
+        assert {!var} is 2
+        assert {lvar} is 1
+        set {x} to give(a new supplier):
+            return 5
+        assert {x} is 5
+        delete {!var}
+        return true

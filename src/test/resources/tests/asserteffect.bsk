@@ -1,0 +1,9 @@
+
+function test:
+    trigger:
+        assert 1 is 1
+        assert true is true
+        assert true is not false
+        assert 1 is not 2
+        assert true is true: "Assertion failed."
+        return true

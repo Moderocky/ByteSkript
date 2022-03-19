@@ -1,0 +1,15 @@
+
+function test:
+    trigger:
+        set {var} to 0
+        while true is true:
+            add 1 to {var}
+            if {var} is 2:
+                assert false: "Break effect test failed."
+                stop
+            break section
+        if 1 is 1:
+            break section
+            assert false: "Break effect test failed."
+        assert true
+        return true

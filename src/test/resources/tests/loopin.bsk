@@ -1,0 +1,15 @@
+
+function test:
+    trigger:
+        set {var} to a new list
+        add "hello" to {var}
+        add "there" to {var}
+        loop {word} in {var}:
+            assert {word} is a string
+        assert {word} exists
+        add 1 to {var}
+        loop {thing} in {var}:
+            assert {thing} exists
+        assert {thing} is a number
+        assert {thing} is 1
+        return true

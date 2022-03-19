@@ -1,0 +1,31 @@
+
+template type Cardboard:
+    function something:
+        return: String
+
+template type Shape:
+    function something:
+        return: String
+
+type Square:
+    template: Shape
+    function something:
+        return: String
+        trigger:
+            return "hello"
+
+type Box:
+    extend: Square
+    template: Cardboard
+
+function test:
+    trigger:
+        set {var} to a new Box
+        assert {var} is a Box
+        assert {var} is a Cardboard
+        assert {var} is a Square
+        assert {var} is a Shape
+        set {var} to a new Square
+        assert {var} is a Square
+        assert {var} is a Shape
+        return true

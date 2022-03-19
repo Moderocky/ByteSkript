@@ -71,6 +71,7 @@ public class CatchSection extends Section {
         final Label label = tree.getEnd().use();
         final Label next = tree.getStartCatch();
         final MethodBuilder method = context.getMethod();
+        tree.branch(context);
         if (method == null) throw new ScriptCompileError(context.lineNumber(), "Try/catch used outside method.");
         context.getMethod().writeCode(((writer, visitor) -> {
             visitor.visitJumpInsn(Opcodes.GOTO, label);

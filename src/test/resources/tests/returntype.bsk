@@ -1,0 +1,25 @@
+
+function bean:
+    return: String
+    trigger:
+        return "hello"
+
+function blob:
+    return: none
+    trigger:
+        stop
+
+function blob2:
+    return: none
+    trigger:
+        assert true
+
+function test:
+    trigger:
+        set {var} to bean()
+        assert {var} is a string
+        set {var} to blob()
+        assert {var} is null
+        set {var} to blob2()
+        assert {var} is null
+        return true

@@ -1,0 +1,11 @@
+
+on any load:
+    trigger:
+        set {!any} to 5
+
+function test:
+    trigger:
+        while {!any} is not 5:
+            wait 1 millisecond
+        assert {!any} is 5
+        return true

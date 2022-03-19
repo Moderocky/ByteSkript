@@ -32,7 +32,7 @@ public class Template extends SimpleEntry {
     @Override
     public void compile(Context context, Pattern.Match match) {
         final String name = match.meta();
-        final Type type = context.getType(name);
+        final Type type = context.findType(name);
         if (type != null) context.getBuilder().addInterfaces(type);
         else context.getBuilder().addInterfaces(new Type(name.replace('.', '/')));
         context.setState(CompileState.ROOT);

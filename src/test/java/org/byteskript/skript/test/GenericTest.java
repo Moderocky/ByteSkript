@@ -78,6 +78,8 @@ public class GenericTest extends SkriptTest {
                 try (final OutputStream output = new FileOutputStream(test)) {
                     output.write(classes[0].code());
                 }
+            } catch (Throwable ex) {
+                ex.printStackTrace();
             }
         }
         assert failure < 1 : failure + " tests have failed.";

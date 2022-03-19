@@ -297,14 +297,6 @@ public class FileContext extends Context {
     }
     
     @Override
-    public ProgrammaticSplitTree getTree(SectionMeta meta) {
-        for (final ProgrammaticSplitTree tree : trees) {
-            if (tree.owner() == meta) return tree;
-        }
-        return null;
-    }
-    
-    @Override
     public synchronized void closeAllTrees() {
         for (final ProgrammaticSplitTree tree : trees.toArray(new ProgrammaticSplitTree[0])) {
             tree.close(this);
@@ -410,6 +402,14 @@ public class FileContext extends Context {
     @Override
     public ProgrammaticSplitTree getCurrentTree() {
         return trees.isEmpty() ? null : trees.get(0);
+    }
+    
+    @Override
+    public ProgrammaticSplitTree getTree(SectionMeta meta) {
+        for (final ProgrammaticSplitTree tree : trees) {
+            if (tree.owner() == meta) return tree;
+        }
+        return null;
     }
     
     @Override

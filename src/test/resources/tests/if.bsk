@@ -1,0 +1,39 @@
+
+function test:
+    trigger:
+        set {var} to 0
+        if {var} is 1:
+            assert false
+        if {var} > 0:
+            assert false
+        else:
+            assert true
+        add 1 to {var}
+        if {var} is 0:
+            assert false
+        else:
+            add 1 to {var}
+        assert {var} is 2
+        if {var} < 2:
+            assert false
+        else if {var} is 2:
+            assert true
+            add 1 to {var}
+        else:
+            assert false
+        assert {var} is 3
+        if {var} > 2:
+            if {var} is 3:
+                assert true
+                add 1 to {var}
+            else:
+                assert false
+        else:
+            assert false
+        assert {var} is 4
+        if {var} is 4:
+            if {var} is 4:
+                assert true
+                add 1 to {var}
+        assert {var} is 5
+        return true

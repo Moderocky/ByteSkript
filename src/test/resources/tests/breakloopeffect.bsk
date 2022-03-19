@@ -1,0 +1,22 @@
+function test:
+    trigger:
+        set {var} to 0
+        while true is true:
+            add 1 to {var}
+            if {var} is 2:
+                assert false: "Exit loop test failed."
+            exit loop
+            assert false
+        assert true
+        loop 10 times:
+            assert true
+            exit loop
+            assert false
+        set {var} to a new list
+        add 1 to {var}
+        loop {thing} in {var}:
+            assert {thing} exists
+            exit loop
+            assert false
+        assert true
+        return true
