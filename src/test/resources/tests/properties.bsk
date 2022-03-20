@@ -1,41 +1,4 @@
 
-type Thing:
-    property name:
-        final: true
-    property blob:
-    property age:
-        type: Number
-        local: false
-        final: false
-    function blob:
-        trigger:
-            return "hello"
-
-function basic_use:
-    trigger:
-        set {thing} to a new Thing
-        assert {thing} exists: "New object does not exist."
-        assert bean of {thing} is null: "Non-existent field had a value."
-        set {out} to out of java/lang/System
-        set {system} to java/lang/System
-        assert {out} exists: "Unable to retrieve static field."
-        assert out of {system} exists: "Unable to find static field."
-        try:
-            set name of {thing} to "hello"
-        catch {error}:
-        assert {error} exists: "Error was not thrown during final access."
-        delete {error}
-        set age of {thing} to 10
-        assert age of {thing} is 10: "Field set/retrieval failed."
-        try:
-            set age of {thing} to "hello"
-        catch {error}:
-        assert {error} exists: "Error was not thrown during illegal set."
-        delete {error}
-        assert blob of {thing} is null: "Empty field was set somehow."
-        assert blob() from {thing} is "hello": "Function access failed."
-
-
 type Foo:
     property blob:
 
@@ -64,3 +27,41 @@ function simple_example: // todo - check other property accessors inside types
         assert age of {thing} is 62: "Age property set/access failed."
         run set_house("hello") from {thing}
         assert house of {thing} is "hello": "Local set failed."
+
+type Thing:
+    property name:
+        final: true
+    property blob:
+    property age:
+        type: Number
+        local: false
+        final: false
+    function blob:
+        trigger:
+            return "hello"
+
+function test:
+    trigger:
+        set {thing} to a new Thing
+        assert {thing} exists: "New object does not exist."
+        assert bean of {thing} is null: "Non-existent field had a value."
+        set {out} to out of java/lang/System
+        set {system} to java/lang/System
+        assert {out} exists: "Unable to retrieve static field."
+        assert out of {system} exists: "Unable to find static field."
+        try:
+            set name of {thing} to "hello"
+        catch {error}:
+        assert {error} exists: "Error was not thrown during final access."
+        delete {error}
+        set age of {thing} to 10
+        assert age of {thing} is 10: "Field set/retrieval failed."
+        try:
+            set age of {thing} to "hello"
+        catch {error}:
+        assert {error} exists: "Error was not thrown during illegal set."
+        delete {error}
+        assert blob of {thing} is null: "Empty field was set somehow."
+        assert blob() from {thing} is "hello": "Function access failed."
+        run simple_example()
+        return true

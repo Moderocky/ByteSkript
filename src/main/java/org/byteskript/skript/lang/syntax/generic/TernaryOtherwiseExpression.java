@@ -10,10 +10,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
-import org.byteskript.skript.compiler.CommonTypes;
-import org.byteskript.skript.compiler.Context;
-import org.byteskript.skript.compiler.Pattern;
-import org.byteskript.skript.compiler.SkriptLangSpec;
+import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.objectweb.asm.Label;
 
@@ -42,25 +39,37 @@ public class TernaryOtherwiseExpression extends SimpleExpression {
         return CommonTypes.OBJECT;
     }
     
+    @Override
+    public void preCompile(Context context, Pattern.Match match) throws Throwable {
+        super.preCompile(context, match);
+        final ElementTree[] nested = context.getCompileCurrent().nested();
+        nested[1].compile = false;
+        nested[2].compile = false;
+    }
+    
     // switched to raw bytecode form
-    // had to use the avatar state for this manipulation :o
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
-        final Label first = new Label(), second = new Label();
+        final Label alternative = new Label(), end = new Label();
+        final ElementTree[] nested = context.getCompileCurrent().nested();
         method.writeCode((writer, visitor) -> {
-            visitor.visitInsn(93); // dup2x1
-            visitor.visitInsn(87); // pop
-            visitor.visitInsn(87); // pop
             visitor.visitTypeInsn(192, "java/lang/Boolean"); // checkcast
             visitor.visitMethodInsn(182, "java/lang/Boolean", "booleanValue", "()Z", false); // virtual
-            visitor.visitJumpInsn(153, first); // if 0
-            visitor.visitInsn(87); // pop
-            visitor.visitJumpInsn(167, second); // goto
-            visitor.visitLabel(first);
-            visitor.visitInsn(95); // swap
-            visitor.visitInsn(87); // pop
-            visitor.visitLabel(second); // x or y
+            visitor.visitJumpInsn(153, alternative); // if 0
+        });
+        nested[1].compile = true;
+        nested[1].preCompile(context);
+        nested[1].compile(context);
+        method.writeCode((writer, visitor) -> {
+            visitor.visitJumpInsn(167, end); // goto
+            visitor.visitLabel(alternative);
+        });
+        nested[2].compile = true;
+        nested[2].preCompile(context);
+        nested[2].compile(context);
+        method.writeCode((writer, visitor) -> {
+            visitor.visitLabel(end); // x or y
         });
     }
     

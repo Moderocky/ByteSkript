@@ -1,0 +1,5 @@
+
+function test:
+    trigger:
+        assert the java version exists
+        return true

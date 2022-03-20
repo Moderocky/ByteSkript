@@ -31,7 +31,7 @@ import java.util.regex.Matcher;
 )
 public class BracketExpression extends InnerModifyExpression {
     
-    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("\\((.+)\\)");
+    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("^\\((.+)\\)$");
     
     public BracketExpression() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "(brackets)");

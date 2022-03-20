@@ -85,7 +85,7 @@ public class PatternsTest {
     public void strangeNested() {
         final Pattern pattern = new Pattern(new String[]{"%Integer% (ms|millis|milli[ ]second[s])"}, null);
         final java.util.regex.Pattern result = pattern.getCompiledPatterns()[0];
-        assert result.pattern().equals("^(.+) (?:ms|millis|milli(?: )?second(?:s)?)$");
+        assert result.pattern().equals("^(\\(.+\\)|.+?) (?:ms|millis|milli(?: )?second(?:s)?)$");
         assert result.matcher("4 millis").matches();
         assert result.matcher("4 ms").matches();
         assert !result.matcher("5 mseconds").matches();

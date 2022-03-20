@@ -1,0 +1,19 @@
+
+function box:
+    trigger:
+        assert false
+        return 5
+
+function test:
+    trigger:
+        set {var} to (if "hello" is a string then "a" otherwise "b")
+        assert {var} is "a": "Ternary otherwise (long form) failed."
+        set {var} to (false ? "a" : "b")
+        assert {var} is "b": "Ternary otherwise (short form) failed."
+        set {var} to true ? 1 : 2
+        assert {var} is 1
+        assert (true ? 1 : 2) is 1
+        assert (false ? 1 : 2) is 2
+        assert (true ? 1 : box()) is 1
+        assert (false ? box() : 2) is 2
+        return true

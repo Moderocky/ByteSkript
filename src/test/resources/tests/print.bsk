@@ -1,0 +1,6 @@
+
+function test:
+    trigger:
+        if false is true:
+            print "hello" // parsing only
+        return true

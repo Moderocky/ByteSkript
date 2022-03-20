@@ -10,10 +10,7 @@ import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
-import org.byteskript.skript.compiler.CommonTypes;
-import org.byteskript.skript.compiler.Context;
-import org.byteskript.skript.compiler.Pattern;
-import org.byteskript.skript.compiler.SkriptLangSpec;
+import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.objectweb.asm.Label;
 
@@ -40,19 +37,26 @@ public class BinaryOtherwiseExpression extends SimpleExpression {
     }
     
     @Override
+    public void preCompile(Context context, Pattern.Match match) throws Throwable {
+        super.preCompile(context, match);
+        context.getCompileCurrent().nested()[1].compile = false;
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
-        final Label first = new Label(), second = new Label();
+        final ElementTree tree = context.getCompileCurrent().nested()[1];
+        final Label end = new Label();
         method.writeCode((writer, visitor) -> {
-            visitor.visitInsn(95); // swap
             visitor.visitInsn(89); // dup
-            visitor.visitJumpInsn(199, first); // notnull
-            visitor.visitInsn(87); // pop
-            visitor.visitJumpInsn(167, second); // goto
-            visitor.visitLabel(first);
-            visitor.visitInsn(95); // swap
-            visitor.visitInsn(87); // pop
-            visitor.visitLabel(second); // x or y
+            visitor.visitJumpInsn(199, end); // notnull
+            visitor.visitInsn(87); // pop other null
+        });
+        tree.compile = true;
+        tree.preCompile(context);
+        tree.compile(context);
+        method.writeCode((writer, visitor) -> {
+            visitor.visitLabel(end); // x or y
         });
     }
     

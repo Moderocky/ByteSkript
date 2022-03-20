@@ -1,0 +1,28 @@
+
+function box:
+    trigger:
+        assert false
+        return 5
+
+function test:
+    trigger:
+        set {var} to 10 ? 5
+        assert {var} is 10
+        set {var} to null ? 5
+        assert {var} is 5
+        assert (10 ? 5) is 10
+        assert (null ? 5) is 5
+        set {var} to 10 ? box()
+        assert {var} is 10
+        set {var} to {blob} otherwise "hello"
+        assert {var} is "hello": "Binary otherwise (long form) failed."
+        set {var} to "goodbye" otherwise "hello"
+        assert {var} is "goodbye": "Binary otherwise (long form) failed."
+        set {var} to "bean" ? "hello"
+        assert {var} is "bean": "Binary otherwise (short form) failed."
+        set {var} to null ? "hello"
+        assert {var} is "hello": "Binary otherwise (short form) failed."
+        assert ("hi" ? "bye") is "hi": "Binary otherwise (short form) failed."
+        assert (null ? "bye") is "bye": "Binary otherwise (short form) failed."
+        assert (null ? null) is null: "Binary otherwise (short form) failed."
+        return true

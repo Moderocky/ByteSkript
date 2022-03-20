@@ -1,0 +1,7 @@
+
+function test:
+    trigger:
+        assert new line exists
+        assert newline is a string: "New line is not a string."
+        assert "hello" + new line + "there" exists
+        return true

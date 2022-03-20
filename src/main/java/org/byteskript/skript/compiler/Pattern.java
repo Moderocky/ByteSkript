@@ -61,7 +61,7 @@ public class Pattern { // todo remove regex go indexOf impl
                         current = builder;
                     } else {
                         input = true;
-                        builder.append("(.+)");
+                        builder.append("(\\(.+\\)|.+?)");
                         current = new StringBuilder();
                     }
                 }

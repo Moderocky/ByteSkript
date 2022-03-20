@@ -12,3 +12,4 @@ function test:
         assert {thing} is a class
         set {thing} to {thing} as a string
         assert {thing} is a string
+        return true

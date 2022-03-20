@@ -1,0 +1,8 @@
+
+function test:
+    trigger:
+        set system property "blob" to "hello"
+        set {var} to system property "blob"
+        assert {var} is "hello": "System property setting failed."
+        delete system property "blob"
+        return true

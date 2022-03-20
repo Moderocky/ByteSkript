@@ -63,7 +63,7 @@ public class SyntaxCreationTest extends SkriptTest {
         assert strings[0].equals("my [cool] %String% and %Number%");
         final Pattern pattern = new Pattern(strings, null);
         final java.util.regex.Pattern result = pattern.getCompiledPatterns()[0];
-        assert result.pattern().equals("^my (?:cool )?(.+) and (.+)$");
+        assert result.pattern().equals("^my (?:cool )?(\\(.+\\)|.+?) and (\\(.+\\)|.+?)$");
         assert result.matcher("my cool hello and 5").matches();
         assert result.matcher("my blob and blob").matches();
     }
@@ -81,7 +81,7 @@ public class SyntaxCreationTest extends SkriptTest {
         assert strings[0].equals("a [cool] %String%");
         final Pattern pattern = new Pattern(strings, null);
         final java.util.regex.Pattern result = pattern.getCompiledPatterns()[0];
-        assert result.pattern().equals("^a (?:cool )?(.+)$");
+        assert result.pattern().equals("^a (?:cool )?(\\(.+\\)|.+?)$");
         assert result.matcher("a cool hello").matches();
         assert result.matcher("a bean?").matches();
     }
