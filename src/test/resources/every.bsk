@@ -1,8 +1,0 @@
-
-every 2 seconds:
-    trigger:
-        print "hello"
-
-function test:
-    trigger:
-        wait 11 seconds

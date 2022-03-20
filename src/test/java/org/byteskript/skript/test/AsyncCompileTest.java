@@ -25,8 +25,8 @@ public class AsyncCompileTest {
     
     @BeforeClass
     public static void warm() throws Throwable {
-        code = new String(GenericTest.class.getClassLoader()
-            .getResourceAsStream("generic.bsk").readAllBytes());
+        code = new String(SyntaxTest.class.getClassLoader()
+            .getResourceAsStream("tests/typemember.bsk").readAllBytes());
         final PostCompileClass cls = skript.compileScript(code, "skript.test");
         final PostCompileClass second = skript.compileScriptAsync(code, "skript.test").get()[0];
     }

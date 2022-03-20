@@ -6,14 +6,8 @@
 
 package org.byteskript.skript.test;
 
-import mx.kenzie.foundation.language.PostCompileClass;
-import org.byteskript.skript.lang.syntax.config.ConfigFile;
-import org.byteskript.skript.runtime.Script;
-import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.config.ConfigEntry;
 import org.byteskript.skript.runtime.config.ConfigMap;
-import org.byteskript.skript.runtime.internal.Member;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;

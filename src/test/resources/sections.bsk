@@ -1,8 +1,0 @@
-
-function relay(thing):
-    trigger:
-        return "hello " + {thing}
-
-function relay_test:
-    trigger:
-        assert relay("there") is "hello there": "Java relay failed."

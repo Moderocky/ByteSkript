@@ -1,6 +1,0 @@
-
-function test:
-    trigger:
-        print "What's your name?"
-        set {name} to system input
-        print "Nice to meet you, " + {name} + "!"

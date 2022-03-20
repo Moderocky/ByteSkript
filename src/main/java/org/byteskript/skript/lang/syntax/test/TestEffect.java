@@ -14,15 +14,10 @@ import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;
-import org.byteskript.skript.compiler.structure.MultiLabel;
-import org.byteskript.skript.compiler.structure.ProgrammaticSplitTree;
 import org.byteskript.skript.compiler.structure.TestTree;
-import org.byteskript.skript.compiler.structure.TryCatchTree;
-import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.runtime.internal.ExtractedSyntaxCalls;
 import org.objectweb.asm.Label;
-import org.objectweb.asm.Opcodes;
 
 @Documentation(
     name = "Inline Test",

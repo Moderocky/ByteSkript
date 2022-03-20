@@ -128,6 +128,12 @@ public class ExtractedSyntaxCalls extends UnsafeAccessor {
         throw new ScriptRuntimeError("The given collection must be a list.");
     }
     
+    public static Object getMapValue(Object key, Object target) {
+        if (!(target instanceof Map map))
+            throw new ScriptRuntimeError("The given collection must be a map.");
+        return map.get(key);
+    }
+    
     @SuppressWarnings("unchecked")
     public static void setListValue(Object key, Object target, Object value) {
         if (target instanceof Map) setMapValue(key, target, value);
@@ -143,6 +149,12 @@ public class ExtractedSyntaxCalls extends UnsafeAccessor {
         throw new ScriptRuntimeError("The given collection must be a list.");
     }
     
+    public static void setMapValue(Object key, Object target, Object value) {
+        if (!(target instanceof Map map))
+            throw new ScriptRuntimeError("The given collection must be a map.");
+        map.put(key, value);
+    }
+    
     public static void deleteListValue(Object key, Object target) {
         if (target instanceof Map) deleteMapValue(key, target);
         final Number number = Skript.convert(key, Number.class);
@@ -154,18 +166,6 @@ public class ExtractedSyntaxCalls extends UnsafeAccessor {
             return;
         }
         throw new ScriptRuntimeError("The given collection must be a list.");
-    }
-    
-    public static Object getMapValue(Object key, Object target) {
-        if (!(target instanceof Map map))
-            throw new ScriptRuntimeError("The given collection must be a map.");
-        return map.get(key);
-    }
-    
-    public static void setMapValue(Object key, Object target, Object value) {
-        if (!(target instanceof Map map))
-            throw new ScriptRuntimeError("The given collection must be a map.");
-        map.put(key, value);
     }
     
     public static void deleteMapValue(Object key, Object target) {

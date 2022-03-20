@@ -15,7 +15,7 @@ public class MainTest extends SkriptTest {
     private static final Skript skript = new Skript();
     
     public static void main(String[] args) {
-        final PostCompileClass cls = skript.compileScript(FlowTest.class.getClassLoader()
+        final PostCompileClass cls = skript.compileScript(MainTest.class.getClassLoader()
             .getResourceAsStream("main.bsk"), "skript.main");
         Script script = skript.loadScript(cls);
         new ExampleController(skript).run();

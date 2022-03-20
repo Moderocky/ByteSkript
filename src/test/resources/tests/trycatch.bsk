@@ -13,4 +13,21 @@ function test:
             set {var} to 5
         assert {var} is 5
         assert {error} exists
+        try:
+            assert false
+            assert false: "Error failed to throw."
+        catch {error}:
+            assert true
+            assert {error} exists: "Error not stored when caught."
+        assert {error} exists: "Error was not caught."
+        try: assert false
+        delete {error}
+        try:
+            assert true
+            break section
+            assert false: "Section failed to break."
+        catch {error}:
+            assert false: "Catch section was run with no failed to break."
+        assert {error} is null: "Error was erroneously set."
+        assert true
         return true

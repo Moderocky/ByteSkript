@@ -1,7 +1,0 @@
-
-function test_func:
-    trigger:
-        set {var} to 10
-        assert {var} is 10
-        test: set {var} to 5
-        return {var}
