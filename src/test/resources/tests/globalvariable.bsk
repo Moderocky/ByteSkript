@@ -1,0 +1,22 @@
+
+function test:
+    trigger:
+        set {thread} to the current thread
+        set {!var} to 1
+        assert {!var} is 1: "Global variable retrieval failed."
+        set {!var} to {!var} + 1
+        assert {!var} is 2: "Global variable set failed."
+        assert {!var} exists: "Global variable exists check failed."
+        set {!blob} to 3
+        assert {!blob} is 3: "Global variable retrieval failed."
+        delete {!blob}
+        assert {!blob} is null: "Global variable deletion failed."
+        run a new runnable:
+            assert {!var} is 2: "Global variable access from runnable failed."
+        run a new runnable in the background:
+            assert {!var} is 2: "Global variable access from background thread failed."
+            wait 1 ms
+            wake {thread}
+        sleep
+        delete {!var}
+        return true

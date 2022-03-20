@@ -1,0 +1,38 @@
+
+function test:
+    trigger:
+        set {thread} to the current thread
+        set {_var} to 1
+        assert {_var} is 1: "Thread variable retrieval failed."
+        set {_var} to {_var} + 1
+        assert {_var} is 2: "Thread variable set failed."
+        assert {_var} exists: "Thread variable exists check failed."
+        assert {_blob} is null: "Thread variable unset check failed."
+        run a new runnable:
+            assert {_var} is 2: "Thread variable access from runnable failed."
+        run a new runnable in the background:
+            assert {_var} is null: "Thread variable access from wrong thread passed."
+            wait 1 ms
+            wake {thread}
+        sleep
+        run a new runnable in the background:
+            run copy_threadlocals_from({thread})
+            assert {_var} is 2: "Thread locals copying failed."
+            wait 1 ms
+            wake {thread}
+        sleep
+        delete {_var}
+        assert {_var} is null: "Thread variable deletion failed."
+        return true
+
+on load:
+    trigger:
+        assert {_var} is null: "Thread variable set at thread start."
+        set {_var} to 10
+        assert {_var} is 10
+
+on load:
+    trigger:
+        assert {_var} is null: "Thread variable set at thread start."
+        set {_var} to 10
+        assert {_var} is 10

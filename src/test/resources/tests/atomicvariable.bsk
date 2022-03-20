@@ -1,4 +1,18 @@
 
+function atomic_variables:
+    trigger:
+        set {@var} to 6
+        assert {@var} is 6: "Atomic variable set/retrieval failed."
+        set {runnable} to a new runnable:
+            assert {@var} is 6: "Atomic variable retrieval in runnable failed."
+            set {@var} to {@var} + 3
+            assert {@var} is 9: "Atomic variable change in runnable failed."
+        assert {@var} is 6: "Atomic variable retrieval failed."
+        run {runnable}
+        assert {@var} is 9: "Atomic modification failed."
+        assert {@var} exists: "Atomic variable exists check failed."
+        delete {@var}
+        assert {@var} is null: "Atomic variable deletion failed."
 
 function basic_use:
     trigger:
@@ -52,3 +66,13 @@ function test_param_atomic (@var):
         assert {@var} is 6: "Parameter was not boxed properly."
         set {@var} to {@var} + 1
         assert {@var} is 7: "Atomic variable failed to update."
+
+function test:
+    trigger:
+        run basic_use()
+        run passed_use()
+        run as_simple_parameter()
+        run as_atomic_parameter()
+        run reverse_case()
+        run atomic_variables()
+        return true

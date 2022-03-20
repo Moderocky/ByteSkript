@@ -3,4 +3,9 @@ function test:
     trigger:
         assert loaded scripts exists
         assert size of (loaded scripts) > 0
+        set {list} to all loaded scripts
+        assert {list} exists: "Couldn't get loaded scripts"
+        loop {script} in {list}:
+            assert {script} exists: "Loop extracted null-value."
+        assert {script} exists: "Nothing was looped."
         return true

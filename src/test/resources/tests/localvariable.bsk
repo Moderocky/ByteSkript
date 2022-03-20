@@ -1,0 +1,11 @@
+
+function test:
+    trigger:
+        set {var} to 1
+        assert {var} is 1: "Variable set/retrieval failed."
+        set {var} to {var} + 1
+        assert {var} is 2: "Variable set/retrieval failed."
+        assert {var} exists: "Variable exists check failed."
+        delete {var}
+        assert {var} is null: "Variable deletion failed."
+        return true
