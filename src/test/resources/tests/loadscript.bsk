@@ -1,0 +1,8 @@
+
+function test:
+    trigger:
+        assert the compiler exists
+        set {code} to ""
+        load script {code} as "skript/testing/nothing"
+        assert skript/testing/nothing exists
+        return true

@@ -43,10 +43,10 @@ public class LoadScriptEffect extends Effect {
     @SuppressWarnings("deprecation")
     public static void loadScript(Object object, String name) throws IOException {
         if (object instanceof File file)
-            Skript.localInstance().compileLoad(file, name);
+            Skript.localInstance().compileLoad(file, name.replace('/', '.'));
         else if (object instanceof String string)
             Skript.localInstance()
-                .compileLoad(new ByteArrayInputStream(string.getBytes(StandardCharsets.UTF_8)), name);
+                .compileLoad(new ByteArrayInputStream(string.getBytes(StandardCharsets.UTF_8)), name.replace('/', '.'));
     }
     
 }

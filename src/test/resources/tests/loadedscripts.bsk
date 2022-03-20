@@ -1,0 +1,6 @@
+
+function test:
+    trigger:
+        assert loaded scripts exists
+        assert size of (loaded scripts) > 0
+        return true

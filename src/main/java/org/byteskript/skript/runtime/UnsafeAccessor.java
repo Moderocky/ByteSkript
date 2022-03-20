@@ -40,6 +40,7 @@ class UnsafeAccessor {
     
     @Deprecated
     protected static void graveyard(final Object object) {
+        if (object instanceof Record) return;
         final Field[] fields = object.getClass().getDeclaredFields();
         synchronized (object) {
             UNSAFE.fullFence();

@@ -1,0 +1,9 @@
+
+function test:
+    trigger:
+        assert the compiler exists
+        set {code} to ""
+        load script {code} as "skript/testing/unload"
+        assert skript/testing/unload exists
+        unload script skript/testing/unload
+        return true

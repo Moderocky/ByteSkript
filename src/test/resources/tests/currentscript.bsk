@@ -1,0 +1,7 @@
+
+function test:
+    trigger:
+        assert the current script exists
+        assert name of script exists
+        assert name of script is "currentscript"
+        return true

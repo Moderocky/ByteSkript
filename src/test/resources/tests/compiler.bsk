@@ -1,0 +1,5 @@
+
+function test:
+    trigger:
+        assert the compiler exists
+        return true
