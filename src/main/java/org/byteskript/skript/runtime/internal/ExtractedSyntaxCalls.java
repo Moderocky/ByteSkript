@@ -19,6 +19,7 @@ import org.byteskript.skript.runtime.type.DataList;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -112,9 +113,15 @@ public class ExtractedSyntaxCalls extends UnsafeAccessor {
         thread.skript.runOnAsyncThread(runnable);
     }
     
+    public static Object getListSize(Object target) {
+        if (target instanceof Collection list) return list.size();
+        if (target instanceof Object[] list) return list.length;
+        if (target instanceof Map map) return map.size();
+        throw new ScriptRuntimeError("The given collection must be a list.");
+    }
+    
     public static Object getListValue(Object key, Object target) {
-        if (!(key instanceof Number number))
-            throw new ScriptRuntimeError("The given index must be a number.");
+        final Number number = Skript.convert(key, Number.class);
         if (target instanceof List list) return list.get(number.intValue());
         if (target instanceof Object[] list) return list[number.intValue()];
         throw new ScriptRuntimeError("The given collection must be a list.");
@@ -122,8 +129,7 @@ public class ExtractedSyntaxCalls extends UnsafeAccessor {
     
     @SuppressWarnings("unchecked")
     public static void setListValue(Object key, Object target, Object value) {
-        if (!(key instanceof Number number))
-            throw new ScriptRuntimeError("The given index must be a number.");
+        final Number number = Skript.convert(key, Number.class);
         if (target instanceof List list) {
             list.remove(number.intValue());
             list.add(number.intValue(), value);
@@ -136,8 +142,7 @@ public class ExtractedSyntaxCalls extends UnsafeAccessor {
     }
     
     public static void deleteListValue(Object key, Object target) {
-        if (!(key instanceof Number number))
-            throw new ScriptRuntimeError("The given index must be a number.");
+        final Number number = Skript.convert(key, Number.class);
         if (target instanceof List list) {
             list.remove(number.intValue());
             return;

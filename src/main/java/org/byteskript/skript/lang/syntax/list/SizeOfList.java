@@ -19,28 +19,24 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 import org.byteskript.skript.runtime.internal.ExtractedSyntaxCalls;
 
 @Documentation(
-    name = "Index of List",
+    name = "Size of Collection",
     description = """
-        Accesses the given index of a collection.
-        This can be used to get, set or delete its value.
-        Indices start at *zero*.
+        Returns the size of a collection.
+        Indices of the collection start at *zero*.
         """,
     examples = {
         """
-            set {var} index 0 in {list}
-            set {var} index 1 in {array}
+            print size of {list}
                 """
     }
 )
-public class IndexOfList extends RelationalExpression implements Referent {
+public class SizeOfList extends RelationalExpression implements Referent {
     
-    public IndexOfList() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "index %Number% in [list] %List%");
+    public SizeOfList() {
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "size of [list] %Object%");
         try {
-            handlers.put(StandardHandlers.GET, ExtractedSyntaxCalls.class.getMethod("getListValue", Object.class, Object.class));
-            handlers.put(StandardHandlers.FIND, ExtractedSyntaxCalls.class.getMethod("getListValue", Object.class, Object.class));
-            handlers.put(StandardHandlers.SET, ExtractedSyntaxCalls.class.getMethod("setListValue", Object.class, Object.class, Object.class));
-            handlers.put(StandardHandlers.DELETE, ExtractedSyntaxCalls.class.getMethod("deleteListValue", Object.class, Object.class));
+            handlers.put(StandardHandlers.GET, ExtractedSyntaxCalls.class.getMethod("getListSize", Object.class));
+            handlers.put(StandardHandlers.FIND, ExtractedSyntaxCalls.class.getMethod("getListSize", Object.class));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -48,8 +44,7 @@ public class IndexOfList extends RelationalExpression implements Referent {
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        if (!thing.startsWith("index ")) return null;
-        if (!thing.contains(" in ")) return null;
+        if (!thing.startsWith("size of ")) return null;
         return super.match(thing, context);
     }
     

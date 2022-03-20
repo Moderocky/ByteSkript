@@ -51,10 +51,7 @@ import org.byteskript.skript.lang.syntax.flow.loop.LoopTimesSection;
 import org.byteskript.skript.lang.syntax.flow.loop.WhileSection;
 import org.byteskript.skript.lang.syntax.function.*;
 import org.byteskript.skript.lang.syntax.generic.*;
-import org.byteskript.skript.lang.syntax.list.ClearList;
-import org.byteskript.skript.lang.syntax.list.ImplicitArrayCreator;
-import org.byteskript.skript.lang.syntax.list.IndexOfList;
-import org.byteskript.skript.lang.syntax.list.ListCreator;
+import org.byteskript.skript.lang.syntax.list.*;
 import org.byteskript.skript.lang.syntax.literal.*;
 import org.byteskript.skript.lang.syntax.map.KeyInMap;
 import org.byteskript.skript.lang.syntax.map.MapCreator;
@@ -240,6 +237,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new ThreadExpression(),
             new NewLineExpression(),
             new ResultOfExpression(), // must try before property
+            new SizeOfList(), // must try before property
             new PropertyExpression(),
             new ConverterExpression(),
             new SystemInputExpression(),

@@ -1,0 +1,12 @@
+
+function test:
+    trigger:
+        set {var} to (1, 2, 3)
+        assert {var} contains 1
+        try:
+            add 1 to {var}
+        catch {error}:
+        assert {error} exists
+        loop {number} in (1, 2, 3):
+        assert {number} exists
+        return true

@@ -1,0 +1,12 @@
+
+function test:
+    trigger:
+        set {var} to a new list
+        add 1 to {var}
+        assert {var} contains 1
+        assert index 0 in {var} is 1
+        add "hello" to {var}
+        assert index 1 in {var} is "hello"
+        set index 1 in {var} to "hello there"
+        assert index 1 in {var} is "hello there"
+        return true
