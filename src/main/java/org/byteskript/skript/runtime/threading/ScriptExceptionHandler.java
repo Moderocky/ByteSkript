@@ -25,24 +25,27 @@ public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler {
         if (throwable instanceof ScriptParseError error) { // these already look pretty.
             error.printStackTrace(System.err);
         } else if (source instanceof ScriptThread thread) {
+            final StringBuilder builder = new StringBuilder();
             final Class<?> start = thread.initiator;
-            System.err.println("An error occurred while running a script.");
-            System.err.println("\t" + throwable.getMessage());
+            builder.append("An error occurred while running a script.\n");
+            builder.append("\t").append(throwable.getClass().getSimpleName()).append(": ")
+                .append(throwable.getMessage()).append("\n");
             if (start != null)
-                System.err.println("This program started in: " + BLACK_BACKGROUND + YELLOW + start.getName()
-                    .replace('.', '/') + ".bsk" + RESET);
+                builder.append("This program started in: " + BLACK_BACKGROUND + YELLOW).append(start.getName()
+                    .replace('.', '/')).append(".bsk").append(RESET).append("\n");
             final StackTraceElement[] elements = throwable.getStackTrace();
             if (elements == null || elements.length < 1) return;
-            System.err.println("The error came from:");
+            builder.append("The error came from:" + "\n");
             if (elements[0].getClassName().startsWith("skript.")) {
-                System.err.println("\t'" + RED + elements[0].getClassName() + RESET + "' line " + CYAN + elements[0].getLineNumber() + RESET);
-                System.err.println("\t(This is from Skript code.)" + RESET);
+                builder.append("\t'" + RED).append(elements[0].getClassName()).append(RESET).append("' line ")
+                    .append(CYAN).append(elements[0].getLineNumber()).append(RESET).append("\n");
+                builder.append("\t(This is from Skript code.)" + RESET + "\n");
             } else {
-                System.err.println("\t'" + RED + elements[0].getClassName() + RESET + "' line " + CYAN + elements[0].getLineNumber() + RESET);
-                System.err.println("\t(This is from a Java library.)" + RESET);
+                builder.append("\t'" + RED + elements[0].getClassName() + RESET + "' line " + CYAN + elements[0].getLineNumber() + RESET + "\n");
+                builder.append("\t(This is from a Java library.)" + RESET + "\n");
             }
-            System.err.println("Below is the list of trigger calls that caused this error.");
-            System.err.println("The top line was the most recent call.");
+            builder.append("Below is the list of trigger calls that caused this error.\n");
+            builder.append("The top line was the most recent call.\n");
             for (final StackTraceElement element : elements) {
                 final String location = element.getClassName();
                 if (!location.startsWith("skript.")) continue;
@@ -79,9 +82,12 @@ public class ScriptExceptionHandler implements Thread.UncaughtExceptionHandler {
                     .append(CYAN)
                     .append(element.getLineNumber())
                     .append(RESET);
-                System.err.println(error);
+                builder.append(error);
             }
-        } else {
+            synchronized (System.err) {
+                System.err.println(builder);
+            }
+        } else synchronized (System.err) {
             System.err.print("Exception in thread \""
                 + source.getName() + "\" ");
             throwable.printStackTrace(System.err);

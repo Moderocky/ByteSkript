@@ -77,13 +77,18 @@ public class GenericTest extends SkriptTest {
                             final long now, then;
                             final Script script = skript.loadScripts(classes).iterator().next();
                             now = System.currentTimeMillis();
-                            final Object object = script.getFunction("test").run(skript).get();
-                            final boolean result = Boolean.TRUE.equals(object);
+                            final boolean result;
+                            synchronized (System.err) {
+                                final Object object = script.getFunction("test").run(skript).get();
+                                result = Boolean.TRUE.equals(object);
+                            }
                             then = System.currentTimeMillis();
                             if (result)
                                 System.out.println(ConsoleColour.GREEN + "\t✓ " + ConsoleColour.RESET + "Run in " + ConsoleColour.BLUE + (then - now) + ConsoleColour.RESET + " milliseconds.");
-                            else
+                            else {
                                 System.out.println(ConsoleColour.RED + "\t✗ " + ConsoleColour.RESET + "Run in " + ConsoleColour.BLUE + (then - now) + ConsoleColour.RESET + " milliseconds.");
+                                failure++;
+                            }
                         } catch (Throwable ex) {
                             System.out.println(ConsoleColour.RED + "\t✗ " + ConsoleColour.RESET + "Failed to run.");
                             errors.add(ex);
@@ -102,7 +107,7 @@ public class GenericTest extends SkriptTest {
             }
             for (final Throwable error : errors)
                 synchronized (this) {
-                    error.printStackTrace(System.out);
+                    error.printStackTrace(System.err);
                 }
         }
         assert failure < 1 : failure + " tests have failed.";

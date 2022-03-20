@@ -15,6 +15,8 @@ import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.compiler.structure.MultiLabel;
+import org.byteskript.skript.compiler.structure.ProgrammaticSplitTree;
+import org.byteskript.skript.compiler.structure.TestTree;
 import org.byteskript.skript.compiler.structure.TryCatchTree;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.element.StandardElements;
@@ -49,7 +51,7 @@ public class TestEffect extends Effect {
     
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
-        final TryCatchTree tree = new TryCatchTree(context.getSection(1), new MultiLabel());
+        final TestTree tree = new TestTree(context.getSection());
         context.createTree(tree);
         tree.start(context);
         final MethodBuilder method = context.getMethod();
@@ -61,16 +63,7 @@ public class TestEffect extends Effect {
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
-        final TryCatchTree tree = context.findTree(TryCatchTree.class);
-        final Label label = tree.getEnd().use();
-        final Label next = tree.getStartCatch();
-        final MethodBuilder method = context.getMethod();
-        if (method == null) throw new ScriptCompileError(context.lineNumber(), "Test effect used outside method.");
-        context.getMethod().writeCode(((writer, visitor) -> {
-            visitor.visitJumpInsn(Opcodes.GOTO, label);
-            visitor.visitLabel(next);
-        }));
-        method.writeCode(WriteInstruction.invoke(ExtractedSyntaxCalls.class.getMethod("handleTestError", Throwable.class)));
+        final TestTree tree = context.findTree(TestTree.class);
         tree.close(context);
         context.setState(CompileState.CODE_BODY);
     }
