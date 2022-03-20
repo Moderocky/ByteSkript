@@ -1,4 +1,22 @@
 
+function old:
+    trigger:
+        set {conf} to hello.csk:
+            add "key: bean" to {conf}
+            assert "key" from {conf} is "bean"
+            add "key: value" to {conf}
+            assert "key" from {conf} is "value"
+            set "thing" from {conf} to "hello there!"
+            assert "thing" from {conf} is "hello there!"
+        delete hello.csk
+        set {conf2} to a new config
+        add "key: bean" to {conf2}
+        assert "key" from {conf2} is "bean"
+        save config {conf2} to hello.csk
+        set {conf} to hello.csk
+        assert "key" from {conf} is "bean"
+        delete hello.csk
+
 function test:
     trigger:
         assert hello.csk exists
@@ -7,4 +25,6 @@ function test:
         assert {config} exists
         delete {config}
         delete hello.csk
+        run old()
         return true
+

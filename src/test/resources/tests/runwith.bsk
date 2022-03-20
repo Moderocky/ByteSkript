@@ -1,0 +1,19 @@
+
+
+function blob (a, b):
+    trigger:
+        set {_var} to {a} + " " + {b}
+
+function blob (number):
+    trigger:
+        set {_var} to {number}
+
+function test:
+    trigger:
+        set {func} to function "blob(number)"
+        run {func} with 2
+        assert {_var} is 2
+        set {func} to function "blob(a, b)"
+        run {func} with ("hello", "there")
+        assert {_var} is "hello there"
+        return true

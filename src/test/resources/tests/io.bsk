@@ -1,6 +1,5 @@
 
-
-function file:
+function test:
     trigger:
         set {file} to a new file at "test.txt"
         assert "" + {file} is "test.txt": "File name is wrong."
@@ -14,4 +13,5 @@ function file:
         assert {line} is "general kenobi": "File read/write by stream failed."
         close {reader}
         delete file {file}
+        return true
 

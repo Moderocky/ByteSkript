@@ -1,0 +1,20 @@
+
+function blob:
+    trigger:
+        set {_var} to 1
+
+function blob (number):
+    trigger:
+        set {_var} to {number}
+
+function test:
+    trigger:
+        set {var} to a new runnable:
+            set {_var} to 3
+        run {var}
+        assert {_var} is 3
+        run blob()
+        assert {_var} is 1
+        run blob(2)
+        assert {_var} is 2
+        return true

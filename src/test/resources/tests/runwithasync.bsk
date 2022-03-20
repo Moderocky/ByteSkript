@@ -1,0 +1,14 @@
+
+function blob (var):
+    trigger:
+        set {!var} to {var}
+
+function test:
+    trigger:
+        set {func} to function "blob(@var)"
+        run {func} with 3 in the background
+        while {!var} is not 3:
+            wait 1 millisecond
+        assert {!var} is 3
+        delete {!var}
+        return true

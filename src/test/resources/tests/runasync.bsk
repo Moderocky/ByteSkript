@@ -1,0 +1,32 @@
+
+function blob (@var):
+    trigger:
+        set {@var} to 1
+
+function test:
+    trigger:
+        set {thread} to the current process
+        set {@thing} to false
+        set {var} to a new runnable:
+            wait 1 milliseconds
+            set {@thing} to true
+            wake {thread}
+        assert {@thing} is false
+        run {var} in the background
+        delete {@thing}
+        assert {@thing} is null
+        sleep
+        assert {@thing} is true
+        delete {@thing}
+        set {@var} to 0
+        set {var} to a new runnable:
+            set {@var} to 3
+        run {var} in the background
+        while {@var} is not 3:
+            wait 1 millisecond
+        assert {@var} is 3
+        run blob({@var}) in the background
+        while {@var} is not 1:
+            wait 1 millisecond
+        assert {@var} is 1
+        return true
