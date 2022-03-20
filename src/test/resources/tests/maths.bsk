@@ -23,3 +23,8 @@ function basic:
         assert "hello " + "there" is "hello there": "String joining failed."
         assert "Hello " + "<there!" is "Hello <there!": "String joining failed."
 
+function test:
+    trigger:
+        run looping()
+        run basic()
+        return true

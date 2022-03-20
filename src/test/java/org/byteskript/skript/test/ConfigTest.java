@@ -7,6 +7,7 @@
 package org.byteskript.skript.test;
 
 import mx.kenzie.foundation.language.PostCompileClass;
+import org.byteskript.skript.lang.syntax.config.ConfigFile;
 import org.byteskript.skript.runtime.Script;
 import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.config.ConfigEntry;
@@ -20,9 +21,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 public class ConfigTest extends SkriptTest {
-    
-    private static final Skript skript = new Skript();
-    private static Script script;
     private final String test = """
         
         key: value
@@ -41,20 +39,6 @@ public class ConfigTest extends SkriptTest {
         blob: thing
         
         """;
-    
-    @BeforeClass
-    public static void start() throws Throwable {
-        final PostCompileClass cls = skript.compileScript(OperatorsTest.class.getClassLoader()
-            .getResourceAsStream("configs.bsk"), "skript.configs");
-        script = skript.loadScript(cls);
-    }
-    
-    @Test
-    public void basic() throws Throwable {
-        final Member function = script.getFunction("test");
-        assert function != null;
-        function.invoke();
-    }
     
     @Test
     public void testReadConfig() throws Throwable {
