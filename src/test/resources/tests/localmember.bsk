@@ -1,0 +1,10 @@
+
+function blob:
+    local: true
+    trigger:
+        return 4
+
+function test:
+    trigger:
+        assert blob() is 4
+        return true

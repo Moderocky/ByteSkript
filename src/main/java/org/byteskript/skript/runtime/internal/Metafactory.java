@@ -44,15 +44,29 @@ public class Metafactory {
     }
     
     private static Method findTarget(MethodHandles.Lookup caller, String name, Class<?> owner, Class<?>... parameters) {
-        final Method[] methods = owner.getMethods();
-        for (final Method method : methods) {
-            if (!method.getName().equals(name)) continue;
-            if (Arrays.equals(method.getParameterTypes(), parameters)) return method;
+        {
+            final Method[] methods = owner.getMethods();
+            for (final Method method : methods) {
+                if (!method.getName().equals(name)) continue;
+                if (Arrays.equals(method.getParameterTypes(), parameters)) return method;
+            }
+            for (final Method method : methods) {
+                if (!Modifier.isStatic(method.getModifiers())) continue; // can only hit statics for now
+                if (!method.getName().equals(name)) continue;
+                if (parameters.length == method.getParameterCount()) return method;
+            }
         }
-        for (final Method method : methods) {
-            if (!Modifier.isStatic(method.getModifiers())) continue; // can only hit statics for now
-            if (!method.getName().equals(name)) continue;
-            if (parameters.length == method.getParameterCount()) return method;
+        {
+            final Method[] methods = owner.getDeclaredMethods();
+            for (final Method method : methods) {
+                if (!method.getName().equals(name)) continue;
+                if (Arrays.equals(method.getParameterTypes(), parameters)) return method;
+            }
+            for (final Method method : methods) {
+                if (!Modifier.isStatic(method.getModifiers())) continue; // can only hit statics for now
+                if (!method.getName().equals(name)) continue;
+                if (parameters.length == method.getParameterCount()) return method;
+            }
         }
         throw new ScriptRuntimeError("Unable to find function '" + name + Arrays.toString(parameters).replace('[', '(')
             .replace(']', ')') + "' from " + owner.getSimpleName());

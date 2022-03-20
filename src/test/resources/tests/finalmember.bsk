@@ -1,0 +1,15 @@
+
+type Box:
+    property test:
+        final: true
+
+function test:
+    trigger:
+        set {var} to a new box
+        assert {var} exists
+        assert {var} is a box
+        try:
+            set test of {var} to "hello"
+        catch {error}:
+        assert {error} exists
+        return true

@@ -1,0 +1,26 @@
+
+template type Foo:
+    function box:
+        trigger:
+            return 3
+
+type Bar:
+    template: Foo
+
+type Cee:
+    template: Foo
+    function box:
+        trigger:
+            return 2
+
+function test:
+    trigger:
+        set {bar} to a new bar
+        assert {bar} is a bar
+        assert {bar} is a foo
+        assert box() from {bar} is 3
+        set {cee} to a new cee
+        assert {cee} is a cee
+        assert {cee} is a foo
+        assert box() from {cee} is 2
+        return true

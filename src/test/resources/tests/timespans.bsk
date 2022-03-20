@@ -1,0 +1,12 @@
+
+function test:
+    trigger:
+        wait 0 milliseconds
+        wait 0 seconds
+        wait 0 minutes
+        wait 0 hours
+        wait 0 days
+        wait 0 weeks
+        wait 0 months
+        wait 0 years
+        return true

@@ -29,12 +29,18 @@ public class LocalEntry extends SimpleEntry {
     public void compile(Context context, Pattern.Match match) {
         final String name = match.meta();
         final boolean value = Boolean.parseBoolean(name);
-        if (value) {
-            context.getField().removeModifiers(0x0001);
-            context.getField().addModifiers(0x0002);
-        } else {
-            context.getField().removeModifiers(0x0002);
-            context.getField().addModifiers(0x0001);
+        if (context.getField() != null) {
+            if (value) {
+                context.getField().removeModifiers(0x0001);
+            } else {
+                context.getField().addModifiers(0x0001);
+            }
+        } else if (context.getMethod() != null) {
+            if (value) {
+                context.getMethod().removeModifiers(0x0001);
+            } else {
+                context.getMethod().addModifiers(0x0001);
+            }
         }
         context.setState(CompileState.MEMBER_BODY);
     }
@@ -51,9 +57,7 @@ public class LocalEntry extends SimpleEntry {
     
     @Override
     public boolean allowedIn(State state, Context context) {
-        return context.getState() == CompileState.MEMBER_BODY
-            && context.hasFlag(AreaFlag.IN_TYPE)
-            && context.hasFlag(AreaFlag.IN_PROPERTY);
+        return context.getState() == CompileState.MEMBER_BODY;
     }
     
     

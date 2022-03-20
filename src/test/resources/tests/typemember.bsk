@@ -1,0 +1,19 @@
+
+type Foo:
+    function box:
+        trigger:
+            return 2
+
+type Bar:
+    extend: foo
+    function box:
+        trigger:
+            return 3
+
+function test:
+    trigger:
+        set {foo} to a new bar
+        assert {foo} is a foo
+        assert {foo} is a bar
+        assert box() from {foo} is 3
+        return true

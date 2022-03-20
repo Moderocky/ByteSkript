@@ -26,7 +26,7 @@ import java.util.regex.Matcher;
     examples = """
         type Square:
             property sides:
-                type Integer
+                type: Integer
         """
 )
 public class PropertyMember extends Member {
