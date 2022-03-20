@@ -30,6 +30,8 @@ public class CommonTypes {
     public static final Type BOOLEAN = new Type(Boolean.class);
     public static final Type INTEGER = new Type(Integer.class);
     public static final Type DOUBLE = new Type(Double.class);
+    public static final Type FLOAT = new Type(Float.class);
+    public static final Type LONG = new Type(Long.class);
     public static final Type NUMBER = new Type(Number.class);
     public static final Type CLASS = new Type(Class.class);
     public static final Type TYPE = new Type(java.lang.reflect.Type.class);

@@ -16,6 +16,7 @@ import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
+import org.byteskript.skript.runtime.Skript;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -52,11 +53,7 @@ public class TypeExpression extends Literal<Class<?>> {
     
     @Override
     public Class<?> parse(String input) {
-        try {
-            return Class.forName(input.replace('/', '.'));
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
+        return Skript.findAnyClass(input.replace('/', '.'));
     }
     
     @Override

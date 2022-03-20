@@ -7,12 +7,14 @@
 package org.byteskript.skript.compiler;
 
 import mx.kenzie.foundation.Type;
-import mx.kenzie.foundation.compiler.State;
 import mx.kenzie.foundation.language.Compiler;
 import mx.kenzie.foundation.language.LanguageDefinition;
 import mx.kenzie.foundation.language.PostCompileClass;
 import mx.kenzie.foundation.opcodes.JavaVersion;
-import org.byteskript.skript.api.*;
+import org.byteskript.skript.api.Event;
+import org.byteskript.skript.api.LanguageElement;
+import org.byteskript.skript.api.Library;
+import org.byteskript.skript.api.ModifiableLibrary;
 import org.byteskript.skript.app.ScriptRunner;
 import org.byteskript.skript.app.SimpleThrottleController;
 import org.byteskript.skript.app.SkriptApp;
@@ -77,7 +79,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.security.CodeSource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -93,8 +98,6 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
     
     final LanguageElement[] grammar = StandardElements.values();
     
-    final Map<State, List<SyntaxElement>> syntax = new HashMap<>();
-    
     private SkriptLangSpec() {
         super("Skript");
         this.registerTypes(
@@ -102,6 +105,8 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             CommonTypes.TYPE,
             CommonTypes.INTEGER,
             CommonTypes.DOUBLE,
+            CommonTypes.FLOAT,
+            CommonTypes.LONG,
             CommonTypes.NUMBER,
             CommonTypes.BOOLEAN,
             CommonTypes.STRING,

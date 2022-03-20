@@ -1,0 +1,10 @@
+
+function test:
+    trigger:
+        set {var} to a new map
+        set "blob" in {var} to 1
+        assert "blob" in {var} is 1
+        set 3 in {var} to 2
+        assert 3 in {var} is 2
+        assert size of {var} is 2
+        return true

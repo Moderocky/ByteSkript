@@ -121,6 +121,7 @@ public class ExtractedSyntaxCalls extends UnsafeAccessor {
     }
     
     public static Object getListValue(Object key, Object target) {
+        if (target instanceof Map) return getMapValue(key, target);
         final Number number = Skript.convert(key, Number.class);
         if (target instanceof List list) return list.get(number.intValue());
         if (target instanceof Object[] list) return list[number.intValue()];
@@ -129,6 +130,7 @@ public class ExtractedSyntaxCalls extends UnsafeAccessor {
     
     @SuppressWarnings("unchecked")
     public static void setListValue(Object key, Object target, Object value) {
+        if (target instanceof Map) setMapValue(key, target, value);
         final Number number = Skript.convert(key, Number.class);
         if (target instanceof List list) {
             list.remove(number.intValue());
@@ -142,6 +144,7 @@ public class ExtractedSyntaxCalls extends UnsafeAccessor {
     }
     
     public static void deleteListValue(Object key, Object target) {
+        if (target instanceof Map) deleteMapValue(key, target);
         final Number number = Skript.convert(key, Number.class);
         if (target instanceof List list) {
             list.remove(number.intValue());
