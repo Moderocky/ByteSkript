@@ -1,0 +1,19 @@
+
+function box(a, b):
+    trigger:
+        set {!var} to {a} + {b}
+
+function box:
+    trigger:
+        set {!var} to 10
+
+function test:
+    trigger:
+        set {!var} to 1
+        assert {!var} is 1
+        run box() from skript/externalfunction
+        assert {!var} is 10
+        run box(2, 3) from skript/externalfunction
+        assert {!var} is 5
+        delete {!var}
+        return true

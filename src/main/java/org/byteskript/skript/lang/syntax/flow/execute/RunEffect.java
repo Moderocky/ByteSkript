@@ -17,7 +17,6 @@ import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 import org.byteskript.skript.lang.syntax.flow.lambda.RunnableSection;
-import org.byteskript.skript.lang.syntax.variable.VariableExpression;
 import org.byteskript.skript.runtime.internal.Member;
 
 import java.lang.reflect.Method;
@@ -69,14 +68,14 @@ public class RunEffect extends ControlEffect {
         final ElementTree tree = context.getCompileCurrent().nested()[0];
         final MethodBuilder method = context.getMethod();
         assert method != null;
-        if (tree.current() instanceof VariableExpression) {
-            final Method target = RunEffect.class.getMethod("run", Object.class);
-            this.writeCall(method, target, context);
-        } else if (tree.current() instanceof RunnableSection) {
+        if (tree.current() instanceof RunnableSection) {
             final Method target = Runnable.class.getMethod("run");
             method.writeCode(WriteInstruction.invokeInterface(target));
             context.setState(CompileState.CODE_BODY);
             return;
+        } else {
+            final Method target = RunEffect.class.getMethod("run", Object.class);
+            this.writeCall(method, target, context);
         }
         method.writeCode(WriteInstruction.pop());
         context.setState(CompileState.CODE_BODY);

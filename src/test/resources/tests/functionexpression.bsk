@@ -1,0 +1,19 @@
+
+function box(@a, b):
+    trigger:
+        set {@a} to {b}
+        return 3
+
+function box:
+    trigger:
+        return 10
+
+function test:
+    trigger:
+        assert box() is 10
+        run box()
+        assert box(3, 4) is 3
+        set {@var} to 5
+        assert box({@var}, 2) is 3
+        assert {@var} is 2
+        return true

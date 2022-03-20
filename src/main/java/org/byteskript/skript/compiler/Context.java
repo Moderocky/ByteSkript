@@ -182,7 +182,7 @@ public abstract class Context {
     
     public Function getDefaultFunction(String name, int arguments) {
         final Function function = this.getFunction(name, arguments);
-        if (function != null) return function;
+        if (function != null) return function.copy(arguments); // we pass objects even if types are specified
         final Type[] types = new Type[arguments];
         Arrays.fill(types, CommonTypes.OBJECT); // assert all types are actually object :)
         return new Function(name, this.getType(), CommonTypes.OBJECT, types);

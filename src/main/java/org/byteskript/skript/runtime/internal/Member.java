@@ -118,11 +118,7 @@ public class Member {
         }
         if (clean.contains(" from ")) {
             final String result = clean.substring(clean.indexOf(" from ") + 6).trim();
-            try {
-                owner = Class.forName(result.replace('/', '.'));
-            } catch (ClassNotFoundException ex) {
-                throw new ScriptRuntimeError("Unable to find script '" + result + "'", ex);
-            }
+            owner = Skript.findAnyClass(result.replace('/', '.'));
         } else owner = source;
         return findFunction(owner, name, arguments);
     }

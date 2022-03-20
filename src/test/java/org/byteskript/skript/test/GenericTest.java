@@ -55,7 +55,11 @@ public class GenericTest extends SkriptTest {
                 final PostCompileClass[] classes;
                 synchronized (this) {
                     try {
+                        final long now, then;
+                        now = System.currentTimeMillis();
                         classes = skript.compileComplexScript(stream, "skript." + name);
+                        then = System.currentTimeMillis();
+                        System.out.println("Parsed " + name + " in " + (then - now) + " milliseconds.");
                     } catch (Throwable ex) {
                         System.err.println("Error in '" + name + "':");
                         ex.printStackTrace(System.err);
@@ -63,9 +67,13 @@ public class GenericTest extends SkriptTest {
                         continue;
                     }
                     try {
+                        final long now, then;
                         final Script script = skript.loadScripts(classes).iterator().next();
+                        now = System.currentTimeMillis();
                         final boolean result = (boolean) script.getFunction("test").run(skript).get();
+                        then = System.currentTimeMillis();
                         assert result : "Test failed.";
+                        System.out.println("Run " + name + " in " + (then - now) + " milliseconds.");
                     } catch (Throwable ex) {
                         System.err.println("Error in '" + name + "':");
                         ex.printStackTrace(System.err);

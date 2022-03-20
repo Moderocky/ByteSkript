@@ -1,0 +1,25 @@
+
+function box(a, b):
+    trigger:
+        set {!var} to {a} + {b}
+
+function box:
+    trigger:
+        set {!var} to 10
+
+function test:
+    trigger:
+        set {!var} to 1
+        assert {!var} is 1
+        run function "box()"
+        assert {!var} is 10
+        set {!var} to 1
+        assert {!var} is 1
+        run function "box() from skript/dynamicfunction"
+        assert {!var} is 10
+        run function "box(a, b) from skript/dynamicfunction" with (2, 3)
+        assert {!var} is 5
+        run function "box(a, b)" with (3, 3)
+        assert {!var} is 6
+        delete {!var}
+        return true

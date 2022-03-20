@@ -463,6 +463,11 @@ public class FileContext extends Context {
     
     @Override
     public Type getType(String name) {
-        return types.get(name);
+        final Type type = types.get(name);
+        if (type != null) return type;
+        for (final String key : types.keySet()) {
+            if (name.equalsIgnoreCase(key)) return types.get(key);
+        }
+        return null;
     }
 }
