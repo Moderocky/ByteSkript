@@ -9,10 +9,10 @@ package org.byteskript.skript.compiler.structure;
 import mx.kenzie.foundation.MethodBuilder;
 import org.byteskript.skript.api.SyntaxElement;
 import org.byteskript.skript.compiler.Context;
-import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.syntax.flow.conditional.ElseIfSection;
 import org.byteskript.skript.lang.syntax.flow.conditional.ElseSection;
 import org.objectweb.asm.Label;
+import org.objectweb.asm.Opcodes;
 
 public class LoopTree extends ProgrammaticSplitTree {
     
@@ -26,14 +26,6 @@ public class LoopTree extends ProgrammaticSplitTree {
         this.owner = owner;
         this.open = true;
         this.end = new MultiLabel();
-    }
-    
-    public Label getTop() {
-        return top;
-    }
-    
-    public void setTop(Label next) {
-        this.top = next;
     }
     
     @Override
@@ -57,11 +49,20 @@ public class LoopTree extends ProgrammaticSplitTree {
     
     @Override
     public void close(Context context) {
-        this.open = false;
         final MethodBuilder method = context.getMethod();
-        if (method == null) throw new ScriptCompileError(context.lineNumber(), "Loop block left unclosed.");
+        final Label top = this.getTop();
+        method.writeCode((writer, visitor) -> visitor.visitJumpInsn(Opcodes.GOTO, top));
+        this.open = false;
         method.writeCode(end.instruction());
         context.removeTree(this);
+    }
+    
+    public Label getTop() {
+        return top;
+    }
+    
+    public void setTop(Label next) {
+        this.top = next;
     }
     
     @Override

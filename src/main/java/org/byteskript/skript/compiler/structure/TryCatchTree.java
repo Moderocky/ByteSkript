@@ -35,10 +35,6 @@ public class TryCatchTree extends ProgrammaticSplitTree {
         return startTry;
     }
     
-    public Label getStartCatch() {
-        return startCatch;
-    }
-    
     @Override
     public SectionMeta owner() {
         return owner;
@@ -60,7 +56,18 @@ public class TryCatchTree extends ProgrammaticSplitTree {
     
     @Override
     public void branch(Context context) {
+        final Label label = end.use();
+        final Label next = this.getStartCatch();
         this.caught = true;
+        final MethodBuilder method = context.getMethod();
+        method.writeCode(((writer, visitor) -> {
+            visitor.visitJumpInsn(Opcodes.GOTO, label);
+            visitor.visitLabel(next);
+        }));
+    }
+    
+    public Label getStartCatch() {
+        return startCatch;
     }
     
     @Override

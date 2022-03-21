@@ -23,7 +23,6 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 import org.byteskript.skript.lang.syntax.variable.VariableExpression;
 import org.byteskript.skript.runtime.internal.OperatorHandler;
 import org.objectweb.asm.Label;
-import org.objectweb.asm.Opcodes;
 
 import java.util.Iterator;
 
@@ -50,20 +49,12 @@ public class LoopInSection extends Section {
     public Pattern.Match match(String thing, Context context) {
         if (!thing.startsWith("loop ")) return null;
         if (!thing.contains(" in ")) return null;
-        if (!thing.startsWith("loop {")) {
-            context.getError().addHint(this, "This must use a variable: 'loop {xyz} in ...'");
-            return null;
-        }
-        if (thing.charAt(6) == '@' || thing.charAt(6) == '_' || thing.charAt(6) == '!') {
-            context.getError().addHint(this, "Holder variable must be a normal variable: '{var}'");
-            return null;
-        }
         return super.match(thing, context);
     }
     
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
-        final ElementTree holder = context.getLine().nested()[0];
+        final ElementTree holder = context.getCompileCurrent().nested()[0];
         if (!(holder.current() instanceof VariableExpression))
             throw new ScriptParseError(context.lineNumber(), "The extracted element must be a variable.");
         holder.type = StandardHandlers.SET;
@@ -93,7 +84,6 @@ public class LoopInSection extends Section {
         variable.internal = true;
         context.forceUnspecVariable(variable);
         final int slot = context.slotOf(variable);
-        final int holder = context.slotOf(this.getHolderVariable(context, match));
         this.writeCall(method, OperatorHandler.class.getMethod("acquireIterator", Object.class), context);
         method.writeCode(WriteInstruction.storeObject(slot));
         final Label top = new Label();
@@ -106,7 +96,14 @@ public class LoopInSection extends Section {
         method.writeCode((writer, visitor) -> visitor.visitJumpInsn(153, end));
         method.writeCode(WriteInstruction.loadObject(slot));
         method.writeCode(WriteInstruction.invokeInterface(Iterator.class.getMethod("next")));
-        method.writeCode(WriteInstruction.storeObject(holder));
+        store:
+        {
+            final ElementTree holder = context.getCompileCurrent().nested()[0];
+            holder.type = StandardHandlers.SET;
+            holder.compile = true;
+            holder.preCompile(context);
+            holder.compile(context);
+        }
         context.setState(CompileState.CODE_BODY);
     }
     
@@ -121,13 +118,10 @@ public class LoopInSection extends Section {
         final ProgrammaticSplitTree current;
         if (context.getTree(context.getSection()) instanceof LoopTree found) current = found;
         else current = context.getCurrentTree();
-        if (!(current instanceof LoopTree tree))
-            throw new ScriptCompileError(context.lineNumber(), "Unable to balance loop flow tree.");
-        context.setState(CompileState.CODE_BODY);
-        final MethodBuilder method = context.getMethod();
-        final Label top = tree.getTop();
-        method.writeCode((writer, visitor) -> visitor.visitJumpInsn(Opcodes.GOTO, top));
-        tree.close(context);
+        if (current instanceof LoopTree tree) {
+            tree.close(context);
+            context.setState(CompileState.CODE_BODY);
+        }
     }
     
     @Override
@@ -135,13 +129,13 @@ public class LoopInSection extends Section {
         if (!(context.getTree(context.getSection()) instanceof LoopTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Illegal mid-statement flow break.");
         this.compileTogether(context, tree, match);
+        tree.close(context);
+        context.setState(CompileState.CODE_BODY);
     }
     
     @Override
     public void preCompileInline(Context context, Pattern.Match match) throws Throwable {
-        final ElementTree holder = context.getLine().nested()[0];
-        if (!(holder.current() instanceof VariableExpression))
-            throw new ScriptParseError(context.lineNumber(), "The extracted element must be a variable.");
+        final ElementTree holder = context.getCompileCurrent().nested()[0];
         holder.type = StandardHandlers.SET;
         holder.compile = false;
         final LoopTree tree = new LoopTree(context.getSection());

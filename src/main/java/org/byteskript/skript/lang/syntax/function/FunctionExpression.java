@@ -8,11 +8,13 @@ package org.byteskript.skript.lang.syntax.function;
 
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
+import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.Function;
 import org.byteskript.skript.lang.element.StandardElements;
+import org.byteskript.skript.lang.handler.StandardHandlers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +93,11 @@ public class FunctionExpression extends SimpleExpression {
     
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
-        for (final ElementTree tree : context.getCompileCurrent().nested()) {
+        final ElementTree[] trees = context.getCompileCurrent().nested();
+        if (context.getHandlerMode() == StandardHandlers.SET) {
+            if (trees.length > 0) trees[0].compile = false;
+        }
+        for (final ElementTree tree : trees) {
             tree.takeAtomic = true;
         }
         super.preCompile(context, match);
@@ -103,6 +109,7 @@ public class FunctionExpression extends SimpleExpression {
         final FunctionDetails details = match.meta();
         final Function function = context.getDefaultFunction(details.name, details.arguments);
         method.writeCode(function.invoke(context.getType().internalName()));
+        if (!context.getHandlerMode().expectReturn()) method.writeCode(WriteInstruction.pop());
     }
     
     private record FunctionDetails(String name, int arguments) {

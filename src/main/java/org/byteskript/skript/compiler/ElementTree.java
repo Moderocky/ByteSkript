@@ -70,6 +70,8 @@ public final class ElementTree {
             if (compile && current instanceof Section section && !context.isSectionHeader())
                 section.preCompileInline(context, match);
             else if (compile) current.preCompile(context, match);
+        } catch (ScriptCompileError ex) {
+            throw ex;
         } catch (Throwable ex) {
             throw new ScriptCompileError(context.lineNumber(), "Failure during pre-compilation of '" + current.name() + "'", ex);
         }
@@ -91,6 +93,8 @@ public final class ElementTree {
             if (compile && current instanceof Section section && !context.isSectionHeader())
                 section.compileInline(context, match);
             else if (compile) current.compile(context, match);
+        } catch (ScriptCompileError ex) {
+            throw ex;
         } catch (Throwable ex) {
             throw new ScriptCompileError(context.lineNumber(), "Failure during compilation of '" + current.name() + "'", ex);
         }

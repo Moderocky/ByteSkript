@@ -16,8 +16,8 @@ public class TestTree extends ProgrammaticSplitTree {
     
     private final SectionMeta owner;
     private final MultiLabel end = new MultiLabel();
-    private boolean open;
     private final Label next = new Label();
+    private boolean open;
     
     public TestTree(SectionMeta owner) {
         this.owner = owner;

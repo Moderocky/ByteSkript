@@ -29,5 +29,9 @@ function test:
         catch {error}:
             assert false: "Catch section was run with no failed to break."
         assert {error} is null: "Error was erroneously set."
-        assert true
+        try:
+            assert false
+        catch {@error}
+        assert {@error} exists
+        delete {@error}
         return true

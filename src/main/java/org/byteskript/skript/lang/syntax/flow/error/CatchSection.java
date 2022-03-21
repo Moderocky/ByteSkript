@@ -6,22 +6,16 @@
 
 package org.byteskript.skript.lang.syntax.flow.error;
 
-import mx.kenzie.foundation.MethodBuilder;
-import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.compiler.*;
-import org.byteskript.skript.compiler.structure.PreVariable;
+import org.byteskript.skript.compiler.structure.ProgrammaticSplitTree;
 import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.compiler.structure.TryCatchTree;
 import org.byteskript.skript.error.ScriptCompileError;
-import org.byteskript.skript.error.ScriptParseError;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.handler.StandardHandlers;
-import org.byteskript.skript.lang.syntax.variable.VariableExpression;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.Opcodes;
 
 @Documentation(
     name = "Catch",
@@ -45,18 +39,12 @@ public class CatchSection extends Section {
     @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.startsWith("catch ")) return null;
-        if (!thing.contains("{")) {
-            context.getError().addHint(this, "The catch section needs to use a '{variable}'");
-            return null;
-        }
         return super.match(thing, context);
     }
     
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
-        final ElementTree holder = context.getLine().nested()[0];
-        if (!(holder.current() instanceof VariableExpression))
-            throw new ScriptParseError(context.lineNumber(), "The error must be a variable: 'catch {varname}'");
+        final ElementTree holder = context.getCompileCurrent().nested()[0];
         holder.type = StandardHandlers.SET;
         holder.compile = false;
     }
@@ -65,30 +53,7 @@ public class CatchSection extends Section {
     public void compile(Context context, Pattern.Match match) throws Throwable {
         if (!(context.getTree(context.getSection(1)) instanceof TryCatchTree tree))
             throw new ScriptCompileError(context.lineNumber(), "Catch used without preceding try-section.");
-        final ElementTree holder = context.getLine().nested()[0];
-        if (!(holder.current() instanceof VariableExpression))
-            throw new ScriptParseError(context.lineNumber(), "The error must be a variable: 'catch {varname}'");
-        final Label label = tree.getEnd().use();
-        final Label next = tree.getStartCatch();
-        final MethodBuilder method = context.getMethod();
-        tree.branch(context);
-        if (method == null) throw new ScriptCompileError(context.lineNumber(), "Try/catch used outside method.");
-        context.getMethod().writeCode(((writer, visitor) -> {
-            visitor.visitJumpInsn(Opcodes.GOTO, label);
-            visitor.visitLabel(next);
-        }));
-        final int slot = context.slotOf(this.getHolderVariable(context, match));
-        method.writeCode(WriteInstruction.storeObject(slot));
-        context.setState(CompileState.CODE_BODY);
-    }
-    
-    private PreVariable getHolderVariable(Context context, Pattern.Match match) {
-        final String pattern = match.groups()[0].trim();
-        assert pattern.startsWith("{") && pattern.endsWith("}");
-        final String name = pattern.substring(1, pattern.length() - 1);
-        if (name.charAt(0) == '@' || name.charAt(0) == '_' || name.charAt(0) == '!')
-            throw new ScriptCompileError(context.lineNumber(), "Holder variable must be a normal variable: '{var}'");
-        return context.getVariable(name);
+        this.compileTogether(context, match, tree);
     }
     
     @Override
@@ -100,15 +65,39 @@ public class CatchSection extends Section {
     
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
-        if (!(context.getTree(context.getSection()) instanceof TryCatchTree tree))
-            throw new ScriptCompileError(context.lineNumber(), "Unable to balance try/catch flow tree.");
-        context.setState(CompileState.CODE_BODY);
-        tree.close(context);
+        final ProgrammaticSplitTree current;
+        if (context.getTree(context.getSection()) instanceof TryCatchTree found) current = found;
+        else current = context.getCurrentTree();
+        if (current instanceof TryCatchTree tree) {
+            context.setState(CompileState.CODE_BODY);
+            tree.close(context);
+        }
     }
     
     @Override
     public void compileInline(Context context, Pattern.Match match) throws Throwable {
-        throw new ScriptCompileError(context.lineNumber(), "'Catch' must be used as section-header.");
+        if (!(context.getTree(context.getSection(0)) instanceof TryCatchTree tree))
+            throw new ScriptCompileError(context.lineNumber(), "Inline catch used without preceding try-section.");
+        this.compileTogether(context, match, tree);
+        tree.close(context);
+    }
+    
+    @Override
+    public void preCompileInline(Context context, Pattern.Match match) throws Throwable {
+        this.preCompile(context, match);
+    }
+    
+    public void compileTogether(Context context, Pattern.Match match, TryCatchTree tree) throws Throwable {
+        final ElementTree holder = context.getCompileCurrent().nested()[0];
+        tree.branch(context);
+        store:
+        {
+            holder.type = StandardHandlers.SET;
+            holder.compile = true;
+            holder.preCompile(context);
+            holder.compile(context);
+        }
+        context.setState(CompileState.CODE_BODY);
     }
     
 }
