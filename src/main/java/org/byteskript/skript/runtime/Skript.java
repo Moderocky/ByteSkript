@@ -796,6 +796,13 @@ public final class Skript {
         return new SkriptMirror(loader);
     }
     
+    public Script getScript(final Class<?> part) {
+        for (final Script script : this.scripts) {
+            if (script.ownsClass(part)) return script;
+        }
+        return null;
+    }
+    
     @Description("""
         Loads all compiled classes from the given root file as scripts.
         This is not a safe operation - not all compiled classes are suitable to be loaded in this way.

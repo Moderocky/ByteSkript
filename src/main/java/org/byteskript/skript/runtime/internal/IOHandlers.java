@@ -69,12 +69,12 @@ public class IOHandlers {
         return file.getPath();
     }
     
-    @Expression("%File% is [a ]folder")
+    @Expression("%File% is [a] folder")
     public static Boolean isFolder(File file) {
         return file.isDirectory();
     }
     
-    @Expression("%File% is [a ]file")
+    @Expression("%File% is [a] file")
     public static Boolean isFile(File file) {
         return file.isFile();
     }
@@ -93,7 +93,7 @@ public class IOHandlers {
         }
     }
     
-    @Expression("[a ]new file at %String%")
+    @Expression("[a] new file at %String%")
     public static File create(String path)
         throws Throwable {
         final File file = new File(path);
@@ -104,7 +104,7 @@ public class IOHandlers {
         return file;
     }
     
-    @Expression("[the ]file at %String%")
+    @Expression("[the] file at %String%")
     public static File get(String path)
         throws Throwable {
         return new File(path);

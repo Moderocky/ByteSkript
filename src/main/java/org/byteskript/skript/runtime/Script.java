@@ -145,6 +145,11 @@ public final class Script {
         }
     }
     
+    boolean ownsClass(Class<?> cls) {
+        for (final Class<?> type : classes) if (type == cls) return true;
+        return false;
+    }
+    
     @Description("""
         The simple name of the main class for this script.
         This will be something in the format `script`.

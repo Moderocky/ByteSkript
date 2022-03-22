@@ -1,0 +1,22 @@
+
+function test:
+    trigger:
+        set {lock} to a new object
+        monitor {lock}
+        set {thread} to the current process
+        set {lock} to a new object
+        set {@thing} to false
+        set {var} to a new runnable:
+            monitor {lock}
+            assert {@thing} is null
+            set {@thing} to true
+            wake {thread}
+        monitor {lock}:
+            assert {@thing} is false
+            run {var} in the background
+            delete {@thing}
+            assert {@thing} is null
+        sleep
+        assert {@thing} is true
+        delete {@thing}
+        return true

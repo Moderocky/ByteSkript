@@ -1,4 +1,5 @@
 import mx.kenzie.mirror.MethodAccessor;
+import org.byteskript.skript.api.Event;
 import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.UnsafeAccessor;
 import org.byteskript.skript.runtime.type.DataList;
@@ -44,6 +45,24 @@ public class unsafe extends UnsafeAccessor {
     public static void unregister_converter(Class<Object> from, Class<Object> to) {
         final Skript skript = get_runtime();
         skript.unregisterConverter(from, to);
+    }
+    
+    public static void call_event(Event event, Class<?> script) {
+        final Skript skript = get_runtime();
+        if (script == null) skript.runEvent(event);
+        else skript.runEvent(event, skript.getScript(script));
+    }
+    
+    public static void sleep(Object object) throws InterruptedException {
+        synchronized (object) {
+            object.wait();
+        }
+    }
+    
+    public static void wake(Object object) throws InterruptedException {
+        synchronized (object) {
+            object.notify();
+        }
     }
     
 }

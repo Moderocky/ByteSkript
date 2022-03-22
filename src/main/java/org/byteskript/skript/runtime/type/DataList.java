@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 @Description("""
@@ -31,6 +32,10 @@ public class DataList extends ArrayList<Object> implements Serializable {
     
     public static Integer getSize(Collection target) {
         return target.size();
+    }
+    
+    public static DataList of(Object... objects) {
+        return new DataList(Arrays.asList(objects));
     }
     
 }

@@ -125,11 +125,15 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         );
         registerConverter(String.class, Integer.class, Integer::valueOf);
         registerConverter(String.class, Double.class, Double::valueOf);
+        registerConverter(String.class, Float.class, Float::valueOf);
         registerConverter(String.class, Long.class, Long::valueOf);
         registerConverter(String.class, Number.class, Double::valueOf);
+        registerConverter(String.class, Boolean.class, Boolean::valueOf);
         registerConverter(String.class, Error.class, Error::new);
         registerConverter(String.class, File.class, File::new);
         registerConverter(String.class, Class.class, Skript::findAnyClass);
+        registerConverter(Object[].class, DataList.class, DataList::of);
+        registerConverter(Collection.class, Object[].class, Collection::toArray);
         registerConverter(File.class, OutputStream.class, FileOutputStream::new);
         registerConverter(File.class, InputStream.class, FileInputStream::new);
         registerConverter(Object.class, String.class, Object::toString);
@@ -165,6 +169,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new WakeEffect(),
             new WaitEffect(),
             new ReturnEffect(),
+            new MonitorSection(),
             new WhileSection(),
             new TrySection(),
             new CatchSection(),
