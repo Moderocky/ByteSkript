@@ -62,6 +62,7 @@ public class BridgeCompiler {
             final Class<?> parameter = parameters[i];
             visitor.visitVarInsn(20 + this.instructionOffset(argument), i);
             this.boxAtomic(visitor, parameter);
+            this.conform(visitor, parameter);
             visitor.visitTypeInsn(192, Type.getInternalName(this.getUnboxingType(parameter)));
             this.unbox(visitor, parameter);
         }
@@ -98,6 +99,12 @@ public class BridgeCompiler {
             visitor.visitMethodInsn(184, Type.getInternalName(AtomicVariable.class), "wrap", "(Ljava/lang/Object;)" + Type.getDescriptor(AtomicVariable.class), false);
         else
             visitor.visitMethodInsn(184, Type.getInternalName(AtomicVariable.class), "unwrap", "(Ljava/lang/Object;)Ljava/lang/Object;", false);
+    }
+    
+    protected void conform(MethodVisitor visitor, Class<?> parameter) {
+        if (parameter == Object.class || parameter == AtomicVariable.class) return;
+        visitor.visitLdcInsn(Type.getObjectType(Type.getInternalName(this.getUnboxingType(parameter))));
+        visitor.visitMethodInsn(184, "org/byteskript/skript/runtime/internal/ExtractedSyntaxCalls", "convert", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", false);
     }
     
     protected Class<?> getUnboxingType(Class<?> primitive) {

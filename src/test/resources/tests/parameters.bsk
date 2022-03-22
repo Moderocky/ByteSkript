@@ -1,0 +1,30 @@
+
+function blob (a, b, c):
+    parameters: string
+    trigger:
+        assert {a} is a string
+        return {c}
+
+function blob (a, b):
+    parameters: string, integer
+    trigger:
+        assert {a} is a string
+        assert {b} is a number
+        return {a} + " " + {b}
+
+
+function blob (a):
+    parameters: string, number
+    trigger:
+        assert {a} is a string
+        return {a}
+
+function test:
+    trigger:
+        assert blob("hello", 2) is "hello 2"
+        assert blob("hello", "2") is "hello 2"
+        assert blob(2, 1) is "2 1"
+        assert blob(2, "1") is "2 1"
+        assert blob(1, 1, 2) is 2
+        assert blob(1) is "1"
+        return true

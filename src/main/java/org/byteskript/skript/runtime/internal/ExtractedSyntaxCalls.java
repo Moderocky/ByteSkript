@@ -43,7 +43,11 @@ public class ExtractedSyntaxCalls extends UnsafeAccessor {
         if (to.isAssignableFrom(from.getClass())) return to.cast(from);
         final Converter converter = findInstance().getConverter(from.getClass(), to);
         if (converter == null) return from;
-        return converter.convert(from);
+        try {
+            return converter.convert(from);
+        } catch (Throwable ex) {
+            throw new ScriptRuntimeError("Error while converting '" + from + "' to a " + to.getSimpleName(), ex);
+        }
     }
     
     public static void handleTestError(Throwable throwable) {

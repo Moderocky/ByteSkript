@@ -298,12 +298,18 @@ public final class Skript {
      */
     @SuppressWarnings("unchecked")
     public static <From, To> To convert(From from, Class<To> to, boolean fail) {
-        if (to.isInstance(from)) return to.cast(from);
-        final Skript instance = findInstance();
-        final Converter<From, To> converter = (Converter<From, To>) instance.getConverter(from.getClass(), to);
-        if (converter != null) return converter.convert(from);
-        if (fail) throw new ScriptRuntimeError("Unable convert '" + from + "' to type " + to.getSimpleName() + ".");
-        else return null;
+        try {
+            if (to.isInstance(from)) return to.cast(from);
+            final Skript instance = findInstance();
+            final Converter<From, To> converter = (Converter<From, To>) instance.getConverter(from.getClass(), to);
+            if (converter != null) return converter.convert(from);
+            if (fail) throw new ScriptRuntimeError("Unable convert '" + from + "' to type " + to.getSimpleName() + ".");
+            else return null;
+        } catch (Throwable ex) {
+            if (fail)
+                throw new ScriptRuntimeError("Unable convert '" + from + "' to type " + to.getSimpleName() + ".", ex);
+            else return null;
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -320,6 +326,11 @@ public final class Skript {
     public <From, To> void registerConverter(Class<From> from, Class<To> to, Converter<From, To> converter) {
         final Converter.Data data = new Converter.Data(from, to);
         this.converters.put(data, converter);
+    }
+    
+    public <From, To> void unregisterConverter(Class<From> from, Class<To> to) {
+        final Converter.Data data = new Converter.Data(from, to);
+        this.converters.remove(data);
     }
     
     @Description("""

@@ -75,8 +75,7 @@ import org.byteskript.skript.runtime.internal.IOHandlers;
 import org.byteskript.skript.runtime.type.DataList;
 import org.byteskript.skript.runtime.type.DataMap;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
@@ -129,7 +128,10 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         registerConverter(String.class, Long.class, Long::valueOf);
         registerConverter(String.class, Number.class, Double::valueOf);
         registerConverter(String.class, Error.class, Error::new);
+        registerConverter(String.class, File.class, File::new);
         registerConverter(String.class, Class.class, Skript::findAnyClass);
+        registerConverter(File.class, OutputStream.class, FileOutputStream::new);
+        registerConverter(File.class, InputStream.class, FileInputStream::new);
         registerConverter(Object.class, String.class, Object::toString);
         registerSyntax(CompileState.ROOT,
             new TypeMember(),
@@ -145,6 +147,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         registerSyntax(CompileState.MEMBER_BODY,
             new Verify(),
             new Trigger(),
+            new Parameters(),
             new ReturnType(),
             new SyntaxEntry(),
             new EffectEntry(),

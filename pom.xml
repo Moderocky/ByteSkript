@@ -6,7 +6,7 @@
 
     <groupId>org.byteskript</groupId>
     <artifactId>byteskript</artifactId>
-    <version>1.0.27</version>
+    <version>1.0.28</version>
     <name>ByteSkript</name>
     <description>A compiled JVM implementation of the Skript language.</description>
 
@@ -68,7 +68,7 @@
         <dependency>
             <groupId>mx.kenzie</groupId>
             <artifactId>foundation</artifactId>
-            <version>1.1.6</version>
+            <version>1.1.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -104,7 +104,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>22.0.0</version>
+            <version>23.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

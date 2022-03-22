@@ -63,6 +63,19 @@ public class CatchSection extends Section {
             && context.getMethod() != null;
     }
     
+    public void compileTogether(Context context, Pattern.Match match, TryCatchTree tree) throws Throwable {
+        final ElementTree holder = context.getCompileCurrent().nested()[0];
+        tree.branch(context);
+        store:
+        {
+            holder.type = StandardHandlers.SET;
+            holder.compile = true;
+            holder.preCompile(context);
+            holder.compile(context);
+        }
+        context.setState(CompileState.CODE_BODY);
+    }
+    
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
         final ProgrammaticSplitTree current;
@@ -85,19 +98,6 @@ public class CatchSection extends Section {
     @Override
     public void preCompileInline(Context context, Pattern.Match match) throws Throwable {
         this.preCompile(context, match);
-    }
-    
-    public void compileTogether(Context context, Pattern.Match match, TryCatchTree tree) throws Throwable {
-        final ElementTree holder = context.getCompileCurrent().nested()[0];
-        tree.branch(context);
-        store:
-        {
-            holder.type = StandardHandlers.SET;
-            holder.compile = true;
-            holder.preCompile(context);
-            holder.compile(context);
-        }
-        context.setState(CompileState.CODE_BODY);
     }
     
 }

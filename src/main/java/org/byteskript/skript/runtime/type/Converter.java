@@ -9,7 +9,7 @@ package org.byteskript.skript.runtime.type;
 @FunctionalInterface
 public interface Converter<From, To> {
     
-    To convert(From from);
+    To convert(From from) throws Throwable;
     
     record Data(Class<?> from, Class<?> to) {}
     
