@@ -332,6 +332,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             runtime.add(this.getData(Event.class));
             runtime.add(this.getData(Library.class));
             runtime.add(this.getData(Class.forName("skript")));
+            runtime.add(this.getData(Class.forName("unsafe")));
             runtime.add(this.getData(SkriptCompiler.class));
             runtime.add(this.getData(BridgeCompiler.class));
             runtime.add(this.getData(Compiler.class));
