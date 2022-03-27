@@ -19,8 +19,6 @@ public class MonitorTree extends ProgrammaticSplitTree {
     private final MultiLabel end;
     public int slot;
     protected boolean closed;
-    private boolean open;
-    private Label top;
     
     public MonitorTree(SectionMeta owner) {
         this.owner = owner;

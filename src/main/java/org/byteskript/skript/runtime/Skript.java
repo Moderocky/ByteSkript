@@ -548,6 +548,10 @@ public final class Skript {
         """)
     @GenerateExample
     public boolean registerLibrary(Library library) {
+        for (final Map.Entry<Converter.Data, Converter<?, ?>> entry : library.getConverters().entrySet()) {
+            final Converter.Data data = entry.getKey();
+            this.registerConverter((Class<Object>) data.from(), (Class<Object>) data.to(), (Converter<Object, Object>) entry.getValue());
+        }
         return compiler.addLibrary(library);
     }
     
@@ -556,6 +560,10 @@ public final class Skript {
         """)
     @GenerateExample
     public boolean unregisterLibrary(Library library) {
+        for (final Map.Entry<Converter.Data, Converter<?, ?>> entry : library.getConverters().entrySet()) {
+            final Converter.Data data = entry.getKey();
+            this.unregisterConverter(data.from(), data.to());
+        }
         return compiler.removeLibrary(library);
     }
     

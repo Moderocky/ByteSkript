@@ -30,6 +30,7 @@ public enum ConsoleColour {
     
     @Override
     public String toString() {
+        if ("true".equals(System.getProperty("byteskript.no_colours"))) return "";
         if (System.console() == null || System.getenv().get("TERM") != null) {
             return code;
         } else {
