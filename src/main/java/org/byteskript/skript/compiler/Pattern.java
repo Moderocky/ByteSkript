@@ -119,7 +119,7 @@ public class Pattern { // todo remove regex go indexOf impl
     }
     
     public Match match(final String thing, final Context context) {
-        return match(thing, context, null);
+        return match(thing, context, thing);
     }
     
     public Match match(final String thing, final Context context, final Object meta) {

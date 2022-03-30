@@ -103,8 +103,6 @@ public abstract class Context {
     
     public abstract void createTree(ProgrammaticSplitTree tree);
     
-    public abstract <Tree extends ProgrammaticSplitTree> Tree findTree(Class<Tree> type);
-    
     public abstract void closeAllTrees();
     
     public abstract void removeTree(ProgrammaticSplitTree tree);
@@ -153,6 +151,14 @@ public abstract class Context {
         if (sections.isEmpty()) return null;
         return sections.get(index);
     }
+    
+    public SectionMeta getTriggerSection() {
+        final TriggerTree tree = this.findTree(TriggerTree.class);
+        if (tree == null) return null;
+        return tree.owner();
+    }
+    
+    public abstract <Tree extends ProgrammaticSplitTree> Tree findTree(Class<Tree> type);
     
     public Section getParent() {
         if (sections.isEmpty()) return null;

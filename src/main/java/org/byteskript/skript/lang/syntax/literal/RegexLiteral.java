@@ -65,7 +65,7 @@ public class RegexLiteral extends Literal<java.util.regex.Pattern> {
         if (thing.charAt(0) != '/') return null;
         if (thing.charAt(thing.length() - 1) != '/') return null;
         final Matcher matcher = PATTERN.matcher(thing);
-        if (matcher.find()) return new Pattern.Match(matcher);
+        if (matcher.find()) return new Pattern.Match(matcher, thing);
         return null;
     }
     

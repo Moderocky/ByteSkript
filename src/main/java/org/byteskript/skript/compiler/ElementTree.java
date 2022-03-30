@@ -108,6 +108,22 @@ public final class ElementTree {
         }
     }
     
+    public void disableChildren() {
+        for (final ElementTree tree : nested) {
+            tree.disableCompilation();
+        }
+    }
+    
+    public <Type> Type getLiteralValue() {
+        if (current instanceof Literal<?> literal) {
+            final Object meta = match.meta();
+            if (meta instanceof String string)
+                return (Type) literal.parse(string);
+            return (Type) meta;
+        }
+        return null;
+    }
+    
     public SyntaxElement current() {
         return current;
     }

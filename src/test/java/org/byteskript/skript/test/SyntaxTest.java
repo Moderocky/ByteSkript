@@ -29,7 +29,6 @@ public class SyntaxTest extends SkriptTest {
         = new Skript();
 //    = new Skript(new DebugSkriptCompiler(Stream.controller(System.out)));
     
-    
     @Test
     public void all() throws Throwable {
         final URI uri = SyntaxTest.class.getClassLoader().getResource("tests").toURI();

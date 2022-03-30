@@ -12,6 +12,7 @@ import org.byteskript.skript.api.syntax.Effect;
 import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.Function;
 import org.byteskript.skript.lang.element.StandardElements;
+import org.byteskript.skript.lang.syntax.literal.StringLiteral;
 
 @Documentation(
     name = "Import Function",
@@ -50,7 +51,7 @@ public class ImportFunctionEffect extends Effect {
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final ElementTree tree = context.getCompileCurrent();
-        final String name = tree.nested()[0].match().meta();
+        final String name = new StringLiteral().parse(tree.nested()[0].match().meta());
         final Type type = tree.nested()[1].match().meta();
         context.registerFunction(new Function(name, type));
         context.setState(CompileState.CODE_BODY);

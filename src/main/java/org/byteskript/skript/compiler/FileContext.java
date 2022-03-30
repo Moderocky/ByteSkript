@@ -289,14 +289,6 @@ public class FileContext extends Context {
     }
     
     @Override
-    public <Tree extends ProgrammaticSplitTree> Tree findTree(Class<Tree> type) {
-        for (final ProgrammaticSplitTree tree : this.trees) {
-            if (type.isInstance(tree)) return (Tree) tree;
-        }
-        return null;
-    }
-    
-    @Override
     public synchronized void closeAllTrees() {
         for (final ProgrammaticSplitTree tree : trees.toArray(new ProgrammaticSplitTree[0])) {
             tree.close(this);
@@ -402,6 +394,14 @@ public class FileContext extends Context {
     @Override
     public ProgrammaticSplitTree getCurrentTree() {
         return trees.isEmpty() ? null : trees.get(0);
+    }
+    
+    @Override
+    public <Tree extends ProgrammaticSplitTree> Tree findTree(Class<Tree> type) {
+        for (final ProgrammaticSplitTree tree : this.trees) {
+            if (type.isInstance(tree)) return (Tree) tree;
+        }
+        return null;
     }
     
     @Override

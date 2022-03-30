@@ -67,7 +67,7 @@ public class FloatLiteral extends Literal<Float> {
         final char c = thing.charAt(0);
         if (c != '-' && (c < LOW || c > HIGH)) return null;
         final Matcher matcher = PATTERN.matcher(thing);
-        if (matcher.find()) return new Pattern.Match(matcher);
+        if (matcher.find()) return new Pattern.Match(matcher, thing);
         return null;
     }
     

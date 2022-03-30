@@ -84,7 +84,7 @@ public class StringLiteral extends Literal<String> {
         if (thing.charAt(thing.length() - 1) != '"') return null;
         final String contents = thing.substring(1, thing.length() - 1);
         if (!matches(contents)) return null;
-        return new Pattern.Match(Pattern.fakeMatcher(thing), contents);
+        return new Pattern.Match(Pattern.fakeMatcher(thing), thing);
     }
     
     @Override

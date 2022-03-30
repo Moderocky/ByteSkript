@@ -323,16 +323,6 @@ public final class Skript {
         return null;
     }
     
-    public <From, To> void registerConverter(Class<From> from, Class<To> to, Converter<From, To> converter) {
-        final Converter.Data data = new Converter.Data(from, to);
-        this.converters.put(data, converter);
-    }
-    
-    public <From, To> void unregisterConverter(Class<From> from, Class<To> to) {
-        final Converter.Data data = new Converter.Data(from, to);
-        this.converters.remove(data);
-    }
-    
     @Description("""
         Gets the parent class-loader attached to this Skript runtime.
         This is used to search available libraries and scripts for classes.
@@ -555,6 +545,11 @@ public final class Skript {
         return compiler.addLibrary(library);
     }
     
+    public <From, To> void registerConverter(Class<From> from, Class<To> to, Converter<From, To> converter) {
+        final Converter.Data data = new Converter.Data(from, to);
+        this.converters.put(data, converter);
+    }
+    
     @Description("""
         Removes a library instance from the current compiler.
         """)
@@ -565,6 +560,11 @@ public final class Skript {
             this.unregisterConverter(data.from(), data.to());
         }
         return compiler.removeLibrary(library);
+    }
+    
+    public <From, To> void unregisterConverter(Class<From> from, Class<To> to) {
+        final Converter.Data data = new Converter.Data(from, to);
+        this.converters.remove(data);
     }
     
     @Description("""
