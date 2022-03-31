@@ -4,12 +4,12 @@ function handles:
         set {system} to get_class("java.lang.System")
         set {object} to get_class("java.lang.Object")
         assert {object} is object: "Class/type comparison failed."
-        assert has_java_field({system}, "out") is true: "Field access failed."
-        set {out} to get_java_field({system}, "out")
-        assert {out} exists: "Field retrieval failed."
-        set {method} to get_java_method("hello", "toString")
-        assert {method} exists: "Method retrieval failed."
-        assert result of {method} is "hello": "Reflective call failed."
+//        assert has_java_field({system}, "out") is true: "Field access failed."
+//        set {out} to get_java_field({system}, "out")
+//        assert {out} exists: "Field retrieval failed."
+//        set {method} to get_java_method("hello", "toString")
+//        assert {method} exists: "Method retrieval failed."
+//        assert result of {method} is "hello": "Reflective call failed."
 
 function maths:
     trigger:

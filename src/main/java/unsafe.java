@@ -1,10 +1,13 @@
+import mx.kenzie.mirror.FieldAccessor;
 import mx.kenzie.mirror.MethodAccessor;
+import mx.kenzie.mirror.Mirror;
 import org.byteskript.skript.api.Event;
 import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.UnsafeAccessor;
 import org.byteskript.skript.runtime.type.DataList;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * This is the Java implementation of the 'unsafe' namespace functions.
@@ -64,5 +67,57 @@ public class unsafe extends UnsafeAccessor {
             object.notify();
         }
     }
+    
+    //region Method Handles
+    public static MethodAccessor<Object> get_java_method(Object owner, Object name, Object parameters) {
+        final Class<?>[] arguments;
+        if ((parameters) instanceof Object[] array) {
+            arguments = new Class[array.length];
+            for (int i = 0; i < array.length; i++) {
+                arguments[i] = (Class<?>) array[i];
+            }
+        } else if ((parameters) instanceof Collection<?> collection) {
+            final Object[] array = collection.toArray();
+            arguments = new Class[array.length];
+            for (int i = 0; i < array.length; i++) {
+                arguments[i] = (Class<?>) array[i];
+            }
+        } else if ((parameters) == null) arguments = new Class[0];
+        else {
+            arguments = new Class[]{(Class<?>) parameters};
+        }
+        return mirror(owner).method(name + "", arguments);
+    }
+    
+    private static Mirror<?> mirror(Object owner) {
+        if (owner == null) return null;
+        if (owner instanceof Class<?> type) {
+            if (type.getName().startsWith("skript")) return Mirror.of(type).useProvider(Skript.findLoader());
+            return Mirror.of(type);
+        } else {
+            if (owner.getClass().getName().startsWith("skript"))
+                return Mirror.of(owner).useProvider(Skript.findLoader());
+            return Mirror.of(owner);
+        }
+    }
+    
+    public static MethodAccessor<Object> get_java_method(Object owner, Object name) {
+        return mirror(owner).method(name + "");
+    }
+    
+    public static boolean has_java_field(Object owner, Object name) {
+        return mirror(owner).field((name) + "") != null;
+    }
+    
+    public static Object get_java_field(Object owner, Object name) {
+        final FieldAccessor<?> accessor = mirror(owner).field((name) + "");
+        if (accessor == null) return null;
+        return accessor.get();
+    }
+    
+    public static void set_java_field(Object owner, Object name, Object value) {
+        mirror(owner).field((name) + "").set((value));
+    }
+    //endregion
     
 }

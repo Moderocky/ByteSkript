@@ -91,14 +91,14 @@ public class PropertyAccessGenerator {
             if (this.type == StandardHandlers.GET) method.writeCode((writer, visitor) -> {
                 visitor.visitVarInsn(25, 0); // load holder
                 visitor.visitLdcInsn(name);
-                visitor.visitMethodInsn(184, "skript", "get_java_field", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", false);
+                visitor.visitMethodInsn(184, "unsafe", "get_java_field", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", false);
                 visitor.visitInsn(176); // areturn
             });
             else if (this.type == StandardHandlers.SET) method.writeCode((writer, visitor) -> {
                 visitor.visitVarInsn(25, 0); // load holder
                 visitor.visitLdcInsn(name);
                 visitor.visitVarInsn(25, 1); // load value
-                visitor.visitMethodInsn(184, "skript", "set_java_field", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V", false);
+                visitor.visitMethodInsn(184, "unsafe", "set_java_field", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V", false);
                 visitor.visitInsn(177); // return top
             });
         }
