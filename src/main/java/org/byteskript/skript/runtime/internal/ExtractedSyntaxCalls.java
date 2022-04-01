@@ -107,14 +107,22 @@ public class ExtractedSyntaxCalls extends UnsafeAccessor {
         final Thread current = Thread.currentThread();
         if (!(current instanceof ScriptThread thread))
             throw new ScriptRuntimeError("Cannot create background process from non-script thread.");
-        thread.skript.runOnAsyncThread(runnable);
+        thread.skript.runOnAsyncThread((Runnable) () -> {
+            ((ScriptThread) Thread.currentThread()).variables.clear();
+            runnable.run();
+            ((ScriptThread) Thread.currentThread()).variables.clear();
+        });
     }
     
     public static void runOnAsyncThread(final Instruction<?> runnable) {
         final Thread current = Thread.currentThread();
         if (!(current instanceof ScriptThread thread))
             throw new ScriptRuntimeError("Cannot create background process from non-script thread.");
-        thread.skript.runOnAsyncThread(runnable);
+        thread.skript.runOnAsyncThread((Instruction<?>) () -> {
+            ((ScriptThread) Thread.currentThread()).variables.clear();
+            runnable.run();
+            ((ScriptThread) Thread.currentThread()).variables.clear();
+        });
     }
     
     public static Object getListSize(Object target) {

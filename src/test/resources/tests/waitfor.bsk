@@ -17,4 +17,8 @@ function test:
         wait for a new runnable:
             set {@thing} to true
         assert {@thing} is true
+        set {_var} to false
+        wait for a new runnable:
+            set {_var} to true
+        assert {_var} is false
         return true

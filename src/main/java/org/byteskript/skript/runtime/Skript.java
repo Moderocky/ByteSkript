@@ -109,7 +109,10 @@ public final class Skript {
         this.compiler = compiler;
         this.factory = threadProvider;
         this.factory.setSkriptInstance(this);
-        this.executor = Executors.newCachedThreadPool(factory);
+        this.executor = new ScriptThreadPoolExecutor(0, Integer.MAX_VALUE,
+            60L, TimeUnit.SECONDS,
+            new SynchronousQueue<>(),
+            factory);
         this.mainThread = main;
         this.scheduler = new ScheduledThreadPoolExecutor(4, factory);
         this.processes = new ArrayList<>();
@@ -780,8 +783,30 @@ public final class Skript {
         Loads a script from compiled source code.
         """)
     @GenerateExample
+    public Script loadScript(final PostCompileClass[] data) {
+        final Class<?>[] classes = new Class[data.length];
+        for (int i = 0; i < data.length; i++) {
+            classes[i] = this.loadClass(data[i].name(), data[i].code());
+        }
+        return this.loadScript(classes);
+    }
+    
+    @Description("""
+        Loads a script from compiled source code.
+        """)
+    @GenerateExample
     public Script loadScript(final PostCompileClass datum) {
         return this.loadScript(this.loadClass(datum.name(), datum.code()));
+    }
+    
+    @Description("""
+        Loads a script from defined classes.
+        """)
+    @GenerateExample
+    public Script loadScript(final Class<?>[] loaded) {
+        final Script script = new Script(this, null, loaded);
+        this.scripts.add(script);
+        return script;
     }
     
     @Description("""

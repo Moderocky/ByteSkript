@@ -72,7 +72,7 @@ public class SyntaxTest extends SkriptTest {
                     }
                     try {
                         final long now, then;
-                        final Script script = skript.loadScripts(classes).iterator().next();
+                        final Script script = skript.loadScript(classes);
                         now = System.currentTimeMillis();
                         final boolean result;
                         final Object object = script.getFunction("test").run(skript).get();
