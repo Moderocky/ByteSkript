@@ -190,6 +190,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new RunWithAsyncEffect(),
             new RunWithEffect(),
             new RunAsyncEffect(),
+            new WaitForEffect(),
             new RunEffect(),
             new BreakLoopEffect(),
             new ContinueEffect(),

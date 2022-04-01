@@ -1,0 +1,20 @@
+
+function test:
+    trigger:
+        set {thread} to the current process
+        set {@thing} to false
+        set {var} to a new runnable:
+            set {@thing} to true
+            wake {thread}
+        wait for {var}
+        assert {@thing} is true
+        set {@thing} to false
+        set {var} to a new runnable:
+            set {@thing} to true
+        wait for {var}
+        assert {@thing} is true
+        set {@thing} to false
+        wait for a new runnable:
+            set {@thing} to true
+        assert {@thing} is true
+        return true

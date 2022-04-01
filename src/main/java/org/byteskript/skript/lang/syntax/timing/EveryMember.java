@@ -72,7 +72,7 @@ public class EveryMember extends TriggerHolder {
             .addMethod("every$" + index)
             .addModifiers(Modifier.STATIC, Modifier.PUBLIC)
             .setReturnType(CommonTypes.VOID);
-        context.setMethod(method);
+        context.setMethod(method, true);
         context.setState(CompileState.MEMBER_BODY);
         method
             .addAnnotation(SourceData.class).setVisible(true)

@@ -20,6 +20,7 @@ import org.byteskript.skript.lang.syntax.flow.lambda.RunnableSection;
 import org.byteskript.skript.runtime.internal.Member;
 
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.concurrent.Future;
 
 @Documentation(
@@ -54,6 +55,8 @@ public class RunEffect extends ControlEffect {
             runnable.run();
         else if (thing instanceof Future future)
             return future.get();
+        else if (thing instanceof Duration duration)
+            Thread.sleep(duration.toMillis());
         return null;
     }
     

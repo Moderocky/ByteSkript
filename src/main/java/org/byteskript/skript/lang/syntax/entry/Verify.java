@@ -55,7 +55,7 @@ public class Verify extends Section {
             .addParameter(target.getErasure().parameterTypes())
             .setReturnType(Object.class);
         method.writeCode(prepareVariables(tree));
-        context.setMethod(method);
+        context.setMethod(method, true);
     }
     
     @Override

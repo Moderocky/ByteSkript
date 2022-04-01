@@ -65,7 +65,11 @@ public abstract class Context {
     
     public abstract MethodBuilder getMethod();
     
+    public abstract MethodBuilder getTriggerMethod();
+    
     public abstract void setMethod(MethodBuilder method);
+    
+    public abstract void setMethod(MethodBuilder method, boolean trigger);
     
     public abstract FieldBuilder getField();
     

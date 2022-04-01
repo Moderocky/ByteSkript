@@ -94,7 +94,7 @@ public class SupplierSection extends ExtractedSection {
         method.writeCode((writer, visitor) -> visitor.visitInvokeDynamicInsn("get", creator.getDescriptor(), new Handle(Opcodes.H_INVOKESTATIC, "java/lang/invoke/LambdaMetafactory", bootstrap.name(), bootstrap.getDescriptor(), false), org.objectweb.asm.Type.getType("()Ljava/lang/Object;"), new Handle(6, internal, target.name(), target.getDescriptor(), false), org.objectweb.asm.Type.getType("()Ljava/lang/Object;")));
     }
     
-    static void extractVariables(Context context, MethodBuilder method, MethodBuilder child) {
+    public static void extractVariables(Context context, MethodBuilder method, MethodBuilder child) {
         int i = 0;
         for (final PreVariable variable : context.getVariables()) {
             if (!variable.internal) {

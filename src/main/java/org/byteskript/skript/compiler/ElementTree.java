@@ -26,6 +26,7 @@ public final class ElementTree {
     public Type wanted = null;
     public HandlerType type = StandardHandlers.GET;
     private ElementTree[] nested;
+    public final Map<String, Object> metadata = new HashMap<>();
     
     public ElementTree(SyntaxElement current, Pattern.Match match, ElementTree... nested) {
         this.current = current;

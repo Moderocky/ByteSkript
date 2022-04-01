@@ -26,7 +26,7 @@ public abstract class Member extends Section {
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
         context.emptyVariables();
-        context.setMethod(null);
+        context.setMethod(null, true);
         context.setField(null);
         context.setState(CompileState.ROOT);
     }

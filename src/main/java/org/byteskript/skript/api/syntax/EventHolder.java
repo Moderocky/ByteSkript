@@ -38,7 +38,7 @@ public abstract class EventHolder extends TriggerHolder {
             .addMethod("event$" + eventClass.getSimpleName() + "_" + context.methodIndexShift())
             .addModifiers(Modifier.STATIC, Modifier.PUBLIC)
             .setReturnType(CommonTypes.VOID);
-        context.setMethod(method);
+        context.setMethod(method, true);
         context.setState(CompileState.MEMBER_BODY);
         method
             .addAnnotation(SourceData.class).setVisible(true)

@@ -43,6 +43,7 @@ public class FileContext extends Context {
     protected ClassBuilder writer;
     protected FieldBuilder field;
     protected MethodBuilder method;
+    protected MethodBuilder triggerMethod;
     protected String sourceFile;
     LanguageElement expected;
     SyntaxElement currentEffect;
@@ -195,8 +196,19 @@ public class FileContext extends Context {
     }
     
     @Override
+    public MethodBuilder getTriggerMethod() {
+        return triggerMethod;
+    }
+    
+    @Override
     public void setMethod(MethodBuilder method) {
+        this.setMethod(method, false);
+    }
+    
+    @Override
+    public void setMethod(MethodBuilder method, boolean trigger) {
         this.method = method;
+        if (trigger) this.triggerMethod = method;
     }
     
     @Override

@@ -28,7 +28,7 @@ public abstract class ExtractedSection extends Section {
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
-        final MethodBuilder parent = context.getMethod();
+        final MethodBuilder parent = context.getTriggerMethod();
         final ExtractionTree tree = new ExtractionTree(context.getSection(1), parent, new MultiLabel());
         context.createTree(tree);
     }

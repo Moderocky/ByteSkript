@@ -34,7 +34,7 @@ import java.time.Duration;
 public class WaitEffect extends Effect {
     
     public WaitEffect() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "wait[ for] %Duration%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "wait %Duration%");
         try {
             handlers.put(StandardHandlers.RUN, this.getClass().getMethod("run", Object.class));
         } catch (NoSuchMethodException e) {
@@ -55,6 +55,7 @@ public class WaitEffect extends Effect {
     
     @Override
     public Pattern.Match match(String thing, Context context) {
+        if (thing.startsWith("wait for ")) return null;
         if (!thing.startsWith("wait ")) return null;
         return super.match(thing, context);
     }
