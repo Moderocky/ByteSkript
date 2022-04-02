@@ -20,6 +20,7 @@ import org.byteskript.skript.compiler.SkriptCompiler;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.error.ScriptLoadError;
 import org.byteskript.skript.error.ScriptRuntimeError;
+import org.byteskript.skript.runtime.event.Unload;
 import org.byteskript.skript.runtime.internal.*;
 import org.byteskript.skript.runtime.threading.*;
 import org.byteskript.skript.runtime.type.Converter;
@@ -83,6 +84,8 @@ public final class Skript {
     final List<Script> scripts = new ArrayList<>(); // the only strong reference, be careful!
     @Ignore
     final Map<Converter.Data, Converter<?, ?>> converters;
+    @Ignore
+    protected PrintStream out = System.out;
     
     @Description("""
         Create a Skript runtime with a custom (non-default) Skript compiler.
@@ -745,6 +748,7 @@ public final class Skript {
         """)
     @GenerateExample
     public void unloadScript(Script script) {
+        final Unload unload = new Unload(script);
         script.stop();
         synchronized (events) {
             for (final EventHandler value : events.values()) {
@@ -755,8 +759,9 @@ public final class Skript {
                 }
             }
         }
-        scripts.remove(script);
+        this.scripts.remove(script);
         UnsafeAccessor.graveyard(script);
+        this.runEvent(unload);
     }
     
     @Description("""
@@ -982,6 +987,26 @@ public final class Skript {
             return loadScript(this.loadClass(name, stream.readAllBytes()));
         }
     }
+    
+    //region Output
+    
+    /**
+     * Set the current print stream used by the `print` effect.
+     * This can be used to redirect output in a particular state.
+     */
+    public void setOutput(final PrintStream out) {
+        if (out == null) this.out = System.out;
+        else this.out = out;
+    }
+    
+    public void println(Object object) {
+        this.out.println(object);
+    }
+    
+    public void print(Object object) {
+        this.out.print(object);
+    }
+    //endregion
     
     @Description("""
         Generates a script thread from the given process.

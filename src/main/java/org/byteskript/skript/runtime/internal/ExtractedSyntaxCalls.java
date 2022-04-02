@@ -98,6 +98,11 @@ public class ExtractedSyntaxCalls extends UnsafeAccessor {
         }
     }
     
+    public static void print(Object object) throws Throwable {
+        final Skript skript = findInstance();
+        skript.println(object);
+    }
+    
     public static String readSystemInput() throws Throwable {
         final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         return reader.readLine();

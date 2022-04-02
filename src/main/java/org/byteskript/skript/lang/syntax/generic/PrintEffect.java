@@ -15,6 +15,7 @@ import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
+import org.byteskript.skript.runtime.internal.ExtractedSyntaxCalls;
 
 import java.io.PrintStream;
 
@@ -38,16 +39,9 @@ public class PrintEffect extends Effect {
     }
     
     @Override
-    public void preCompile(Context context, Pattern.Match match) throws Throwable {
-        final MethodBuilder method = context.getMethod();
-        method.writeCode(WriteInstruction.getField(System.class.getField("out")));
-        super.preCompile(context, match);
-    }
-    
-    @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MethodBuilder method = context.getMethod();
-        method.writeCode(WriteInstruction.invokeVirtual(PrintStream.class.getMethod("println", Object.class)));
+        method.writeCode(WriteInstruction.invokeStatic(ExtractedSyntaxCalls.class.getMethod("print", Object.class)));
         context.setState(CompileState.CODE_BODY);
     }
     

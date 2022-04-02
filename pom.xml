@@ -6,7 +6,7 @@
 
     <groupId>org.byteskript</groupId>
     <artifactId>byteskript</artifactId>
-    <version>1.0.31</version>
+    <version>1.0.32</version>
     <name>ByteSkript</name>
     <description>A compiled JVM implementation of the Skript language.</description>
 

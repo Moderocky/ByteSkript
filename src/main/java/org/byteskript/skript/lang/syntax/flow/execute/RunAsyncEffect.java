@@ -93,6 +93,7 @@ public class RunAsyncEffect extends ControlEffect {
             final MethodErasure bootstrap = new MethodErasure(LambdaMetafactory.class.getMethod("metafactory", MethodHandles.Lookup.class, String.class, MethodType.class, MethodType.class, MethodHandle.class, MethodType.class));
             method.writeCode((writer, visitor) -> visitor.visitInvokeDynamicInsn("run", creator.getDescriptor(), new Handle(Opcodes.H_INVOKESTATIC, "java/lang/invoke/LambdaMetafactory", bootstrap.name(), bootstrap.getDescriptor(), false), org.objectweb.asm.Type.getType("()V"), new Handle(6, internal, runnable.name(), runnable.getDescriptor(), false), org.objectweb.asm.Type.getType("()V")));
             // todo hold synchronicity to following sleep
+            // todo error protection?
         }
         final Method target = ExtractedSyntaxCalls.class.getMethod("runOnAsyncThread", Runnable.class);
         this.writeCall(method, target, context);
