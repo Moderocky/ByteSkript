@@ -241,8 +241,11 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             current = new ElementTree(handler, match, elements.toArray(new ElementTree[0]));
             break;
         }
-        if (current == null)
-            throw new ScriptParseError(context.lineNumber(), details.clone(), "No syntax match found for statement '" + statement + "'", null);
+        if (current == null) {
+            if (details.expression != null)
+                throw new ScriptParseError(context.lineNumber(), details.clone(), "No syntax match found for expression '" + details.expression + "'", null);
+            else throw new ScriptParseError(context.lineNumber(), details.clone(), "No syntax match found for statement '" + statement + "'", null);
+        }
         return current;
     }
     
