@@ -196,13 +196,13 @@ public class FileContext extends Context {
     }
     
     @Override
-    public MethodBuilder getTriggerMethod() {
-        return triggerMethod;
+    public void setMethod(MethodBuilder method) {
+        this.setMethod(method, false);
     }
     
     @Override
-    public void setMethod(MethodBuilder method) {
-        this.setMethod(method, false);
+    public MethodBuilder getTriggerMethod() {
+        return triggerMethod;
     }
     
     @Override

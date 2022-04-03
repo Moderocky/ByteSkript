@@ -132,7 +132,6 @@ public class WaitForEffect extends ControlEffect {
                 visitor.visitVarInsn(25, error);
                 visitor.visitInsn(Opcodes.ATHROW);
                 visitor.visitInsn(Opcodes.RETURN);
-            
             });
             child.writeCode(WriteInstruction.returnEmpty());
             final String internal = context.getType().internalName();

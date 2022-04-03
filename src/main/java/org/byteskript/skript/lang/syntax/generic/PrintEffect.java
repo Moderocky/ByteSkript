@@ -17,8 +17,6 @@ import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.runtime.internal.ExtractedSyntaxCalls;
 
-import java.io.PrintStream;
-
 @Documentation(
     name = "Print",
     description = """

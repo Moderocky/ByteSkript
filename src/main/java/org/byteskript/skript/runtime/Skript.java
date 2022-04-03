@@ -458,22 +458,6 @@ public final class Skript {
     @Description("""
         Trigger all event handlers that can deal with this event.
         Each handler will spawn its own process.
-        """)
-    @GenerateExample
-    public boolean runEvent(final Event event) {
-        boolean run = false;
-        for (Map.Entry<Class<? extends Event>, EventHandler> entry : events.entrySet()) {
-            final Class<? extends Event> key = entry.getKey();
-            if (!key.isAssignableFrom(event.getClass())) continue;
-            run = true;
-            entry.getValue().run(this, event);
-        }
-        return run;
-    }
-    
-    @Description("""
-        Trigger all event handlers that can deal with this event.
-        Each handler will spawn its own process.
         This will trigger only the given script.
         """)
     @GenerateExample
@@ -765,6 +749,22 @@ public final class Skript {
     }
     
     @Description("""
+        Trigger all event handlers that can deal with this event.
+        Each handler will spawn its own process.
+        """)
+    @GenerateExample
+    public boolean runEvent(final Event event) {
+        boolean run = false;
+        for (Map.Entry<Class<? extends Event>, EventHandler> entry : events.entrySet()) {
+            final Class<? extends Event> key = entry.getKey();
+            if (!key.isAssignableFrom(event.getClass())) continue;
+            run = true;
+            entry.getValue().run(this, event);
+        }
+        return run;
+    }
+    
+    @Description("""
         This is designed for internal use.
         """)
     @Deprecated
@@ -788,30 +788,8 @@ public final class Skript {
         Loads a script from compiled source code.
         """)
     @GenerateExample
-    public Script loadScript(final PostCompileClass[] data) {
-        final Class<?>[] classes = new Class[data.length];
-        for (int i = 0; i < data.length; i++) {
-            classes[i] = this.loadClass(data[i].name(), data[i].code());
-        }
-        return this.loadScript(classes);
-    }
-    
-    @Description("""
-        Loads a script from compiled source code.
-        """)
-    @GenerateExample
     public Script loadScript(final PostCompileClass datum) {
         return this.loadScript(this.loadClass(datum.name(), datum.code()));
-    }
-    
-    @Description("""
-        Loads a script from defined classes.
-        """)
-    @GenerateExample
-    public Script loadScript(final Class<?>[] loaded) {
-        final Script script = new Script(this, null, loaded);
-        this.scripts.add(script);
-        return script;
     }
     
     @Description("""
@@ -832,6 +810,28 @@ public final class Skript {
         final ScriptClassLoader loader = new ScriptClassLoader();
         this.loaders.addActual(loader);
         return new SkriptMirror(loader);
+    }
+    
+    @Description("""
+        Loads a script from compiled source code.
+        """)
+    @GenerateExample
+    public Script loadScript(final PostCompileClass[] data) {
+        final Class<?>[] classes = new Class[data.length];
+        for (int i = 0; i < data.length; i++) {
+            classes[i] = this.loadClass(data[i].name(), data[i].code());
+        }
+        return this.loadScript(classes);
+    }
+    
+    @Description("""
+        Loads a script from defined classes.
+        """)
+    @GenerateExample
+    public Script loadScript(final Class<?>[] loaded) {
+        final Script script = new Script(this, null, loaded);
+        this.scripts.add(script);
+        return script;
     }
     
     public Script getScript(final Class<?> part) {
@@ -989,6 +989,7 @@ public final class Skript {
     }
     
     //region Output
+    
     /**
      * Set the current print stream used by the `print` effect.
      * This can be used to redirect output in a particular state.

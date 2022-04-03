@@ -244,7 +244,8 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         if (current == null) {
             if (details.expression != null)
                 throw new ScriptParseError(context.lineNumber(), details.clone(), "No syntax match found for expression '" + details.expression + "'", null);
-            else throw new ScriptParseError(context.lineNumber(), details.clone(), "No syntax match found for statement '" + statement + "'", null);
+            else
+                throw new ScriptParseError(context.lineNumber(), details.clone(), "No syntax match found for statement '" + statement + "'", null);
         }
         return current;
     }

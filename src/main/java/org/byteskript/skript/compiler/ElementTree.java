@@ -18,6 +18,7 @@ import org.byteskript.skript.lang.syntax.variable.VariableExpression;
 import java.util.*;
 
 public final class ElementTree {
+    public final Map<String, Object> metadata = new HashMap<>();
     private final SyntaxElement current;
     private final Pattern.Match match;
     public boolean compile = true;
@@ -26,7 +27,6 @@ public final class ElementTree {
     public Type wanted = null;
     public HandlerType type = StandardHandlers.GET;
     private ElementTree[] nested;
-    public final Map<String, Object> metadata = new HashMap<>();
     
     public ElementTree(SyntaxElement current, Pattern.Match match, ElementTree... nested) {
         this.current = current;
