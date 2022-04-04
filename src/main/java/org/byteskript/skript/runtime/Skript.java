@@ -122,9 +122,7 @@ public final class Skript {
         this.events = new HashMap<>();
         this.converters = new HashMap<>();
         skript = this;
-        if (compiler != null) {
-            this.converters.putAll(compiler.getConverters());
-        }
+        if (compiler != null) this.converters.putAll(compiler.getConverters());
     }
     
     @Description("""
