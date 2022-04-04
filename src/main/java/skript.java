@@ -73,7 +73,7 @@ public final class skript {
         return Math.toRadians(number);
     }
     
-    public static Number abs(Object object) { // the instance-checks make sure the correct absolute is used
+    public static Number abs(Number object) { // the instance-checks make sure the correct absolute is used
         if (object == null) return 0;
         if (object instanceof Byte number) return Math.abs(number);
         if (object instanceof Short number) return Math.abs(number);
@@ -96,9 +96,7 @@ public final class skript {
             throw new ScriptRuntimeError("Unable to root(" + object + ") - not a number.");
         final double value = number.doubleValue();
         double result = Double.longBitsToDouble(((Double.doubleToLongBits(value) - (1L << 52)) >> 1) + (1L << 61));
-        for (int i = 0; i < times; i++) {
-            result = (result + value / result) * 0.5;
-        }
+        for (int i = 0; i < times; i++) result = (result + value / result) * 0.5;
         return result;
     }
     

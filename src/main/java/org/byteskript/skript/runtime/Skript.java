@@ -989,7 +989,6 @@ public final class Skript {
     }
     
     //region Output
-    
     /**
      * Set the current print stream used by the `print` effect.
      * This can be used to redirect output in a particular state.
