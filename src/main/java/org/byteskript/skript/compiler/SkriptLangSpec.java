@@ -212,7 +212,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new LongLiteral(),
             new FloatLiteral(),
             new DoubleLiteral(),
-            new DoubleLiteral()
+            new BooleanLiteral()
         );
         registerSyntax(CompileState.STATEMENT,
             new ExprVariableThread(),
@@ -234,15 +234,8 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new ExprMatches()
         );
         registerSyntax(CompileState.STATEMENT,
-            new ExprVariableThread(),
-            new ExprVariableAtomic(),
-            new ExprVariableGlobal(),
-            new ExprVariable()
-        );
-        registerSyntax(CompileState.STATEMENT,
             new ExprNewArray(),
             new ExprBracket(),
-            new BooleanLiteral(),
             new ExprThisThing(),
             new ExprTernaryOtherwise(),
             new ExprBinaryOtherwise(),
