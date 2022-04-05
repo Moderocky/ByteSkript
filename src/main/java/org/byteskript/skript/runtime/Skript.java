@@ -24,6 +24,7 @@ import org.byteskript.skript.runtime.event.Unload;
 import org.byteskript.skript.runtime.internal.*;
 import org.byteskript.skript.runtime.threading.*;
 import org.byteskript.skript.runtime.type.Converter;
+import org.byteskript.skript.runtime.type.OperatorFunction;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -85,6 +86,8 @@ public final class Skript {
     @Ignore
     final Map<Converter.Data, Converter<?, ?>> converters;
     @Ignore
+    final Map<OperatorFunction.Data, OperatorFunction<?, ?>> operators;
+    @Ignore
     protected PrintStream out = System.out;
     
     @Description("""
@@ -121,8 +124,12 @@ public final class Skript {
         this.processes = new ArrayList<>();
         this.events = new HashMap<>();
         this.converters = new HashMap<>();
+        this.operators = new HashMap<>();
         skript = this;
-        if (compiler != null) this.converters.putAll(compiler.getConverters());
+        if (compiler != null) {
+            this.converters.putAll(compiler.getConverters());
+            this.operators.putAll(compiler.getOperators());
+        }
     }
     
     @Description("""
@@ -323,6 +330,25 @@ public final class Skript {
         for (final Converter.Data found : converters.keySet()) {
             if (found.from().isAssignableFrom(from) && found.to().isAssignableFrom(to))
                 return (Converter<From, To>) converters.get(found);
+        }
+        return null;
+    }
+    
+    public <First, Second> OperatorFunction<?, ?> getOperatorFunction(OperatorFunction.Type type,
+                                                                      Class<First> first,
+                                                                      Class<Second> second) {
+        final OperatorFunction.Data data = new OperatorFunction.Data(type, first, second);
+        if (operators.containsKey(data)) return operators.get(data);
+        for (final OperatorFunction.Data found : operators.keySet()) {
+            if (found.first().isAssignableFrom(first) && found.second().isAssignableFrom(second))
+                return operators.get(found);
+        }
+        for (final OperatorFunction.Data found : operators.keySet()) { // reverse
+            if (!found.second().isAssignableFrom(first)) continue;
+            if (!found.first().isAssignableFrom(second)) continue;
+            final OperatorFunction<?, ?> function = operators.get(found);
+            if (function.reversible()) return function;
+            return function.opposite();
         }
         return null;
     }
@@ -987,6 +1013,7 @@ public final class Skript {
     }
     
     //region Output
+    
     /**
      * Set the current print stream used by the `print` effect.
      * This can be used to redirect output in a particular state.

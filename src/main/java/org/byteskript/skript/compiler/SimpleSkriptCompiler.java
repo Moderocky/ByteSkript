@@ -129,6 +129,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     }
     
     protected void compileLine(final String line, final FileContext context) {
+        if (line.isBlank()) return;
         final ElementTree tree = this.parseLine(line, context);
         if (tree == null) return;
         tree.preCompile(context);
@@ -313,7 +314,6 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             context.lineNumber++;
             context.line = null;
             final String stripped = this.stripLine(line, comment);
-            if (stripped.isBlank()) continue;
             this.compileLine(context, stripped);
         }
         context.destroyUnits();
@@ -339,7 +339,6 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             context.lineNumber++;
             context.line = null;
             final String stripped = this.stripLine(line, comment);
-            if (stripped.isBlank()) continue;
             this.compileLine(context, stripped);
         }
         context.destroyUnits();
@@ -360,7 +359,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     }
     
     private void compileLine(FileContext context, String stripped) {
-        if (context.getMethod() != null) {
+        if (context.getMethod() != null && !stripped.isBlank()) {
             context.getMethod().writeCode(WriteInstruction.lineNumber(context.lineNumber));
         }
         try {

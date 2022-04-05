@@ -13,6 +13,7 @@ import org.byteskript.skript.api.Document;
 import org.byteskript.skript.api.Library;
 import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.type.Converter;
+import org.byteskript.skript.runtime.type.OperatorFunction;
 
 import java.io.InputStream;
 import java.util.*;
@@ -47,6 +48,10 @@ public interface ModifiableCompiler extends Cloneable {
     Library[] getLibraries();
     
     default Map<Converter.Data, Converter<?, ?>> getConverters() {
+        return new HashMap<>();
+    }
+    
+    default Map<OperatorFunction.Data, OperatorFunction<?, ?>> getOperators() {
         return new HashMap<>();
     }
     

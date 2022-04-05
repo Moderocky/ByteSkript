@@ -12,6 +12,7 @@ import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.api.Library;
 import org.byteskript.skript.runtime.internal.ModifiableCompiler;
 import org.byteskript.skript.runtime.type.Converter;
+import org.byteskript.skript.runtime.type.OperatorFunction;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -39,6 +40,15 @@ public abstract class SkriptCompiler implements Compiler<SkriptLangSpec>, Modifi
         final Map<Converter.Data, Converter<?, ?>> map = new HashMap<>();
         for (final Library library : this.getLibraries()) {
             map.putAll(library.getConverters());
+        }
+        return map;
+    }
+    
+    @Override
+    public Map<OperatorFunction.Data, OperatorFunction<?, ?>> getOperators() {
+        final Map<OperatorFunction.Data, OperatorFunction<?, ?>> map = new HashMap<>();
+        for (final Library library : this.getLibraries()) {
+            map.putAll(library.getOperators());
         }
         return map;
     }

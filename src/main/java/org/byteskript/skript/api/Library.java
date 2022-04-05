@@ -12,6 +12,7 @@ import mx.kenzie.foundation.compiler.State;
 import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.runtime.type.Converter;
+import org.byteskript.skript.runtime.type.OperatorFunction;
 
 import java.util.*;
 
@@ -80,6 +81,10 @@ public interface Library {
     SyntaxElement[] getSyntax();
     
     default Map<Converter.Data, Converter<?, ?>> getConverters() {
+        return new HashMap<>();
+    }
+    
+    default Map<OperatorFunction.Data, OperatorFunction<?, ?>> getOperators() {
         return new HashMap<>();
     }
     

@@ -25,6 +25,12 @@ public class DebugSkriptCompiler extends SimpleSkriptCompiler {
     
     @Override
     protected void compileLine(String line, FileContext context) {
+        if (line.isBlank()) {
+            try {
+                this.controller.write("\n");
+            } catch (IOException ignore) {
+            }
+        }
         final ElementTree tree = this.parseLine(line, context);
         if (tree == null) return;
         this.debug(tree, context);
@@ -64,12 +70,9 @@ public class DebugSkriptCompiler extends SimpleSkriptCompiler {
     protected void debug(ElementTree tree, FileContext context) {
         try {
             this.controller.write("\n");
-            for (int i = 0; i < context.lineIndent; i++) {
-                this.controller.write("\t");
-            }
-            this.controller.write(tree.toString());
-            this.controller.write(";");
-        } catch (IOException ignored) {}
+            for (int i = 0; i < context.lineIndent; i++) this.controller.write("\t");
+            this.controller.write(tree.toString(context));
+        } catch (Throwable ignored) {}
     }
     
 }

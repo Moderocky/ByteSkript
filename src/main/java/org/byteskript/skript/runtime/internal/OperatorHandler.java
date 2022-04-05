@@ -9,7 +9,10 @@ package org.byteskript.skript.runtime.internal;
 import mx.kenzie.autodoc.api.note.Ignore;
 import org.byteskript.skript.error.ScriptAssertionError;
 import org.byteskript.skript.error.ScriptRuntimeError;
+import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.config.ConfigMap;
+import org.byteskript.skript.runtime.threading.ScriptThread;
+import org.byteskript.skript.runtime.type.OperatorFunction;
 import org.byteskript.skript.runtime.type.Query;
 
 import java.util.*;
@@ -81,7 +84,7 @@ public class OperatorHandler {
         } else if (to instanceof Collection collection) {
             collection.add(value);
             return collection;
-        } else if (to instanceof Object[] array)
+        } else if (to instanceof Object[])
             throw new ScriptRuntimeError("The value '" + value + "' cannot be added to an array.\n"
                 + "\t(Arrays cannot be added to - try using a list instead.)");
         else return add(to, value);
@@ -89,23 +92,32 @@ public class OperatorHandler {
     
     //region Calculations
     public static Object add(Object a, Object b) {
-        if (!(a instanceof Number x) || !(b instanceof Number y)) {
-            return "" + a + b;
-        }
-        if (x instanceof Integer && y instanceof Integer) return x.intValue() + y.intValue();
-        if (x instanceof Float || x instanceof Double) {
-            if (y instanceof Float || y instanceof Double) {
-                return x.doubleValue() + y.doubleValue();
+        if ((a instanceof Number x) && (b instanceof Number y)) {
+            if (x instanceof Integer && y instanceof Integer) return x.intValue() + y.intValue();
+            if (x instanceof Float || x instanceof Double) {
+                if (y instanceof Float || y instanceof Double) return x.doubleValue() + y.doubleValue();
+                else return x.doubleValue() + y.longValue();
             } else {
-                return x.doubleValue() + y.longValue();
+                if (y instanceof Float || y instanceof Double) return x.longValue() + y.doubleValue();
+                else return x.longValue() + y.longValue();
             }
         } else {
-            if (y instanceof Float || y instanceof Double) {
-                return x.longValue() + y.doubleValue();
-            } else {
-                return x.longValue() + y.longValue();
+            if (a instanceof String && b instanceof String) return "" + a + b;
+            try {
+                final OperatorFunction<Object, Object> function = (OperatorFunction<Object, Object>) findInstance().getOperatorFunction(OperatorFunction.Type.ADD, a.getClass(), b.getClass());
+                if (function == null) return "" + a + b;
+                return function.union(a, b);
+            } catch (Throwable e) {
+                if (e instanceof ScriptRuntimeError error) throw error;
+                throw new ScriptRuntimeError(e);
             }
         }
+    }
+    
+    private static Skript findInstance() {
+        final Thread current = Thread.currentThread();
+        if (!(current instanceof ScriptThread thread)) return Skript.currentInstance();
+        return thread.skript;
     }
     
     public static Object removeObject(Object value, Object to) {
@@ -127,23 +139,32 @@ public class OperatorHandler {
         } else if (a instanceof String string && b instanceof Number number) {
             return string.substring(0, string.length() - number.intValue());
         }
-        if (!(a instanceof Number x) || !(b instanceof Number y)) {
-            throw new ScriptRuntimeError("Provided inputs must be numerical.");
-        }
-        if (x instanceof Float || x instanceof Double) {
-            if (y instanceof Float || y instanceof Double) {
-                return x.doubleValue() - y.doubleValue();
+        if ((a instanceof Number x) && (b instanceof Number y)) {
+            if (x instanceof Float || x instanceof Double) {
+                if (y instanceof Float || y instanceof Double) {
+                    return x.doubleValue() - y.doubleValue();
+                } else {
+                    return x.doubleValue() - y.longValue();
+                }
             } else {
-                return x.doubleValue() - y.longValue();
+                if (y instanceof Float || y instanceof Double) {
+                    return x.longValue() - y.doubleValue();
+                } else {
+                    return x.longValue() - y.longValue();
+                }
             }
         } else {
-            if (y instanceof Float || y instanceof Double) {
-                return x.longValue() - y.doubleValue();
-            } else {
-                return x.longValue() - y.longValue();
+            try {
+                final OperatorFunction<Object, Object> function = (OperatorFunction<Object, Object>) findInstance().getOperatorFunction(OperatorFunction.Type.SUB, a.getClass(), b.getClass());
+                if (function == null) throw new ScriptRuntimeError("Unable to subtract '" + b + "' from '" + a + "'.");
+                return function.union(a, b);
+            } catch (Throwable e) {
+                if (e instanceof ScriptRuntimeError error) throw error;
+                throw new ScriptRuntimeError(e);
             }
         }
     }
+    //endregion
     
     public static Iterator<?> acquireIterator(Object thing) {
         if (thing instanceof Iterable<?> iterable) return iterable.iterator();
@@ -152,7 +173,6 @@ public class OperatorHandler {
         if (thing == null) return Collections.emptyIterator();
         return Collections.singletonList(thing).iterator();
     }
-    //endregion
     
     /**
      * Moved from {@link org.byteskript.skript.lang.syntax.flow.AssertEffect}
@@ -184,42 +204,59 @@ public class OperatorHandler {
         } else if (b instanceof String string && a instanceof Number number) {
             return string.repeat(Math.max(0, number.intValue()));
         }
-        if (!(a instanceof Number x) || !(b instanceof Number y)) {
-            throw new ScriptRuntimeError("Provided inputs must be numerical.");
-        }
-        if (x instanceof Float || x instanceof Double) {
-            if (y instanceof Float || y instanceof Double) {
-                return x.doubleValue() * y.doubleValue();
+        if ((a instanceof Number x) && (b instanceof Number y)) {
+            if (x instanceof Float || x instanceof Double) {
+                if (y instanceof Float || y instanceof Double) {
+                    return x.doubleValue() * y.doubleValue();
+                } else {
+                    return x.doubleValue() * y.longValue();
+                }
             } else {
-                return x.doubleValue() * y.longValue();
+                if (y instanceof Float || y instanceof Double) {
+                    return x.longValue() * y.doubleValue();
+                } else {
+                    return x.longValue() * y.longValue();
+                }
             }
         } else {
-            if (y instanceof Float || y instanceof Double) {
-                return x.longValue() * y.doubleValue();
-            } else {
-                return x.longValue() * y.longValue();
+            try {
+                final OperatorFunction<Object, Object> function = (OperatorFunction<Object, Object>) findInstance().getOperatorFunction(OperatorFunction.Type.MUL, a.getClass(), b.getClass());
+                if (function == null) throw new ScriptRuntimeError("Unable to multiply '" + a + "' with '" + b + "'.");
+                return function.union(a, b);
+            } catch (Throwable e) {
+                if (e instanceof ScriptRuntimeError error) throw error;
+                throw new ScriptRuntimeError(e);
             }
         }
     }
     
     public static Number divide(Object a, Object b) {
-        if (!(a instanceof Number x) || !(b instanceof Number y)) {
-            throw new ScriptRuntimeError("Provided inputs must be numerical.");
-        }
-        if (x instanceof Float || x instanceof Double) {
-            if (y instanceof Float || y instanceof Double) {
-                return x.doubleValue() / y.doubleValue();
+        if ((a instanceof Number x) && (b instanceof Number y)) {
+            if (x instanceof Float || x instanceof Double) {
+                if (y instanceof Float || y instanceof Double) {
+                    return x.doubleValue() / y.doubleValue();
+                } else {
+                    return x.doubleValue() / y.longValue();
+                }
             } else {
-                return x.doubleValue() / y.longValue();
+                if (y instanceof Float || y instanceof Double) {
+                    return x.longValue() / y.doubleValue();
+                } else {
+                    return x.longValue() / y.longValue();
+                }
             }
         } else {
-            if (y instanceof Float || y instanceof Double) {
-                return x.longValue() / y.doubleValue();
-            } else {
-                return x.longValue() / y.longValue();
+            try {
+                final OperatorFunction<Object, Object> function = (OperatorFunction<Object, Object>) findInstance().getOperatorFunction(OperatorFunction.Type.DIV, a.getClass(), b.getClass());
+                if (function == null) throw new ScriptRuntimeError("Unable to divide '" + a + "' by '" + b + "'.");
+                return (Number) function.union(a, b);
+            } catch (Throwable e) {
+                if (e instanceof ScriptRuntimeError error) throw error;
+                throw new ScriptRuntimeError(e);
             }
         }
     }
+    //endregion
     
     public static Number root(Object a) {
         if (!(a instanceof Number x)) {
@@ -227,7 +264,6 @@ public class OperatorHandler {
         }
         return Math.sqrt(x.doubleValue());
     }
-    //endregion
     
     public static Boolean gt(Object a, Object b) {
         if (!(a instanceof Number x) || !(b instanceof Number y)) {
@@ -328,12 +364,12 @@ public class OperatorHandler {
         if (!(a instanceof Number x) || !(b instanceof Number y)) return false;
         return Double.compare(x.doubleValue(), y.doubleValue()) == 0;
     }
+    //endregion
     
     //region Comparisons
     public static Boolean isArray(Object a) {
         if (a == null) return false;
         return a.getClass().isArray();
     }
-    //endregion
     
 }

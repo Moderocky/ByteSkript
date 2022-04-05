@@ -15,6 +15,7 @@ import org.byteskript.skript.api.syntax.EventHolder;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.runtime.type.Converter;
+import org.byteskript.skript.runtime.type.OperatorFunction;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -41,6 +42,8 @@ public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
     protected final String name;
     @Ignore
     protected final Map<Converter.Data, Converter<?, ?>> converters = new HashMap<>();
+    @Ignore
+    protected final Map<OperatorFunction.Data, OperatorFunction<?, ?>> operators = new HashMap<>();
     
     @Description("""
         Create a new library instance with the given name.
@@ -125,6 +128,11 @@ public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
         this.converters.put(data, converter);
     }
     
+    public <First, Second> void registerOperator(OperatorFunction.Type type, Class<First> first, Class<Second> second, OperatorFunction<First, Second> function) {
+        final OperatorFunction.Data data = new OperatorFunction.Data(type, first, second);
+        this.operators.put(data, function);
+    }
+    
     @Ignore
     public Type registerType(String classPath) {
         final Type type = new Type(classPath);
@@ -188,5 +196,10 @@ public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
     @Ignore
     public Map<Converter.Data, Converter<?, ?>> getConverters() {
         return converters;
+    }
+    
+    @Override
+    public Map<OperatorFunction.Data, OperatorFunction<?, ?>> getOperators() {
+        return operators;
     }
 }

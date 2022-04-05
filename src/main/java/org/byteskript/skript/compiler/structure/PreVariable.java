@@ -11,16 +11,14 @@ import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.compiler.CommonTypes;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public final class PreVariable {
+    public final List<Type> insight = new ArrayList<>();
     private final String name;
     public boolean parameter;
     public boolean internal;
     public boolean atomic;
-    public final List<Type> insight = new ArrayList<>();
     
     public PreVariable(String name) {
         if (name == null) this.name = "EMPTY";
