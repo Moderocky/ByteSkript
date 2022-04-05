@@ -22,54 +22,54 @@ import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.error.ScriptRuntimeError;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.syntax.comparison.*;
-import org.byteskript.skript.lang.syntax.config.ConfigCreator;
-import org.byteskript.skript.lang.syntax.config.ConfigFile;
-import org.byteskript.skript.lang.syntax.config.KeyInConfig;
-import org.byteskript.skript.lang.syntax.config.SaveConfigEffect;
-import org.byteskript.skript.lang.syntax.control.AddEffect;
-import org.byteskript.skript.lang.syntax.control.DeleteEffect;
-import org.byteskript.skript.lang.syntax.control.RemoveEffect;
-import org.byteskript.skript.lang.syntax.control.SetEffect;
-import org.byteskript.skript.lang.syntax.dictionary.DictionaryMember;
-import org.byteskript.skript.lang.syntax.dictionary.ImportFunctionEffect;
-import org.byteskript.skript.lang.syntax.dictionary.ImportTypeEffect;
+import org.byteskript.skript.lang.syntax.config.EffectSaveConfig;
+import org.byteskript.skript.lang.syntax.config.ExprConfigFileSection;
+import org.byteskript.skript.lang.syntax.config.ExprKeyInConfig;
+import org.byteskript.skript.lang.syntax.config.ExprNewConfig;
+import org.byteskript.skript.lang.syntax.control.EffectAdd;
+import org.byteskript.skript.lang.syntax.control.EffectDelete;
+import org.byteskript.skript.lang.syntax.control.EffectRemove;
+import org.byteskript.skript.lang.syntax.control.EffectSet;
+import org.byteskript.skript.lang.syntax.dictionary.EffectImportFunction;
+import org.byteskript.skript.lang.syntax.dictionary.EffectImportType;
+import org.byteskript.skript.lang.syntax.dictionary.MemberDictionary;
 import org.byteskript.skript.lang.syntax.entry.*;
 import org.byteskript.skript.lang.syntax.entry.syntax.*;
-import org.byteskript.skript.lang.syntax.event.AnyLoadEvent;
-import org.byteskript.skript.lang.syntax.event.CurrentEventExpression;
-import org.byteskript.skript.lang.syntax.event.LoadEvent;
+import org.byteskript.skript.lang.syntax.event.EventAnyLoad;
+import org.byteskript.skript.lang.syntax.event.EventLoad;
+import org.byteskript.skript.lang.syntax.event.ExprCurrentEvent;
 import org.byteskript.skript.lang.syntax.flow.*;
 import org.byteskript.skript.lang.syntax.flow.conditional.ElseIfSection;
 import org.byteskript.skript.lang.syntax.flow.conditional.ElseSection;
 import org.byteskript.skript.lang.syntax.flow.conditional.IfSection;
 import org.byteskript.skript.lang.syntax.flow.error.CatchSection;
-import org.byteskript.skript.lang.syntax.flow.error.TryEffect;
+import org.byteskript.skript.lang.syntax.flow.error.EffectTry;
 import org.byteskript.skript.lang.syntax.flow.error.TrySection;
 import org.byteskript.skript.lang.syntax.flow.execute.*;
-import org.byteskript.skript.lang.syntax.flow.lambda.RunnableSection;
-import org.byteskript.skript.lang.syntax.flow.lambda.SupplierSection;
-import org.byteskript.skript.lang.syntax.flow.loop.LoopInSection;
-import org.byteskript.skript.lang.syntax.flow.loop.LoopTimesSection;
-import org.byteskript.skript.lang.syntax.flow.loop.WhileSection;
+import org.byteskript.skript.lang.syntax.flow.lambda.ExprRunnableSection;
+import org.byteskript.skript.lang.syntax.flow.lambda.ExprSupplierSection;
+import org.byteskript.skript.lang.syntax.flow.loop.EffectLoopInSection;
+import org.byteskript.skript.lang.syntax.flow.loop.EffectLoopTimesSection;
+import org.byteskript.skript.lang.syntax.flow.loop.EffectWhileSection;
 import org.byteskript.skript.lang.syntax.function.*;
 import org.byteskript.skript.lang.syntax.generic.*;
 import org.byteskript.skript.lang.syntax.list.*;
 import org.byteskript.skript.lang.syntax.literal.*;
-import org.byteskript.skript.lang.syntax.map.KeyInMap;
-import org.byteskript.skript.lang.syntax.map.MapCreator;
+import org.byteskript.skript.lang.syntax.map.ExprKeyInMap;
+import org.byteskript.skript.lang.syntax.map.ExprNewMap;
 import org.byteskript.skript.lang.syntax.maths.*;
 import org.byteskript.skript.lang.syntax.script.*;
-import org.byteskript.skript.lang.syntax.test.TestEffect;
+import org.byteskript.skript.lang.syntax.test.EffectTest;
 import org.byteskript.skript.lang.syntax.timing.*;
 import org.byteskript.skript.lang.syntax.type.*;
-import org.byteskript.skript.lang.syntax.type.property.FinalEntry;
-import org.byteskript.skript.lang.syntax.type.property.LocalEntry;
-import org.byteskript.skript.lang.syntax.type.property.PropertyMember;
-import org.byteskript.skript.lang.syntax.type.property.TypeEntry;
-import org.byteskript.skript.lang.syntax.variable.AtomicVariableExpression;
-import org.byteskript.skript.lang.syntax.variable.GlobalVariableExpression;
-import org.byteskript.skript.lang.syntax.variable.ThreadVariableExpression;
-import org.byteskript.skript.lang.syntax.variable.VariableExpression;
+import org.byteskript.skript.lang.syntax.type.property.EntryFinal;
+import org.byteskript.skript.lang.syntax.type.property.EntryLocal;
+import org.byteskript.skript.lang.syntax.type.property.EntryProperty;
+import org.byteskript.skript.lang.syntax.type.property.EntryType;
+import org.byteskript.skript.lang.syntax.variable.ExprVariable;
+import org.byteskript.skript.lang.syntax.variable.ExprVariableAtomic;
+import org.byteskript.skript.lang.syntax.variable.ExprVariableGlobal;
+import org.byteskript.skript.lang.syntax.variable.ExprVariableThread;
 import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.internal.IOHandlers;
 import org.byteskript.skript.runtime.type.DataList;
@@ -138,71 +138,71 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         registerConverter(File.class, InputStream.class, FileInputStream::new);
         registerConverter(Object.class, String.class, Object::toString);
         registerSyntax(CompileState.ROOT,
-            new TypeMember(),
-            new TemplateTypeMember(),
-            new PropertyMember(),
-            new FunctionMember(),
-            new NoArgsFunctionMember(),
-            new Template(),
-            new Extends(),
-            new DictionaryMember(),
-            new EveryMember()
+            new MemberType(),
+            new MemberTemplateType(),
+            new EntryProperty(),
+            new MemberFunction(),
+            new MemberFunctionNoArgs(),
+            new EntryTemplate(),
+            new EntryExtends(),
+            new MemberDictionary(),
+            new MemberEvery()
         );
         registerSyntax(CompileState.MEMBER_BODY,
-            new Verify(),
-            new Trigger(),
-            new Parameters(),
-            new ReturnType(),
-            new SyntaxEntry(),
-            new EffectEntry(),
-            new ExpressionEntry(),
-            new PropertyEntry(),
-            new ModeEntry(),
-            new TypeEntry(),
-            new LocalEntry(),
-            new FinalEntry()
+            new EntryVerifySection(),
+            new EntryTriggerSection(),
+            new EntryParameters(),
+            new EntryReturn(),
+            new EntrySyntax(),
+            new EntrySyntaxEffect(),
+            new EntrySyntaxExpression(),
+            new EntrySyntaxProperty(),
+            new EntrySyntaxMode(),
+            new EntryType(),
+            new EntryLocal(),
+            new EntryFinal()
         );
         registerSyntax(CompileState.CODE_BODY,
-            new PrintEffect(),
-            new StopEffect(),
-            new SleepEffect(),
-            new WakeEffect(),
-            new WaitEffect(),
-            new ReturnEffect(),
-            new MonitorSection(),
-            new WhileSection(),
+            new EffectPrint(),
+            new EffectStop(),
+            new EffectSleep(),
+            new EffectWake(),
+            new EffectWait(),
+            new EffectReturn(),
+            new EffectMonitorSection(),
+            new EffectWhileSection(),
             new TrySection(),
             new CatchSection(),
-            new LoopTimesSection(),
-            new LoopInSection(),
+            new EffectLoopTimesSection(),
+            new EffectLoopInSection(),
             new IfSection(),
             new ElseIfSection(),
             new ElseSection(),
-            new SetEffect(),
-            new AddEffect(),
-            new DeleteEffect(),
-            new RemoveEffect(),
-            new SaveConfigEffect(),
-            new AssertWithErrorEffect(),
-            new AssertEffect(),
-            new ExitEffect(),
-            new ExitThreadEffect(),
-            new RunWithAsyncEffect(),
-            new RunWithEffect(),
-            new RunAsyncEffect(),
-            new WaitForEffect(),
-            new RunEffect(),
-            new BreakLoopEffect(),
-            new ContinueEffect(),
-            new BreakIfEffect(),
-            new BreakEffect(),
-            new TestEffect(),
-            new TryEffect(),
-            new ClearList(),
-            new LoadScriptEffect(),
-            new UnloadScriptEffect(),
-            new ImportTypeEffect(),
-            new ImportFunctionEffect()
+            new EffectSet(),
+            new EffectAdd(),
+            new EffectDelete(),
+            new EffectRemove(),
+            new EffectSaveConfig(),
+            new EffectAssertWithError(),
+            new EffectAssert(),
+            new EffectExit(),
+            new EffectExitThread(),
+            new EffectRunWithAsync(),
+            new EffectRunWith(),
+            new EffectRunAsync(),
+            new EffectWaitFor(),
+            new EffectRun(),
+            new EffectBreakLoop(),
+            new EffectContinue(),
+            new EffectBreakIf(),
+            new EffectBreak(),
+            new EffectTest(),
+            new EffectTry(),
+            new EffectClearList(),
+            new EffectLoadScript(),
+            new EffectUnloadScript(),
+            new EffectImportType(),
+            new EffectImportFunction()
         );
         registerSyntax(CompileState.STATEMENT,
             new NoneLiteral(),
@@ -215,83 +215,83 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new DoubleLiteral()
         );
         registerSyntax(CompileState.STATEMENT,
-            new ThreadVariableExpression(),
-            new AtomicVariableExpression(),
-            new GlobalVariableExpression(),
-            new VariableExpression()
+            new ExprVariableThread(),
+            new ExprVariableAtomic(),
+            new ExprVariableGlobal(),
+            new ExprVariable()
         );
         registerSyntax(CompileState.STATEMENT,
-            new IsArray(),
-            new IsOfType(),
-            new Exists(),
-            new GTEQ(),
-            new LTEQ(),
-            new GT(),
-            new LT(),
-            new NotEqual(),
-            new IsEqual(),
-            new Contains(),
-            new Matches()
+            new ExprIsArray(),
+            new ExprIsOfType(),
+            new ExprExists(),
+            new ExprGTEQ(),
+            new ExprLTEQ(),
+            new ExprGT(),
+            new ExprLT(),
+            new ExprNotEqual(),
+            new ExprIsEqual(),
+            new ExprContains(),
+            new ExprMatches()
         );
         registerSyntax(CompileState.STATEMENT,
-            new ThreadVariableExpression(),
-            new AtomicVariableExpression(),
-            new GlobalVariableExpression(),
-            new VariableExpression()
+            new ExprVariableThread(),
+            new ExprVariableAtomic(),
+            new ExprVariableGlobal(),
+            new ExprVariable()
         );
         registerSyntax(CompileState.STATEMENT,
-            new ImplicitArrayCreator(),
-            new BracketExpression(),
+            new ExprNewArray(),
+            new ExprBracket(),
             new BooleanLiteral(),
-            new ThisThingExpression(),
-            new TernaryOtherwiseExpression(),
-            new BinaryOtherwiseExpression(),
-            new SupplierSection(),
-            new RunnableSection(),
-            new ThreadExpression(),
-            new NewLineExpression(),
-            new ResultOfExpression(), // must try before property
-            new SizeOfList(), // must try before property
-            new PropertyExpression(),
-            new ConverterExpression(),
-            new SystemInputExpression(),
-            new SystemPropertyExpression(),
-            new ExternalFunctionExpression(),
-            new PropertyFunctionExpression(),
-            new FunctionExpression(),
-            new CompilerExpression(),
-            new LoadedScriptsExpression(),
-            new CurrentScriptExpression(),
-            new CurrentEventExpression(),
-            new NoArgsFunctionExpression(),
-            new JavaVersionExpression(),
-            new MultiplyExpression(),
-            new DivideExpression(),
-            new SquareRootExpression(),
-            new AddExpression(),
-            new SubtractExpression(),
-            new DynamicFunctionExpression(),
-            new MillisecondsExpression(),
-            new SecondsExpression(),
-            new MinutesExpression(),
-            new HoursExpression(),
-            new DaysExpression(),
-            new WeeksExpression(),
-            new MonthsExpression(),
-            new YearsExpression(),
-            new ConfigFile(),
-            new ConfigCreator(),
-            new KeyInConfig(),
-            new MapCreator(),
-            new ListCreator(),
-            new IndexOfList(),
-            new KeyInMap(),
-            new TypeCreator(),
-            new TypeExpression()
+            new ExprThisThing(),
+            new ExprTernaryOtherwise(),
+            new ExprBinaryOtherwise(),
+            new ExprSupplierSection(),
+            new ExprRunnableSection(),
+            new ExprThread(),
+            new ExprNewLine(),
+            new ExprResult(), // must try before property
+            new ExprSizeOfList(), // must try before property
+            new ExprProperty(),
+            new ExprConverter(),
+            new ExprSystemInput(),
+            new ExprSystemProperty(),
+            new ExprFunctionExternal(),
+            new ExprFunctionProperty(),
+            new ExprFunction(),
+            new ExprCompiler(),
+            new ExprLoadedScripts(),
+            new ExprCurrentScript(),
+            new ExprCurrentEvent(),
+            new ExprFunctionNoArgs(),
+            new ExprJavaVersion(),
+            new ExprMultiply(),
+            new ExprDivide(),
+            new ExprSquareRoot(),
+            new ExprAdd(),
+            new ExprSubtract(),
+            new ExprFunctionDynamic(),
+            new ExprMilliseconds(),
+            new ExprSeconds(),
+            new ExprMinutes(),
+            new ExprHours(),
+            new ExprDays(),
+            new ExprWeeks(),
+            new ExprMonths(),
+            new ExprYears(),
+            new ExprConfigFileSection(),
+            new ExprNewConfig(),
+            new ExprKeyInConfig(),
+            new ExprNewMap(),
+            new ExprNewList(),
+            new ExprIndexOfList(),
+            new ExprKeyInMap(),
+            new ExprNewType(),
+            new ExprType()
         );
         registerEvents(
-            new LoadEvent(),
-            new AnyLoadEvent()
+            new EventLoad(),
+            new EventAnyLoad()
         );
         generateSyntaxFrom(IOHandlers.class);
         try {

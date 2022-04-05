@@ -15,8 +15,8 @@ import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.api.syntax.TriggerHolder;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.handler.StandardHandlers;
-import org.byteskript.skript.lang.syntax.entry.Trigger;
-import org.byteskript.skript.lang.syntax.variable.VariableExpression;
+import org.byteskript.skript.lang.syntax.entry.EntryTriggerSection;
+import org.byteskript.skript.lang.syntax.variable.ExprVariable;
 
 import java.util.*;
 
@@ -184,7 +184,7 @@ public final class ElementTree {
         builder.append('(');
         if (current instanceof Literal<?>) {
             builder.append(match.matcher().group());
-        } else if (current instanceof VariableExpression) {
+        } else if (current instanceof ExprVariable) {
             builder.append(match.matcher().group("name"));
         } else if (current instanceof TriggerHolder && context != null && context.getLine() == this && context.getMethod() != null) {
             final MethodErasure erasure = context.getMethod().getErasure();
@@ -205,7 +205,7 @@ public final class ElementTree {
         builder.append(')');
         if (context == null) return builder.toString();
         if (context.isSectionHeader() && context.getLine() == this) builder.append(':');
-        if (current instanceof Trigger && context.getLine() == this && context.getMethod() != null) {
+        if (current instanceof EntryTriggerSection && context.getLine() == this && context.getMethod() != null) {
             final MethodErasure erasure = context.getMethod().getErasure();
             builder.append(" // ");
             builder.append(erasure.name());

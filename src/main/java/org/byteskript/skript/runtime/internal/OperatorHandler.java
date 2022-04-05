@@ -9,6 +9,8 @@ package org.byteskript.skript.runtime.internal;
 import mx.kenzie.autodoc.api.note.Ignore;
 import org.byteskript.skript.error.ScriptAssertionError;
 import org.byteskript.skript.error.ScriptRuntimeError;
+import org.byteskript.skript.lang.syntax.flow.EffectAssert;
+import org.byteskript.skript.lang.syntax.flow.EffectAssertWithError;
 import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.config.ConfigMap;
 import org.byteskript.skript.runtime.threading.ScriptThread;
@@ -175,7 +177,7 @@ public class OperatorHandler {
     }
     
     /**
-     * Moved from {@link org.byteskript.skript.lang.syntax.flow.AssertEffect}
+     * Moved from {@link EffectAssert}
      */
     public static void assertion(Object object, Class<?> script, int line) {
         if (object == null)
@@ -187,7 +189,7 @@ public class OperatorHandler {
     }
     
     /**
-     * Moved from {@link org.byteskript.skript.lang.syntax.flow.AssertWithErrorEffect}
+     * Moved from {@link EffectAssertWithError}
      */
     public static void assertion(Object object, Object message, Class<?> script, int line) {
         if (object == null)

@@ -13,7 +13,7 @@ import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.SyntaxElement;
 import org.byteskript.skript.compiler.structure.MultiLabel;
 import org.byteskript.skript.compiler.structure.PreVariable;
-import org.byteskript.skript.lang.syntax.variable.VariableExpression;
+import org.byteskript.skript.lang.syntax.variable.ExprVariable;
 import org.objectweb.asm.Label;
 
 import java.lang.reflect.Method;
@@ -36,8 +36,8 @@ public class InlineController extends RewriteController {
         final ElementTree[] inputs = context.getCompileCurrent().nested();
         for (int i = 0; i < inputs.length; i++) {
             final SyntaxElement element = inputs[i].current();
-            if (element.getClass() != VariableExpression.class) continue;
-            final VariableExpression expression = (VariableExpression) inputs[i].current();
+            if (element.getClass() != ExprVariable.class) continue;
+            final ExprVariable expression = (ExprVariable) inputs[i].current();
             this.special.put(i, expression.getVariable(context, inputs[i].match()));
         }
         final MethodBuilder builder = context.getMethod();
