@@ -7,6 +7,7 @@
 package org.byteskript.skript.test;
 
 import mx.kenzie.autodoc.AutoDocs;
+import mx.kenzie.autodoc.DocBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,22 +18,21 @@ import java.io.IOException;
 public class CreatePages {
     
     public static void main(String[] args) throws IOException {
-        AutoDocs.generateDocumentation(
-            "ByteSkript",
-            "The API documentation for ByteSkript.",
-            """
+        try (final DocBuilder builder = new DocBuilder("ByteSkript", new File("docs/"))) {
+            builder.setJar(new File("target/ByteSkript.jar"));
+            builder.setSourceRoot(new File("src/main/java"));
+            builder.addClassesFrom("org.byteskript.skript.api").addClassesFrom("org.byteskript.skript.runtime");
+            builder.setDescription("The API documentation for ByteSkript.");
+            builder.setBody("""
                 
                 ## ByteSkript
                 
                 Visit the website [here](https://docs.byteskript.org).
                 
                 This website contains documentation for the [API](org/byteskript/skript/api/) and [Runtime](org/byteskript/skript/runtime/).
-                """,
-            new File("docs/"),
-            new File("target/ByteSkript.jar"),
-            "org.byteskript.skript.api",
-            "org.byteskript.skript.runtime");
-        
+                """);
+            builder.build();
+        }
     }
     
 }

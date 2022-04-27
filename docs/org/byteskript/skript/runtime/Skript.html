@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Documentation for this class and its members.">
+    <meta name="keywords" content="Skript, org.byteskript.skript.runtime.Skript, org.byteskript.skript.runtime">
+    <title>Skript</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css" rel="stylesheet" crossorigin="anonymous">
+</head>
+<body>
+<main id="body" class="container">
+<div class="row"><div class="col-lg-12"><div class="col-lg-12 flex-md-row mt-4 mb-4 p-4 border rounded shadow-sm h-md-250 position-relative"><div class="row"><div class="col-md-8 col-sm-12"><a class="navbar-brand text-dark mr-4" href="../../../../">ByteSkript</a><div class="navbar-collapse offcanvas-collapse"><nav class="navbar navbar-expand-lg"><ol class="breadcrumb navbar-nav me-auto mb-2 mb-lg-0"><li class="breadcrumb-item"><a href="../../../../org/">org</a></li><li class="breadcrumb-item"><a href="../../../../org/byteskript/">byteskript</a></li><li class="breadcrumb-item"><a href="../../../../org/byteskript/skript/">skript</a></li><li class="breadcrumb-item"><a href="../../../../org/byteskript/skript/runtime/">runtime</a></li><li class="breadcrumb-item active" aria-current="page">Skript</li></ol></nav></div></div><div class="col-md-4 col-sm-12">
+<div class="dropdown m-1 d-inline">
+<button class="btn btn-primary dropdown-toggle" type="button" id="constructorMenu" data-bs-toggle="dropdown" aria-expanded="false">Constructors</button>
+<ul class="dropdown-menu" aria-labelledby="constructorMenu"><li><a class="dropdown-item" href="#constructor:Skript(1)">new Skript(1)</a></li><li><a class="dropdown-item" href="#constructor:Skript(0)">new Skript(0)</a></li><li><a class="dropdown-item" href="#constructor:Skript(3)">new Skript(3)</a></li>
+</ul>
+</div>
+<div class="dropdown m-1 d-inline">
+<button class="btn btn-primary dropdown-toggle" type="button" id="fieldMenu" data-bs-toggle="dropdown" aria-expanded="false">Fields</button>
+<ul class="dropdown-menu" aria-labelledby="fieldMenu"><li><a class="dropdown-item" href="#field:THREAD_GROUP">THREAD_GROUP</a></li><li><a class="dropdown-item" href="#field:VARIABLES">VARIABLES</a></li>
+</ul>
+</div>
+<div class="dropdown m-1 d-inline">
+<button class="btn btn-primary dropdown-toggle" type="button" id="methodMenu" data-bs-toggle="dropdown" aria-expanded="false">Methods</button>
+<ul class="dropdown-menu" aria-labelledby="methodMenu"><li><a class="dropdown-item" href="#method:getCompiler(0)">getCompiler</a></li><li><a class="dropdown-item" href="#method:println(1)">println</a></li><li><a class="dropdown-item" href="#method:getClass(1)">getClass</a></li><li><a class="dropdown-item" href="#method:convert(3)">convert</a></li><li><a class="dropdown-item" href="#method:convert(2)">convert</a></li><li><a class="dropdown-item" href="#method:print(1)">print</a></li><li><a class="dropdown-item" href="#method:getLoader(0)">getLoader</a></li><li><a class="dropdown-item" href="#method:findLoader(0)">findLoader</a></li><li><a class="dropdown-item" href="#method:getScript(1)">getScript</a></li><li><a class="dropdown-item" href="#method:currentLoader(0)">currentLoader</a></li><li><a class="dropdown-item" href="#method:getExecutor(0)">getExecutor</a></li><li><a class="dropdown-item" href="#method:registerConverter(3)">registerConverter</a></li><li><a class="dropdown-item" href="#method:runEvent(2)">runEvent</a></li><li><a class="dropdown-item" href="#method:runEvent(1)">runEvent</a></li><li><a class="dropdown-item" href="#method:currentInstance(0)">currentInstance</a></li><li><a class="dropdown-item" href="#method:getConverter(2)">getConverter</a></li><li><a class="dropdown-item" href="#method:runScript(2)">runScript</a></li><li><a class="dropdown-item" href="#method:runScript(1)">runScript</a></li><li><a class="dropdown-item" href="#method:runScript(1)">runScript</a></li><li><a class="dropdown-item" href="#method:unregisterConverter(2)">unregisterConverter</a></li><li><a class="dropdown-item" href="#method:hasCompiler(0)">hasCompiler</a></li><li><a class="dropdown-item" href="#method:compileComplexScript(3)">compileComplexScript</a></li><li><a class="dropdown-item" href="#method:compileComplexScript(2)">compileComplexScript</a></li><li><a class="dropdown-item" href="#method:compileScript(2)">compileScript</a></li><li><a class="dropdown-item" href="#method:compileScript(3)">compileScript</a></li><li><a class="dropdown-item" href="#method:compileScript(2)">compileScript</a></li><li><a class="dropdown-item" href="#method:compileComplexScriptAsync(2)">compileComplexScriptAsync</a></li><li><a class="dropdown-item" href="#method:unloadScript(1)">unloadScript</a></li><li><a class="dropdown-item" href="#method:unloadScript(1)">unloadScript</a></li><li><a class="dropdown-item" href="#method:compileLoad(2)">compileLoad</a></li><li><a class="dropdown-item" href="#method:compileLoad(2)">compileLoad</a></li><li><a class="dropdown-item" href="#method:loadScript(2)">loadScript</a></li><li><a class="dropdown-item" href="#method:loadScript(1)">loadScript</a></li><li><a class="dropdown-item" href="#method:loadScript(2)">loadScript</a></li><li><a class="dropdown-item" href="#method:loadScript(2)">loadScript</a></li><li><a class="dropdown-item" href="#method:loadScript(1)">loadScript</a></li><li><a class="dropdown-item" href="#method:loadScript(1)">loadScript</a></li><li><a class="dropdown-item" href="#method:loadScript(1)">loadScript</a></li><li><a class="dropdown-item" href="#method:loadScript(1)">loadScript</a></li><li><a class="dropdown-item" href="#method:loadScript(1)">loadScript</a></li><li><a class="dropdown-item" href="#method:loadScript(1)">loadScript</a></li><li><a class="dropdown-item" href="#method:assembleScript(1)">assembleScript</a></li><li><a class="dropdown-item" href="#method:assembleScript(1)">assembleScript</a></li><li><a class="dropdown-item" href="#method:schedule(2)">schedule</a></li><li><a class="dropdown-item" href="#method:localLoader(0)">localLoader</a></li><li><a class="dropdown-item" href="#method:getVariables(0)">getVariables</a></li><li><a class="dropdown-item" href="#method:localInstance(0)">localInstance</a></li><li><a class="dropdown-item" href="#method:findAnyClass(1)">findAnyClass</a></li><li><a class="dropdown-item" href="#method:getOperatorFunction(3)">getOperatorFunction</a></li><li><a class="dropdown-item" href="#method:runOnAsyncThread(1)">runOnAsyncThread</a></li><li><a class="dropdown-item" href="#method:runOnAsyncThread(1)">runOnAsyncThread</a></li><li><a class="dropdown-item" href="#method:getOnAsyncThread(1)">getOnAsyncThread</a></li><li><a class="dropdown-item" href="#method:getScripts(0)">getScripts</a></li><li><a class="dropdown-item" href="#method:getProcesses(0)">getProcesses</a></li><li><a class="dropdown-item" href="#method:registerEventHandler(2)">registerEventHandler</a></li><li><a class="dropdown-item" href="#method:registerLibraryClass(1)">registerLibraryClass</a></li><li><a class="dropdown-item" href="#method:registerLibrary(1)">registerLibrary</a></li><li><a class="dropdown-item" href="#method:unregisterLibrary(1)">unregisterLibrary</a></li><li><a class="dropdown-item" href="#method:getLoadedLibraries(0)">getLoadedLibraries</a></li><li><a class="dropdown-item" href="#method:compileScripts(1)">compileScripts</a></li><li><a class="dropdown-item" href="#method:compileScripts(2)">compileScripts</a></li><li><a class="dropdown-item" href="#method:compileScriptAsync(2)">compileScriptAsync</a></li><li><a class="dropdown-item" href="#method:loadScripts(1)">loadScripts</a></li><li><a class="dropdown-item" href="#method:loadScripts(1)">loadScripts</a></li><li><a class="dropdown-item" href="#method:compileLoadScripts(1)">compileLoadScripts</a></li><li><a class="dropdown-item" href="#method:setOutput(1)">setOutput</a></li><li><a class="dropdown-item" href="#method:allocateProcess(3)">allocateProcess</a></li><li><a class="dropdown-item" href="#method:getMainThread(0)">getMainThread</a></li><li><a class="dropdown-item" href="#method:getScheduler(0)">getScheduler</a></li>
+</ul>
+</div></div></div></div></div></div>
+<section id="class:Skript"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0">
+<h3 class="mb-0">Skript</h3><p><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A regular class.">Class</strong></p></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><div class="row p-2"></div><p>This class is the entry-point for any program or library using ByteSkript.
+Programs looking to implement Skript can create an instance of this
+with custom (or default) compilers, thread managers, etc.
+Programs looking to interact with Skript can compile, load, unload and trigger
+events from here.
+Some resources are available in the static state, but these will relate to an
+arbitrary Skript instance that may not be running, present, etc.</p>
+
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Extends</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.Object">Object</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Cannot be overridden or modified.">final</span> </p></div></div></div>
+</div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div>
+</div>
+</section><h2 class="border-bottom pb-2 mb-0">Constructors</h2><br /><section id="constructor:Skript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0"><span class="text-secondary">new </span>Skript<span class="text-secondary"> (ModifiableCompiler)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="Creates an instance of this class.">Constructor</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Create a Skript runtime with a custom (non-default) Skript compiler.
+This is used by the Jar-form script loader, which has no compiler.</p>
+<p>Some compilers may offer only partial support, such as ByteSkriptQuery's page compiler.</p>
+<p>This is different from the BridgeCompiler which is included in
+all distributions.</p>
+<p>The thread this is created from is treated as the 'main' thread.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1442915899" aria-expanded="false" aria-controls="params1442915899">Parameters</button><div class="collapse" id="params1442915899">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>ModifiableCompiler</td><td>compiler</td>
+</tr>
+</tbody>
+</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Skript">Skript</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Skript skript = new Skript(compiler);
+skript.getCompiler();
+assert skript.println(object) == null;
+skript.getClass(name);
+</code></pre>
+</div></div></div></section><section id="constructor:Skript(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0"><span class="text-secondary">new </span>Skript<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="Creates an instance of this class.">Constructor</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Create a default Skript runtime with all basic features present.
+The thread this is created from is treated as the 'main' thread.</p>
+</div><div class="col-md-4 d-none d-lg-block"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Skript">Skript</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Skript skript = new Skript();
+skript.getCompiler();
+assert skript.println(object) == null;
+skript.getClass(name);
+</code></pre>
+</div></div></div></section><section id="constructor:Skript(3)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0"><span class="text-secondary">new </span>Skript<span class="text-secondary"> (SkriptThreadProvider, ModifiableCompiler, Thread)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="Creates an instance of this class.">Constructor</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Create a custom Skript runtime with altered providers.
+The thread provider needs to provide ScriptThread for most features to work.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1442915899" aria-expanded="false" aria-controls="params1442915899">Parameters</button><div class="collapse" id="params1442915899">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>SkriptThreadProvider</td><td>provider</td>
+</tr>
+<tr><th scope="row">2</th><td>ModifiableCompiler</td><td>compiler</td>
+</tr>
+<tr><th scope="row">3</th><td>Thread</td><td>thread</td>
+</tr>
+</tbody>
+</table></div></div></div><div class="col-md-4 d-none d-lg-block"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Skript">Skript</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Skript skript = new Skript(provider, compiler, thread);
+skript.getCompiler();
+assert skript.println(object) == null;
+skript.getClass(name);
+</code></pre>
+</div></div></div></section><br /><h2 class="border-bottom pb-2 mb-0">Fields</h2><br /><section id="field:THREAD_GROUP"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">THREAD_GROUP</h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="An immutable value-holding member.">Constant</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>The script thread group.</p>
+<p>If you are implementing a special thread provider that script code will use,
+it should use this group to for more accurate clean-up and profiling.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.ThreadGroup">ThreadGroup</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Cannot be overridden or modified.">final</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final ThreadGroup group = Skript.THREAD_GROUP;
+group.getName();
+group.toString();
+assert group.list() == null;
+</code></pre>
+</div></div></div></section><section id="field:VARIABLES"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">VARIABLES</h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="An immutable value-holding member.">Constant</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>The global variable map.
+This is obtainable through the <a href="method:getVariables(0)">getter method</a>.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.internal.GlobalVariableMap">GlobalVariableMap</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Cannot be overridden or modified.">final</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final GlobalVariableMap map = Skript.VARIABLES;
+</code></pre>
+</div></div></div></section><hr /><br /><h2 class="border-bottom pb-2 mb-0">Methods</h2><br /><section id="method:getCompiler(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getCompiler<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Returns the provided script compiler.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.internal.ModifiableCompiler">ModifiableCompiler</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final ModifiableCompiler compiler = skript.getCompiler();
+compiler.clone();
+compiler.load(b, string);
+compiler.compile(stream, string);
+</code></pre>
+</div></div></div></section><section id="method:println(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">println<span class="text-secondary"> (Object)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1268650975" aria-expanded="false" aria-controls="params1268650975">Parameters</button><div class="collapse" id="params1268650975">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Object</td><td>object</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:getClass(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getClass<span class="text-secondary"> (String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>This searches the app class loader and all library class loaders for the given class.
+This does not search script class loaders.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params731395981" aria-expanded="false" aria-controls="params731395981">Parameters</button><div class="collapse" id="params731395981">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>String</td><td>name</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.Class">Class</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Class clazz = skript.getClass(name);
+clazz.getName();
+clazz.forName(name, initialize, loader);
+clazz.forName(className);
+</code></pre>
+</div></div></div></section><section id="method:convert(3)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">convert<span class="text-secondary"> (Object, Class, boolean)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1509563803" aria-expanded="false" aria-controls="params1509563803">Parameters</button><div class="collapse" id="params1509563803">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Object</td><td>from</td>
+</tr>
+<tr><th scope="row">2</th><td>Class</td><td>to</td>
+</tr>
+<tr><th scope="row">3</th><td>boolean</td><td>fail</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.Object">Object</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:convert(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">convert<span class="text-secondary"> (Object, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params684874119" aria-expanded="false" aria-controls="params684874119">Parameters</button><div class="collapse" id="params684874119">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Object</td><td>from</td>
+</tr>
+<tr><th scope="row">2</th><td>Class</td><td>to</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.Object">Object</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:print(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">print<span class="text-secondary"> (Object)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1157740463" aria-expanded="false" aria-controls="params1157740463">Parameters</button><div class="collapse" id="params1157740463">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Object</td><td>object</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:getLoader(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getLoader<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Gets the parent class-loader attached to this Skript runtime.
+This is used to search available libraries and scripts for classes.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Skript$RuntimeClassLoader">RuntimeClassLoader</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final RuntimeClassLoader loader = skript.getLoader();
+loader.loadClass(name, bytecode);
+loader.loadClass(aClass, name, bytecode);
+loader.loadClass(name);
+</code></pre>
+</div></div></div></section><section id="method:findLoader(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">findLoader<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Attempts to find the parent class-loader.
+This will look for a local loader but default to the most-recently-created.
+This is designed for internal use.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Skript$RuntimeClassLoader">RuntimeClassLoader</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final RuntimeClassLoader loader = Skript.findLoader();
+loader.loadClass(name, bytecode);
+loader.loadClass(aClass, name, bytecode);
+loader.loadClass(name);
+</code></pre>
+</div></div></div></section><section id="method:getScript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getScript<span class="text-secondary"> (Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1379435698" aria-expanded="false" aria-controls="params1379435698">Parameters</button><div class="collapse" id="params1379435698">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Class</td><td>part</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:currentLoader(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">currentLoader<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Finds an arbitrary parent class-loader.
+This will use the most recently-created Skript runtime.</p>
+<p>This is unsafe, since it is unlikely to be the required loader.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Skript$RuntimeClassLoader">RuntimeClassLoader</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final RuntimeClassLoader loader = Skript.currentLoader();
+loader.loadClass(name, bytecode);
+loader.loadClass(aClass, name, bytecode);
+loader.loadClass(name);
+</code></pre>
+</div></div></div></section><section id="method:getExecutor(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getExecutor<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>The executor service this runtime uses.
+This is separate from the scheduler so that threads can be re-used more efficiently.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.concurrent.ExecutorService">ExecutorService</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final ExecutorService service = skript.getExecutor();
+assert service.shutdown() == null;
+assert service.isShutdown();
+service.submit(runnable);
+</code></pre>
+</div></div></div></section><section id="method:registerConverter(3)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerConverter<span class="text-secondary"> (Class, Class, Converter)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1529306539" aria-expanded="false" aria-controls="params1529306539">Parameters</button><div class="collapse" id="params1529306539">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Class</td><td>from</td>
+</tr>
+<tr><th scope="row">2</th><td>Class</td><td>to</td>
+</tr>
+<tr><th scope="row">3</th><td>Converter</td><td>converter</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:runEvent(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">runEvent<span class="text-secondary"> (Event, Script)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Trigger all event handlers that can deal with this event.
+Each handler will spawn its own process.
+This will trigger only the given script.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1635985705" aria-expanded="false" aria-controls="params1635985705">Parameters</button><div class="collapse" id="params1635985705">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Event</td><td>event</td>
+</tr>
+<tr><th scope="row">2</th><td>Script</td><td>script</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="boolean">boolean</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+assert skript.runEvent(event, script);
+</code></pre>
+</div></div></div></section><section id="method:runEvent(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">runEvent<span class="text-secondary"> (Event)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Trigger all event handlers that can deal with this event.
+Each handler will spawn its own process.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params695682681" aria-expanded="false" aria-controls="params695682681">Parameters</button><div class="collapse" id="params695682681">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Event</td><td>event</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="boolean">boolean</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+assert skript.runEvent(event);
+</code></pre>
+</div></div></div></section><section id="method:currentInstance(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">currentInstance<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>This returns the most recently-created Skript runtime.
+It is designed to be an entry-point for programs that attach in an unusual way, and have
+no other way of getting the current Skript instance.</p>
+<p>Multiple or zero runtimes may exist - this should not be depended upon.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Skript">Skript</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Skript skript = Skript.currentInstance();
+skript.getCompiler();
+assert skript.println(object) == null;
+skript.getClass(name);
+</code></pre>
+</div></div></div></section><section id="method:getConverter(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getConverter<span class="text-secondary"> (Class, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1073502961" aria-expanded="false" aria-controls="params1073502961">Parameters</button><div class="collapse" id="params1073502961">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Class</td><td>from</td>
+</tr>
+<tr><th scope="row">2</th><td>Class</td><td>to</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.type.Converter">Converter</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:runScript(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">runScript<span class="text-secondary"> (ScriptRunner, Event)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Runs a script with a completing future.
+This is designed for use in places like JUnit tests that require throttling.</p>
+<p>This is not designed for throttling the main thread, since the airlock queue will already do this!</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1582797472" aria-expanded="false" aria-controls="params1582797472">Parameters</button><div class="collapse" id="params1582797472">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>ScriptRunner</td><td>runner</td>
+</tr>
+<tr><th scope="row">2</th><td>Event</td><td>event</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.concurrent.Future">Future</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Future future = skript.runScript(runner, event);
+future.get(j, unit);
+future.get();
+assert future.cancel(z);
+</code></pre>
+</div></div></div></section><section id="method:runScript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">runScript<span class="text-secondary"> (ScriptRunner)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Runs a script with a completing future.
+This is designed for use in places like JUnit tests that require throttling.</p>
+<p>This is not designed for throttling the main thread, since the airlock queue will already do this!</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params644166178" aria-expanded="false" aria-controls="params644166178">Parameters</button><div class="collapse" id="params644166178">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>ScriptRunner</td><td>runner</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.concurrent.Future">Future</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Future future = skript.runScript(runner);
+future.get(j, unit);
+future.get();
+assert future.cancel(z);
+</code></pre>
+</div></div></div></section><section id="method:runScript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">runScript<span class="text-secondary"> (Runnable)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Runs a runnable on a script thread.
+This is designed for running anonymous script chunks.</p>
+<p>This can also be used to run code that did not originate from a script as though it did.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params892529689" aria-expanded="false" aria-controls="params892529689">Parameters</button><div class="collapse" id="params892529689">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Runnable</td><td>executable</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.concurrent.Future">Future</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Future future = skript.runScript(executable);
+future.get(j, unit);
+future.get();
+assert future.cancel(z);
+</code></pre>
+</div></div></div></section><section id="method:unregisterConverter(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">unregisterConverter<span class="text-secondary"> (Class, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1757676444" aria-expanded="false" aria-controls="params1757676444">Parameters</button><div class="collapse" id="params1757676444">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Class</td><td>from</td>
+</tr>
+<tr><th scope="row">2</th><td>Class</td><td>to</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:hasCompiler(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">hasCompiler<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Whether this Skript runtime has a compiler.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="boolean">boolean</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+assert skript.hasCompiler();
+</code></pre>
+</div></div></div></section><section id="method:compileComplexScript(3)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">compileComplexScript<span class="text-secondary"> (InputStream, String, File)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Compiles a complex script to multiple class files in the output directory.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params182738614" aria-expanded="false" aria-controls="params182738614">Parameters</button><div class="collapse" id="params182738614">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>InputStream</td><td>input</td>
+</tr>
+<tr><th scope="row">2</th><td>String</td><td>name</td>
+</tr>
+<tr><th scope="row">3</th><td>File</td><td>outputDirectory</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.Collection">Collection</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Collection collection = skript.compileComplexScript(input, name, outputDirectory);
+assert collection.add(object);
+assert collection.remove(object);
+assert collection.equals(object);
+</code></pre>
+</div></div></div></section><section id="method:compileComplexScript(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">compileComplexScript<span class="text-secondary"> (InputStream, String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Compiles a single script to its class files.
+This method may be unavailable in some distributions.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params94345706" aria-expanded="false" aria-controls="params94345706">Parameters</button><div class="collapse" id="params94345706">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>InputStream</td><td>stream</td>
+</tr>
+<tr><th scope="row">2</th><td>String</td><td>name</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="[Lmx.kenzie.foundation.language.PostCompileClass;">PostCompileClass[]</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final PostCompileClass[] class = skript.compileComplexScript(stream, name);
+</code></pre>
+</div></div></div></section><section id="method:compileScript(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">compileScript<span class="text-secondary"> (String, String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Compiles a simple script from its string source to a memory class.
+This method may be unavailable in some distributions.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params670035812" aria-expanded="false" aria-controls="params670035812">Parameters</button><div class="collapse" id="params670035812">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>String</td><td>code</td>
+</tr>
+<tr><th scope="row">2</th><td>String</td><td>name</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="mx.kenzie.foundation.language.PostCompileClass">PostCompileClass</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final PostCompileClass class = skript.compileScript(code, name);
+class.name();
+assert class.equals(o);
+class.toString();
+</code></pre>
+</div></div></div></section><section id="method:compileScript(3)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">compileScript<span class="text-secondary"> (InputStream, String, OutputStream)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Compiles a source input stream and writes it to a target output stream.
+This can compile only simple scripts (which create a single class file.)</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1750905143" aria-expanded="false" aria-controls="params1750905143">Parameters</button><div class="collapse" id="params1750905143">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>InputStream</td><td>input</td>
+</tr>
+<tr><th scope="row">2</th><td>String</td><td>name</td>
+</tr>
+<tr><th scope="row">3</th><td>OutputStream</td><td>target</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+skript.compileScript(input, name, target);
+</code></pre>
+</div></div></div></section><section id="method:compileScript(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">compileScript<span class="text-secondary"> (InputStream, String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Compiles a simple script from its source to a memory class.
+This method may be unavailable in some distributions.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1782704802" aria-expanded="false" aria-controls="params1782704802">Parameters</button><div class="collapse" id="params1782704802">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>InputStream</td><td>stream</td>
+</tr>
+<tr><th scope="row">2</th><td>String</td><td>name</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="mx.kenzie.foundation.language.PostCompileClass">PostCompileClass</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final PostCompileClass class = skript.compileScript(stream, name);
+class.name();
+assert class.equals(o);
+class.toString();
+</code></pre>
+</div></div></div></section><section id="method:compileComplexScriptAsync(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">compileComplexScriptAsync<span class="text-secondary"> (InputStream, String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Compiles a single script to its class files.
+This version runs in the background and returns a promise
+This method may be unavailable in some distributions.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1620303253" aria-expanded="false" aria-controls="params1620303253">Parameters</button><div class="collapse" id="params1620303253">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>InputStream</td><td>stream</td>
+</tr>
+<tr><th scope="row">2</th><td>String</td><td>name</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.internal.Promise">Promise</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Promise promise = skript.compileComplexScriptAsync(stream, name);
+promise.get();
+promise.get(timeout, unit);
+assert promise.cancel(mayInterruptIfRunning);
+</code></pre>
+</div></div></div></section><section id="method:unloadScript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">unloadScript<span class="text-secondary"> (Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Unloads a script by its main class.
+This is a destructive operation.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1216590855" aria-expanded="false" aria-controls="params1216590855">Parameters</button><div class="collapse" id="params1216590855">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Class</td><td>main</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+skript.unloadScript(main);
+</code></pre>
+</div></div></div></section><section id="method:unloadScript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">unloadScript<span class="text-secondary"> (Script)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Unloads a script. This is a destructive operation.
+All metadata for the script will be 'graveyarded' - its memory address will be erased.
+Anything keeping a reference to the script will prevent it being garbage-collected.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params2107447833" aria-expanded="false" aria-controls="params2107447833">Parameters</button><div class="collapse" id="params2107447833">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Script</td><td>script</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+skript.unloadScript(script);
+</code></pre>
+</div></div></div></section><section id="method:compileLoad(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">compileLoad<span class="text-secondary"> (File, String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>This is designed for internal use.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params60559178" aria-expanded="false" aria-controls="params60559178">Parameters</button><div class="collapse" id="params60559178">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>File</td><td>file</td>
+</tr>
+<tr><th scope="row">2</th><td>String</td><td>name</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:compileLoad(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">compileLoad<span class="text-secondary"> (InputStream, String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>This is designed for internal use.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params395629617" aria-expanded="false" aria-controls="params395629617">Parameters</button><div class="collapse" id="params395629617">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>InputStream</td><td>stream</td>
+</tr>
+<tr><th scope="row">2</th><td>String</td><td>name</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:loadScript(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">loadScript<span class="text-secondary"> (byte[], String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Loads a script from its compiled bytecode and class name.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1122134344" aria-expanded="false" aria-controls="params1122134344">Parameters</button><div class="collapse" id="params1122134344">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>byte[]</td><td>bytecode</td>
+</tr>
+<tr><th scope="row">2</th><td>String</td><td>name</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Script script = skript.loadScript(bytecode, name);
+script.toString();
+script.getSimpleName();
+script.classes();
+</code></pre>
+</div></div></div></section><section id="method:loadScript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">loadScript<span class="text-secondary"> (File)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Loads a script from its compiled class file.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params876563773" aria-expanded="false" aria-controls="params876563773">Parameters</button><div class="collapse" id="params876563773">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>File</td><td>source</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Script script = skript.loadScript(source);
+script.toString();
+script.getSimpleName();
+script.classes();
+</code></pre>
+</div></div></div></section><section id="method:loadScript(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">loadScript<span class="text-secondary"> (InputStream, String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Loads a script from a stream of its compiled bytecode.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params87765719" aria-expanded="false" aria-controls="params87765719">Parameters</button><div class="collapse" id="params87765719">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>InputStream</td><td>stream</td>
+</tr>
+<tr><th scope="row">2</th><td>String</td><td>name</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Script script = skript.loadScript(stream, name);
+script.toString();
+script.getSimpleName();
+script.classes();
+</code></pre>
+</div></div></div></section><section id="method:loadScript(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">loadScript<span class="text-secondary"> (File, String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Loads a script from its compiled class file.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1413653265" aria-expanded="false" aria-controls="params1413653265">Parameters</button><div class="collapse" id="params1413653265">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>File</td><td>source</td>
+</tr>
+<tr><th scope="row">2</th><td>String</td><td>name</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Script script = skript.loadScript(source, name);
+script.toString();
+script.getSimpleName();
+script.classes();
+</code></pre>
+</div></div></div></section><section id="method:loadScript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">loadScript<span class="text-secondary"> (PostCompileClass[])</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Loads a script from compiled source code.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1418621776" aria-expanded="false" aria-controls="params1418621776">Parameters</button><div class="collapse" id="params1418621776">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>PostCompileClass[]</td><td>data</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Script script = skript.loadScript(data);
+script.toString();
+script.getSimpleName();
+script.classes();
+</code></pre>
+</div></div></div></section><section id="method:loadScript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">loadScript<span class="text-secondary"> (Class[])</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Loads a script from defined classes.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params446073433" aria-expanded="false" aria-controls="params446073433">Parameters</button><div class="collapse" id="params446073433">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Class[]</td><td>loaded</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Script script = skript.loadScript(loaded);
+script.toString();
+script.getSimpleName();
+script.classes();
+</code></pre>
+</div></div></div></section><section id="method:loadScript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">loadScript<span class="text-secondary"> (InputStream)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Loads a script from a stream of its compiled bytecode.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1181199958" aria-expanded="false" aria-controls="params1181199958">Parameters</button><div class="collapse" id="params1181199958">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>InputStream</td><td>stream</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Script script = skript.loadScript(stream);
+script.toString();
+script.getSimpleName();
+script.classes();
+</code></pre>
+</div></div></div></section><section id="method:loadScript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">loadScript<span class="text-secondary"> (Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Loads a script from a defined class.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params125622176" aria-expanded="false" aria-controls="params125622176">Parameters</button><div class="collapse" id="params125622176">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Class</td><td>loaded</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Script script = skript.loadScript(loaded);
+script.toString();
+script.getSimpleName();
+script.classes();
+</code></pre>
+</div></div></div></section><section id="method:loadScript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">loadScript<span class="text-secondary"> (PostCompileClass)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Loads a script from compiled source code.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params542060780" aria-expanded="false" aria-controls="params542060780">Parameters</button><div class="collapse" id="params542060780">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>PostCompileClass</td><td>datum</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Script script = skript.loadScript(datum);
+script.toString();
+script.getSimpleName();
+script.classes();
+</code></pre>
+</div></div></div></section><section id="method:loadScript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">loadScript<span class="text-secondary"> (byte[])</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Loads a script from its compiled bytecode.
+The name is determined by reading the class name entry from the code.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params237351678" aria-expanded="false" aria-controls="params237351678">Parameters</button><div class="collapse" id="params237351678">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>byte[]</td><td>bytecode</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Script script = skript.loadScript(bytecode);
+script.toString();
+script.getSimpleName();
+script.classes();
+</code></pre>
+</div></div></div></section><section id="method:assembleScript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">assembleScript<span class="text-secondary"> (Class...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Assembles a script from defined classes.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1967892594" aria-expanded="false" aria-controls="params1967892594">Parameters</button><div class="collapse" id="params1967892594">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Class[]</td><td>loaded</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Script script = skript.assembleScript(loaded);
+script.toString();
+script.getSimpleName();
+script.classes();
+</code></pre>
+</div></div></div></section><section id="method:assembleScript(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">assembleScript<span class="text-secondary"> (PostCompileClass...)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Assembles a script in memory without loading it.
+It is not safe to assume this script will never be triggered or loaded.
+This registers the event handlers, which will be triggered if an event occurs in the meantime.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params342597804" aria-expanded="false" aria-controls="params342597804">Parameters</button><div class="collapse" id="params342597804">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>PostCompileClass[]</td><td>data</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Script">Script</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="The last array argument accepts multiple inputs.">varargs</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Script script = skript.assembleScript(data);
+script.toString();
+script.getSimpleName();
+script.classes();
+</code></pre>
+</div></div></div></section><section id="method:schedule(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">schedule<span class="text-secondary"> (Runnable, long)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Schedules a task to be run at some point in the future.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1308244637" aria-expanded="false" aria-controls="params1308244637">Parameters</button><div class="collapse" id="params1308244637">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Runnable</td><td>runnable</td>
+</tr>
+<tr><th scope="row">2</th><td>long</td><td>millis</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.concurrent.Future">Future</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Future future = skript.schedule(runnable, millis);
+future.get(j, unit);
+future.get();
+assert future.cancel(z);
+</code></pre>
+</div></div></div></section><section id="method:localLoader(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">localLoader<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Gets the parent class-loader local to this thread.
+This is only usable from a script thread.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Skript$RuntimeClassLoader">RuntimeClassLoader</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final RuntimeClassLoader loader = Skript.localLoader();
+loader.loadClass(name, bytecode);
+loader.loadClass(aClass, name, bytecode);
+loader.loadClass(name);
+</code></pre>
+</div></div></div></section><section id="method:getVariables(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getVariables<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>This is the map of global <code>{!var}</code> variables.
+This is a modifiable and atomic map.
+Destroying this map's contents without warning is not advised.</p>
+<p>The global map is kept in the static state so that it can be truly 'global' and runtime-independent.
+This also solves some problems with locking during atomic access.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.internal.GlobalVariableMap">GlobalVariableMap</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final GlobalVariableMap map = Skript.getVariables();
+assert map.setVariable(name, value) == null;
+assert map.deleteVariable(name) == null;
+assert map.addVariable(name, value) == null;
+</code></pre>
+</div></div></div></section><section id="method:localInstance(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">localInstance<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>This returns the Skript instance that launched the current thread.
+This is available only to scripts.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.Skript">Skript</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Skript skript = Skript.localInstance();
+skript.getCompiler();
+assert skript.println(object) == null;
+skript.getClass(name);
+</code></pre>
+</div></div></div></section><section id="method:findAnyClass(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">findAnyClass<span class="text-secondary"> (String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1860944798" aria-expanded="false" aria-controls="params1860944798">Parameters</button><div class="collapse" id="params1860944798">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>String</td><td>name</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.Class">Class</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> <span class="badge bg-info" data-bs-toggle="tooltip" data-bs-placement="right" title="Belongs to the class rather than its objects.">static</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:getOperatorFunction(3)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getOperatorFunction<span class="text-secondary"> (Type, Class, Class)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static">No description is available for this element.<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1179381257" aria-expanded="false" aria-controls="params1179381257">Parameters</button><div class="collapse" id="params1179381257">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Type</td><td>type</td>
+</tr>
+<tr><th scope="row">2</th><td>Class</td><td>first</td>
+</tr>
+<tr><th scope="row">3</th><td>Class</td><td>second</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.type.OperatorFunction">OperatorFunction</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:runOnAsyncThread(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">runOnAsyncThread<span class="text-secondary"> (Runnable)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Submits this instruction to a background thread.
+Background threads are safe for blocking.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params258754732" aria-expanded="false" aria-controls="params258754732">Parameters</button><div class="collapse" id="params258754732">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Runnable</td><td>runnable</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+skript.runOnAsyncThread(runnable);
+</code></pre>
+</div></div></div></section><section id="method:runOnAsyncThread(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">runOnAsyncThread<span class="text-secondary"> (Instruction)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Submits this instruction to a background thread.
+Background threads are safe for blocking.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params333362446" aria-expanded="false" aria-controls="params333362446">Parameters</button><div class="collapse" id="params333362446">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Instruction</td><td>runnable</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+skript.runOnAsyncThread(runnable);
+</code></pre>
+</div></div></div></section><section id="method:getOnAsyncThread(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getOnAsyncThread<span class="text-secondary"> (Instruction)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Submits this future to a background thread.
+Background threads are safe for blocking.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params597255128" aria-expanded="false" aria-controls="params597255128">Parameters</button><div class="collapse" id="params597255128">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Instruction</td><td>runnable</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.concurrent.Future">Future</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Future future = skript.getOnAsyncThread(runnable);
+future.get(j, unit);
+future.get();
+assert future.cancel(z);
+</code></pre>
+</div></div></div></section><section id="method:getScripts(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getScripts<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Gets a copy of the handles for all loaded scripts.
+Storing a strong reference to these will prevent them being unloaded safely.
+These can be graveyarded (annulled in memory) without warning.</p>
+<p>This is designed for looping and discarding.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="[Lorg.byteskript.skript.runtime.Script;">Script[]</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Script[] script = skript.getScripts();
+</code></pre>
+</div></div></div></section><section id="method:getProcesses(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getProcesses<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>A collection of the operation controllers for script processes.
+These should not be stored unless necessary - they hold a strong reference to the Skript runtime
+which could prevent garbage collection.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.Collection">Collection</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Collection collection = skript.getProcesses();
+assert collection.add(object);
+assert collection.remove(object);
+assert collection.equals(object);
+</code></pre>
+</div></div></div></section><section id="method:registerEventHandler(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerEventHandler<span class="text-secondary"> (Class, ScriptRunner)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers an event handler for a particular event.
+Internally, this is used only during script loading.
+It has been made available in case a program wants to be notified about a Skript event.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params985397764" aria-expanded="false" aria-controls="params985397764">Parameters</button><div class="collapse" id="params985397764">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Class</td><td>event</td>
+</tr>
+<tr><th scope="row">2</th><td>ScriptRunner</td><td>runner</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+skript.registerEventHandler(event, runner);
+</code></pre>
+</div></div></div></section><section id="method:registerLibraryClass(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerLibraryClass<span class="text-secondary"> (byte[])</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers a single class library, typically compiled from a script to load
+custom syntax.
+Classes in this loader do not need to be reached post-loading - the script that provides
+the actual implementation for the syntax will be used instead.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1476394199" aria-expanded="false" aria-controls="params1476394199">Parameters</button><div class="collapse" id="params1476394199">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>byte[]</td><td>bytecode</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+skript.registerLibraryClass(bytecode);
+</code></pre>
+</div></div></div></section><section id="method:registerLibrary(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">registerLibrary<span class="text-secondary"> (Library)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Registers a library instance to the current compiler.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params837764579" aria-expanded="false" aria-controls="params837764579">Parameters</button><div class="collapse" id="params837764579">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Library</td><td>library</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="boolean">boolean</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+assert skript.registerLibrary(library);
+</code></pre>
+</div></div></div></section><section id="method:unregisterLibrary(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">unregisterLibrary<span class="text-secondary"> (Library)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Removes a library instance from the current compiler.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1501587365" aria-expanded="false" aria-controls="params1501587365">Parameters</button><div class="collapse" id="params1501587365">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>Library</td><td>library</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="boolean">boolean</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+assert skript.unregisterLibrary(library);
+</code></pre>
+</div></div></div></section><section id="method:getLoadedLibraries(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getLoadedLibraries<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Returns an array of all registered libraries.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="[Lorg.byteskript.skript.api.Library;">Library[]</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Library[] library = skript.getLoadedLibraries();
+</code></pre>
+</div></div></div></section><section id="method:compileScripts(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">compileScripts<span class="text-secondary"> (File)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Compiles all scripts in the root file to code representations.
+These representations may be loaded, written to files or otherwise used.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1007603019" aria-expanded="false" aria-controls="params1007603019">Parameters</button><div class="collapse" id="params1007603019">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>File</td><td>root</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="[Lmx.kenzie.foundation.language.PostCompileClass;">PostCompileClass[]</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final PostCompileClass[] class = skript.compileScripts(root);
+</code></pre>
+</div></div></div></section><section id="method:compileScripts(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">compileScripts<span class="text-secondary"> (File, File)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Compiles all scripts in the root directory to the output directory.
+This is used by the 'compile' goal.
+This is designed for use by compiler apps rather than programs.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params348100441" aria-expanded="false" aria-controls="params348100441">Parameters</button><div class="collapse" id="params348100441">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>File</td><td>root</td>
+</tr>
+<tr><th scope="row">2</th><td>File</td><td>outputDirectory</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.Collection">Collection</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Collection collection = skript.compileScripts(root, outputDirectory);
+assert collection.add(object);
+assert collection.remove(object);
+assert collection.equals(object);
+</code></pre>
+</div></div></div></section><section id="method:compileScriptAsync(2)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">compileScriptAsync<span class="text-secondary"> (String, String)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Compiles a simple script from its string source to a memory class.
+This method may be unavailable in some distributions.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1597249648" aria-expanded="false" aria-controls="params1597249648">Parameters</button><div class="collapse" id="params1597249648">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>String</td><td>code</td>
+</tr>
+<tr><th scope="row">2</th><td>String</td><td>name</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="org.byteskript.skript.runtime.internal.Promise">Promise</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Promise promise = skript.compileScriptAsync(code, name);
+promise.get();
+promise.get(timeout, unit);
+assert promise.cancel(mayInterruptIfRunning);
+</code></pre>
+</div></div></div></section><section id="method:loadScripts(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">loadScripts<span class="text-secondary"> (File)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Loads all compiled classes from the given root file as scripts.
+This is not a safe operation - not all compiled classes are suitable to be loaded in this way.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params89387388" aria-expanded="false" aria-controls="params89387388">Parameters</button><div class="collapse" id="params89387388">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>File</td><td>root</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.Collection">Collection</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Collection collection = skript.loadScripts(root);
+assert collection.add(object);
+assert collection.remove(object);
+assert collection.equals(object);
+</code></pre>
+</div></div></div></section><section id="method:loadScripts(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">loadScripts<span class="text-secondary"> (PostCompileClass[])</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Loads scripts from compiled source code.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1333592072" aria-expanded="false" aria-controls="params1333592072">Parameters</button><div class="collapse" id="params1333592072">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>PostCompileClass[]</td><td>data</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.Collection">Collection</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Collection collection = skript.loadScripts(data);
+assert collection.add(object);
+assert collection.remove(object);
+assert collection.equals(object);
+</code></pre>
+</div></div></div></section><section id="method:compileLoadScripts(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">compileLoadScripts<span class="text-secondary"> (File)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Compiles and loads all scripts from a source directory.
+This method may be unavailable in some distributions.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params655381473" aria-expanded="false" aria-controls="params655381473">Parameters</button><div class="collapse" id="params655381473">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>File</td><td>root</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.Collection">Collection</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Collection collection = skript.compileLoadScripts(root);
+assert collection.add(object);
+assert collection.remove(object);
+assert collection.equals(object);
+</code></pre>
+</div></div></div></section><section id="method:setOutput(1)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">setOutput<span class="text-secondary"> (PrintStream)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Set the current print stream used by the <code>print</code> effect.
+This can be used to redirect output in a particular state.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1486371051" aria-expanded="false" aria-controls="params1486371051">Parameters</button><div class="collapse" id="params1486371051">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>PrintStream</td><td>out</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-info"data-bs-toggle="tooltip" data-bs-placement="left" title="void">void</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:allocateProcess(3)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">allocateProcess<span class="text-secondary"> (OperationController, Runnable, boolean)</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>Generates a script thread from the given process.</p>
+<div class="pt-2 col-sm-12"><button class="d-inline btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#params1121647253" aria-expanded="false" aria-controls="params1121647253">Parameters</button><div class="collapse" id="params1121647253">
+<table class="table table-borderless">
+<thead><tr><th scope="col">Index</th><th scope="col">Type</th><th scope="col">Name</th>
+</tr></thead>
+<tbody>
+<tr><th scope="row">1</th><td>OperationController</td><td>controller</td>
+</tr>
+<tr><th scope="row">2</th><td>Runnable</td><td>runnable</td>
+</tr>
+<tr><th scope="row">3</th><td>boolean</td><td>inheritLocals</td>
+</tr>
+</tbody>
+</table></div></div></div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.Thread">Thread</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final Thread thread = skript.allocateProcess(controller, runnable, inheritLocals);
+thread.getName();
+assert thread.run() == null;
+thread.toString();
+</code></pre>
+</div></div></div></section><section id="method:getMainThread(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getMainThread<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>The 'main' thread this runtime was given.
+This is used mostly for locking.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-primary"data-bs-toggle="tooltip" data-bs-placement="left" title="java.lang.Thread">Thread</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"></div></div></section><section id="method:getScheduler(0)"><div class="row mb-2">
+<div class="col-lg-8 col-md-12 col-sm-12">
+<div class="row g-0 border rounded flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+<div class="col bg-light col-lg-12 pt-4 px-4 pb-0 m-0"><h3 class="mb-0">getScheduler<span class="text-secondary"> ()</span></h3><strong class="d-inline-block mb-2 text-primary"data-bs-toggle="tooltip" data-bs-placement="right" title="A callable code trigger.">Method</strong></div>
+<div class="col col-lg-8 col-sm-12 pt-1 pb-4 px-4 d-flex flex-column position-static"><p>The scheduler service this runtime uses.</p>
+</div>
+<div class="col-lg-4 col-md-12 card-deck"><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Return Type</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><strong class="d-block text-success"data-bs-toggle="tooltip" data-bs-placement="left" title="java.util.concurrent.ScheduledExecutorService">ScheduledExecutorService</strong></p></div></div><div class="card m-2 mx-3 bg-body rounded shadow-sm"><div class="card-header">Modifiers</div><div class="card-body"><p class="pb-3 mb-0 small lh-sm"><span class="badge bg-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Accessible from anywhere.">public</span> </p></div></div></div></div>
+</div><div class="col col-lg-4 col-sm-12 col-md-12"><div class="rounded bg-dark text-light"><pre><code class="language-java">// Randomly-generated example
+final ScheduledExecutorService service = skript.getScheduler();
+service.scheduleWithFixedDelay(runnable, j, j, unit);
+service.schedule(runnable, j, unit);
+service.schedule(callable, j, unit);
+</code></pre>
+</div></div></div></section><br />
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+<script src="https://use.fontawesome.com/releases/v5.13.1/js/all.js" type="text/javascript" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js" crossorigin="anonymous"></script>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+   document.addEventListener('DOMContentLoaded', (event) => {
+     document.querySelectorAll('pre code').forEach((el) => {
+       hljs.highlightElement(el);
+       el.parentElement.classList.add('rounded');
+       el.classList.add('rounded');
+     });
+   });
+ </script>
+</body>
+</html>
