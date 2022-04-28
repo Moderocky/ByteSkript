@@ -8,7 +8,6 @@ package org.byteskript.skript.lang.syntax.maths;
 
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.note.Documentation;
-import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
@@ -29,10 +28,10 @@ import org.byteskript.skript.runtime.internal.OperatorHandler;
                 """
     }
 )
-public class ExprMultiply extends RelationalExpression {
+public class ExprMultiply extends SymbolJoiner {
     
     public ExprMultiply() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% ?(\\\\*|×) ?%Number%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% ?(\\\\*) ?%Number%");
         try {
             handlers.put(StandardHandlers.FIND, OperatorHandler.class.getMethod("multiply", Object.class, Object.class));
             handlers.put(StandardHandlers.GET, OperatorHandler.class.getMethod("multiply", Object.class, Object.class));
@@ -47,8 +46,13 @@ public class ExprMultiply extends RelationalExpression {
     }
     
     @Override
+    char joiner() {
+        return '*';
+    }
+    
+    @Override
     public Pattern.Match match(String thing, Context context) {
-        if (!thing.contains("*") && !thing.contains("×")) return null;
+        if (!thing.contains("*")) return null;
         return super.match(thing, context);
     }
     

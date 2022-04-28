@@ -61,12 +61,14 @@ public class ScriptParseError extends Error implements ScriptError {
     
     @Override
     public void printStackTrace(PrintStream stream) {
+        if (System.getProperty("debug_mode") != null) super.printStackTrace(stream);
         if (details == null) super.printStackTrace(stream);
         else printStackTrace(new OutputWriter(stream, null));
     }
     
     @Override
     public void printStackTrace(PrintWriter stream) {
+        if (System.getProperty("debug_mode") != null) super.printStackTrace(stream);
         if (details == null) super.printStackTrace(stream);
         else printStackTrace(new OutputWriter(null, stream));
     }

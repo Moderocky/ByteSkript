@@ -8,7 +8,6 @@ package org.byteskript.skript.lang.syntax.maths;
 
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.note.Documentation;
-import org.byteskript.skript.api.syntax.RelationalExpression;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
@@ -28,7 +27,7 @@ import org.byteskript.skript.runtime.internal.OperatorHandler;
                 """
     }
 )
-public class ExprSubtract extends RelationalExpression {
+public class ExprSubtract extends SymbolJoiner {
     
     public ExprSubtract() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "%Object% ?- ?%Object%");
@@ -43,6 +42,11 @@ public class ExprSubtract extends RelationalExpression {
     @Override
     public Type getReturnType() {
         return CommonTypes.OBJECT;
+    }
+    
+    @Override
+    char joiner() {
+        return '-';
     }
     
     @Override

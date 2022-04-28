@@ -29,6 +29,12 @@ public class SyntaxTest extends SkriptTest {
         = new Skript();
 //    = new Skript(new DebugSkriptCompiler(Stream.controller(System.out)));
     
+    public static void main(String[] args) throws Throwable { // test only
+        System.setProperty("debug_mode", "true");
+        final PostCompileClass cls = skript.compileScript(MainTest.class.getClassLoader()
+            .getResourceAsStream("tests/bracket.bsk"), "skript.bracket");
+    }
+    
     @Test
     public void all() throws Throwable {
         final URI uri = SyntaxTest.class.getClassLoader().getResource("tests").toURI();

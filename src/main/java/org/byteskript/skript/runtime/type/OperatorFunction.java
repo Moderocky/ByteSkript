@@ -29,11 +29,11 @@ public interface OperatorFunction<A, B> {
         };
     }
     
+    Object union(A first, B second) throws Throwable;
+    
     default Object union2(B first, A second) throws Throwable {
         return this.union(second, first);
     }
-    
-    Object union(A first, B second) throws Throwable;
     
     default boolean reversible() {
         return true;

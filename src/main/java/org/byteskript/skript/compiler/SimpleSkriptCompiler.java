@@ -232,7 +232,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             for (int i = 0; i < types.length; i++) {
                 final String input = inputs[i];
                 final Type type = types[i];
-                final ElementTree sub = assembleExpression(input.trim(), type, context, details);
+                final ElementTree sub = this.assembleExpression(input.trim(), type, context, details);
                 if (sub == null) {
                     context.currentEffect = null;
                     continue outer;
@@ -261,25 +261,28 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             final Pattern.Match match = handler.match(expression, context);
             if (match == null) continue;
             if (!match.equals(expression)) continue;
-            final Type[] types = match.expected();
-            final String[] inputs = match.groups();
-            if (inputs.length < types.length) continue;
-            context.setState(handler.getSubState()); // anticipate inner-effect state change
-            details.expressionMatched = handler;
-            inner:
-            for (int i = 0; i < types.length; i++) {
-                final String input = inputs[i];
-                final Type type = types[i];
-                final ElementTree sub = this.assembleExpression(input.trim(), type, context, details);
-                if (sub == null) continue outer;
-                elements.add(sub);
+            variants:
+            for (final Pattern.Match.Variant variant : match.variants) {
+                final Type[] types = variant.expected();
+                final String[] inputs = variant.groups();
+                if (inputs.length < types.length) continue;
+                context.setState(handler.getSubState()); // anticipate inner-effect state change
+                details.expressionMatched = handler;
+                inner:
+                for (int i = 0; i < types.length; i++) {
+                    final String input = inputs[i];
+                    final Type type = types[i];
+                    final ElementTree sub = this.assembleExpression(input.trim(), type, context, details);
+                    if (sub == null) continue variants;
+                    elements.add(sub);
+                }
+                current = new ElementTree(handler, match, elements.toArray(new ElementTree[0]));
+                if (handler instanceof InnerModifyExpression) {
+                    assert current.nested().length == 1;
+                    current = current.nested()[0];
+                }
+                break outer;
             }
-            current = new ElementTree(handler, match, elements.toArray(new ElementTree[0]));
-            if (handler instanceof InnerModifyExpression) {
-                assert current.nested().length == 1;
-                current = current.nested()[0];
-            }
-            break;
         }
         return current;
     }

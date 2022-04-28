@@ -22,6 +22,7 @@ function basic:
         assert {e} is 2: "Square root (syntax) failed."
         assert "hello " + "there" is "hello there": "String joining failed."
         assert "Hello " + "<there!" is "Hello <there!": "String joining failed."
+        assert "hello + " + "there" is "hello + there": "String joining failed."
 
 function test:
     trigger:

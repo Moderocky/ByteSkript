@@ -6,7 +6,6 @@
 
 package org.byteskript.skript.test;
 
-import mx.kenzie.autodoc.AutoDocs;
 import mx.kenzie.autodoc.DocBuilder;
 
 import java.io.File;

@@ -10,6 +10,7 @@ import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.Library;
 
 import java.util.*;
+import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 
 public class Pattern { // todo remove regex go indexOf impl
@@ -61,7 +62,7 @@ public class Pattern { // todo remove regex go indexOf impl
                         current = builder;
                     } else {
                         input = true;
-                        builder.append("(\\(.+\\)|.+?)");
+                        builder.append("(\\(.+\\)|.+)");
                         current = new StringBuilder();
                     }
                 }
@@ -170,6 +171,7 @@ public class Pattern { // todo remove regex go indexOf impl
     
     public static final class Match {
         public final int matchedPattern;
+        public final Variant[] variants;
         private final Matcher matcher;
         private final Object meta;
         private final Type[] expected;
@@ -188,6 +190,28 @@ public class Pattern { // todo remove regex go indexOf impl
             this.meta = meta;
             this.expected = expected;
             this.matchedPattern = matchedPattern;
+            final List<String> list = new ArrayList<>();
+            for (int i = 1; i <= matcher.groupCount(); i++) {
+                list.add(matcher.group(i).trim());
+            }
+            this.groups = list.toArray(new String[0]);
+            final List<Variant> variants = new ArrayList<>();
+            final Matcher second = matcher.pattern().matcher(matcher.group());
+            while (second.find()) {
+                final List<String> strings = new ArrayList<>();
+                for (int i = 1; i <= second.groupCount(); i++) strings.add(second.group(i).trim());
+                final String[] groups = strings.toArray(new String[0]);
+                variants.add(new Variant(second, expected, groups));
+            }
+            this.variants = variants.toArray(new Variant[0]);
+        }
+        
+        public Match(Matcher matcher, Variant[] variants, int matchedPattern, Object meta, Type... expected) {
+            this.matcher = matcher;
+            this.meta = meta;
+            this.expected = expected;
+            this.matchedPattern = matchedPattern;
+            this.variants = variants;
             final List<String> list = new ArrayList<>();
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 list.add(matcher.group(i).trim());
@@ -214,6 +238,10 @@ public class Pattern { // todo remove regex go indexOf impl
         
         public boolean equals(String string) {
             return matcher.group().equals(string);
+        }
+        
+        public record Variant(MatchResult result, Type[] expected, String[] groups) {
+        
         }
         
     }
