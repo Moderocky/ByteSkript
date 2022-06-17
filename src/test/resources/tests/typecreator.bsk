@@ -8,5 +8,5 @@ function test:
     trigger:
         set {foo} to a new foo
         assert {foo} is a foo
-        assert box() from {foo} is 2
+        assert box() of {foo} is 2
         return true

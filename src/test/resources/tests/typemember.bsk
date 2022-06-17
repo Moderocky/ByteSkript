@@ -12,7 +12,7 @@ type Box:
     function bonk:
         return: Boolean
         trigger:
-            set {var} to my_func() from this object
+            set {var} to my_func() of this object
             assert {var} is "hello": "Member-local function didn't return properly."
             return true
     function my_func:
@@ -38,13 +38,13 @@ function basic_use:
         assert {thing} is a Box: "Type self-comparison failed."
         assert {thing} is a Thing: "Type template-comparison failed."
         assert "" + {thing} is "Hello?": "Type toString override failed."
-        set {word} to my_func() from {thing}
+        set {word} to my_func() of {thing}
         assert {word} is "hello": "Member function call failed."
-        set {number} to func_with_args(3) from {thing}
+        set {number} to func_with_args(3) of {thing}
         assert {number} is 211: "Member function call with args failed."
-        set {boolean} to bonk() from {thing}
+        set {boolean} to bonk() of {thing}
         assert {boolean} is true: "Member function didn't return correctly."
-        assert another_func() from {thing} is 10: "Template default function didn't return correctly."
+        assert another_func() of {thing} is 10: "Template default function didn't return correctly."
         set {thing} to a new Crate
         assert {thing} exists: "Type creation failed."
         assert {thing} is a Crate: "Type self-comparison failed."
@@ -78,8 +78,8 @@ function multiple_inheritance:
         assert {rectangle} is a Rectangle: "Type self-comparison failed."
         assert {rectangle} is a Quadrilateral: "Type super-comparison failed."
         assert {rectangle} is a Shape: "Type inherited super-comparison failed."
-        assert get_sides() from {square} is 4: "Type default function failed."
-        assert get_sides() from {rectangle} is 4: "Type default function failed."
+        assert get_sides() of {square} is 4: "Type default function failed."
+        assert get_sides() of {rectangle} is 4: "Type default function failed."
 
 type Getter:
     template: java/util/function/Supplier
@@ -93,7 +93,7 @@ function java_implement:
         assert {getter} is a Getter: "Type self-comparison failed."
         set {class} to java/util/function/Supplier
         assert {getter} is a {class}: "Type java super-comparison failed."
-        set {var} to get() from {getter}
+        set {var} to get() of {getter}
         assert {var} is "hello": "Supplier get method failed."
         set {var} to result of {getter}
         assert {var} is "hello": "Supplier result-of failed."
@@ -129,7 +129,7 @@ function test:
         set {foo} to a new bar
         assert {foo} is a foo
         assert {foo} is a bar
-        assert box() from {foo} is 3
+        assert box() of {foo} is 3
         run runnable()
         run basic_use()
         run java_implement()
