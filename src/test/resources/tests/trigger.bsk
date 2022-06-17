@@ -12,6 +12,6 @@ function test:
     trigger:
         set {var} to a new Box
         assert {var} is a Box
-        assert bean() from {var} is "hello"
+        assert bean() of {var} is "hello"
         assert bean() is "there"
         return true

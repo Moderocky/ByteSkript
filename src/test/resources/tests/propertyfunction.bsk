@@ -10,7 +10,7 @@ function test:
         set {var} to a new blob
         assert {var} exists
         assert {var} is a blob
-        assert test() from {var} is "hello"
-        set {x} to test() from {var}
+        assert test() of {var} is "hello"
+        set {x} to test() of {var}
         assert {x} is "hello"
         return true

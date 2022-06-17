@@ -25,7 +25,7 @@ function simple_example: // todo - check other property accessors inside types
         set age of {thing} to 62
         assert name of {thing} is "Thing": "Name property set/access failed."
         assert age of {thing} is 62: "Age property set/access failed."
-        run set_house("hello") from {thing}
+        run set_house("hello") of {thing}
         assert house of {thing} is "hello": "Local set failed."
 
 type Thing:
@@ -62,6 +62,6 @@ function test:
         assert {error} exists: "Error was not thrown during illegal set."
         delete {error}
         assert blob of {thing} is null: "Empty field was set somehow."
-        assert blob() from {thing} is "hello": "Function access failed."
+        assert blob() of {thing} is "hello": "Function access failed."
         run simple_example()
         return true
