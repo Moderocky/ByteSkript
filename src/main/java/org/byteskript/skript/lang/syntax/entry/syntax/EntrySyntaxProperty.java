@@ -26,7 +26,7 @@ import org.byteskript.skript.lang.element.StandardElements;
                 syntax:
                     property: name
                 trigger:
-                    run set_name({name}) from {thing}
+                    run set_name({name}) of {thing}
             """
     }
 )
