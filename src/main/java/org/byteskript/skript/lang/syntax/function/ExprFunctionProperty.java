@@ -26,21 +26,21 @@ import java.util.regex.Matcher;
         """,
     examples = {
         """
-            set {sides} to get_sides() from {square}
+            set {sides} to get_sides() of {square}
                 """
     }
 )
 public class ExprFunctionProperty extends SimpleExpression {
     
-    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")\\((?<params>.*)\\) from (?<object>.+)");
+    private static final java.util.regex.Pattern PATTERN = java.util.regex.Pattern.compile("(?<name>" + SkriptLangSpec.IDENTIFIER.pattern() + ")\\((?<params>.*)\\) of (?<object>.+)");
     
     public ExprFunctionProperty() {
-        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "function(...) from %Object%");
+        super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "function(...) of %Object%");
     }
     
     @Override
     public Pattern.Match match(String thing, Context context) {
-        if (!thing.contains(") from ")) return null;
+        if (!thing.contains(") of ")) return null;
         if (!thing.contains("(")) return null;
         return createMatch(thing, context);
     }
@@ -93,7 +93,7 @@ public class ExprFunctionProperty extends SimpleExpression {
                 builder.append("(.+)");
             }
         }
-        return builder.append("\\) from (.+)").toString();
+        return builder.append("\\) of (.+)").toString();
     }
     
     @Override
