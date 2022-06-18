@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.flow.conditional;
 
 import mx.kenzie.foundation.MethodBuilder;
+import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.note.Documentation;
@@ -45,7 +46,12 @@ public class IfSection extends Section {
         if (!thing.startsWith("if ")) return null;
         return super.match(thing, context);
     }
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
+    }
+
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final IfElseTree tree = new IfElseTree(context.getSection(1), new MultiLabel());

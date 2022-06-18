@@ -10,6 +10,7 @@ import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.LanguageElement;
 import org.byteskript.skript.api.Library;
+import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
@@ -28,7 +29,12 @@ public abstract class SimpleEntry extends Element {
     public CompileState getSubState() {
         return CompileState.MEMBER_BODY;
     }
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
+    }
+
     @Override
     public boolean allowAsInputFor(Type type) {
         return false;

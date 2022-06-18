@@ -44,6 +44,11 @@ public class ExprLemmaSection extends ExtractedSection {
     public boolean allowAsInputFor(Type type) {
         return CommonTypes.OBJECT.equals(type) || CommonTypes.EXECUTABLE.equals(type);
     }
-    
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.EXECUTABLE;
+    }
+
+
 }

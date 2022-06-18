@@ -71,6 +71,6 @@ public class RegexLiteral extends Literal<java.util.regex.Pattern> {
     
     @Override
     public Type getReturnType() {
-        return CommonTypes.STRING;
+        return new Type(java.util.regex.Pattern.class);
     }
 }

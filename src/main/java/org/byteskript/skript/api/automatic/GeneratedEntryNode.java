@@ -6,14 +6,12 @@
 
 package org.byteskript.skript.api.automatic;
 
+import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.Library;
 import org.byteskript.skript.api.syntax.Element;
 import org.byteskript.skript.api.syntax.Literal;
-import org.byteskript.skript.compiler.CompileState;
-import org.byteskript.skript.compiler.Context;
-import org.byteskript.skript.compiler.ElementTree;
-import org.byteskript.skript.compiler.Pattern;
+import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.error.ScriptParseError;
 import org.byteskript.skript.lang.element.StandardElements;
 
@@ -27,7 +25,12 @@ public class GeneratedEntryNode extends Element {
         super(provider, StandardElements.NODE, patterns);
         this.target = target;
     }
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
+    }
+
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final ElementTree tree = context.getCompileCurrent().nested()[0];

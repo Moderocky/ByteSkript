@@ -35,7 +35,7 @@ public class ExprThisThing extends SimpleExpression {
     
     @Override
     public Type getReturnType() {
-        return CommonTypes.STRING;
+        return CommonTypes.OBJECT;
     }
     
     @Override

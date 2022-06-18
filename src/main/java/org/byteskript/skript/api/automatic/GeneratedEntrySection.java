@@ -6,9 +6,11 @@
 
 package org.byteskript.skript.api.automatic;
 
+import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.FunctionalEntrySection;
 import org.byteskript.skript.api.Library;
 import org.byteskript.skript.api.syntax.Section;
+import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
@@ -28,7 +30,12 @@ public final class GeneratedEntrySection extends Section {
         super(provider, StandardElements.SECTION, patterns);
         this.target = target;
     }
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
+    }
+
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         context.setState(CompileState.AREA_BODY);

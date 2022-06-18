@@ -50,5 +50,10 @@ public class ExprBracket extends InnerModifyExpression {
     public boolean allowAsInputFor(Type type) {
         return true;
     }
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.OBJECT;
+    }
+
 }

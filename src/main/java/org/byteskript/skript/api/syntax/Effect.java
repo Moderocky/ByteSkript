@@ -13,6 +13,7 @@ import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.LanguageElement;
 import org.byteskript.skript.api.Library;
 import org.byteskript.skript.api.SyntaxElement;
+import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
@@ -25,7 +26,12 @@ public abstract class Effect extends Element implements SyntaxElement {
     public Effect(final Library provider, final LanguageElement type, final String... patterns) {
         super(provider, type, patterns);
     }
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
+    }
+
     @Override
     public CompileState getSubState() {
         return CompileState.STATEMENT; // looking for expressions here

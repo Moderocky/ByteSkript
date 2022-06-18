@@ -9,6 +9,7 @@ package org.byteskript.skript.api.syntax;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.LanguageElement;
 import org.byteskript.skript.api.Library;
+import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.structure.SectionMeta;
@@ -30,7 +31,12 @@ public abstract class Member extends Section {
         context.setField(null);
         context.setState(CompileState.ROOT);
     }
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
+    }
+
     @Override
     public boolean allowAsInputFor(Type type) {
         return false;
