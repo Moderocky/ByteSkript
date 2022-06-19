@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.flow.loop;
 
 import mx.kenzie.foundation.MethodBuilder;
+import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.note.Documentation;
@@ -51,7 +52,12 @@ public class EffectLoopInSection extends Section {
         if (!thing.contains(" in ")) return null;
         return super.match(thing, context);
     }
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
+    }
+
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final ElementTree holder = context.getCompileCurrent().nested()[0];

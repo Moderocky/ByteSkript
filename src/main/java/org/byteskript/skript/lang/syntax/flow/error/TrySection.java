@@ -6,13 +6,11 @@
 
 package org.byteskript.skript.lang.syntax.flow.error;
 
+import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Section;
-import org.byteskript.skript.compiler.CompileState;
-import org.byteskript.skript.compiler.Context;
-import org.byteskript.skript.compiler.Pattern;
-import org.byteskript.skript.compiler.SkriptLangSpec;
+import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.MultiLabel;
 import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.compiler.structure.TryCatchTree;
@@ -43,7 +41,12 @@ public class TrySection extends Section {
         if (!thing.startsWith("try")) return null;
         return super.match(thing, context);
     }
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
+    }
+
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final TryCatchTree tree = new TryCatchTree(context.getSection(1), new MultiLabel());

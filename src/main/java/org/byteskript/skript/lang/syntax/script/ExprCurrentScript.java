@@ -16,6 +16,7 @@ import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
+import org.byteskript.skript.runtime.Script;
 
 @Documentation(
     name = "Current Script",
@@ -37,7 +38,7 @@ public class ExprCurrentScript extends SimpleExpression {
     
     @Override
     public Type getReturnType() {
-        return CommonTypes.STRING;
+        return new Type(Script.class);
     }
     
     @Override

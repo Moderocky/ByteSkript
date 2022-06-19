@@ -11,6 +11,7 @@ import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Literal;
+import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;
@@ -56,5 +57,10 @@ public class NoneLiteral extends Literal<Void> {
     public boolean allowAsInputFor(Type type) {
         return true;
     }
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
+    }
+
 }

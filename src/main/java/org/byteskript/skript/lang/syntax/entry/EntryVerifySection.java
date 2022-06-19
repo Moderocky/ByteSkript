@@ -97,5 +97,10 @@ public class EntryVerifySection extends Section {
     public boolean allowAsInputFor(Type type) {
         return false;
     }
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
+    }
+
 }

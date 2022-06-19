@@ -6,9 +6,11 @@
 
 package org.byteskript.skript.api.syntax;
 
+import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.LanguageElement;
 import org.byteskript.skript.api.Library;
+import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
 
@@ -21,7 +23,12 @@ public abstract class SectionEntry extends Section {
     public CompileState getSubState() {
         return CompileState.MEMBER_BODY;
     }
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
+    }
+
     @Override
     public boolean allowedIn(State state, Context context) {
         return state == CompileState.MEMBER_BODY;

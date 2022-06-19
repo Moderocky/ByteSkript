@@ -14,6 +14,7 @@ import org.byteskript.skript.compiler.SkriptLangSpec;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.lang.handler.StandardHandlers;
 import org.byteskript.skript.runtime.internal.ExtractedSyntaxCalls;
+import org.byteskript.skript.runtime.internal.ModifiableCompiler;
 
 @Documentation(
     name = "Compiler",
@@ -39,7 +40,7 @@ public class ExprCompiler extends SimpleExpression {
     
     @Override
     public Type getReturnType() {
-        return CommonTypes.OBJECT;
+        return new Type(ModifiableCompiler.class);
     }
     
     @Override

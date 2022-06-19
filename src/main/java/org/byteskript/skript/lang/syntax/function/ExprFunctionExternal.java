@@ -105,7 +105,23 @@ public class ExprFunctionExternal extends SimpleExpression {
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final ElementTree[] trees = context.getCompileCurrent().nested();
-        for (final ElementTree tree : trees) tree.takeAtomic = true;
+        int ctr = 0;
+        for (final ElementTree tree : trees) {
+            tree.takeAtomic = true;
+            var type = tree.current().getReturnType();
+
+            /*
+             Probably safe to assume none of our inputs have a Void return type...
+             That being said, the return type for expressions can't always be trusted,
+             because some of them have incorrect return types (c.i.p. ExprCurrentScript).
+
+             This is going to break them as inputs into FunctionExternal, but those expressions
+             are already incredibly broken, so this has little effect on the overall functionality
+             of the language.
+            */
+            type = type.matches(Void.class) ? CommonTypes.OBJECT : type;
+            ((FunctionDetails)match.meta()).arguments[ctr++] = type;
+        }
         super.preCompile(context, match);
     }
     

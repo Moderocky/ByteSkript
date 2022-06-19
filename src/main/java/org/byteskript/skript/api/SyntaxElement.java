@@ -82,9 +82,7 @@ public interface SyntaxElement {
     boolean hasHandler(HandlerType type);
     
     @Description("The return type of this element, used for type tracking during compilation.")
-    default Type getReturnType() {
-        return CommonTypes.VOID;
-    }
+    Type getReturnType();
     
     @Description("""
         This is called during the first compiler pass, Out->In, L->R.
@@ -109,12 +107,12 @@ public interface SyntaxElement {
     default boolean isDelay() {
         return false;
     }
-    
-    @Ignore
+
+    /*@Ignore //TODO: implement requiresMainThread
     default boolean requiresMainThread() {
         return false;
-    }
-    
+    }*/
+
     @Ignore
     default void addSkipInstruction(Context context, Consumer<Context> consumer) {
         context.addSkipInstruction(consumer);

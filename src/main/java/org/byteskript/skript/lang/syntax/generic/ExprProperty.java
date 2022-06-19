@@ -51,7 +51,12 @@ public class ExprProperty extends RelationalExpression implements Referent {
     public boolean allowAsInputFor(Type type) {
         return true;
     }
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.OBJECT;
+    }
+
     @Override
     public Pattern.Match match(String thing, Context context) {
         final int i;

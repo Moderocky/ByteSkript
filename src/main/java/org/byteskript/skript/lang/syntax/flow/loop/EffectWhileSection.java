@@ -7,14 +7,12 @@
 package org.byteskript.skript.lang.syntax.flow.loop;
 
 import mx.kenzie.foundation.MethodBuilder;
+import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.WriteInstruction;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Section;
-import org.byteskript.skript.compiler.CompileState;
-import org.byteskript.skript.compiler.Context;
-import org.byteskript.skript.compiler.Pattern;
-import org.byteskript.skript.compiler.SkriptLangSpec;
+import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.compiler.structure.ProgrammaticSplitTree;
 import org.byteskript.skript.compiler.structure.SectionMeta;
 import org.byteskript.skript.compiler.structure.WhileTree;
@@ -47,7 +45,12 @@ public class EffectWhileSection extends Section {
         if (!thing.startsWith("while ")) return null;
         return super.match(thing, context);
     }
-    
+
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
+    }
+
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final WhileTree tree = new WhileTree(context.getSection(1));
