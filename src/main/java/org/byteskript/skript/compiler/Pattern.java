@@ -192,14 +192,18 @@ public class Pattern { // todo remove regex go indexOf impl
             this.matchedPattern = matchedPattern;
             final List<String> list = new ArrayList<>();
             for (int i = 1; i <= matcher.groupCount(); i++) {
-                list.add(matcher.group(i).trim());
+                String group = matcher.group(i);
+                if (group != null) list.add(group.trim());
             }
             this.groups = list.toArray(new String[0]);
             final List<Variant> variants = new ArrayList<>();
             final Matcher second = matcher.pattern().matcher(matcher.group());
             while (second.find()) {
                 final List<String> strings = new ArrayList<>();
-                for (int i = 1; i <= second.groupCount(); i++) strings.add(second.group(i).trim());
+                for (int i = 1; i <= second.groupCount(); i++) {
+                    String group = second.group(i);
+                    if (group != null) strings.add(group.trim());
+                }
                 final String[] groups = strings.toArray(new String[0]);
                 variants.add(new Variant(second, expected, groups));
             }
