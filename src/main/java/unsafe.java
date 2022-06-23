@@ -116,7 +116,14 @@ public class unsafe extends UnsafeAccessor {
     }
     
     public static void set_java_field(Object owner, Object name, Object value) {
-        mirror(owner).field((name) + "").set((value));
+        final FieldAccessor<?> accessor = mirror(owner).field((name) + "");
+        if (accessor != null) {
+            accessor.set((value));
+        } else {
+            throw new IllegalArgumentException(
+                    "Tried to set field " + owner.getClass().getSimpleName()
+                            + "#" + name + ", but it does not exist");
+        }
     }
     //endregion
     
