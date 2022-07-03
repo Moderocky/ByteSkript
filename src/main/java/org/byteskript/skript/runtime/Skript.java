@@ -483,17 +483,20 @@ public final class Skript {
         Trigger all event handlers that can deal with this event.
         Each handler will spawn its own process.
         This will trigger only the given script.
+        
+        Optional will be empty if no handlers are found.
         """)
     @GenerateExample
-    public boolean runEvent(final Event event, final Script script) {
-        boolean run = false;
+    public Optional<CompletableFuture<Void>> runEvent(final Event event, final Script script) {
+        final List<CompletableFuture<Void>> futures = new ArrayList<>();
         for (Map.Entry<Class<? extends Event>, EventHandler> entry : events.entrySet()) {
             final Class<? extends Event> key = entry.getKey();
             if (!key.isAssignableFrom(event.getClass())) continue;
-            run = true;
-            entry.getValue().run(this, event, script);
+            futures.add(entry.getValue().run(this, event, script));
         }
-        return run;
+        
+        if (futures.isEmpty()) return Optional.empty();
+        return Optional.of(CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new)));
     }
     
     @Description("""
@@ -775,17 +778,20 @@ public final class Skript {
     @Description("""
         Trigger all event handlers that can deal with this event.
         Each handler will spawn its own process.
+        
+        Optional will be empty if no handlers are found.
         """)
     @GenerateExample
-    public boolean runEvent(final Event event) {
-        boolean run = false;
+    public Optional<CompletableFuture<Void>> runEvent(final Event event) {
+        final List<CompletableFuture<Void>> futures = new ArrayList<>();
         for (Map.Entry<Class<? extends Event>, EventHandler> entry : events.entrySet()) {
             final Class<? extends Event> key = entry.getKey();
             if (!key.isAssignableFrom(event.getClass())) continue;
-            run = true;
-            entry.getValue().run(this, event);
+            futures.add(entry.getValue().run(this, event));
         }
-        return run;
+    
+        if (futures.isEmpty()) return Optional.empty();
+        return Optional.of(CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new)));
     }
     
     @Description("""
