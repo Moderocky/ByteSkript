@@ -117,9 +117,7 @@ public class unsafe extends UnsafeAccessor {
     
     public static void set_java_field(Object owner, Object name, Object value) {
         final FieldAccessor<?> accessor = mirror(owner).field((name) + "");
-        if (accessor != null) {
-            accessor.set((value));
-        }
+        if (accessor != null) accessor.set((value));
     }
     //endregion
     
