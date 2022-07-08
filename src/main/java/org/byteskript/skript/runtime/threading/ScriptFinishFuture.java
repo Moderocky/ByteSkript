@@ -13,11 +13,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
-public class ScriptFinishFuture implements Future<Object> {
+public class ScriptFinishFuture implements Supplier<Object>, Future<Object> {
     
     private final Skript skript;
     private final Object lock = new Object();
+    private boolean done;
     public ScriptThread thread;
     protected Object value;
     
@@ -25,15 +27,16 @@ public class ScriptFinishFuture implements Future<Object> {
         this.skript = skript;
     }
     
-    public void value(Object object) {
-        synchronized (this) {
-            this.value = object;
-        }
+    public synchronized void value(Object object) {
+        this.value = object;
     }
     
     public void finish() {
         synchronized (lock) {
             lock.notify();
+        }
+        synchronized (this) {
+            this.done = true;
         }
     }
     
@@ -47,18 +50,25 @@ public class ScriptFinishFuture implements Future<Object> {
     
     @Override
     public boolean isCancelled() {
-        return thread != null && !thread.isAlive();
+        return thread == null || thread.isAlive();
     }
     
     @Override
-    public boolean isDone() {
-        return thread != null && !thread.isAlive();
+    public synchronized boolean isDone() {
+        return value != null;
     }
     
     @Override
-    public Object get() throws InterruptedException, ExecutionException {
+    public Object get() {
+        synchronized (this) {
+            if (this.done) return value;
+        }
         synchronized (lock) {
-            lock.wait();
+            try {
+                lock.wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         synchronized (this) {
             return value;
@@ -67,6 +77,9 @@ public class ScriptFinishFuture implements Future<Object> {
     
     @Override
     public Object get(long timeout, @NotNull TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+        synchronized (this) {
+            if (value != null) return value;
+        }
         synchronized (lock) {
             lock.wait(unit.toMillis(timeout));
         }

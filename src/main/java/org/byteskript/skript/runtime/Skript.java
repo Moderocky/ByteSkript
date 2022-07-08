@@ -24,6 +24,7 @@ import org.byteskript.skript.runtime.event.Unload;
 import org.byteskript.skript.runtime.internal.*;
 import org.byteskript.skript.runtime.threading.*;
 import org.byteskript.skript.runtime.type.Converter;
+import org.byteskript.skript.runtime.type.EventData;
 import org.byteskript.skript.runtime.type.OperatorFunction;
 
 import java.io.*;
@@ -463,15 +464,15 @@ public final class Skript {
         final Runnable runnable = () -> {
             final ScriptThread thread = (ScriptThread) Thread.currentThread();
             future.thread = thread;
-            thread.variables.clear();
+            thread.variables.clear(); // Some threads get regurgitated and will have shadow variables from their previous run.
             thread.initiator = runner.owner();
             thread.event = event;
             try {
                 runner.run();
-                future.value(runner.result());
             } catch (ThreadDeath ignore) {
-                // This is likely from an exit the current process effect, we don't want to make noise
+                // This is likely from an exit the current process effect, we don't want to make noise.
             } finally {
+                future.value(runner.result());
                 future.finish();
             }
         };
@@ -485,15 +486,16 @@ public final class Skript {
         This will trigger only the given script.
         """)
     @GenerateExample
-    public boolean runEvent(final Event event, final Script script) {
+    public EventData<?> runEvent(final Event event, final Script script) {
         boolean run = false;
+        final List<ScriptFinishFuture> futures = new ArrayList<>();
         for (Map.Entry<Class<? extends Event>, EventHandler> entry : events.entrySet()) {
             final Class<? extends Event> key = entry.getKey();
             if (!key.isAssignableFrom(event.getClass())) continue;
             run = true;
-            entry.getValue().run(this, event, script);
+            futures.addAll(Arrays.asList(entry.getValue().run(this, event, script)));
         }
-        return run;
+        return new EventData<>(run, event, futures.toArray(new ScriptFinishFuture[0]));
     }
     
     @Description("""
@@ -777,15 +779,16 @@ public final class Skript {
         Each handler will spawn its own process.
         """)
     @GenerateExample
-    public boolean runEvent(final Event event) {
+    public EventData<?> runEvent(final Event event) {
         boolean run = false;
+        final List<ScriptFinishFuture> futures = new ArrayList<>();
         for (Map.Entry<Class<? extends Event>, EventHandler> entry : events.entrySet()) {
             final Class<? extends Event> key = entry.getKey();
             if (!key.isAssignableFrom(event.getClass())) continue;
             run = true;
-            entry.getValue().run(this, event);
+            futures.addAll(Arrays.asList(entry.getValue().run(this, event)));
         }
-        return run;
+        return new EventData<>(run, event, futures.toArray(new ScriptFinishFuture[0]));
     }
     
     @Description("""
