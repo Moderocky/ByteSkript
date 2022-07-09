@@ -55,12 +55,9 @@ public class Member {
         else if (args instanceof Object[] array) arguments = array;
         else arguments = new Object[]{args};
         thread.skript.runOnAsyncThread((Instruction<?>) () -> {
-            if (thing instanceof Method method)
-                method.invoke(null, arguments);
-            else if (thing instanceof Member method)
-                method.invoke(arguments);
-            else if (thing instanceof MethodAccessor<?> method)
-                method.invoke(arguments);
+            if (thing instanceof Method method) method.invoke(null, arguments);
+            else if (thing instanceof Member method) method.invoke(arguments);
+            else if (thing instanceof MethodAccessor<?> method) method.invoke(arguments);
         });
         return null;
     }
@@ -81,16 +78,11 @@ public class Member {
         if (!(current instanceof ScriptThread thread))
             throw new ScriptRuntimeError("Cannot create background process from non-script thread.");
         thread.skript.runOnAsyncThread((Instruction<?>) () -> {
-            if (thing instanceof Method method)
-                method.invoke(null);
-            else if (thing instanceof Member method)
-                method.invoke();
-            else if (thing instanceof MethodAccessor<?> method)
-                method.invoke();
-            else if (thing instanceof Runnable runnable)
-                runnable.run();
-            else if (thing instanceof Future future)
-                future.get();
+            if (thing instanceof Method method) method.invoke(null);
+            else if (thing instanceof Member method) method.invoke();
+            else if (thing instanceof MethodAccessor<?> method) method.invoke();
+            else if (thing instanceof Runnable runnable) runnable.run();
+            else if (thing instanceof Future future) future.get();
         });
         return null;
     }
@@ -208,7 +200,7 @@ public class Member {
         Rather than returning a boolean result, this will throw an error if the verifier fails.""")
     public void verify() {
         if (verifier == null) return;
-        verifier.invoke(new Object[parameters]);
+        this.verifier.invoke(new Object[parameters]);
     }
     
 }

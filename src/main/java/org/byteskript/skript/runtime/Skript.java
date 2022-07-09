@@ -20,6 +20,7 @@ import org.byteskript.skript.compiler.SkriptCompiler;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.error.ScriptLoadError;
 import org.byteskript.skript.error.ScriptRuntimeError;
+import org.byteskript.skript.runtime.event.Empty;
 import org.byteskript.skript.runtime.event.Unload;
 import org.byteskript.skript.runtime.internal.*;
 import org.byteskript.skript.runtime.threading.*;
@@ -89,7 +90,7 @@ public final class Skript {
     @Ignore
     final Map<OperatorFunction.Data, OperatorFunction<?, ?>> operators;
     @Ignore
-    protected PrintStream out = System.out;
+    private PrintStream out = System.out;
     
     @Description("""
         Create a Skript runtime with a custom (non-default) Skript compiler.
@@ -175,8 +176,7 @@ public final class Skript {
     @ThreadSpecific
     public static RuntimeClassLoader findLoader() {
         final Thread current = Thread.currentThread();
-        if (current instanceof ScriptThread thread)
-            return thread.skript.parent;
+        if (current instanceof ScriptThread thread) return thread.skript.parent;
         return skript.parent;
     }
     
@@ -213,11 +213,10 @@ public final class Skript {
     }
     
     private static List<File> getFiles(List<File> files, Path root) {
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(root)) {
-            for (Path path : stream) {
-                if (path.toFile().isDirectory()) {
-                    getFiles(files, path);
-                } else {
+        try (final DirectoryStream<Path> stream = Files.newDirectoryStream(root)) {
+            for (final Path path : stream) {
+                if (path.toFile().isDirectory()) getFiles(files, path);
+                else {
                     if (!path.toFile().getName().endsWith(".bsk")) continue;
                     files.add(path.toAbsolutePath().toFile());
                 }
@@ -427,7 +426,7 @@ public final class Skript {
             future.thread = thread;
             thread.variables.clear();
             thread.initiator = null;
-            thread.event = null;
+            thread.event = new Empty();
             try {
                 executable.run();
             } catch (ThreadDeath ignore) {
@@ -436,7 +435,7 @@ public final class Skript {
                 future.finish();
             }
         };
-        factory.newThread(controller, runnable, true).start();
+        this.factory.newThread(controller, runnable, true).start();
         return future;
     }
     
@@ -476,7 +475,7 @@ public final class Skript {
                 future.finish();
             }
         };
-        factory.newThread(controller, runnable, true).start();
+        this.factory.newThread(controller, runnable, true).start();
         return future;
     }
     
@@ -553,6 +552,7 @@ public final class Skript {
         Registers a library instance to the current compiler.
         """)
     @GenerateExample
+    @SuppressWarnings("unchecked")
     public boolean registerLibrary(Library library) {
         for (final Map.Entry<Converter.Data, Converter<?, ?>> entry : library.getConverters().entrySet()) {
             final Converter.Data data = entry.getKey();
@@ -621,11 +621,9 @@ public final class Skript {
         if (!root.isDirectory()) throw new ScriptLoadError("Root must be a folder.");
         final List<File> files = getFiles(new ArrayList<>(), root.toPath());
         final List<File> outputs = new ArrayList<>();
-        for (final File file : files) {
-            try (final InputStream input = new FileInputStream(file)) {
-                final String name = getClassName(file, root);
-                outputs.addAll(compileComplexScript(input, name, outputDirectory));
-            }
+        for (final File file : files) try (final InputStream input = new FileInputStream(file)) {
+            final String name = this.getClassName(file, root);
+            outputs.addAll(compileComplexScript(input, name, outputDirectory));
         }
         return outputs;
     }
@@ -716,7 +714,7 @@ public final class Skript {
     @GenerateExample
     @CompilerDependent
     public PostCompileClass compileScript(final String code, final String name) {
-        return compileScript(new ByteArrayInputStream(code.getBytes(StandardCharsets.UTF_8)), name);
+        return this.compileScript(new ByteArrayInputStream(code.getBytes(StandardCharsets.UTF_8)), name);
     }
     
     @Description("""
@@ -726,7 +724,7 @@ public final class Skript {
     @GenerateExample
     @CompilerDependent
     public Promise<PostCompileClass[]> compileScriptAsync(final String code, final String name) {
-        return compileComplexScriptAsync(new ByteArrayInputStream(code.getBytes(StandardCharsets.UTF_8)), name);
+        return this.compileComplexScriptAsync(new ByteArrayInputStream(code.getBytes(StandardCharsets.UTF_8)), name);
     }
     
     @Description("""
@@ -798,7 +796,7 @@ public final class Skript {
     @CompilerDependent
     public Script compileLoad(File file, String name) throws IOException {
         try (final InputStream stream = new FileInputStream(file)) {
-            return compileLoad(stream, name);
+            return this.compileLoad(stream, name);
         }
     }
     
@@ -808,7 +806,7 @@ public final class Skript {
     @Deprecated
     @CompilerDependent
     public Script compileLoad(InputStream stream, String name) {
-        return loadScript(compileScript(stream, name));
+        return this.loadScript(compileScript(stream, name));
     }
     
     @Description("""
@@ -845,9 +843,7 @@ public final class Skript {
     @GenerateExample
     public Script loadScript(final PostCompileClass[] data) {
         final Class<?>[] classes = new Class[data.length];
-        for (int i = 0; i < data.length; i++) {
-            classes[i] = this.loadClass(data[i].name(), data[i].code());
-        }
+        for (int i = 0; i < data.length; i++) classes[i] = this.loadClass(data[i].name(), data[i].code());
         return this.loadScript(classes);
     }
     
@@ -862,9 +858,7 @@ public final class Skript {
     }
     
     public Script getScript(final Class<?> part) {
-        for (final Script script : this.scripts) {
-            if (script.ownsClass(part)) return script;
-        }
+        for (final Script script : this.scripts) if (script.ownsClass(part)) return script;
         return null;
     }
     
@@ -933,7 +927,7 @@ public final class Skript {
             final Class<?> part = this.createLoader().loadClass(datum.name(), datum.code());
             classes.add(part);
         }
-        return assembleScript(classes.toArray(new Class[0]));
+        return this.assembleScript(classes.toArray(new Class[0]));
     }
     
     @Description("""
@@ -952,9 +946,7 @@ public final class Skript {
     @GenerateExample
     public Collection<Script> loadScripts(final PostCompileClass[] data) {
         final List<Script> classes = new ArrayList<>();
-        for (PostCompileClass datum : data) {
-            classes.add(this.loadScript(datum));
-        }
+        for (PostCompileClass datum : data) classes.add(this.loadScript(datum));
         return classes;
     }
     
