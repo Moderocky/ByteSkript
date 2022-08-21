@@ -40,7 +40,8 @@ public class Member {
         this.script = script;
         this.async = async;
         this.parameters = method.getParameterCount();
-        final Mirror<?> mirror = Mirror.of(script.mainClass()).useProvider(script.skriptInstance().getLoader());
+        final Mirror<?> mirror = Mirror.of(script.mainClass()).useProvider(
+            (ScriptClassLoader) script.mainClass().getClassLoader());
         this.invoker = mirror.method(method);
         this.verifier = mirror.method(method.getName() + "_verify", method.getParameterTypes());
     }
