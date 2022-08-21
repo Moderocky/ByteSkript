@@ -759,13 +759,18 @@ public final class Skript {
         final Unload unload = new Unload(script);
         script.stop();
         synchronized (events) {
-            for (final EventHandler value : events.values()) {
+            final List<Class<? extends Event>> toRemove = new ArrayList<>();
+            for (final Map.Entry<Class<? extends Event>, EventHandler> entry : events.entrySet()) {
+                final EventHandler value = entry.getValue();
                 for (final ScriptRunner trigger : value.getTriggers().toArray(new ScriptRunner[0])) {
                     if (trigger.owner() != script.mainClass()) continue;
                     value.getTriggers().remove(trigger);
                     UnsafeAccessor.graveyard(trigger);
+                    toRemove.add(entry.getKey());
                 }
             }
+
+            for (final Class<? extends Event> clazz : toRemove) events.remove(clazz);
         }
         this.scripts.remove(script);
         UnsafeAccessor.graveyard(script);
