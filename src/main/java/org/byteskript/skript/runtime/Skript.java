@@ -758,18 +758,26 @@ public final class Skript {
     public void unloadScript(Script script) {
         final Unload unload = new Unload(script);
         script.stop();
+
+        loaders.removeIf(ref -> ref.refersTo((ScriptClassLoader) script.mainClass().getClassLoader()));
+        this.runEvent(unload);
+
         synchronized (events) {
-            for (final EventHandler value : events.values()) {
+            final List<Class<? extends Event>> toRemove = new ArrayList<>();
+            for (final Map.Entry<Class<? extends Event>, EventHandler> entry : events.entrySet()) {
+                final EventHandler value = entry.getValue();
                 for (final ScriptRunner trigger : value.getTriggers().toArray(new ScriptRunner[0])) {
                     if (trigger.owner() != script.mainClass()) continue;
                     value.getTriggers().remove(trigger);
                     UnsafeAccessor.graveyard(trigger);
+                    toRemove.add(entry.getKey());
                 }
             }
+
+            for (final Class<? extends Event> clazz : toRemove) events.remove(clazz);
         }
         this.scripts.remove(script);
         UnsafeAccessor.graveyard(script);
-        this.runEvent(unload);
     }
     
     @Description("""
@@ -843,7 +851,8 @@ public final class Skript {
     @GenerateExample
     public Script loadScript(final PostCompileClass[] data) {
         final Class<?>[] classes = new Class[data.length];
-        for (int i = 0; i < data.length; i++) classes[i] = this.loadClass(data[i].name(), data[i].code());
+        final SkriptMirror loader = createLoader();
+        for (int i = 0; i < data.length; i++) classes[i] = loader.loadClass(data[i].name(), data[i].code());
         return this.loadScript(classes);
     }
     
