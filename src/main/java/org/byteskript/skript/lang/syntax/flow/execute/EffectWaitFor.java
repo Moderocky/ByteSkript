@@ -112,7 +112,7 @@ public class EffectWaitFor extends ControlEffect {
             child.writeCode((writer, visitor) -> {
                 visitor.visitJumpInsn(167, jump);
                 visitor.visitLabel(after);
-                visitor.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]{"java/lang/Throwable"});
+                visitor.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[] {"java/lang/Throwable"});
                 visitor.visitVarInsn(58, error);
                 visitor.visitJumpInsn(167, rethrow);
                 visitor.visitLabel(end);

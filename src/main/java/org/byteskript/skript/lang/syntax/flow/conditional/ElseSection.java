@@ -45,12 +45,12 @@ public class ElseSection extends Section {
         if (!thing.equals("else")) return null;
         return super.match(thing, context);
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.VOID;
     }
-
+    
     @Override
     public void compile(Context context, Pattern.Match match) {
         if (!(context.getTree(context.getSection(1)) instanceof IfElseTree tree))

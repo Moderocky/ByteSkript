@@ -228,7 +228,6 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
             context.setState(handler.getSubState()); // move state change to syntax
             context.currentEffect = handler;
             details.lineMatched = handler;
-            inner:
             for (int i = 0; i < types.length; i++) {
                 final String input = inputs[i];
                 final Type type = types[i];
@@ -268,7 +267,6 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
                 if (inputs.length < types.length) continue;
                 context.setState(handler.getSubState()); // anticipate inner-effect state change
                 details.expressionMatched = handler;
-                inner:
                 for (int i = 0; i < types.length; i++) {
                     final String input = inputs[i];
                     final Type type = types[i];

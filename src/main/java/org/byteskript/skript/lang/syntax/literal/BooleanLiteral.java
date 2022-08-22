@@ -59,10 +59,10 @@ public class BooleanLiteral extends Literal<Boolean> {
     public boolean allowAsInputFor(Type type) {
         return true;
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.BOOLEAN;
     }
-
+    
 }

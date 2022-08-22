@@ -22,7 +22,7 @@ public class LibraryClassLoader extends URLClassLoader {
     
     @Ignore
     public LibraryClassLoader(File file, ClassLoader parent) throws IOException {
-        super(new URL[]{file.toURI().toURL()}, parent);
+        super(new URL[] {file.toURI().toURL()}, parent);
     }
     
     @Ignore

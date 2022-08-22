@@ -75,7 +75,7 @@ public class EntrySyntax extends SectionEntry {
             final AnnotationBuilder<?> builder = context.getMethod().addAnnotation(handler.type().annotation)
                 .setVisible(true);
             if (handler.type() != SyntaxTree.Type.PROPERTY) {
-                builder.addValue("value", new String[]{handler.pattern()});
+                builder.addValue("value", new String[] {handler.pattern()});
             } else {
                 builder.addValue("value", handler.pattern());
                 builder.addValue("type", mode == null ? StandardHandlers.GET : mode);

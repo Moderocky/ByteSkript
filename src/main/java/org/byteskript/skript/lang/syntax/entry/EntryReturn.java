@@ -60,12 +60,12 @@ public class EntryReturn extends SimpleEntry {
     public boolean allowAsInputFor(Type type) {
         return false;
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.VOID;
     }
-
+    
     @Override
     public boolean allowedIn(State state, Context context) {
         return super.allowedIn(state, context) && context.hasFlag(AreaFlag.IN_FUNCTION);

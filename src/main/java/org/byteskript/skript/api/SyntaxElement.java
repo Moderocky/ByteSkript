@@ -112,7 +112,7 @@ public interface SyntaxElement {
     default boolean requiresMainThread() {
         return false;
     }*/
-
+    
     @Ignore
     default void addSkipInstruction(Context context, Consumer<Context> consumer) {
         context.addSkipInstruction(consumer);

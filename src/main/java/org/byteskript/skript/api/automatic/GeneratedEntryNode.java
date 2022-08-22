@@ -25,12 +25,12 @@ public class GeneratedEntryNode extends Element {
         super(provider, StandardElements.NODE, patterns);
         this.target = target;
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.VOID;
     }
-
+    
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final ElementTree tree = context.getCompileCurrent().nested()[0];

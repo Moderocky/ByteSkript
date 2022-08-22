@@ -120,7 +120,7 @@ public class ExprFunctionExternal extends SimpleExpression {
              of the language.
             */
             type = type.matches(Void.class) ? CommonTypes.OBJECT : type;
-            ((FunctionDetails)match.meta()).arguments[ctr++] = type;
+            ((FunctionDetails) match.meta()).arguments[ctr++] = type;
         }
         super.preCompile(context, match);
     }

@@ -60,7 +60,7 @@ public class ConfigTest extends SkriptTest {
         map.put(new ConfigEntry("key", "value"));
         map.put(new ConfigEntry("hello", "there"));
         final ConfigEntry entry = new ConfigEntry("long key", "this is a long value :D");
-        entry.comments = new String[]{"my comment!", "this is a\nlong comment!"};
+        entry.comments = new String[] {"my comment!", "this is a\nlong comment!"};
         map.put(entry);
         assert map.toString().equals("""
             

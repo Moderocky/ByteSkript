@@ -74,14 +74,14 @@ public class IntegerLiteral extends Literal<Integer> {
         if (matcher.find()) return new Pattern.Match(matcher, thing);
         return null;
     }
-
-    @Override
-    public Type getReturnType() {
-        return CommonTypes.INTEGER;
-    }
-
+    
     @Override
     public boolean allowAsInputFor(Type type) {
         return CommonTypes.INTEGER.equals(type) || CommonTypes.NUMBER.equals(type) || CommonTypes.OBJECT.equals(type);
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.INTEGER;
     }
 }

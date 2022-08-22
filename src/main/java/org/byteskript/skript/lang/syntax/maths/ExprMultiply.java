@@ -46,14 +46,14 @@ public class ExprMultiply extends SymbolJoiner {
     }
     
     @Override
-    char joiner() {
-        return '*';
-    }
-    
-    @Override
     public Pattern.Match match(String thing, Context context) {
         if (!thing.contains("*")) return null;
         return super.match(thing, context);
+    }
+    
+    @Override
+    char joiner() {
+        return '*';
     }
     
 }

@@ -621,10 +621,11 @@ public final class Skript {
         if (!root.isDirectory()) throw new ScriptLoadError("Root must be a folder.");
         final List<File> files = getFiles(new ArrayList<>(), root.toPath());
         final List<File> outputs = new ArrayList<>();
-        for (final File file : files) try (final InputStream input = new FileInputStream(file)) {
-            final String name = this.getClassName(file, root);
-            outputs.addAll(compileComplexScript(input, name, outputDirectory));
-        }
+        for (final File file : files)
+            try (final InputStream input = new FileInputStream(file)) {
+                final String name = this.getClassName(file, root);
+                outputs.addAll(compileComplexScript(input, name, outputDirectory));
+            }
         return outputs;
     }
     
@@ -744,9 +745,8 @@ public final class Skript {
         """)
     @GenerateExample
     public void unloadScript(Class<?> main) {
-        for (final Script script : scripts.toArray(new Script[0])) {
+        for (final Script script : scripts.toArray(new Script[0]))
             if (script.mainClass() == main) this.unloadScript(script);
-        }
     }
     
     @Description("""
@@ -758,10 +758,8 @@ public final class Skript {
     public void unloadScript(Script script) {
         final Unload unload = new Unload(script);
         script.stop();
-
-        loaders.removeIf(ref -> ref.refersTo((ScriptClassLoader) script.mainClass().getClassLoader()));
+        this.loaders.removeIf(ref -> ref.refersTo((ScriptClassLoader) script.mainClass().getClassLoader()));
         this.runEvent(unload);
-
         synchronized (events) {
             final List<Class<? extends Event>> toRemove = new ArrayList<>();
             for (final Map.Entry<Class<? extends Event>, EventHandler> entry : events.entrySet()) {
@@ -773,7 +771,6 @@ public final class Skript {
                     toRemove.add(entry.getKey());
                 }
             }
-
             for (final Class<? extends Event> clazz : toRemove) events.remove(clazz);
         }
         this.scripts.remove(script);
@@ -885,7 +882,8 @@ public final class Skript {
         for (final File file : files) {
             if (!file.getName().endsWith(".class")) continue;
             if (file.isDirectory()) continue;
-            try (InputStream namer = new FileInputStream(file); InputStream stream = new FileInputStream(file)) {
+            try (final InputStream namer = new FileInputStream(file);
+                 final InputStream stream = new FileInputStream(file)) {
                 final String name = getClassName(namer);
                 scripts.add(loadScript(stream, name));
             }

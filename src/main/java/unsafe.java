@@ -84,7 +84,7 @@ public class unsafe extends UnsafeAccessor {
             }
         } else if ((parameters) == null) arguments = new Class[0];
         else {
-            arguments = new Class[]{(Class<?>) parameters};
+            arguments = new Class[] {(Class<?>) parameters};
         }
         return mirror(owner).method(name + "", arguments);
     }

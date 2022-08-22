@@ -40,12 +40,12 @@ public class EffectMonitorSection extends Section {
         if (!thing.startsWith("monitor ")) return null;
         return super.match(thing, context);
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.VOID;
     }
-
+    
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final MonitorTree tree = new MonitorTree(context.getSection(1));

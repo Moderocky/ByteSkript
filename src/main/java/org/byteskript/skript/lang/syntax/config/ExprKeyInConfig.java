@@ -71,11 +71,11 @@ public class ExprKeyInConfig extends RelationalExpression implements Referent {
     public boolean allowAsInputFor(Type type) {
         return super.allowAsInputFor(type) || CommonTypes.REFERENT.equals(type);
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.OBJECT;
     }
-
-
+    
+    
 }

@@ -46,12 +46,12 @@ public class IfSection extends Section {
         if (!thing.startsWith("if ")) return null;
         return super.match(thing, context);
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.VOID;
     }
-
+    
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         final IfElseTree tree = new IfElseTree(context.getSection(1), new MultiLabel());

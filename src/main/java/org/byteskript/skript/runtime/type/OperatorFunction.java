@@ -13,13 +13,13 @@ public interface OperatorFunction<A, B> {
         final OperatorFunction<A, B> function = this;
         return new OperatorFunction<>() {
             @Override
-            public Object union2(A first, B second) throws Throwable {
-                return function.union(first, second);
+            public Object union(B first, A second) throws Throwable {
+                return function.union2(first, second);
             }
             
             @Override
-            public Object union(B first, A second) throws Throwable {
-                return function.union2(first, second);
+            public Object union2(A first, B second) throws Throwable {
+                return function.union(first, second);
             }
             
             @Override

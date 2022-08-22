@@ -86,7 +86,6 @@ public class PropertyAccessGenerator {
             else method.writeCode(WriteInstruction.returnEmpty()); // return empty
             method.writeCode((writer, visitor) -> visitor.visitLabel(jump)); // end
         }
-        field_property:
         {
             if (this.type == StandardHandlers.GET) method.writeCode((writer, visitor) -> {
                 visitor.visitVarInsn(25, 0); // load holder

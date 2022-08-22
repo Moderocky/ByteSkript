@@ -19,9 +19,9 @@ public class ScriptFinishFuture implements Supplier<Object>, Future<Object> {
     
     private final Skript skript;
     private final Object lock = new Object();
-    private boolean done;
     public ScriptThread thread;
     protected Object value;
+    private boolean done;
     
     public ScriptFinishFuture(Skript skript) {
         this.skript = skript;
@@ -59,6 +59,19 @@ public class ScriptFinishFuture implements Supplier<Object>, Future<Object> {
     }
     
     @Override
+    public Object get(long timeout, @NotNull TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+        synchronized (this) {
+            if (value != null) return value;
+        }
+        synchronized (lock) {
+            lock.wait(unit.toMillis(timeout));
+        }
+        synchronized (this) {
+            return value;
+        }
+    }
+    
+    @Override
     public Object get() {
         synchronized (this) {
             if (this.done) return value;
@@ -69,19 +82,6 @@ public class ScriptFinishFuture implements Supplier<Object>, Future<Object> {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        }
-        synchronized (this) {
-            return value;
-        }
-    }
-    
-    @Override
-    public Object get(long timeout, @NotNull TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-        synchronized (this) {
-            if (value != null) return value;
-        }
-        synchronized (lock) {
-            lock.wait(unit.toMillis(timeout));
         }
         synchronized (this) {
             return value;

@@ -42,6 +42,33 @@ public class EntryVerifySection extends Section {
     }
     
     @Override
+    public void onSectionExit(Context context, SectionMeta meta) {
+        final MethodBuilder method = context.getMethod();
+        assert method != null;
+        context.closeAllTrees();
+        if (method.getErasure().returnType().equals(new Type(void.class))) {
+            method.writeCode(WriteInstruction.returnEmpty());
+        } else {
+            method.writeCode(WriteInstruction.pushNull());
+            method.writeCode(WriteInstruction.returnObject());
+        }
+        context.emptyVariables();
+        context.removeFlag(AreaFlag.IN_TRIGGER);
+        context.removeFlag(AreaFlag.IN_VERIFIER);
+        context.setState(CompileState.MEMBER_BODY);
+    }
+    
+    @Override
+    public boolean allowAsInputFor(Type type) {
+        return false;
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
+    }
+    
+    @Override
     public void compile(Context context, Pattern.Match match) {
         final MethodBuilder target = context.getMethod();
         final VerifyTree tree = new VerifyTree(context.getSection(1), target, context.getVariables());
@@ -76,31 +103,4 @@ public class EntryVerifySection extends Section {
         };
     }
     
-    @Override
-    public void onSectionExit(Context context, SectionMeta meta) {
-        final MethodBuilder method = context.getMethod();
-        assert method != null;
-        context.closeAllTrees();
-        if (method.getErasure().returnType().equals(new Type(void.class))) {
-            method.writeCode(WriteInstruction.returnEmpty());
-        } else {
-            method.writeCode(WriteInstruction.pushNull());
-            method.writeCode(WriteInstruction.returnObject());
-        }
-        context.emptyVariables();
-        context.removeFlag(AreaFlag.IN_TRIGGER);
-        context.removeFlag(AreaFlag.IN_VERIFIER);
-        context.setState(CompileState.MEMBER_BODY);
-    }
-    
-    @Override
-    public boolean allowAsInputFor(Type type) {
-        return false;
-    }
-
-    @Override
-    public Type getReturnType() {
-        return CommonTypes.VOID;
-    }
-
 }

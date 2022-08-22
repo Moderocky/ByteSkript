@@ -15,7 +15,6 @@ import org.byteskript.skript.runtime.threading.ScriptRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Future;
 
 @Ignore
 public class EventHandler {
@@ -32,7 +31,7 @@ public class EventHandler {
         synchronized (triggers) { // Reduce the chance of comodification.
             for (final ScriptRunner trigger : triggers) {
                 futures[count] = (ScriptFinishFuture) skript.runScript(trigger, event);
-                assert futures[count] != null: "Script trigger didn't produce a task.";
+                assert futures[count] != null : "Script trigger didn't produce a task.";
                 count++;
             }
         }
@@ -47,7 +46,7 @@ public class EventHandler {
             final ScriptFinishFuture[] futures = new ScriptFinishFuture[triggers.size()];
             for (final ScriptRunner trigger : triggers) {
                 futures[count] = (ScriptFinishFuture) skript.runScript(trigger, event);
-                assert futures[count] != null: "Script trigger didn't produce a task.";
+                assert futures[count] != null : "Script trigger didn't produce a task.";
                 count++;
             }
             return futures;

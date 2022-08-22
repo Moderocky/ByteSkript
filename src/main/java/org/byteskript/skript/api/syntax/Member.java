@@ -31,15 +31,15 @@ public abstract class Member extends Section {
         context.setField(null);
         context.setState(CompileState.ROOT);
     }
-
-    @Override
-    public Type getReturnType() {
-        return CommonTypes.VOID;
-    }
-
+    
     @Override
     public boolean allowAsInputFor(Type type) {
         return false;
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
     }
     
 }

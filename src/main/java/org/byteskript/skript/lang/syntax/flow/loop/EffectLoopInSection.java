@@ -52,12 +52,12 @@ public class EffectLoopInSection extends Section {
         if (!thing.contains(" in ")) return null;
         return super.match(thing, context);
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.VOID;
     }
-
+    
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final ElementTree holder = context.getCompileCurrent().nested()[0];
@@ -102,7 +102,6 @@ public class EffectLoopInSection extends Section {
         method.writeCode((writer, visitor) -> visitor.visitJumpInsn(153, end));
         method.writeCode(WriteInstruction.loadObject(slot));
         method.writeCode(WriteInstruction.invokeInterface(Iterator.class.getMethod("next")));
-        store:
         {
             final ElementTree holder = context.getCompileCurrent().nested()[0];
             holder.type = StandardHandlers.SET;

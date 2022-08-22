@@ -46,12 +46,12 @@ public class ElseIfSection extends Section {
         if (!thing.startsWith("else if ")) return null;
         return super.match(thing, context);
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.VOID;
     }
-
+    
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         if (!(context.getTree(context.getSection(1)) instanceof IfElseTree tree))

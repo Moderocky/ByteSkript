@@ -54,7 +54,7 @@ public class Member {
             throw new ScriptRuntimeError("Cannot create background process from non-script thread.");
         if (args instanceof Collection<?> collection) arguments = collection.toArray();
         else if (args instanceof Object[] array) arguments = array;
-        else arguments = new Object[]{args};
+        else arguments = new Object[] {args};
         thread.skript.runOnAsyncThread((Instruction<?>) () -> {
             if (thing instanceof Method method) method.invoke(null, arguments);
             else if (thing instanceof Member method) method.invoke(arguments);

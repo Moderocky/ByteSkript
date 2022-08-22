@@ -10,4 +10,4 @@ import mx.kenzie.autodoc.api.note.Ignore;
 import org.byteskript.skript.api.Event;
 
 @Ignore
-public class Empty extends Event { }
+public class Empty extends Event {}

@@ -57,10 +57,10 @@ public class NoneLiteral extends Literal<Void> {
     public boolean allowAsInputFor(Type type) {
         return true;
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.VOID;
     }
-
+    
 }

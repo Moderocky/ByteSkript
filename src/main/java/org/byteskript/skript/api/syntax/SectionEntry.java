@@ -23,12 +23,12 @@ public abstract class SectionEntry extends Section {
     public CompileState getSubState() {
         return CompileState.MEMBER_BODY;
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.VOID;
     }
-
+    
     @Override
     public boolean allowedIn(State state, Context context) {
         return state == CompileState.MEMBER_BODY;

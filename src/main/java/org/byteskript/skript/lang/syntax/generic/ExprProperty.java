@@ -39,7 +39,7 @@ public class ExprProperty extends RelationalExpression implements Referent {
     
     public ExprProperty() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EXPRESSION, "<property> of %Object%");
-        this.patterns = new java.util.regex.Pattern[]{
+        this.patterns = new java.util.regex.Pattern[] {
             java.util.regex.Pattern.compile("^(?:the )?(?<name>" + SkriptLangSpec.IDENTIFIER + ") of (?<input>.+)$"),
             java.util.regex.Pattern.compile("^(?<input>.+)'s (?<name>" + SkriptLangSpec.IDENTIFIER + ")$"),
             java.util.regex.Pattern.compile("^(?<input>" + SkriptLangSpec.IDENTIFIER + ")-(?<name>" + SkriptLangSpec.IDENTIFIER + ")$")
@@ -51,12 +51,12 @@ public class ExprProperty extends RelationalExpression implements Referent {
     public boolean allowAsInputFor(Type type) {
         return true;
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.OBJECT;
     }
-
+    
     @Override
     public Pattern.Match match(String thing, Context context) {
         final int i;

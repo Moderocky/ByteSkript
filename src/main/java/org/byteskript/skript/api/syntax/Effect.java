@@ -26,12 +26,7 @@ public abstract class Effect extends Element implements SyntaxElement {
     public Effect(final Library provider, final LanguageElement type, final String... patterns) {
         super(provider, type, patterns);
     }
-
-    @Override
-    public Type getReturnType() {
-        return CommonTypes.VOID;
-    }
-
+    
     @Override
     public CompileState getSubState() {
         return CompileState.STATEMENT; // looking for expressions here
@@ -40,6 +35,11 @@ public abstract class Effect extends Element implements SyntaxElement {
     @Override
     public boolean allowAsInputFor(Type type) {
         return true; // support meta-effects
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
     }
     
     @Override

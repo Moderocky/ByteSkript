@@ -48,7 +48,7 @@ public class EffectRunWith extends ControlEffect {
         final Object[] arguments;
         if (args instanceof Collection<?> collection) arguments = collection.toArray();
         else if (args instanceof Object[] array) arguments = array;
-        else arguments = new Object[]{args};
+        else arguments = new Object[] {args};
         if (thing instanceof Method method)
             return method.invoke(null, arguments);
         else if (thing instanceof MethodAccessor<?> runnable)

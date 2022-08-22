@@ -45,12 +45,12 @@ public class EffectWhileSection extends Section {
         if (!thing.startsWith("while ")) return null;
         return super.match(thing, context);
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.VOID;
     }
-
+    
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final WhileTree tree = new WhileTree(context.getSection(1));

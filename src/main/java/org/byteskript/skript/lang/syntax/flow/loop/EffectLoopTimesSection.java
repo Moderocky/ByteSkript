@@ -46,12 +46,12 @@ public class EffectLoopTimesSection extends Section {
         if (!thing.endsWith(" times")) return null;
         return super.match(thing, context);
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.VOID;
     }
-
+    
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final LoopTree tree = new LoopTree(context.getSection(1));

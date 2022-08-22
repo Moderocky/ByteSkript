@@ -12,7 +12,6 @@ import mx.kenzie.foundation.WriteInstruction;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.note.ForceExtract;
 import org.byteskript.skript.api.syntax.Literal;
-import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
 import org.byteskript.skript.compiler.SkriptLangSpec;

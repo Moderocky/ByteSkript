@@ -30,12 +30,12 @@ public final class GeneratedEntrySection extends Section {
         super(provider, StandardElements.SECTION, patterns);
         this.target = target;
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.VOID;
     }
-
+    
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         context.setState(CompileState.AREA_BODY);

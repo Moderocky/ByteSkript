@@ -76,7 +76,7 @@ public class DoubleLiteral extends Literal<Double> {
     public boolean allowAsInputFor(Type type) {
         return CommonTypes.NUMBER.equals(type) || CommonTypes.OBJECT.equals(type);
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.DOUBLE;

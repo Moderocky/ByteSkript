@@ -42,12 +42,12 @@ public class CatchSection extends Section {
         if (!thing.startsWith("catch ")) return null;
         return super.match(thing, context);
     }
-
+    
     @Override
     public Type getReturnType() {
         return CommonTypes.VOID;
     }
-
+    
     @Override
     public void preCompile(Context context, Pattern.Match match) throws Throwable {
         final ElementTree holder = context.getCompileCurrent().nested()[0];
@@ -72,7 +72,6 @@ public class CatchSection extends Section {
     public void compileTogether(Context context, Pattern.Match match, TryCatchTree tree) throws Throwable {
         final ElementTree holder = context.getCompileCurrent().nested()[0];
         tree.branch(context);
-        store:
         {
             holder.type = StandardHandlers.SET;
             holder.compile = true;

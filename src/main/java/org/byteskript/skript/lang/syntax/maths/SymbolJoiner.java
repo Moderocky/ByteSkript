@@ -40,8 +40,8 @@ abstract class SymbolJoiner extends RelationalExpression {
             if (join == 0 || join == thing.length() - 1) continue;
             final String first = thing.substring(0, join).trim(), second = thing.substring(join + 1).trim();
             variants.add(new Pattern.Match.Variant(null,
-                new Type[]{CommonTypes.OBJECT, CommonTypes.OBJECT},
-                new String[]{first, second}));
+                new Type[] {CommonTypes.OBJECT, CommonTypes.OBJECT},
+                new String[] {first, second}));
         }
         return variants.toArray(new Pattern.Match.Variant[0]);
     }

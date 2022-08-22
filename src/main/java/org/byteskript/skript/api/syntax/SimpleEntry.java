@@ -29,15 +29,15 @@ public abstract class SimpleEntry extends Element {
     public CompileState getSubState() {
         return CompileState.MEMBER_BODY;
     }
-
-    @Override
-    public Type getReturnType() {
-        return CommonTypes.VOID;
-    }
-
+    
     @Override
     public boolean allowAsInputFor(Type type) {
         return false;
+    }
+    
+    @Override
+    public Type getReturnType() {
+        return CommonTypes.VOID;
     }
     
     @Override
