@@ -99,8 +99,9 @@ public class ExtractedSyntaxCalls extends UnsafeAccessor {
     }
     
     public static void print(Object object) throws Throwable {
-        final Skript skript = findInstance();
-        skript.println(object);
+        final Thread current = Thread.currentThread();
+        if (current instanceof ScriptThread thread) thread.println(object);
+        else System.out.println(object);
     }
     
     public static String readSystemInput() throws Throwable {
