@@ -71,6 +71,14 @@ function generic:
         assert hashcode("hello") is a number: "Generic function failed."
         assert strict_equals(1, 1) is true: "Generic function failed."
         assert strict_equals("cc", "c" + "c") is false: "Generic function failed."
+        assert weak_reference("hello") exists: "Weak reference creation failed."
+        assert soft_reference("hello") exists: "Soft reference creation failed."
+        set {thing} to weak_reference("hello")
+        assert {thing} is not "hello": "Reference was not created."
+        assert reference_value({thing}) is "hello": "Weak reference was not extracted."
+        set {thing} to soft_reference("hello")
+        assert {thing} is not "hello": "Reference was not created."
+        assert reference_value({thing}) is "hello": "Soft reference was not extracted."
 
 function test:
     trigger:

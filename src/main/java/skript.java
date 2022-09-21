@@ -2,6 +2,10 @@ import org.byteskript.skript.error.ScriptRuntimeError;
 import org.byteskript.skript.runtime.threading.ScriptThread;
 import org.byteskript.skript.runtime.type.AtomicVariable;
 
+import java.lang.ref.Reference;
+import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
+
 /**
  * This is the Java implementation of the 'skript' namespace functions.
  * Some implementations may re-implement this in Skript itself.
@@ -129,6 +133,23 @@ public final class skript {
     //endregion
     
     //region Generic
+    public static WeakReference<?> weak_reference(Object value) {
+        if (value instanceof WeakReference<?> reference) return reference;
+        if (value instanceof Reference<?> reference) return new WeakReference<>(reference.get());
+        return new WeakReference<>(value);
+    }
+    
+    public static SoftReference<?> soft_reference(Object value) {
+        if (value instanceof SoftReference<?> reference) return reference;
+        if (value instanceof Reference<?> reference) return new SoftReference<>(reference.get());
+        return new SoftReference<>(value);
+    }
+    
+    public static Object reference_value(Object object) {
+        if (object instanceof Reference<?> reference) return reference.get();
+        return object;
+    }
+    
     public static AtomicVariable get_atomic_literal(Object atomic) {
         if (atomic instanceof AtomicVariable variable) return variable;
         else return AtomicVariable.wrap(atomic);
