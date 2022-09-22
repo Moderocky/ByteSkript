@@ -35,6 +35,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Stream;
 
 @Description("""
     This class is the entry-point for any program or library using ByteSkript.
@@ -1152,6 +1153,110 @@ public final class Skript {
         @Ignore
         public Class<?> loadClass(String name, byte[] bytecode) {
             return super.loadClass(name, bytecode);
+        }
+    }
+    
+    public class Test {
+        private final PrintStream out;
+        private final List<Throwable> errors = new ArrayList<>();
+        private final boolean write;
+        private int failure = 0;
+        
+        public Test() {
+            this(false, System.out);
+        }
+        
+        public Test(boolean writeClasses, PrintStream out) {
+            this.write = writeClasses;
+            this.out = out;
+        }
+        
+        public Test(boolean writeClasses) {
+            this(writeClasses, System.out);
+        }
+        
+        public Test(PrintStream out) {
+            this(false, out);
+        }
+        
+        public void testDirectory(Path folder) {
+            try (final Stream<Path> stream = Files.walk(folder, 1)) {
+                final Iterator<Path> iterator = stream.iterator();
+                while (iterator.hasNext()) {
+                    final Path file = iterator.next();
+                    if (!file.toString().endsWith(".bsk")) continue;
+                    this.test(file);
+                }
+            } catch (IOException ex) {
+                this.println(ConsoleColour.RED + "\t✗ " + ConsoleColour.RESET + "Failed to run.");
+                this.errors.add(ex);
+                this.failure++;
+            }
+        }
+        
+        public void test(Path file) {
+            final String part = file.toString().substring(file.toString().indexOf("/tests/") + 7);
+            final String name = part.substring(0, part.length() - 4).replace(File.separatorChar, '.');
+            this.println(ConsoleColour.RESET + "Running test '" + ConsoleColour.GREEN + name + ConsoleColour.RESET + "':");
+            try (final InputStream stream = Files.newInputStream(file)) {
+                final PostCompileClass[] classes;
+                synchronized (this) {
+                    try {
+                        final long now, then;
+                        now = System.currentTimeMillis();
+                        classes = skript.compileComplexScript(stream, "skript." + name);
+                        then = System.currentTimeMillis();
+                        this.println(ConsoleColour.GREEN + "\t✓ " + ConsoleColour.RESET + "Parsed in " + ConsoleColour.BLUE + (then - now) + ConsoleColour.RESET + " milliseconds.");
+                    } catch (Throwable ex) {
+                        this.println(ConsoleColour.RED + "\t✗ " + ConsoleColour.RESET + "Failed to parse.");
+                        this.println(ConsoleColour.RED + "\t✗ " + ConsoleColour.RESET + "Failed to run.");
+                        this.errors.add(ex);
+                        this.failure++;
+                        return;
+                    }
+                    if (write) {
+                        final File test = new File("target/test-scripts/" + classes[0].name() + ".class");
+                        test.getParentFile().mkdirs();
+                        if (!test.exists()) test.createNewFile();
+                        try (final OutputStream output = new FileOutputStream(test)) {
+                            output.write(classes[0].code());
+                        }
+                    }
+                    try {
+                        final long now, then;
+                        final Script script = skript.loadScript(classes);
+                        now = System.currentTimeMillis();
+                        final boolean result;
+                        final Object object = script.getFunction("test").run(skript).get();
+                        result = Boolean.TRUE.equals(object);
+                        then = System.currentTimeMillis();
+                        if (result)
+                            this.println(ConsoleColour.GREEN + "\t✓ " + ConsoleColour.RESET + "Run in " + ConsoleColour.BLUE + (then - now) + ConsoleColour.RESET + " milliseconds.");
+                        else {
+                            this.println(ConsoleColour.RED + "\t✗ " + ConsoleColour.RESET + "Run in " + ConsoleColour.BLUE + (then - now) + ConsoleColour.RESET + " milliseconds.");
+                            this.failure++;
+                        }
+                    } catch (Throwable ex) {
+                        this.println(ConsoleColour.RED + "\t✗ " + ConsoleColour.RESET + "Failed to run.");
+                        this.errors.add(ex);
+                        this.failure++;
+                    }
+                }
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+            }
+        }
+    
+        public List<Throwable> getErrors() {
+            return errors;
+        }
+    
+        public int getFailureCount() {
+            return failure;
+        }
+    
+        protected void println(Object value) {
+            if (out != null) out.println(value);
         }
     }
     

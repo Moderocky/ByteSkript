@@ -31,6 +31,7 @@ import org.byteskript.skript.lang.syntax.control.EffectDelete;
 import org.byteskript.skript.lang.syntax.control.EffectRemove;
 import org.byteskript.skript.lang.syntax.control.EffectSet;
 import org.byteskript.skript.lang.syntax.dictionary.EffectImportFunction;
+import org.byteskript.skript.lang.syntax.dictionary.EffectUseLibrary;
 import org.byteskript.skript.lang.syntax.dictionary.EffectImportType;
 import org.byteskript.skript.lang.syntax.dictionary.MemberDictionary;
 import org.byteskript.skript.lang.syntax.entry.*;
@@ -201,6 +202,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             new EffectClearList(),
             new EffectLoadScript(),
             new EffectUnloadScript(),
+            new EffectUseLibrary(),
             new EffectImportType(),
             new EffectImportFunction()
         );
