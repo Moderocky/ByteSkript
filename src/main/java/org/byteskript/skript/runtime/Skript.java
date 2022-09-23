@@ -1197,6 +1197,7 @@ public final class Skript {
         public void test(Path file) {
             final String part = file.toString().substring(file.toString().indexOf("/tests/") + 7);
             final String name = part.substring(0, part.length() - 4).replace(File.separatorChar, '.');
+            System.setProperty("skript.test_mode", "true");
             this.println(ConsoleColour.RESET + "Running test '" + ConsoleColour.GREEN + name + ConsoleColour.RESET + "':");
             try (final InputStream stream = Files.newInputStream(file)) {
                 final PostCompileClass[] classes;
@@ -1204,7 +1205,7 @@ public final class Skript {
                     try {
                         final long now, then;
                         now = System.currentTimeMillis();
-                        classes = skript.compileComplexScript(stream, "skript." + name);
+                        classes = Skript.this.compileComplexScript(stream, "skript." + name);
                         then = System.currentTimeMillis();
                         this.println(ConsoleColour.GREEN + "\t✓ " + ConsoleColour.RESET + "Parsed in " + ConsoleColour.BLUE + (then - now) + ConsoleColour.RESET + " milliseconds.");
                     } catch (Throwable ex) {
@@ -1224,10 +1225,10 @@ public final class Skript {
                     }
                     try {
                         final long now, then;
-                        final Script script = skript.loadScript(classes);
+                        final Script script = Skript.this.loadScript(classes);
                         now = System.currentTimeMillis();
                         final boolean result;
-                        final Object object = script.getFunction("test").run(skript).get();
+                        final Object object = script.getFunction("test").run(Skript.this).get();
                         result = Boolean.TRUE.equals(object);
                         then = System.currentTimeMillis();
                         if (result)
@@ -1245,6 +1246,7 @@ public final class Skript {
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
+            System.setProperty("skript.test_mode", null);
         }
     
         public List<Throwable> getErrors() {
