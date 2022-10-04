@@ -83,7 +83,7 @@ public class ExprSupplierSection extends ExtractedSection {
         final String internal = context.getType().internalName();
         final String name = "lambda$L" + index;
         final MethodBuilder child = context.getBuilder().addMethod(name)
-            .setModifiers(Modifier.PUBLIC | Modifier.STATIC | 0x00001000)
+            .setModifiers(Modifier.PUBLIC | Modifier.STATIC)
             .setReturnType(CommonTypes.OBJECT);
         extractVariables(context, method, child);
         final MethodErasure target = child.getErasure();
