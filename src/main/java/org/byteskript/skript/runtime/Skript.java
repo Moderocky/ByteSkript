@@ -1246,7 +1246,7 @@ public final class Skript {
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
-            System.setProperty("skript.test_mode", null);
+            System.setProperty("skript.test_mode", "");
         }
     
         public List<Throwable> getErrors() {
