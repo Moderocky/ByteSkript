@@ -1248,17 +1248,17 @@ public final class Skript {
             }
             System.setProperty("skript.test_mode", "");
         }
-    
+        
+        protected void println(Object value) {
+            if (out != null) out.println(value);
+        }
+        
         public List<Throwable> getErrors() {
             return errors;
         }
-    
+        
         public int getFailureCount() {
             return failure;
-        }
-    
-        protected void println(Object value) {
-            if (out != null) out.println(value);
         }
     }
     
