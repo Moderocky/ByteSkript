@@ -9,43 +9,58 @@ package org.byteskript.skript.runtime.internal;
 import mx.kenzie.autodoc.api.note.Description;
 import org.byteskript.skript.runtime.Skript;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 @Description("""
     The map that holds global variables.
     
     This is thread-safe.
     """)
-public class GlobalVariableMap extends ConcurrentHashMap<String, Object> {
+public class GlobalVariableMap extends VariableMap {
+    
+    protected transient final Object lock = new Object();
     
     public static void deleteVariable(Object name) {
         if (name == null) return;
-        Skript.getVariables().remove(name + "");
+        final GlobalVariableMap map = Skript.getVariables();
+        synchronized (map.lock) {
+            map.remove(name + "");
+        }
     }
     
     public static void addVariable(Object name, Object value) {
         if (name == null) return;
         if (value == null) return;
-        final Object original = getVariable(name);
-        setVariable(name, OperatorHandler.addObject(value, original));
+        final GlobalVariableMap map = Skript.getVariables();
+        synchronized (map.lock) {
+            final Object original = map.get(name + "");
+            map.put(name + "", OperatorHandler.addObject(value, original));
+        }
     }
     
     public static Object getVariable(Object name) {
         if (name == null) return null;
-        return Skript.getVariables().get(name + "");
+        final GlobalVariableMap map = Skript.getVariables();
+        synchronized (map.lock) {
+            return map.get(name + "");
+        }
     }
     
     public static void setVariable(Object name, Object value) {
         if (name == null) return;
-        if (value == null) Skript.getVariables().remove(name + "");
-        else Skript.getVariables().put(name + "", value);
+        final GlobalVariableMap map = Skript.getVariables();
+        synchronized (map.lock) {
+            if (value == null) map.remove(name + "");
+            else map.put(name + "", value);
+        }
     }
     
     public static void removeVariable(Object name, Object value) {
         if (name == null) return;
         if (value == null) return;
-        final Object original = getVariable(name);
-        setVariable(name, OperatorHandler.subtract(original, value));
+        final GlobalVariableMap map = Skript.getVariables();
+        synchronized (map.lock) {
+            final Object original = map.get(name + "");
+            map.put(name + "", OperatorHandler.subtract(original, value));
+        }
     }
     
 }

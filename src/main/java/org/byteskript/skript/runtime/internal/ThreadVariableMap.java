@@ -10,10 +10,8 @@ import mx.kenzie.autodoc.api.note.Ignore;
 import org.byteskript.skript.error.ScriptRuntimeError;
 import org.byteskript.skript.runtime.threading.ScriptThread;
 
-import java.util.HashMap;
-
 @Ignore
-public class ThreadVariableMap extends HashMap<String, Object> {
+public class ThreadVariableMap extends VariableMap {
     
     public static void deleteVariable(Object name) {
         if (name == null) return;
@@ -25,7 +23,7 @@ public class ThreadVariableMap extends HashMap<String, Object> {
     public static void addVariable(Object name, Object value) {
         final Object original = getVariable(name);
         if (original == null) setVariable(name, value);
-        else setVariable(name, OperatorHandler.add(original, value));
+        else ThreadVariableMap.setVariable(name, OperatorHandler.add(original, value));
     }
     
     public static Object getVariable(Object name) {
@@ -46,7 +44,7 @@ public class ThreadVariableMap extends HashMap<String, Object> {
     public static void removeVariable(Object name, Object value) {
         final Object original = getVariable(name);
         if (original == null && value instanceof Number) setVariable(name, OperatorHandler.subtract(0, value));
-        else setVariable(name, OperatorHandler.subtract(original, value));
+        else ThreadVariableMap.setVariable(name, OperatorHandler.subtract(original, value));
     }
     
 }
