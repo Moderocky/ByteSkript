@@ -53,9 +53,7 @@ public final class Bootstrapper {
     private static String getDescriptor(final Type ret, final Type... params) {
         final StringBuilder builder = new StringBuilder();
         builder.append("(");
-        for (Type type : params) {
-            builder.append(type.descriptorString());
-        }
+        for (final Type type : params) builder.append(type.descriptorString());
         builder
             .append(")")
             .append(ret.descriptorString());
@@ -66,19 +64,17 @@ public final class Bootstrapper {
         Gets the handle for a regular method, used for writing a dynamic call-site.
         """)
     public static Handle getBootstrap(final boolean isDynamic, final boolean isPrivate) {
+        final String target;
+        if (isPrivate) target = isDynamic ? "bootstrapPrivateDynamic" : "bootstrapPrivate";
+        else target = isDynamic ? "bootstrapDynamic" : "bootstrap";
+        final Class<?>[] array = new Class[] {MethodHandles.Lookup.class, String.class, MethodType.class, Class.class};
+        final Method method;
         try {
-            if (isPrivate) {
-                if (isDynamic)
-                    return getHandle(Bootstrapper.class.getMethod("bootstrapPrivateDynamic", MethodHandles.Lookup.class, String.class, MethodType.class, Class.class));
-                return getHandle(Bootstrapper.class.getMethod("bootstrapPrivate", MethodHandles.Lookup.class, String.class, MethodType.class, Class.class));
-            } else {
-                if (isDynamic)
-                    return getHandle(Bootstrapper.class.getMethod("bootstrapDynamic", MethodHandles.Lookup.class, String.class, MethodType.class, Class.class));
-                return getHandle(Bootstrapper.class.getMethod("bootstrap", MethodHandles.Lookup.class, String.class, MethodType.class, Class.class));
-            }
+            method = Bootstrapper.class.getMethod(target, array);
         } catch (Throwable ex) {
             throw new ScriptBootstrapError(ex);
         }
+        return Bootstrapper.getHandle(method);
     }
     
     @Description("""
@@ -90,9 +86,7 @@ public final class Bootstrapper {
         throws Exception {
         final org.objectweb.asm.Type[] types = org.objectweb.asm.Type.getArgumentTypes(args);
         final Class<?>[] arguments = new Class[types.length];
-        for (int i = 0; i < types.length; i++) {
-            arguments[i] = getClass(types[i].getClassName());
-        }
+        for (int i = 0; i < types.length; i++) arguments[i] = getClass(types[i].getClassName());
         return Metafactory.createBridge(caller, name, type, source, owner, arguments);
     }
     

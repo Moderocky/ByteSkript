@@ -56,9 +56,7 @@ public class ExprFunction extends SimpleExpression {
         final Matcher dummy = java.util.regex.Pattern.compile(buildDummyPattern(name, count)).matcher(thing);
         dummy.find();
         final List<Type> types = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            types.add(CommonTypes.OBJECT);
-        }
+        for (int i = 0; i < count; i++) types.add(CommonTypes.OBJECT);
         return new Pattern.Match(dummy, new FunctionDetails(name, count), types.toArray(new Type[0]));
     }
     
