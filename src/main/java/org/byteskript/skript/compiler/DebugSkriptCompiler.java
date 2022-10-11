@@ -8,29 +8,24 @@ package org.byteskript.skript.compiler;
 
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.language.PostCompileClass;
-import mx.kenzie.jupiter.stream.OutputStreamController;
 import org.byteskript.skript.api.Library;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.function.Consumer;
 
 public class DebugSkriptCompiler extends SimpleSkriptCompiler {
-    final OutputStreamController controller;
+    final PrintStream stream;
     
-    public DebugSkriptCompiler(OutputStreamController controller, Library... libraries) {
+    public DebugSkriptCompiler(OutputStream stream, Library... libraries) {
         super(libraries);
-        this.controller = controller;
+        this.stream = new PrintStream(stream);
     }
     
     @Override
     protected void compileLine(String line, FileContext context) {
-        if (line.isBlank()) {
-            try {
-                this.controller.write("\n");
-            } catch (IOException ignore) {
-            }
-        }
+        if (line.isBlank()) this.stream.print("\n");
         final ElementTree tree = this.parseLine(line, context);
         if (tree == null) return;
         this.debug(tree, context);
@@ -44,21 +39,17 @@ public class DebugSkriptCompiler extends SimpleSkriptCompiler {
     
     @Override
     public PostCompileClass[] compile(InputStream stream, Type path) {
-        try {
-            this.controller.write("\n\n");
-            this.controller.write("--" + path.internalName());
-            this.controller.write("\n");
-        } catch (IOException ignored) {}
+        this.stream.print("\n");
+        this.stream.print("--" + path.internalName());
+        this.stream.print("\n");
         return super.compile(stream, path);
     }
     
     @Override
     public PostCompileClass[] compile(String source, Type path) {
-        try {
-            this.controller.write("\n\n");
-            this.controller.write("--" + path.internalName());
-            this.controller.write("\n");
-        } catch (IOException ignored) {}
+        this.stream.print("\n\n");
+        this.stream.print("--" + path.internalName());
+        this.stream.print("\n");
         return super.compile(source, path);
     }
     
@@ -68,11 +59,9 @@ public class DebugSkriptCompiler extends SimpleSkriptCompiler {
     }
     
     protected void debug(ElementTree tree, FileContext context) {
-        try {
-            this.controller.write("\n");
-            for (int i = 0; i < context.lineIndent; i++) this.controller.write("\t");
-            this.controller.write(tree.toString(context));
-        } catch (Throwable ignored) {}
+        this.stream.print("\n");
+        for (int i = 0; i < context.lineIndent; i++) this.stream.print("\t");
+        this.stream.print(tree.toString(context));
     }
     
 }

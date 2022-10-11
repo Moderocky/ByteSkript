@@ -7,21 +7,15 @@
 package org.byteskript.skript.test;
 
 import mx.kenzie.foundation.language.PostCompileClass;
-import org.byteskript.skript.runtime.Script;
 import org.byteskript.skript.runtime.Skript;
-import org.byteskript.skript.runtime.internal.ConsoleColour;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
-import java.nio.file.*;
-import java.util.ArrayList;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 
 public class SyntaxTest extends SkriptTest {
     

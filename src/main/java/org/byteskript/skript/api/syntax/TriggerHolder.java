@@ -15,6 +15,7 @@ import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.compiler.Pattern;
 
 import java.lang.reflect.Modifier;
+import java.util.regex.Matcher;
 
 public abstract class TriggerHolder extends Member {
     public TriggerHolder(Library provider, LanguageElement type, String... patterns) {
@@ -27,7 +28,7 @@ public abstract class TriggerHolder extends Member {
             .addMethod(callSiteName(context, match))
             .addModifiers(Modifier.STATIC)
             .setReturnType(returnType(context, match))
-            .addParameter(parameters(context, match));
+            .addParameter(parameters(context, match.matcher()));
         context.setMethod(method, true);
         context.setState(CompileState.MEMBER_BODY);
     }
@@ -36,6 +37,8 @@ public abstract class TriggerHolder extends Member {
     
     public abstract Type returnType(Context context, Pattern.Match match);
     
-    public abstract Type[] parameters(Context context, Pattern.Match match);
+    public Type[] parameters(Context context, Matcher match) {
+        return new Type[0];
+    }
     
 }

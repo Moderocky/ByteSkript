@@ -56,13 +56,13 @@ public class unsafe extends UnsafeAccessor {
         else skript.runEvent(event, skript.getScript(script));
     }
     
-    public static void sleep(Object object) throws InterruptedException {
+    public static void sleep(final Object object) throws InterruptedException {
         synchronized (object) {
             object.wait();
         }
     }
     
-    public static void wake(Object object) throws InterruptedException {
+    public static void wake(final Object object) throws InterruptedException {
         synchronized (object) {
             object.notify();
         }

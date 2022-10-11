@@ -7,6 +7,7 @@
 package org.byteskript.skript.lang.syntax.dictionary;
 
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.DebugTypeMeta;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.Effect;
 import org.byteskript.skript.compiler.*;
@@ -16,7 +17,6 @@ import org.byteskript.skript.lang.element.StandardElements;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 
 @Documentation(
     name = "Use Library",
@@ -35,7 +35,7 @@ import java.util.Arrays;
             """
     }
 )
-public class EffectUseLibrary extends Effect {
+public class EffectUseLibrary extends Effect implements DebugTypeMeta {
     
     public EffectUseLibrary() {
         super(SkriptLangSpec.LIBRARY, StandardElements.EFFECT, "use %Library%");
@@ -59,7 +59,8 @@ public class EffectUseLibrary extends Effect {
         tree.compile = false;
         final Type type = tree.match().meta();
         final Class<?> cls = type.findClass();
-        if (cls == null) throw new ScriptCompileError(context.lineNumber(), "Root library '" + type.getSimpleName() + "' was not found.");
+        if (cls == null)
+            throw new ScriptCompileError(context.lineNumber(), "Root library '" + type.getSimpleName() + "' was not found.");
         for (final Method method : cls.getMethods()) {
             if (!Modifier.isStatic(method.getModifiers())) continue;
             if (!Modifier.isPublic(method.getModifiers())) continue;

@@ -19,6 +19,7 @@ import org.byteskript.skript.runtime.data.SourceData;
 
 import java.lang.reflect.Modifier;
 import java.time.Instant;
+import java.util.regex.Matcher;
 
 public abstract class EventHolder extends TriggerHolder {
     public EventHolder(Library provider, String... patterns) {
@@ -65,7 +66,7 @@ public abstract class EventHolder extends TriggerHolder {
     }
     
     @Override
-    public Type[] parameters(Context context, Pattern.Match match) {
+    public Type[] parameters(Context context, Matcher match) {
         return new Type[0];
     }
     

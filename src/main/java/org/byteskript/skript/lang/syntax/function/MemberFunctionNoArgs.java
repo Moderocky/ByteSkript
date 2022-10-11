@@ -62,7 +62,7 @@ public class MemberFunctionNoArgs extends MemberFunction {
     }
     
     @Override
-    public Type[] parameters(Context context, Pattern.Match match) {
+    public Type[] parameters(Context context, Matcher match) {
         return new Type[0];
     }
 }

@@ -96,8 +96,4 @@ public class MemberEvery extends TriggerHolder {
         return CommonTypes.VOID;
     }
     
-    @Override
-    public Type[] parameters(Context context, Pattern.Match match) {
-        return new Type[0];
-    }
 }

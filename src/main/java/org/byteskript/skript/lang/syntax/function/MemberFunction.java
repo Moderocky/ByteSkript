@@ -51,9 +51,21 @@ public class MemberFunction extends TriggerHolder {
         if (!thing.startsWith("function ")) return null;
         if (!thing.contains("(") || !thing.contains(")")) return null;
         final Matcher matcher = PATTERN.matcher(thing);
-        if (matcher.find() && matcher.group("name") != null && matcher.group("params") != null)
-            return new Pattern.Match(matcher);
-        return null;
+        if (matcher.find() && matcher.group("name") != null && matcher.group("params") != null) {
+            return new Pattern.Match(matcher, this.parameterNames(context, matcher));
+        } else return null;
+    }
+    
+    public String[] parameterNames(Context context, Matcher matcher) {
+        final String string = matcher.group("params");
+        final String[] strings = string.split(",");
+        final List<String> names = new ArrayList<>();
+        for (String s : strings) {
+            final String name = s.trim();
+            if (name.isEmpty()) throw new ScriptParseError(context.lineNumber(), "Empty function parameter.");
+            names.add(name);
+        }
+        return names.toArray(new String[0]);
     }
     
     @Override
@@ -107,8 +119,8 @@ public class MemberFunction extends TriggerHolder {
     }
     
     @Override
-    public Type[] parameters(Context context, Pattern.Match match) {
-        final String string = match.matcher().group("params");
+    public Type[] parameters(Context context, Matcher matcher) {
+        final String string = matcher.group("params");
         final String[] strings = string.split(",");
         final List<Type> types = new ArrayList<>();
         for (String s : strings) {

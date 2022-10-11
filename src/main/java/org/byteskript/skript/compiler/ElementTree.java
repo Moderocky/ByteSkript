@@ -8,6 +8,7 @@ package org.byteskript.skript.compiler;
 
 import mx.kenzie.foundation.MethodErasure;
 import mx.kenzie.foundation.Type;
+import org.byteskript.skript.api.DebugTypeMeta;
 import org.byteskript.skript.api.HandlerType;
 import org.byteskript.skript.api.SyntaxElement;
 import org.byteskript.skript.api.syntax.Literal;
@@ -15,7 +16,7 @@ import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.api.syntax.TriggerHolder;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.handler.StandardHandlers;
-import org.byteskript.skript.lang.syntax.entry.EntryTriggerSection;
+import org.byteskript.skript.lang.syntax.function.MemberFunction;
 import org.byteskript.skript.lang.syntax.variable.ExprVariable;
 
 import java.util.*;
@@ -186,7 +187,22 @@ public final class ElementTree {
             builder.append(match.matcher().group());
         } else if (current instanceof ExprVariable) {
             builder.append(match.matcher().group("name"));
-        } else if (current instanceof TriggerHolder && context != null && context.getLine() == this && context.getMethod() != null) {
+        } else if (current instanceof DebugTypeMeta debug) {
+            final Object meta = this.match.meta();
+            if (meta != null) builder.append(debug.debug(meta));
+        } else if (current instanceof MemberFunction) {
+            boolean comma = false;
+            final String[] names = this.match.meta();
+            if (names != null) for (final String name : names) {
+                if (comma) builder.append(", ");
+                else comma = true;
+                builder.append(name);
+            }
+        } else if (current instanceof TriggerHolder
+            && context != null
+            && context.getLine() == this
+            && context.getMethod() != null
+        ) {
             final MethodErasure erasure = context.getMethod().getErasure();
             boolean comma = false;
             for (final Type type : erasure.parameterTypes()) {
@@ -205,12 +221,12 @@ public final class ElementTree {
         builder.append(')');
         if (context == null) return builder.toString();
         if (context.isSectionHeader() && context.getLine() == this) builder.append(':');
-        if (current instanceof EntryTriggerSection && context.getLine() == this && context.getMethod() != null) {
-            final MethodErasure erasure = context.getMethod().getErasure();
-            builder.append(" // ");
-            builder.append(erasure.name());
-            builder.append(erasure.getDescriptor());
-        }
+//        if (current instanceof EntryTriggerSection && context.getLine() == this && context.getMethod() != null) {
+//            final MethodErasure erasure = context.getMethod().getErasure();
+//            builder.append(" // ");
+//            builder.append(erasure.name());
+//            builder.append(erasure.getDescriptor());
+//        }
         return builder.toString();
     }
 }
