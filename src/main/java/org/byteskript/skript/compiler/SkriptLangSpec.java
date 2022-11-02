@@ -133,6 +133,8 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         registerConverter(String.class, Error.class, Error::new);
         registerConverter(String.class, File.class, File::new);
         registerConverter(String.class, Class.class, Skript::findAnyClass);
+        registerConverter(String.class, String[].class, s -> new String[] {s});
+        registerConverter(Object.class, Object[].class, o -> new Object[] {o});
         registerConverter(Object[].class, DataList.class, DataList::of);
         registerConverter(Collection.class, Object[].class, Collection::toArray);
         registerConverter(File.class, OutputStream.class, FileOutputStream::new);

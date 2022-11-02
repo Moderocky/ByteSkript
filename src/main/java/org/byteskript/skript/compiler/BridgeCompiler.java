@@ -48,6 +48,78 @@ public class BridgeCompiler {
         final Class<?>[] parameters = target.getParameterTypes();
         final Class<?> expected = source.returnType();
         final Class<?> result = target.getReturnType();
+        if (arguments.length != parameters.length && !target.isVarArgs())
+            throw new ScriptRuntimeError("Function argument count did not match target parameter count.");
+        final ClassWriter writer = new ClassWriter(0);
+        writer.visit(Skript.JAVA_VERSION, 0x0001 | 0x1000, location, null, "java/lang/Object", null);
+        final MethodVisitor visitor;
+        final Type[] types = new Type[arguments.length];
+        for (int i = 0; i < arguments.length; i++) types[i] = Type.getType(arguments[i]);
+        visitor = writer.visitMethod(0x0001 | 0x0008 | 0x0040 | 0x1000, "bridge", Type.getMethodDescriptor(Type.getType(expected), types), null, null);
+        visitor.visitCode();
+        final int length;
+        if (target.isVarArgs()) length = parameters.length - 1;
+        else length = arguments.length;
+        this.extractSimpleArguments(length, arguments, parameters, visitor);
+        this.extractVarArguments(arguments, parameters, visitor, length);
+        this.invoke(visitor);
+        if (result == void.class) {
+            visitor.visitInsn(1);
+            visitor.visitInsn(176);
+        } else {
+            this.box(visitor, result);
+            visitor.visitTypeInsn(192, Type.getInternalName(this.getWrapperType(expected)));
+            visitor.visitInsn(171 + this.instructionOffset(expected));
+        }
+        final int stack;
+        if (target.isVarArgs())
+            stack = Math.max(parameters.length + 1 + this.wideIndexOffset(parameters, result), 1) + 4;
+        else stack = Math.max(parameters.length + 1 + this.wideIndexOffset(parameters, result), 1);
+        visitor.visitMaxs(stack, arguments.length);
+        visitor.visitEnd();
+        writer.visitEnd();
+        this.generated = lookup.defineClass(writer.toByteArray());
+        return generated;
+    }
+    
+    private void extractVarArguments(Class<?>[] arguments, Class<?>[] parameters, MethodVisitor visitor, int length) {
+        if (!target.isVarArgs()) return;
+        final int remaining = arguments.length - length;
+        final Class<?> array = parameters[parameters.length - 1];
+        final Class<?> parameter = array.getComponentType();
+        visitor.visitIntInsn(16, remaining);
+        visitor.visitTypeInsn(189, Type.getInternalName(parameter));
+        for (int i = 0; i < remaining; i++) {
+            visitor.visitInsn(89);
+            visitor.visitIntInsn(16, i);
+            final Class<?> argument = arguments[i];
+            visitor.visitVarInsn(20 + this.instructionOffset(argument), i);
+            this.boxAtomic(visitor, parameter);
+            this.conform(visitor, parameter);
+            visitor.visitTypeInsn(192, Type.getInternalName(this.getUnboxingType(parameter)));
+            this.unbox(visitor, parameter);
+            visitor.visitInsn(83);
+        }
+    }
+    
+    private void extractSimpleArguments(int length, Class<?>[] arguments, Class<?>[] parameters, MethodVisitor visitor) {
+        for (int i = 0; i < length; i++) { // assume no fat arguments ?
+            final Class<?> argument = arguments[i];
+            final Class<?> parameter = parameters[i];
+            visitor.visitVarInsn(20 + this.instructionOffset(argument), i);
+            this.boxAtomic(visitor, parameter);
+            this.conform(visitor, parameter);
+            visitor.visitTypeInsn(192, Type.getInternalName(this.getUnboxingType(parameter)));
+            this.unbox(visitor, parameter);
+        }
+    }
+    
+    public Class<?> createClass0()
+        throws IllegalAccessException {
+        final Class<?>[] arguments = source.parameterArray();
+        final Class<?>[] parameters = target.getParameterTypes();
+        final Class<?> expected = source.returnType();
+        final Class<?> result = target.getReturnType();
         if (arguments.length != parameters.length) // todo dynamic?
             throw new ScriptRuntimeError("Function argument count did not match target parameter count.");
         final ClassWriter writer = new ClassWriter(0);

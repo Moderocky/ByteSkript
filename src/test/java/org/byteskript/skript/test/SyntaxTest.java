@@ -29,6 +29,10 @@ public class SyntaxTest extends SkriptTest {
             .getResourceAsStream("tests/bracket.bsk"), "skript.bracket");
     }
     
+    public static boolean varArgs(String first, String... second) {
+        return first.equals("hello") && second.length == 3;
+    }
+    
     @Test
     public void all() throws Throwable {
         final URI uri = SyntaxTest.class.getClassLoader().getResource("tests").toURI();

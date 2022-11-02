@@ -17,7 +17,9 @@ import org.byteskript.skript.runtime.Skript;
 import java.lang.invoke.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Description("""
     The meta-factory handles building call-sites at runtime.
@@ -44,6 +46,7 @@ public class Metafactory {
     }
     
     private static Method findTarget(MethodHandles.Lookup caller, String name, Class<?> owner, Class<?>... parameters) {
+        final List<Method> varArgs = new ArrayList<>();
         {
             final Method[] methods = owner.getMethods();
             for (final Method method : methods) {
@@ -53,6 +56,7 @@ public class Metafactory {
             for (final Method method : methods) {
                 if (!Modifier.isStatic(method.getModifiers())) continue; // can only hit statics for now
                 if (!method.getName().equals(name)) continue;
+                if (method.isVarArgs()) varArgs.add(method);
                 if (parameters.length == method.getParameterCount()) return method;
             }
         }
@@ -65,8 +69,18 @@ public class Metafactory {
             for (final Method method : methods) {
                 if (!Modifier.isStatic(method.getModifiers())) continue; // can only hit statics for now
                 if (!method.getName().equals(name)) continue;
+                if (method.isVarArgs()) varArgs.add(method);
                 if (parameters.length == method.getParameterCount()) return method;
             }
+        }
+        for (final Method method : varArgs) {
+            final int check = method.getParameterCount() - 1;
+            if (parameters.length < check) continue;
+            if (Arrays.equals(method.getParameterTypes(), 0, check, parameters, 0, check)) return method;
+        }
+        for (final Method method : varArgs) {
+            if (parameters.length < method.getParameterCount() - 1) continue;
+            return method;
         }
         throw new ScriptRuntimeError("Unable to find function '" + name + Arrays.toString(parameters).replace('[', '(')
             .replace(']', ')') + "' from " + owner.getSimpleName());

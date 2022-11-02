@@ -16,4 +16,10 @@ function test:
         set {@var} to 5
         assert box({@var}, 2) is 3
         assert {@var} is 2
+        set {result} to varArgs("hello") from org/byteskript/skript/test/SyntaxTest
+        assert {result} is false
+        set {result} to varArgs("hello", "there") from org/byteskript/skript/test/SyntaxTest
+        assert {result} is false
+        set {result} to varArgs("hello", "there", "general", "kenobi") from org/byteskript/skript/test/SyntaxTest
+        assert {result} is true
         return true
