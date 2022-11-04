@@ -114,46 +114,6 @@ public class BridgeCompiler {
         }
     }
     
-    public Class<?> createClass0()
-        throws IllegalAccessException {
-        final Class<?>[] arguments = source.parameterArray();
-        final Class<?>[] parameters = target.getParameterTypes();
-        final Class<?> expected = source.returnType();
-        final Class<?> result = target.getReturnType();
-        if (arguments.length != parameters.length) // todo dynamic?
-            throw new ScriptRuntimeError("Function argument count did not match target parameter count.");
-        final ClassWriter writer = new ClassWriter(0);
-        writer.visit(Skript.JAVA_VERSION, 0x0001 | 0x1000, location, null, "java/lang/Object", null);
-        final MethodVisitor visitor;
-        final Type[] types = new Type[arguments.length];
-        for (int i = 0; i < arguments.length; i++) types[i] = Type.getType(arguments[i]);
-        visitor = writer.visitMethod(0x0001 | 0x0008 | 0x0040 | 0x1000, "bridge", Type.getMethodDescriptor(Type.getType(expected), types), null, null);
-        visitor.visitCode();
-        for (int i = 0; i < arguments.length; i++) { // assume no fat arguments ?
-            final Class<?> argument = arguments[i];
-            final Class<?> parameter = parameters[i];
-            visitor.visitVarInsn(20 + this.instructionOffset(argument), i);
-            this.boxAtomic(visitor, parameter);
-            this.conform(visitor, parameter);
-            visitor.visitTypeInsn(192, Type.getInternalName(this.getUnboxingType(parameter)));
-            this.unbox(visitor, parameter);
-        }
-        this.invoke(visitor);
-        if (result == void.class) {
-            visitor.visitInsn(1);
-            visitor.visitInsn(176);
-        } else {
-            this.box(visitor, result);
-            visitor.visitTypeInsn(192, Type.getInternalName(this.getWrapperType(expected)));
-            visitor.visitInsn(171 + this.instructionOffset(expected));
-        }
-        visitor.visitMaxs(Math.max(parameters.length + 1 + this.wideIndexOffset(parameters, result), 1), arguments.length);
-        visitor.visitEnd();
-        writer.visitEnd();
-        this.generated = lookup.defineClass(writer.toByteArray());
-        return generated;
-    }
-    
     protected int instructionOffset(Class<?> type) {
         if (type == int.class) return 1;
         if (type == boolean.class) return 1;

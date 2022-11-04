@@ -65,7 +65,7 @@ public class EffectUseLibrary extends Effect implements DebugTypeMeta {
             if (!Modifier.isStatic(method.getModifiers())) continue;
             if (!Modifier.isPublic(method.getModifiers())) continue;
             context.registerFunction(new Function(method.getName(), type, CommonTypes.OBJECT,
-                Type.array(CommonTypes.OBJECT, method.getParameterCount()), new Type(method.getReturnType()), Type.of(method.getParameterTypes())));
+                Type.array(CommonTypes.OBJECT, method.getParameterCount()), new Type(method.getReturnType()), Type.of(method.getParameterTypes()), method.isVarArgs()));
         }
         context.setState(CompileState.CODE_BODY);
     }

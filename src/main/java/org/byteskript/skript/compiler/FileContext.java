@@ -73,7 +73,7 @@ public class FileContext extends Context {
             for (final Method method : Class.forName("skript").getMethods()) {
                 if (!Modifier.isStatic(method.getModifiers())) continue;
                 if (!Modifier.isPublic(method.getModifiers())) continue;
-                this.functions.add(new Function(method.getName(), owner, CommonTypes.OBJECT, Type.array(CommonTypes.OBJECT, method.getParameterCount()), new Type(method.getReturnType()), Type.of(method.getParameterTypes())));
+                this.functions.add(new Function(method.getName(), owner, CommonTypes.OBJECT, Type.array(CommonTypes.OBJECT, method.getParameterCount()), new Type(method.getReturnType()), Type.of(method.getParameterTypes()), method.isVarArgs()));
             }
         } catch (Throwable ex) {
             throw new RuntimeException("Unable to load Skript functions.", ex);
@@ -437,7 +437,9 @@ public class FileContext extends Context {
             if (function.name().equals(name) && function.arguments().length == arguments) return function;
         }
         for (final Function function : functions) { // zero-functions may be imported
-            if (function.name().equals(name) && function.arguments().length == 0) return function.copy(arguments);
+            if (!function.name().equals(name)) continue;
+            if (function.arguments().length == 0) return function.copy(arguments);
+            else if (function.variable()) return function;
         }
         return null;
     }

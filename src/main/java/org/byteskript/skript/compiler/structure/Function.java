@@ -14,18 +14,19 @@ import org.byteskript.skript.runtime.internal.Bootstrapper;
 
 import java.util.Arrays;
 
-public record Function(String name, Type provider, Type returnType, Type[] arguments, Type result, Type[] parameters) {
+public record Function(String name, Type provider, Type returnType, Type[] arguments, Type result, Type[] parameters,
+                       boolean variable) {
     
     public Function(String name, Type provider) {
         this(name, provider, CommonTypes.OBJECT);
     }
     
     public Function(String name, Type provider, Type returnType, Type... arguments) {
-        this(name, provider, returnType, arguments, returnType, arguments);
+        this(name, provider, returnType, arguments, returnType, arguments, false);
     }
     
     public Function(Type provider, MethodErasure erasure) {
-        this(erasure.name(), provider, erasure.returnType(), erasure.parameterTypes(), erasure.returnType(), erasure.parameterTypes());
+        this(erasure.name(), provider, erasure.returnType(), erasure.parameterTypes(), erasure.returnType(), erasure.parameterTypes(), false);
     }
     
     public Function copy(int arguments) {

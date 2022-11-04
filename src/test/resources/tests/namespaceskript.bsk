@@ -60,6 +60,11 @@ function maths:
         assert round(5) is 5: "Round function returned wrong result."
         assert ln(-3) < 1: "Ln function returned wrong result."
         assert log(3) > 1: "Log function returned wrong result."
+        assert sum(10) = 10: "Sum single number failed."
+        assert sum() = 0: "Sum no numbers failed."
+        assert sum(10, 5) = 15: "Sum two numbers failed."
+        assert sum(10, -11) = -1: "Sum negative numbers failed."
+        assert sum(-1, -1) = -2: "Sum negative numbers failed."
 
 function generic:
     trigger:

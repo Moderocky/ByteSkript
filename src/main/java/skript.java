@@ -88,6 +88,12 @@ public final class skript {
         throw new ScriptRuntimeError("Unable to abs(" + object + ") - not a number.");
     }
     
+    public static double sum(Number... numbers) {
+        double value = 0;
+        for (Number number : numbers) value += number.doubleValue();
+        return value;
+    }
+    
     public static double sqrt(double number) {
         if (number == 0) return 0;
         return Math.sqrt(number);
