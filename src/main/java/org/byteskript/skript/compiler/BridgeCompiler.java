@@ -174,22 +174,11 @@ public class BridgeCompiler {
     }
     
     protected void box(MethodVisitor visitor, Class<?> value) {
-        if (value == byte.class)
-            visitor.visitMethodInsn(184, Type.getInternalName(Byte.class), "valueOf", "(B)Ljava/lang/Byte;", false);
-        if (value == short.class)
-            visitor.visitMethodInsn(184, Type.getInternalName(Short.class), "valueOf", "(S)Ljava/lang/Short;", false);
-        if (value == int.class)
-            visitor.visitMethodInsn(184, Type.getInternalName(Integer.class), "valueOf", "(I)Ljava/lang/Integer;", false);
-        if (value == long.class)
-            visitor.visitMethodInsn(184, Type.getInternalName(Long.class), "valueOf", "(J)Ljava/lang/Long;", false);
-        if (value == float.class)
-            visitor.visitMethodInsn(184, Type.getInternalName(Float.class), "valueOf", "(F)Ljava/lang/Float;", false);
-        if (value == double.class)
-            visitor.visitMethodInsn(184, Type.getInternalName(Double.class), "valueOf", "(D)Ljava/lang/Double;", false);
-        if (value == boolean.class)
-            visitor.visitMethodInsn(184, Type.getInternalName(Boolean.class), "valueOf", "(Z)Ljava/lang/Boolean;", false);
-        if (value == void.class)
-            visitor.visitInsn(1);
+        if (value == void.class) visitor.visitInsn(1);
+        if (!value.isPrimitive()) return;
+        final Class<?> wrapper = this.getWrapperType(value);
+        final String descriptor = "(" + Type.getDescriptor(value) + ")" + Type.getDescriptor(wrapper);
+        visitor.visitMethodInsn(184, Type.getInternalName(wrapper), "valueOf", descriptor, false);
     }
     
     protected Class<?> getWrapperType(Class<?> primitive) {
