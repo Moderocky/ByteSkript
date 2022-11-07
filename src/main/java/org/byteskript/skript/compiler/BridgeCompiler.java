@@ -148,23 +148,14 @@ public class BridgeCompiler {
     }
     
     protected void unbox(MethodVisitor visitor, Class<?> parameter) {
+        if (!parameter.isPrimitive()) return;
         final String source = Type.getInternalName(OperatorHandler.class);
-        if (parameter == byte.class)
-            visitor.visitMethodInsn(184, source, "unboxB", "(Ljava/lang/Number;)B", false);
-        if (parameter == short.class)
-            visitor.visitMethodInsn(184, source, "unboxS", "(Ljava/lang/Number;)S", false);
-        if (parameter == int.class)
-            visitor.visitMethodInsn(184, source, "unboxI", "(Ljava/lang/Number;)I", false);
-        if (parameter == long.class)
-            visitor.visitMethodInsn(184, source, "unboxJ", "(Ljava/lang/Number;)J", false);
-        if (parameter == float.class)
-            visitor.visitMethodInsn(184, source, "unboxF", "(Ljava/lang/Number;)F", false);
-        if (parameter == double.class)
-            visitor.visitMethodInsn(184, source, "unboxD", "(Ljava/lang/Number;)D", false);
-        if (parameter == boolean.class)
-            visitor.visitMethodInsn(184, source, "unbox", "(Ljava/lang/Boolean;)Z", false);
-        if (parameter == char.class)
-            visitor.visitMethodInsn(184, source, "unbox", "(Ljava/lang/Character;)C", false);
+        final Class<?> wrapper, prescriptive;
+        prescriptive = this.getWrapperType(parameter);
+        if (Number.class.isAssignableFrom(prescriptive)) wrapper = Number.class;
+        else wrapper = prescriptive;
+        final String code = Type.getDescriptor(parameter);
+        visitor.visitMethodInsn(184, source, "unbox" + code, '(' + Type.getDescriptor(wrapper) + ')' + code, false);
     }
     
     //region Utilities
@@ -197,10 +188,8 @@ public class BridgeCompiler {
     
     protected int wideIndexOffset(Class<?>[] params, Class<?> ret) {
         int i = 0;
-        for (Class<?> param : params) {
-            i += wideIndexOffset(param);
-        }
-        return Math.max(i, wideIndexOffset(ret));
+        for (Class<?> param : params) i += this.wideIndexOffset(param);
+        return Math.max(i, this.wideIndexOffset(ret));
     }
     
     protected int wideIndexOffset(Class<?> thing) {

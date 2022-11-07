@@ -59,12 +59,12 @@ public class OperatorHandler {
         return value.doubleValue();
     }
     
-    public static char unbox(Character value) {
+    public static char unboxC(Character value) {
         if (value == null) return 0;
         return value;
     }
     
-    public static boolean unbox(Boolean value) {
+    public static boolean unboxZ(Boolean value) {
         if (value == null) return false;
         return value;
     }
