@@ -92,8 +92,8 @@ public class BridgeCompiler {
         for (int i = 0; i < remaining; i++) {
             visitor.visitInsn(89);
             visitor.visitIntInsn(16, i);
-            final Class<?> argument = arguments[i];
-            visitor.visitVarInsn(20 + this.instructionOffset(argument), i);
+            final Class<?> argument = arguments[i + length];
+            visitor.visitVarInsn(20 + this.instructionOffset(argument), i + length);
             this.boxAtomic(visitor, parameter);
             this.conform(visitor, parameter);
             visitor.visitTypeInsn(192, Type.getInternalName(this.getUnboxingType(parameter)));
