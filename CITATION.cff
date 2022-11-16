@@ -3,6 +3,8 @@ message: "If you use this software, please cite it as below."
 authors:
 - family-names: "Scott"
   given-names: "Mackenzie"
+- family-names: "Suhonen"
+  given-names: "Ilari"
 title: "ByteSkript"
 version: 1.0.0
 date-released: 2021-12-25
