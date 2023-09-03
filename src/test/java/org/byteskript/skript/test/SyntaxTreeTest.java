@@ -47,7 +47,6 @@ public class SyntaxTreeTest extends SkriptTest {
             """, new Type("test"));
         assert stream.toString().equals("""
             
-            
             --test
             
             MemberDictionary():
@@ -68,7 +67,8 @@ public class SyntaxTreeTest extends SkriptTest {
               
             EventLoad():
             	EntryTriggerSection():
-            		EffectPrint(StringLiteral("Foo"))""") : '"' + stream.toString() + '"';
+            		EffectPrint(StringLiteral("Foo"))
+            """) : '"' + stream.toString() + '"';
     }
     
 }
