@@ -41,15 +41,15 @@ public class DebugSkriptCompiler extends SimpleSkriptCompiler {
     public PostCompileClass[] compile(InputStream stream, Type path) {
         this.stream.print("\n");
         this.stream.print("--" + path.internalName());
-        this.stream.print("\n");
+        this.stream.print("\n\n");
         return super.compile(stream, path);
     }
     
     @Override
     public PostCompileClass[] compile(String source, Type path) {
-        this.stream.print("\n\n");
-        this.stream.print("--" + path.internalName());
         this.stream.print("\n");
+        this.stream.print("--" + path.internalName());
+        this.stream.print("\n\n");
         return super.compile(source, path);
     }
     
@@ -59,9 +59,8 @@ public class DebugSkriptCompiler extends SimpleSkriptCompiler {
     }
     
     protected void debug(ElementTree tree, FileContext context) {
-        this.stream.print("\n");
         for (int i = 0; i < context.lineIndent; i++) this.stream.print("\t");
-        this.stream.print(tree.toString(context));
+        this.stream.println(tree.toString(context));
     }
     
 }
