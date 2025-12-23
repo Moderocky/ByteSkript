@@ -106,8 +106,6 @@ public class ExprFunctionProperty extends SimpleExpression {
         for (final ElementTree tree : context.getCompileCurrent().nested()) {
             tree.takeAtomic = true;
         }
-        final String name = ((FunctionDetails) match.meta()).name();
-        context.getMethod().writeCode(WriteInstruction.loadConstant(name)); // ldc name
         final ElementTree[] nested = context.getCompileCurrent().nested();
         if (nested.length < 2) return;
         final ElementTree tree = nested[nested.length - 1]; // swap object order before array pack
@@ -138,6 +136,11 @@ public class ExprFunctionProperty extends SimpleExpression {
             target.writeCode(WriteInstruction.returnObject());
         }
         method.writeCode(WriteInstruction.invokeStatic(builder.getType(), erasure)); // pack array
+        final String name = ((FunctionDetails) match.meta()).name();
+        context.getMethod().writeCode(WriteInstruction.loadConstant(name));
+        // shuffle stack from (source, params, name) -> (name, source, params)
+        method.writeCode(WriteInstruction.duplicateDrop3());
+        method.writeCode(WriteInstruction.pop());
         this.writeCall(method, findMethod(Metafactory.class, "callFunction", String.class, Object.class, Object[].class), context);
     }
     
