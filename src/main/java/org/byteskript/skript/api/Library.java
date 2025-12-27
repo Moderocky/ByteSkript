@@ -9,7 +9,7 @@ package org.byteskript.skript.api;
 import mx.kenzie.autodoc.api.note.Description;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
-import mx.kenzie.foundation.language.PostCompileClass;
+import org.byteskript.skript.api.resource.Resource;
 import org.byteskript.skript.compiler.Context;
 import org.byteskript.skript.runtime.type.Converter;
 import org.byteskript.skript.runtime.type.OperatorFunction;
@@ -61,7 +61,7 @@ public interface Library {
     Type[] getTypes();
     
     @Description("Runtime dependencies to be included in complete archive.")
-    Collection<PostCompileClass> getRuntime();
+    Collection<Resource> getRuntime();
     
     @Description("""
         Generates documentation for all available syntax to be exported to a processor.

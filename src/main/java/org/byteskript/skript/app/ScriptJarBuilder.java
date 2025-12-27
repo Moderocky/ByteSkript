@@ -10,10 +10,10 @@ import mx.kenzie.foundation.assembler.JarBuilder;
 import mx.kenzie.foundation.assembler.Manifest;
 import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.api.Library;
+import org.byteskript.skript.api.resource.Resource;
 import org.byteskript.skript.runtime.Skript;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,22 +34,22 @@ public final class ScriptJarBuilder extends SkriptApp {
     
     static void compileResource(File jar, PostCompileClass... classes) throws IOException {
         if (!jar.exists()) jar.createNewFile();
-        final List<File> resources = getFiles(new ArrayList<>(), RESOURCES.toPath());
-        final List<PostCompileClass> runtime = new ArrayList<>();
+        final List<Resource> runtime = new ArrayList<>();
         scrapeRuntimeResources(runtime);
+        for (final File file : getFiles(new ArrayList<>(), RESOURCES.toPath())) {
+            runtime.add(Resource.ofFile(file.getName(), file));
+        }
         try (final JarBuilder builder = new JarBuilder(jar)) {
-            builder.write(runtime.toArray(new PostCompileClass[0]));
+            for (final Resource resource : runtime) {
+                builder.write(resource.getEntryName(), resource.open());
+            }
             builder.write(classes);
-            for (final File resource : resources)
-                try (final FileInputStream stream = new FileInputStream(resource)) {
-                    builder.write(resource.getName(), stream);
-                }
             final String version = ScriptJarBuilder.class.getPackage().getImplementationVersion();
             builder.manifest(new Manifest(ScriptRunner.class.getName(), "Skript Compiler " + version, "Skript Jar Builder"));
         }
     }
     
-    static void scrapeRuntimeResources(final List<PostCompileClass> runtime) {
+    static void scrapeRuntimeResources(final List<Resource> runtime) {
         for (final Library library : SKRIPT.getLoadedLibraries()) {
             runtime.addAll(library.getRuntime());
         }
