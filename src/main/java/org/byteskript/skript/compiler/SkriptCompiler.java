@@ -8,8 +8,8 @@ package org.byteskript.skript.compiler;
 
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.language.Compiler;
-import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.api.Library;
+import org.byteskript.skript.api.resource.Resource;
 import org.byteskript.skript.runtime.internal.ModifiableCompiler;
 import org.byteskript.skript.runtime.type.Converter;
 import org.byteskript.skript.runtime.type.OperatorFunction;
@@ -53,11 +53,11 @@ public abstract class SkriptCompiler implements Compiler<SkriptLangSpec>, Modifi
         return map;
     }
     
-    public abstract PostCompileClass[] compile(InputStream stream, Type name);
+    public abstract Resource[] compile(InputStream stream, Type name);
     
-    public abstract PostCompileClass[] compile(InputStream file, String path);
+    public abstract Resource[] compile(InputStream file, String path);
     
-    public abstract PostCompileClass[] compile(String file, Type path);
+    public abstract Resource[] compile(String file, Type path);
     
     @Override
     public SkriptCompiler clone() {

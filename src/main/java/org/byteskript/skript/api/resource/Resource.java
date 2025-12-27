@@ -89,8 +89,8 @@ public interface Resource {
      * @param compiledClass The compiled class to use as the source of the resource.
      * @return The newly created resource.
      * */
-    static Resource ofCompiledClass(final PostCompileClass compiledClass) {
-        return ofBytes(compiledClass.internalName() + ".class", compiledClass.code());
+    static ClassResource ofCompiledClass(final PostCompileClass compiledClass) {
+        return new ClassResource(compiledClass);
     }
 
     /**

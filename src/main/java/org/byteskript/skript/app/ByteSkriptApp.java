@@ -6,7 +6,7 @@
 
 package org.byteskript.skript.app;
 
-import mx.kenzie.foundation.language.PostCompileClass;
+import org.byteskript.skript.api.resource.Resource;
 import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.internal.ExtractedSyntaxCalls;
 
@@ -55,10 +55,8 @@ public class ByteSkriptApp extends SkriptApp {
             final File file = new File(name);
             registerLibraries(SKRIPT);
             try (final InputStream stream = new FileInputStream(file)) {
-                final PostCompileClass[] classes = SKRIPT.compileComplexScript(stream, "skript." + file.getName());
-                for (final PostCompileClass type : classes) {
-                    SKRIPT.loadScript(type);
-                }
+                final Resource[] classes = SKRIPT.compileComplexScript(stream, "skript." + file.getName());
+                SKRIPT.loadScript(classes);
             }
             new SimpleThrottleController(SKRIPT).run();
         } else if (args[0].equalsIgnoreCase("jar")) {
@@ -79,10 +77,8 @@ public class ByteSkriptApp extends SkriptApp {
             final File file = new File(name);
             registerLibraries(SKRIPT);
             try (final InputStream stream = new FileInputStream(file)) {
-                final PostCompileClass[] classes = SKRIPT.compileComplexScript(stream, "skript." + file.getName());
-                for (final PostCompileClass type : classes) {
-                    SKRIPT.loadScript(type);
-                }
+                final Resource[] classes = SKRIPT.compileComplexScript(stream, "skript." + file.getName());
+                SKRIPT.loadScript(classes);
             }
             new SimpleThrottleController(SKRIPT).run();
         } else if (args[0].equalsIgnoreCase("debug")) {

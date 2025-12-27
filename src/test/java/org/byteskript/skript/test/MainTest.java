@@ -16,7 +16,7 @@ public class MainTest extends SkriptTest {
     
     public static void main(String[] args) {
         final PostCompileClass cls = skript.compileScript(MainTest.class.getClassLoader()
-            .getResourceAsStream("main.bsk"), "skript.main");
+            .getResourceAsStream("main.bsk"), "skript.main").source();
         Script script = skript.loadScript(cls);
         new ExampleController(skript).run();
         System.out.println("Finished.");

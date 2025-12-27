@@ -33,7 +33,7 @@ public class RecompileTest extends SkriptTest {
     
     private static Script loadSync(final String source) {
         final Script script = skript.assembleScript(
-            skript.compileScript(source, "skript.recompilation.bsk"));
+            skript.compileScript(source, "skript.recompilation.bsk").source());
         skript.runEvent(new Load.LoadThis(script), script).all().join();
         return script;
     }

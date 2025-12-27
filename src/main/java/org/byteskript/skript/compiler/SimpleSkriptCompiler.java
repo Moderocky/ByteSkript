@@ -12,6 +12,8 @@ import mx.kenzie.foundation.language.PostCompileClass;
 import mx.kenzie.jupiter.stream.Stream;
 import org.byteskript.skript.api.Library;
 import org.byteskript.skript.api.SyntaxElement;
+import org.byteskript.skript.api.resource.ClassResource;
+import org.byteskript.skript.api.resource.Resource;
 import org.byteskript.skript.api.syntax.InnerModifyExpression;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.compiler.structure.ErrorDetails;
@@ -44,18 +46,38 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
         return ++anonymous;
     }
     
-    @Override
-    public PostCompileClass compileClass(InputStream source) {
-        return this.compile(source)[0];
+    public Resource compileClassWithResources(InputStream source) {
+        return this.compileWithResources(source)[0];
     }
     
-    @Override
-    public PostCompileClass[] compile(InputStream source) {
+    public Resource[] compileWithResources(InputStream source) {
         final int index = getAnonymous();
         final String path = "skript/unknown_" + index;
         return this.compile(source, path);
     }
-    
+
+    @Override
+    public PostCompileClass compileClass(InputStream inputStream) {
+        final Resource compiled = compileClassWithResources(inputStream);
+        if (!(compiled instanceof final ClassResource compiledClass))
+            throw new ScriptCompileError(-1, "The script included resources when only one class was expected.");
+
+        return compiledClass.source();
+    }
+
+    @Override
+    public PostCompileClass[] compile(InputStream inputStream) {
+        final Resource[] compiled = compileWithResources(inputStream);
+        final List<PostCompileClass> classes = new ArrayList<>();
+        for (final Resource resource : compiled) {
+            if (!(resource instanceof final ClassResource compiledClass))
+                throw new ScriptCompileError(-1, "The script included resources when only classes were expected.");
+            classes.add(compiledClass.source());
+        }
+
+        return classes.toArray(new PostCompileClass[0]);
+    }
+
     @Override
     public void compileAndLoad(InputStream inputStream) {
         throw new ScriptCompileError(-1, "This compiler does not support this feature.");
@@ -304,7 +326,7 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     }
     
     @Override
-    public PostCompileClass[] compile(InputStream stream, Type path) {
+    public Resource[] compile(InputStream stream, Type path) {
         final FileContext context = this.createContext(path);
         context.libraries.addAll(libraries);
         for (final Library library : libraries) {
@@ -323,13 +345,13 @@ public class SimpleSkriptCompiler extends SkriptCompiler implements SkriptParser
     }
     
     @Override
-    public PostCompileClass[] compile(InputStream source, String path) {
-        if (path == null) return this.compile(source);
+    public Resource[] compile(InputStream source, String path) {
+        if (path == null) return this.compileWithResources(source);
         return compile(source, new Type(path));
     }
     
     @Override
-    public PostCompileClass[] compile(String source, Type path) {
+    public Resource[] compile(String source, Type path) {
         final FileContext context = this.createContext(path);
         context.libraries.addAll(libraries);
         for (final Library library : libraries) {
