@@ -15,6 +15,7 @@ import org.byteskript.skript.api.Event;
 import org.byteskript.skript.api.LanguageElement;
 import org.byteskript.skript.api.Library;
 import org.byteskript.skript.api.ModifiableLibrary;
+import org.byteskript.skript.api.resource.Resource;
 import org.byteskript.skript.app.ScriptRunner;
 import org.byteskript.skript.app.SimpleThrottleController;
 import org.byteskript.skript.app.SkriptApp;
@@ -314,7 +315,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
     }
     
     @Override
-    public Collection<PostCompileClass> getRuntime() {
+    public Collection<Resource> getRuntime() {
         final List<PostCompileClass> runtime = new ArrayList<>();
         try {
             for (final Class<?> source : this.findClasses("org/byteskript/skript/runtime/")) {
@@ -344,7 +345,13 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
         } catch (IOException | ClassNotFoundException ex) {
             throw new ScriptCompileError(-1, "Unable to add runtime to compiled classes.", ex);
         }
-        return runtime;
+
+        final List<Resource> resources = new ArrayList<>();
+        for (final PostCompileClass compiledClass : runtime) {
+            resources.add(Resource.ofCompiledClass(compiledClass));
+        }
+
+        return resources;
     }
     
     private Class<?>[] findClasses(final String namespace) throws IOException, ClassNotFoundException {

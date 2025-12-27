@@ -10,7 +10,7 @@ import mx.kenzie.autodoc.api.note.Description;
 import mx.kenzie.autodoc.api.note.Ignore;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
-import mx.kenzie.foundation.language.PostCompileClass;
+import org.byteskript.skript.api.resource.Resource;
 import org.byteskript.skript.api.syntax.EventHolder;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -178,7 +178,7 @@ public class ModifiableLibrary implements SyntaxAnnotationUnwrapper, Library {
     
     @Override
     @Ignore
-    public Collection<PostCompileClass> getRuntime() {
+    public Collection<Resource> getRuntime() {
         return Collections.emptyList();
     }
     
