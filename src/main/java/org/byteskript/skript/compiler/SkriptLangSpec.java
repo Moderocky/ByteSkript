@@ -324,6 +324,9 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             for (final Class<?> source : this.findClasses("org/byteskript/skript/error/")) {
                 runtime.add(this.getData(source));
             }
+            for (final Class<?> source : this.findClasses("org/byteskript/skript/api/resource/")) {
+                runtime.add(this.getData(source));
+            }
             for (final Class<?> source : this.findClasses("mx/kenzie/mimic/")) {
                 runtime.add(this.getData(source));
             }
