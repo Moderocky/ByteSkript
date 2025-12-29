@@ -343,6 +343,7 @@ public final class SkriptLangSpec extends ModifiableLibrary implements LanguageD
             runtime.add(this.getData(SkriptCompiler.class));
             runtime.add(this.getData(BridgeCompiler.class));
             runtime.add(this.getData(Compiler.class));
+            runtime.add(this.getData(PostCompileClass.class));
             runtime.add(this.getData(ScriptRunner.class));
             runtime.add(this.getData(SimpleThrottleController.class));
         } catch (IOException | ClassNotFoundException ex) {
