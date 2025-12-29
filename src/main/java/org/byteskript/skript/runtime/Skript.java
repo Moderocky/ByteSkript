@@ -276,7 +276,7 @@ public final class Skript {
     public Class<?> getClass(String name) {
         final Class<?> found = getClass(name, Skript.class);
         if (found != null) return found;
-        for (Library library : compiler.getLibraries()) {
+        for (Library library : getLoadedLibraries()) {
             final Class<?> test = getClass(name, library.getClass());
             if (test != null) return test;
         }
