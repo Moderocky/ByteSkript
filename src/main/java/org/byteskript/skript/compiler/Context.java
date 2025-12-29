@@ -9,6 +9,7 @@ package org.byteskript.skript.compiler;
 import mx.kenzie.foundation.*;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.*;
+import org.byteskript.skript.api.resource.Resource;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.compiler.structure.*;
 
@@ -62,6 +63,8 @@ public abstract class Context {
     public abstract ClassBuilder getSuppressedBuilder(Type type);
     
     public abstract ClassBuilder getSuppressedBuilder();
+
+    public abstract void addResource(final Resource resource);
     
     public abstract MethodBuilder getMethod();
     

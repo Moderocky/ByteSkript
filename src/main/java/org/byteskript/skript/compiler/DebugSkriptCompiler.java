@@ -7,8 +7,8 @@
 package org.byteskript.skript.compiler;
 
 import mx.kenzie.foundation.Type;
-import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.api.Library;
+import org.byteskript.skript.api.resource.Resource;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -38,7 +38,7 @@ public class DebugSkriptCompiler extends SimpleSkriptCompiler {
     }
     
     @Override
-    public PostCompileClass[] compile(InputStream stream, Type path) {
+    public Resource[] compile(InputStream stream, Type path) {
         this.stream.print("\n");
         this.stream.print("--" + path.internalName());
         this.stream.print("\n\n");
@@ -46,7 +46,7 @@ public class DebugSkriptCompiler extends SimpleSkriptCompiler {
     }
     
     @Override
-    public PostCompileClass[] compile(String source, Type path) {
+    public Resource[] compile(String source, Type path) {
         this.stream.print("\n");
         this.stream.print("--" + path.internalName());
         this.stream.print("\n\n");

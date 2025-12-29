@@ -40,7 +40,7 @@ public class ThreadingTest extends SkriptTest {
                     trigger:
                         wait 1 millisecond
                         set event-thing to 6
-                """, "skript.events");
+                """, "skript.events").source();
         skript.loadScript(cls);
     }
     

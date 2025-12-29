@@ -9,6 +9,7 @@ package org.byteskript.skript.compiler;
 import mx.kenzie.foundation.*;
 import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.api.*;
+import org.byteskript.skript.api.resource.Resource;
 import org.byteskript.skript.compiler.structure.*;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.lang.handler.StandardHandlers;
@@ -25,7 +26,7 @@ import java.util.function.Consumer;
  * This should usually be modified as a {@link Context}.
  */
 public class FileContext extends Context {
-    
+
     protected final Map<String, Type> types = new HashMap<>();
     protected final List<Function> functions = new ArrayList<>();
     protected final List<ProgrammaticSplitTree> trees = new ArrayList<>();
@@ -33,6 +34,7 @@ public class FileContext extends Context {
     final List<Consumer<Context>> endOfLine = new ArrayList<>();
     final Map<HandlerType, List<PropertyAccessGenerator>> usedProperties = new HashMap<>();
     final List<ClassBuilder> suppressedClasses = new ArrayList<>();
+    final List<Resource> resources = new ArrayList<>();
     final List<Flag> flags = new ArrayList<>();
     public int indent, lineIndent, lineNumber, lambdaIndex, indexShift;
     public boolean sectionHeader;
@@ -48,7 +50,7 @@ public class FileContext extends Context {
     LanguageElement expected;
     SyntaxElement currentEffect;
     private HandlerType mode = StandardHandlers.GET;
-    
+
     public FileContext(Type type) {
         this(type, -1);
     }
@@ -84,7 +86,7 @@ public class FileContext extends Context {
         return trees;
     }
     
-    public PostCompileClass[] compile() {
+    public Resource[] compile() {
         this.writer.addAnnotation(ScriptData.class).addValue("sourceFile", sourceFile);
         for (List<PropertyAccessGenerator> value : usedProperties.values()) {
             for (PropertyAccessGenerator generator : value) {
@@ -116,7 +118,12 @@ public class FileContext extends Context {
                 }
             }
         }
-        return classes.toArray(new PostCompileClass[0]);
+        final List<Resource> compiledResources = new ArrayList<>(classes.size() + resources.size());
+        compiledResources.addAll(resources);
+        for (final PostCompileClass compiledClass : classes) {
+            compiledResources.add(Resource.ofCompiledClass(compiledClass));
+        }
+        return compiledResources.toArray(new Resource[0]);
     }
     
     @Override
@@ -189,7 +196,12 @@ public class FileContext extends Context {
     public ClassBuilder getSuppressedBuilder() {
         return suppressedClasses.get(0);
     }
-    
+
+    @Override
+    public void addResource(final Resource resource) {
+        this.resources.add(resource);
+    }
+
     @Override
     public MethodBuilder getMethod() {
         return method;

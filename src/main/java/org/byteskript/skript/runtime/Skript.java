@@ -16,6 +16,8 @@ import mx.kenzie.mirror.Mirror;
 import org.byteskript.skript.api.Event;
 import org.byteskript.skript.api.Library;
 import org.byteskript.skript.api.ModifiableLibrary;
+import org.byteskript.skript.api.resource.ClassResource;
+import org.byteskript.skript.api.resource.Resource;
 import org.byteskript.skript.compiler.SkriptCompiler;
 import org.byteskript.skript.error.ScriptCompileError;
 import org.byteskript.skript.error.ScriptLoadError;
@@ -638,8 +640,10 @@ public final class Skript {
     @CompilerDependent
     public void compileScript(final InputStream input, final String name, final OutputStream target)
         throws IOException {
-        final PostCompileClass datum = this.compileScript(input, name);
-        target.write(datum.code());
+        final Resource datum = this.compileScript(input, name);
+        try (final InputStream source = datum.open()) {
+            source.transferTo(target);
+        }
     }
     
     @Description("""
@@ -648,10 +652,11 @@ public final class Skript {
         """)
     @GenerateExample
     @CompilerDependent
-    public PostCompileClass compileScript(final InputStream stream, final String name) {
-        final PostCompileClass[] classes = compiler.compile(stream, new Type(name));
-        if (classes.length < 1) throw new ScriptCompileError(-1, "Script does not compile to a class.");
-        return classes[0];
+    public ClassResource compileScript(final InputStream stream, final String name) {
+        final Resource[] classes = compiler.compile(stream, new Type(name));
+        if (classes.length != 1 || !(classes[0] instanceof final ClassResource classResource))
+            throw new ScriptCompileError(-1, "Script does not compile to a class.");
+        return classResource;
     }
     
     @Description("""
@@ -663,12 +668,12 @@ public final class Skript {
         throws IOException {
         if (!outputDirectory.exists()) throw new ScriptLoadError("Output folder does not exist.");
         if (!outputDirectory.isDirectory()) throw new ScriptLoadError("Output must be a folder.");
-        final PostCompileClass[] data = compileComplexScript(input, name);
+        final Resource[] data = compileComplexScript(input, name);
         final List<File> outputs = new ArrayList<>();
-        for (PostCompileClass datum : data) {
-            final File target = new File(outputDirectory, datum.name() + ".class");
-            try (OutputStream stream = new FileOutputStream(target)) {
-                stream.write(datum.code());
+        for (Resource datum : data) {
+            final File target = new File(outputDirectory, datum.getEntryName().replace('/', File.separatorChar));
+            try (OutputStream stream = new FileOutputStream(target); InputStream source = datum.open()) {
+                source.transferTo(stream);
             }
             outputs.add(target);
         }
@@ -681,11 +686,11 @@ public final class Skript {
         """)
     @GenerateExample
     @CompilerDependent
-    public PostCompileClass[] compileScripts(final File root) throws IOException {
+    public Resource[] compileScripts(final File root) throws IOException {
         if (!root.exists()) throw new ScriptLoadError("Root folder does not exist.");
         if (!root.isDirectory()) throw new ScriptLoadError("Root must be a folder.");
         final List<File> files = getFiles(new ArrayList<>(), root.toPath());
-        final List<PostCompileClass> scripts = new ArrayList<>();
+        final List<Resource> scripts = new ArrayList<>();
         for (final File file : files) {
             if (file == null) continue;
             if (!file.getName().endsWith(".bsk")) continue;
@@ -694,7 +699,7 @@ public final class Skript {
                 scripts.addAll(Arrays.asList(this.compileComplexScript(stream, name)));
             }
         }
-        return scripts.toArray(new PostCompileClass[0]);
+        return scripts.toArray(new Resource[0]);
     }
     
     @Description("""
@@ -703,8 +708,8 @@ public final class Skript {
         """)
     @GenerateExample
     @CompilerDependent
-    public PostCompileClass[] compileComplexScript(final InputStream stream, final String name) {
-        final PostCompileClass[] classes = compiler.compile(stream, new Type(name));
+    public Resource[] compileComplexScript(final InputStream stream, final String name) {
+        final Resource[] classes = compiler.compile(stream, new Type(name));
         if (classes.length < 1) throw new ScriptCompileError(-1, "Script does not compile to a class.");
         return classes;
     }
@@ -715,7 +720,7 @@ public final class Skript {
         """)
     @GenerateExample
     @CompilerDependent
-    public PostCompileClass compileScript(final String code, final String name) {
+    public ClassResource compileScript(final String code, final String name) {
         return this.compileScript(new ByteArrayInputStream(code.getBytes(StandardCharsets.UTF_8)), name);
     }
     
@@ -725,7 +730,7 @@ public final class Skript {
         """)
     @GenerateExample
     @CompilerDependent
-    public Promise<PostCompileClass[]> compileScriptAsync(final String code, final String name) {
+    public Promise<Resource[]> compileScriptAsync(final String code, final String name) {
         return this.compileComplexScriptAsync(new ByteArrayInputStream(code.getBytes(StandardCharsets.UTF_8)), name);
     }
     
@@ -736,7 +741,7 @@ public final class Skript {
         """)
     @GenerateExample
     @CompilerDependent
-    public Promise<PostCompileClass[]> compileComplexScriptAsync(final InputStream stream, final String name) {
+    public Promise<Resource[]> compileComplexScriptAsync(final InputStream stream, final String name) {
         return compiler.compileAsync(stream, new Type(name), this);
     }
     
@@ -812,7 +817,8 @@ public final class Skript {
     @Deprecated
     @CompilerDependent
     public Script compileLoad(InputStream stream, String name) {
-        return this.loadScript(compileScript(stream, name));
+        final ClassResource resource = compileScript(stream, name);
+        return this.loadScript(resource.source());
     }
     
     @Description("""
@@ -852,6 +858,21 @@ public final class Skript {
         final SkriptMirror loader = createLoader();
         for (int i = 0; i < data.length; i++) classes[i] = loader.loadClass(data[i].name(), data[i].code());
         return this.loadScript(classes);
+    }
+
+    @Description("""
+        Loads a script from compiled source code, causing an error if non-code resources are included.
+        """)
+    @GenerateExample
+    public Script loadScript(final Resource[] resources) {
+        final List<PostCompileClass> classes = new ArrayList<>();
+        for (final Resource resource : resources) {
+            if (!(resource instanceof final ClassResource compiledClass))
+                throw new ScriptLoadError("Expected only code, but found a resource " + resource.getEntryName());
+
+            classes.add(compiledClass.source());
+        }
+        return this.loadScript(classes.toArray(new PostCompileClass[0]));
     }
     
     @Description("""
@@ -908,7 +929,7 @@ public final class Skript {
             if (file.isDirectory()) continue;
             try (InputStream stream = new FileInputStream(file)) {
                 final String name = getClassName(file, root);
-                scripts.add(loadScript(compileScript(stream, name)));
+                scripts.add(loadScript(compileScript(stream, name).source()));
             }
         }
         return scripts;
@@ -1200,7 +1221,7 @@ public final class Skript {
             System.setProperty("skript.test_mode", "true");
             this.println(ConsoleColour.RESET + "Running test '" + ConsoleColour.GREEN + name + ConsoleColour.RESET + "':");
             try (final InputStream stream = Files.newInputStream(file)) {
-                final PostCompileClass[] classes;
+                final Resource[] classes;
                 synchronized (this) {
                     try {
                         final long now, then;
@@ -1216,11 +1237,11 @@ public final class Skript {
                         return;
                     }
                     if (write) {
-                        final File test = new File("target/test-scripts/" + classes[0].name() + ".class");
+                        final File test = new File("target/test-scripts/" + classes[0].getEntryName());
                         test.getParentFile().mkdirs();
                         if (!test.exists()) test.createNewFile();
-                        try (final OutputStream output = new FileOutputStream(test)) {
-                            output.write(classes[0].code());
+                        try (final OutputStream output = new FileOutputStream(test); final InputStream input = classes[0].open()) {
+                            input.transferTo(output);
                         }
                     }
                     try {

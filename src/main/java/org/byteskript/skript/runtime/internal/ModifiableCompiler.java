@@ -8,9 +8,9 @@ package org.byteskript.skript.runtime.internal;
 
 import mx.kenzie.autodoc.api.note.Description;
 import mx.kenzie.foundation.Type;
-import mx.kenzie.foundation.language.PostCompileClass;
 import org.byteskript.skript.api.Document;
 import org.byteskript.skript.api.Library;
+import org.byteskript.skript.api.resource.Resource;
 import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.type.Converter;
 import org.byteskript.skript.runtime.type.OperatorFunction;
@@ -55,27 +55,27 @@ public interface ModifiableCompiler extends Cloneable {
         return new HashMap<>();
     }
     
-    default Promise<PostCompileClass[]> compileAsync(InputStream stream, Type name, Skript skript) {
+    default Promise<Resource[]> compileAsync(InputStream stream, Type name, Skript skript) {
         return this.background(() -> this.compile(stream, name), skript);
     }
     
-    default Promise<PostCompileClass[]> background(Supplier<PostCompileClass[]> supplier, Skript skript) {
+    default Promise<Resource[]> background(Supplier<Resource[]> supplier, Skript skript) {
         return new Promise<>(CompletableFuture.supplyAsync(supplier, skript.getExecutor()));
     }
     
-    PostCompileClass[] compile(InputStream stream, Type name);
+    Resource[] compile(InputStream stream, Type name);
     
-    default Promise<PostCompileClass[]> compileAsync(InputStream file, String path, Skript skript) {
+    default Promise<Resource[]> compileAsync(InputStream file, String path, Skript skript) {
         return this.background(() -> compile(file, path), skript);
     }
     
-    PostCompileClass[] compile(InputStream file, String path);
+    Resource[] compile(InputStream file, String path);
     
-    default Promise<PostCompileClass[]> compileAsync(String file, Type path, Skript skript) {
+    default Promise<Resource[]> compileAsync(String file, Type path, Skript skript) {
         return this.background(() -> compile(file, path), skript);
     }
     
-    PostCompileClass[] compile(String file, Type path);
+    Resource[] compile(String file, Type path);
     
     ModifiableCompiler clone();
     

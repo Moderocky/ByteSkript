@@ -26,7 +26,7 @@ public class SyntaxTest extends SkriptTest {
     public static void main(String[] args) throws Throwable { // test only
         System.setProperty("debug_mode", "true");
         final PostCompileClass cls = skript.compileScript(MainTest.class.getClassLoader()
-            .getResourceAsStream("tests/bracket.bsk"), "skript.bracket");
+            .getResourceAsStream("tests/bracket.bsk"), "skript.bracket").source();
     }
     
     public static boolean varArgs(String first, String... second) {

@@ -6,7 +6,7 @@
 
 package org.byteskript.skript.test;
 
-import mx.kenzie.foundation.language.PostCompileClass;
+import org.byteskript.skript.api.resource.Resource;
 import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.internal.Promise;
 import org.junit.BeforeClass;
@@ -27,19 +27,19 @@ public class AsyncCompileTest {
     public static void warm() throws Throwable {
         code = new String(SyntaxTest.class.getClassLoader()
             .getResourceAsStream("tests/typemember.bsk").readAllBytes());
-        final PostCompileClass cls = skript.compileScript(code, "skript.test");
-        final PostCompileClass second = skript.compileScriptAsync(code, "skript.test").get()[0];
+        skript.compileComplexScript(new ByteArrayInputStream(code.getBytes(StandardCharsets.UTF_8)), "skript.test");
+        skript.compileScriptAsync(code, "skript.test").get();
     }
     
     @Test
     public void test() throws Exception {
-        final PostCompileClass[] classes = skript.compileComplexScript(new ByteArrayInputStream(code.getBytes(StandardCharsets.UTF_8)), "skript.speed");
+        final Resource[] classes = skript.compileComplexScript(new ByteArrayInputStream(code.getBytes(StandardCharsets.UTF_8)), "skript.speed");
         assert classes.length > 0;
         if (true) return; // testing
         final long start, end;
         start = System.nanoTime();
         for (int i = 0; i < 300; i++) {
-            final PostCompileClass cls = skript.compileScript(code, "skript.speed");
+            skript.compileScript(code, "skript.speed");
         }
         end = System.nanoTime();
         System.out.println("Took " + (end - start) / 300 + " nanos each.");
@@ -47,16 +47,16 @@ public class AsyncCompileTest {
     
     @Test
     public void testAsync() throws Exception {
-        final PostCompileClass[] classes = skript.compileScriptAsync(code, "skript.speed").get();
+        final Resource[] classes = skript.compileScriptAsync(code, "skript.speed").get();
         assert classes.length > 0;
         if (true) return; // testing
         final long start, end;
-        final List<Promise<PostCompileClass[]>> promises = new ArrayList<>();
+        final List<Promise<Resource[]>> promises = new ArrayList<>();
         start = System.nanoTime();
         for (int i = 0; i < 300; i++) {
             promises.add(skript.compileScriptAsync(code, "skript.speed"));
         }
-        for (final Promise<PostCompileClass[]> promise : promises) promise.await();
+        for (final Promise<Resource[]> promise : promises) promise.await();
         end = System.nanoTime();
         System.out.println("Took " + (end - start) / 300 + " nanos each.");
     }
