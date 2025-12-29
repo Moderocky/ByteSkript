@@ -24,16 +24,6 @@ public class ScriptRunner {
     static final List<Script> SCRIPTS = new ArrayList<>();
     
     public static void main(String... args) throws IOException, ClassNotFoundException {
-        final Class<?>[] classes = findClasses("skript/");
-        for (final Class<?> source : classes) {
-            final Script script = SKRIPT.loadScript(source);
-            SCRIPTS.add(script);
-        }
-        new SimpleThrottleController(SKRIPT).run();
-    }
-    
-    protected static Class<?>[] findClasses(final String namespace) throws IOException, ClassNotFoundException {
-        final List<Class<?>> classes = new ArrayList<>();
         final CodeSource src = ScriptRunner.class.getProtectionDomain().getCodeSource();
         if (src != null) {
             final URL jar = src.getLocation();
@@ -44,17 +34,14 @@ public class ScriptRunner {
                     if (entry.isDirectory()) continue;
                     final String name = entry.getName();
                     if (!name.endsWith(".class")) continue;
-                    if (name.startsWith(namespace)) {
-                        final Class<?> data = Class.forName(name
-                            .substring(0, name.length() - 6)
-                            .replace("/", "."), false, ScriptRunner.class.getClassLoader());
-                        classes.add(data);
+                    if (name.startsWith("skript/")) {
+                        SCRIPTS.add(SKRIPT.loadScript(zip.readAllBytes()));
                     }
                 }
             }
         } else {
             throw new ScriptRuntimeError("Unable to access source.");
         }
-        return classes.toArray(new Class[0]);
+        new SimpleThrottleController(SKRIPT).run();
     }
 }
