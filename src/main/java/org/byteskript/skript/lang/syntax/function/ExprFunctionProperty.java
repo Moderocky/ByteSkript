@@ -13,9 +13,7 @@ import org.byteskript.skript.compiler.*;
 import org.byteskript.skript.lang.element.StandardElements;
 import org.byteskript.skript.runtime.internal.Metafactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 
 @Documentation(
@@ -48,6 +46,37 @@ public class ExprFunctionProperty extends SimpleExpression {
     private Pattern.Match createMatch(String thing, Context context) {
         final Matcher matcher = PATTERN.matcher(thing);
         if (!matcher.find()) return null;
+
+        final LinkedHashSet<Pattern.Match.Variant> variants = new LinkedHashSet<>();
+        final Matcher second = matcher.pattern().matcher(matcher.group());
+        for (int end = matcher.group().length(); end >= 0; end = matcher.group().lastIndexOf(" of ", end - 1)) {
+            second.reset();
+            second.region(0, end);
+            while (second.find()) {
+                final String name = second.group("name");
+                final String params = second.group("params");
+                final Type[] parameters = getParams(params);
+
+                final Matcher dummy = java.util.regex.Pattern.compile(buildDummyPattern(name, parameters.length))
+                        .matcher(matcher.group()); // Given this alternative signature for the method, what would the full matcher now find?
+                if (!dummy.find()) continue;
+
+                final List<String> strings = new ArrayList<>();
+                for (int i = 1; i <= dummy.groupCount(); i++) {
+                    final String group = dummy.group(i);
+                    if (group != null) strings.add(group.trim());
+                }
+                final String[] groups = strings.toArray(new String[0]);
+
+                final List<Type> types = new ArrayList<>();
+                for (int i = 0; i < parameters.length; i++) {
+                    types.add(CommonTypes.OBJECT);
+                }
+                types.add(CommonTypes.OBJECT);
+                variants.add(new Pattern.Match.Variant(dummy, types.toArray(new Type[0]), groups));
+            }
+        }
+
         final String name = matcher.group("name");
         final String params = matcher.group("params");
         final Type[] parameters = getParams(params);
@@ -59,7 +88,7 @@ public class ExprFunctionProperty extends SimpleExpression {
             types.add(CommonTypes.OBJECT);
         }
         types.add(CommonTypes.OBJECT);
-        return new Pattern.Match(dummy, new FunctionDetails(name, parameters), types.toArray(new Type[0]));
+        return new Pattern.Match(dummy, variants.toArray(Pattern.Match.Variant[]::new), 0, new FunctionDetails(name, parameters), types.toArray(new Type[0]));
     }
     
     private Type[] getParams(String params) {
