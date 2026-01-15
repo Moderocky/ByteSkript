@@ -54,7 +54,7 @@ public class MemberType extends Member {
     @Override
     public void compile(Context context, Pattern.Match match) {
         final String name = match.matcher().group("name");
-        final String path = context.getType().internalName() + "/" + name;
+        final String path = context.getType().internalName() + "$" + name;
         final ClassBuilder builder = context.addSuppressedBuilder(Type.of(path));
         final Type type = builder.getType();
         context.registerType(name, type);
