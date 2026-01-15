@@ -1,3 +1,6 @@
+[![Build status badge](https://img.shields.io/github/actions/workflow/status/Moderocky/ByteSkript/maven.yml?color=%23b862f5)](https://github.com/Moderocky/ByteSkript/actions/workflows/maven.yml)
+![Last commit badge](https://img.shields.io/github/last-commit/Moderocky/ByteSkript?color=%23b862f5)
+![Latest version badge](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo.kenzie.mx%2Freleases%2Forg%2Fbyteskript%2Fbyteskript%2Fmaven-metadata.xml&color=%23b862f5)
 # ByteSkript
 
 ### Opus #11
