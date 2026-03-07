@@ -13,6 +13,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -20,71 +22,82 @@ import static org.byteskript.skript.compiler.NewPattern.Node.*;
 
 public class NewPattern {
     public static void main(final String[] args) {
+        final Node digit = oneOf(text("0"), text("1"), text("2"), text("3"), text("4"), text("5"), text("6"), text("7"), text("8"), text("9"));
+        final Node naturalNumber = Node.group("natural", recurse(self -> oneOf(digit, redirect(digit, self))));
+        final Node integer = Node.group("integer", optional("-", naturalNumber));
+        final Node decimal = Node.group("decimal", oneOf(naturalNumber, redirect(naturalNumber, text(".", naturalNumber))));
+        {
+            final Node statement = maybeWhitespace(oneOf(
+                Node.group("statement", text("print", maybeWhitespace(Node.group("value", integer))), maybeWhitespace(text(";"))),
+                Node.group("statement", text("hi"), maybeWhitespace(text(";"))),
+                Node.group("statement", text("hiya"), maybeWhitespace(text(";")))
+            ));
+            final Node block = text("{", maybeWhitespace(redirect(recurse(self -> oneOf(statement, redirect(statement, self))), maybeWhitespace(text("}")))));
+            final Node function = text("function ", identifier("name", maybeWhitespace(block)));
+            final String functionSrc = """
+                function foo {
+                    hi;
+                    print -5;
+                    hiya;
+                }""";
+            final List<Part> stackMatch = stackMatch(functionSrc, function);
+            System.out.println("Function is:");
+            System.out.println(functionSrc.indent(2));
+            System.out.println("Parse details:");
+            System.out.println(visualise(stackMatch));
+            System.out.println("Function Information:");
+            final String name = stackMatch.stream().filter(n -> n.node instanceof Labelled labelled && labelled.fullLabel().equals("name")).map(Part::value).map(Substring::value).findFirst().orElseThrow();
+            System.out.println("Function name: " + name);
+            System.out.println(stackMatch.stream().filter(n -> n.node instanceof Labelled labelled && labelled.fullLabel().equals("statement"))
+                .map(Part::value).map(Substring::value).collect(Collectors.joining("\n  - ", "Statements:\n  - ", "")));
+        }
+
         final Node elementPattern = recurse(self -> input("value", either(text(",", either(text(" ", self), self)), text(")", end()))));
         final Node listPattern = text("(", elementPattern);
         {
             final Resolved match = match("(1, 2, 3, 4)", listPattern);
-            if (match != null) {
-                System.out.println("List is:");
-                for (final String input : match.group("value")) {
-                    System.out.println("  - " + input);
-                }
+            System.out.println("List is:");
+            for (final String input : match.group("value")) {
+                System.out.println("  - " + input);
             }
         }
 
         {
-            final Node twoListsPattern = labelledChild("one", listPattern, text(" and ", labelledChild("two", listPattern, end())));
+            final Node twoListsPattern = Node.group("one", listPattern, text(" and ", Node.group("two", listPattern, end())));
             final Resolved twoMatch = match("(1,2,3) and (4, 5, 6)", twoListsPattern);
-            if (twoMatch != null) {
-                System.out.println("List 1 is:");
-                for (final String input : twoMatch.group("one.value")) {
-                    System.out.println("  - " + input);
-                }
-                System.out.println("List 2 is:");
-                for (final String input : twoMatch.group("two.value")) {
-                    System.out.println("  - " + input);
-                }
+            System.out.println("List 1 is:");
+            for (final String input : twoMatch.group("one.value")) {
+                System.out.println("  - " + input);
+            }
+            System.out.println("List 2 is:");
+            for (final String input : twoMatch.group("two.value")) {
+                System.out.println("  - " + input);
             }
         }
-
-        final Node digit = oneOf(text("0"), text("1"), text("2"), text("3"), text("4"), text("5"), text("6"), text("7"), text("8"), text("9"));
-        final Node naturalNumber = label("value", recurse(self -> oneOf(digit, child(digit, self))));
         final Resolved natural = match("69", naturalNumber);
-        final Node integer = label("value", optional("-", labelledChild("natural", naturalNumber, end())));
-        final Node decimal = label("value", oneOf(naturalNumber, child(naturalNumber, text(".", naturalNumber))));
         {
+            final Node intListPattern = recurse(self -> {
+                final Node valueOrList = new Dynamic(() -> new Group(self.context(), "element", either(integer, self), end()));
+                final Node elementsOrEnd = recurse(sub -> redirect(valueOrList, either(text(",", either(text(" ", sub), sub)), text(")"))));
+                return Node.group("list", text("(", elementsOrEnd));
+            });
 
-            if (natural != null) System.out.println("Natural is " + natural.group("value").get(0));
+            final String input = "(1, (6, 7), 3, 4, -8008)";
+            System.out.printf("Match stack for %s:%n", input);
+            final List<Part> match = stackMatch(input, intListPattern);
+            System.out.println(visualise(match));
+
+            System.out.println(match.stream().filter(p -> p.node instanceof Labelled labelled && labelled.fullLabel().equals("list.element"))
+                .map(Part::value).map(Substring::value).collect(Collectors.joining("\n  - ", "List values:\n  - ", "")));
+
+            System.out.println("Natural is " + natural.group("natural").get(0));
             {
                 final Resolved intMatch = match("-67", integer);
-                if (intMatch != null) System.out.println("Integer is " + intMatch.group("value").get(0));
+                System.out.println("Integer is " + intMatch.group("integer").get(0));
             }
             {
                 final Resolved decMatch = match("67.80085", decimal);
-                if (decMatch != null) System.out.println("Decimal is " + decMatch.group("value").get(0));
-            }
-        }
-
-        {
-            final Node statement = maybeWhitespace(oneOf(
-                    labelledChild("statement", text("print", maybeWhitespace(label("value", integer))), maybeWhitespace(text(";"))),
-                    labelledChild("statement", text("hi"), maybeWhitespace(text(";"))),
-                    labelledChild("statement", text("hiya"), maybeWhitespace(text(";")))
-            ));
-            final Node block = text("{", maybeWhitespace(child(recurse(self -> oneOf(statement, child(statement, self))), maybeWhitespace(text("}")))));
-            final Node function = text("function ", identifier("name", maybeWhitespace(block)));
-            final Resolved resolved = match("""
-                    function foo {
-                        hi;
-                        print -5;
-                        hiya;
-                    }""", function);
-
-            if (resolved != null) {
-                System.out.println("Function is named " + resolved.group("name"));
-                for (final String line : resolved.group("statement", true)) {
-                    System.out.println("  - " + line);
-                }
+                System.out.println("Decimal is " + decMatch.group("decimal").get(0));
             }
         }
     }
@@ -93,23 +106,66 @@ public class NewPattern {
         return matches(0, input, pattern).max(Comparator.naturalOrder()).orElse(null);
     }
 
+    private static List<Part> stackMatch(final String input, final Node pattern) {
+        return stackMatches(input, pattern).max((a, b) -> {
+            if (a.size() != b.size()) return a.size() - b.size();
+            else return Arrays.compare(a.toArray(Part[]::new), b.toArray(Part[]::new), Comparator.comparing(c -> c.value.value()));
+        }).orElse(null);
+    }
+
     interface Context {
         Node redirect();
         String name();
     }
 
-    record ChildContext(ChildNode node, Node redirect) implements Context {
+    record ChildContext(Group node, Node redirect) implements Context {
         public Context parent() {
             return node.context();
         }
 
         @Override
         public String name() {
-            return (parent() != null ? parent().name() + "." : "") + (node.label() != null ? node.label() : "");
+            final String name = Stream.concat(Stream.ofNullable(parent() != null ? parent().name() : null), Stream.ofNullable(node.label())).collect(Collectors.joining("."));
+            return name.isBlank() ? null : name;
         }
     }
 
-    sealed interface Node permits Branch, Dynamic, Labelled, Literal, Terminal {
+    record Redirect(Context context, Node target, Node redirect) implements Node {
+        Redirect(Node target, Node redirect) {
+            this(null, target, redirect);
+        }
+
+        @Override
+        public Context context() {
+            return context;
+        }
+
+        @Override
+        public Set<Node> children() {
+            return Set.of(node());
+        }
+
+        private Node node() {
+            return target.withContext(new Context() {
+                @Override
+                public Node redirect() {
+                    return Redirect.this.redirect();
+                }
+
+                @Override
+                public String name() {
+                    return context() != null ? context().name() : null;
+                }
+            });
+        }
+
+        @Override
+        public Node withContext(Context newContext) {
+            return new Redirect(newContext, node(), redirect.withContext(newContext));
+        }
+    }
+
+    sealed interface Node permits Branch, Dynamic, Labelled, Literal, Terminal, Redirect {
         Context context();
 
         Set<Node> children();
@@ -124,7 +180,7 @@ public class NewPattern {
 
         static Node maybeWhitespace(final Node then) {
             final Node oneWhitespace = oneOf(text(" "), text("\n"));
-            return recurse(self -> oneOf(then, child(oneWhitespace, self)));
+            return recurse(self -> oneOf(then, new Redirect(oneWhitespace, self)));
         }
 
         static Literal text(final String text) {
@@ -157,16 +213,16 @@ public class NewPattern {
             return new Input(name, then);
         }
 
-        static ChildNode labelledChild(final String name, final Node subNode, final Node then) {
-            return new ChildNode(name, subNode, then);
+        static Group group(final String name, final Node subNode, final Node then) {
+            return new Group(name, subNode, then);
         }
 
-        static ChildNode label(final String label, final Node subNode) {
-            return new ChildNode(label, subNode, end());
+        static Group group(final String label, final Node subNode) {
+            return new Group(label, subNode, end());
         }
 
-        static ChildNode child(final Node subNode, final Node then) {
-            return new ChildNode(null, subNode, then);
+        static Redirect redirect(final Node subNode, final Node then) {
+            return new Redirect(null, subNode, then);
         }
 
         static Terminal end() {
@@ -176,15 +232,16 @@ public class NewPattern {
         Node withContext(final Context context);
     }
 
-    sealed interface Labelled extends Node permits Input, Identifier, ChildNode {
+    sealed interface Labelled extends Node permits Input, Identifier, Group {
         String label();
         default String fullLabel() {
-            return (context() != null ? context().name() + "." : "") + label();
+            return Stream.concat(Stream.ofNullable(context()).map(Context::name)
+                .filter(Objects::nonNull), Stream.of(label() == null ? "." : label())).collect(Collectors.joining("."));
         }
     }
 
-    record ChildNode(Context context, String label, Node rawNode, Node then) implements Labelled {
-        ChildNode(final String label, final Node rawNode, final Node then) {
+    record Group(Context context, String label, Node rawNode, Node then) implements Labelled {
+        Group(final String label, final Node rawNode, final Node then) {
             this(null, label, rawNode, then);
         }
 
@@ -198,9 +255,13 @@ public class NewPattern {
         }
 
         @Override
-        public Node withContext(final Context context) {
-            final Node newThen = then.withContext(context);
-            return new ChildNode(context, label, rawNode.withContext(new ChildContext(this, newThen)), newThen);
+        public Node withContext(final Context newContext) {
+            return new Group(newContext, label, node(), then.withContext(newContext));
+        }
+
+        @Override
+        public int hashCode() {
+            return System.identityHashCode(this);
         }
     }
 
@@ -215,9 +276,10 @@ public class NewPattern {
         }
 
         @Override
-        public Node withContext(final Context context) {
-            return new Literal(context, text, next.withContext(context));
+        public Node withContext(final Context newContext) {
+            return new Literal(newContext, text, next.withContext(newContext));
         }
+
     }
 
     record Terminal(Context context) implements Node {
@@ -247,8 +309,8 @@ public class NewPattern {
         }
 
         @Override
-        public Node withContext(final Context context) {
-            return new Branch(context, primary.withContext(context), secondary.withContext(context));
+        public Node withContext(final Context newContext) {
+            return new Branch(newContext, primary.withContext(newContext), secondary.withContext(newContext));
         }
     }
 
@@ -263,8 +325,8 @@ public class NewPattern {
         }
 
         @Override
-        public Node withContext(final Context context) {
-            return new Input(context, label, next.withContext(context));
+        public Node withContext(final Context newContext) {
+            return new Input(newContext, label, next.withContext(newContext));
         }
     }
 
@@ -279,14 +341,16 @@ public class NewPattern {
         }
 
         @Override
-        public Node withContext(final Context context) {
-            return new Identifier(context, label, next.withContext(context));
+        public Node withContext(final Context newContext) {
+            return new Identifier(newContext, label, next.withContext(newContext));
         }
     }
 
-    record Dynamic(Context context, Supplier<Node> supplier) implements Node {
-        Dynamic(final Supplier<Node> supplier) {
-            this(null, supplier);
+    record Dynamic(Supplier<Node> supplier) implements Node {
+
+        @Override
+        public Context context() {
+            return supplier.get().context();
         }
 
         @Override
@@ -295,8 +359,8 @@ public class NewPattern {
         }
 
         @Override
-        public Node withContext(final Context context) {
-            return new Dynamic(context, () -> supplier.get().withContext(context));
+        public Node withContext(final Context newContext) {
+            return new Dynamic(() -> supplier.get().withContext(newContext));
         }
     }
 
@@ -348,6 +412,199 @@ public class NewPattern {
         }
     }
 
+    record Substring(String full, int start, int end) {
+        String value() { return full.substring(start, end); }
+        Substring after(final int add) {
+            return new Substring(full, start + add, end);
+        }
+
+        Substring before(final int add) {
+            return new Substring(full, start, start + add);
+        }
+
+        static Substring of(final String full) {
+            return new Substring(full, 0, full.length());
+        }
+
+        @Override
+        public @NotNull String toString() {
+            return value();
+        }
+    }
+
+    record Part(Node node, Substring value) { }
+
+    static Stream<List<Part>> stackMatches(final String fullText, final Node rootNode) {
+        record Task(List<Part> parts, Node node, Substring value) {
+            Task append(final Part newPart, final Node next, final Substring remaining) {
+                final List<Part> newParts = new ArrayList<>(parts.size() + 1);
+                newParts.addAll(parts);
+                newParts.add(newPart);
+                return new Task(newParts, next, remaining);
+            }
+
+            Task replace(final Node newNode) {
+                return new Task(parts, newNode, value);
+            }
+
+            Task consume(final Node node, final int amount, final Node next) {
+                return append(new Part(node, value.before(amount)), next, value.after(amount));
+            }
+
+            public Task augment(final Node node, final UnaryOperator<Part> operation) {
+                final List<Part> newParts = parts.stream().map(p -> {
+                    if (!Objects.equals(p.node, node)) return p;
+                    else return operation.apply(p);
+                }).toList();
+
+                return new Task(newParts, this.node, this.value);
+            }
+        }
+
+        final Set<Task> results = new HashSet<>();
+        final Deque<Task> stack = new ArrayDeque<>();
+        stack.add(new Task(new ArrayList<>(), rootNode, Substring.of(fullText)));
+        while (!stack.isEmpty()) {
+            final Task task = stack.pop();
+            final Node node = task.node();
+            final Substring substring = task.value();
+            final String text = substring.value();
+
+            if (node instanceof final Literal literal) {
+                if (!text.startsWith(literal.text())) continue;
+                final int chop = literal.text().length();
+
+                for (final Node child : literal.children())
+                    stack.add(task.consume(literal, chop, child));
+
+            } else if (node instanceof final Identifier identifier) {
+                if (!Character.isJavaIdentifierStart(text.charAt(0))) continue;
+                int cursor = 1;
+                for (; cursor < text.length() && Character.isJavaIdentifierPart(text.charAt(cursor)); cursor++);
+                for (int i = cursor; i >= 0; --i)
+                    for (final Node child : identifier.children())
+                        stack.add(task.consume(identifier, i, child));
+
+            } else if (node instanceof final Branch branch) {
+                for (final Node child : branch.children()) {
+                    stack.add(task.replace(child));
+                }
+            } else if (node instanceof final Input input) {
+                final int end = input.next instanceof final Literal literal ? text.lastIndexOf(literal.text()) : text.length();
+                if (end == -1) continue;
+                for (int i = end; i >= 0; --i) {
+                    for (final Node child : input.children())
+                        stack.add(task.consume(input, i, child));
+                }
+            } else if (node instanceof final Dynamic dynamic) {
+                stack.add(task.replace(dynamic.supplier().get()));
+            } else if (node instanceof final Group labelled) {
+                for (final Node child : labelled.children()) {
+                    stack.add(task.append(new Part(labelled, substring.before(0)), child, substring));
+                }
+            } else if (node instanceof final Redirect redirect) {
+                for (final Node child : redirect.children()) {
+                    stack.add(task.replace(child));
+                }
+            }
+            else if (node instanceof final Terminal terminal) {
+                if (terminal.context() != null) {
+                    final Task newTask;
+                    if (terminal.context() instanceof ChildContext child) {
+                        newTask = task.augment(child.node(), (part) ->
+                            new Part(part.node(), new Substring(fullText, part.value.start, task.value.start))
+                        ).replace(child.redirect());
+                    } else newTask = task.replace(terminal.context().redirect());
+                    stack.add(newTask);
+                } else results.add(task);
+            } else {
+                throw new AssertionError("unreachable");
+            }
+        }
+
+        return results.stream().map(Task::parts);
+    }
+
+    private static String visualise(List<Part> result) {
+        final StringBuilder builder = new StringBuilder();
+
+        final StringBuilder fullTextBuilder = new StringBuilder();
+        for (final Part part : result) {
+            fullTextBuilder.setLength(Math.max(fullTextBuilder.length(), part.value.end));
+            fullTextBuilder.replace(part.value.start, part.value.end, part.value.value());
+        }
+        final String fullText = fullTextBuilder.toString().replace('\0', ' ').replace('\n', ' ');
+
+        final List<Node>[] encoding = new List[fullText.length()];
+        for (int i = 0; i < fullText.length(); ++i) encoding[i] = new ArrayList<>();
+        final Map<Node, Integer> indices = new LinkedHashMap<>();
+        final Set<Node> distinctNodes = new HashSet<>();
+        for (final Part part : result) {
+            for (int i = part.value().start(); i < part.value().end(); ++i) {
+                encoding[i].add(part.node);
+                distinctNodes.add(part.node);
+            }
+        }
+
+        final String max = "%2s".formatted(Integer.toHexString(distinctNodes.size()));
+        builder.append("Hex: ").append(fullText.chars().mapToObj(c -> Integer.toHexString((char) c)).collect(Collectors.joining(" ".repeat(max.length() - 1)))).append('\n');
+        builder.append("Src: ").append(fullText.chars().mapToObj(c -> "" + (char) c).collect(Collectors.joining(" ".repeat(max.length())))).append('\n');
+        int i = 0;
+        while (true) {
+            boolean found = false;
+            final StringBuilder sub = new StringBuilder("   | ");
+            for (List<Node> characters : encoding) {
+                String c = " ".repeat(max.length() + 1);
+                if (i < characters.size()) {
+                    final Node owner = characters.get(i);
+                    if (owner instanceof Labelled) {
+                        final int number = indices.computeIfAbsent(owner, node -> indices.size());
+                        final String hex = Integer.toHexString(number);
+                        final String truncatedHex = hex.substring(Math.max(hex.length() - max.length(), 0));
+                        c = ("%-" + max.length() + "s ").formatted(truncatedHex);
+                    } else {
+                        final String name = owner.getClass().getSimpleName();
+                        final String truncatedName = name.substring(0, max.length());
+                        c = ("%-" + max.length() + "s ").formatted(truncatedName);
+                    }
+                    found = true;
+                }
+                sub.append(c);
+            }
+            if (!found) break;
+            builder.append(sub).append('\n');
+            ++i;
+        }
+
+        if (!indices.isEmpty()) {
+            builder.append("Key:\n");
+            record Line(String value, String label) {}
+            final List<Line> lines =
+                indices.entrySet().stream().collect(Collectors.groupingBy(entry ->
+                entry.getKey() instanceof Labelled labelled
+                    ? (labelled.label() == null ? labelled.fullLabel() + ".<unnamed>" : labelled.fullLabel())
+                    : entry.getKey().getClass().getSimpleName())
+            ).entrySet().stream().map(entry -> {
+                final StringBuilder line = new StringBuilder();
+                for (final var sub : entry.getValue()) {
+                    final String hex = Integer.toHexString(sub.getValue());
+                    final String truncatedHex = hex.substring(Math.max(hex.length() - max.length(), 0));
+                    line.append(truncatedHex);
+                    line.append(", ");
+                }
+                line.setLength(line.length() - 2);
+                return new Line(line.toString(), entry.getKey());
+            }).toList();
+
+            final int pad = lines.stream().map(Line::value).mapToInt(String::length).max().orElse(0);
+            lines.stream().sorted(Comparator.comparing(Line::label)).forEachOrdered(line -> {
+                builder.append("  ").append(("%" + pad + "s").formatted(line.value)).append(": ").append(line.label).append("\n");
+            });
+        }
+
+        return builder.toString();
+    }
+
     static Stream<Resolved> matches(final int start, final String text, final Node root) {
         if (root instanceof final Literal literal) {
             if (!text.startsWith(literal.text())) return Stream.empty();
@@ -370,8 +627,10 @@ public class NewPattern {
         } else if (root instanceof final Dynamic dynamic) {
             final Node invoke = dynamic.supplier().get();
             return matches(start, text, invoke).map(v -> v.tag(dynamic, start, v.endIndexOf(invoke)));
-        } else if (root instanceof final ChildNode labelledNode) {
+        } else if (root instanceof final Group labelledNode) {
             return matches(start, text, labelledNode.node()).map(v -> v.tag(labelledNode, start, v.startIndexOf(labelledNode.then())));
+        } else if (root instanceof final Redirect redirect) {
+            return matches(start, text, redirect.node());
         } else if (root instanceof final Terminal terminal) {
             if (terminal.context() != null && terminal.context().redirect() != null)
                 return matches(start, text, terminal.context().redirect()).map(v -> v.tag(terminal, start, start));
