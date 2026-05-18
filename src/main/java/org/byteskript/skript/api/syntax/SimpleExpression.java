@@ -21,6 +21,11 @@ import org.byteskript.skript.lang.handler.StandardHandlers;
 
 import java.lang.reflect.Method;
 
+/**
+ * A very simple kind of expression, simple expressions have built-in logic for calling the declared {@link StandardHandlers#GET} handler.
+ * <p>
+ * This is a helpful abstract class for situations in which you do not need to accept any input, such as a <code>current date</code> expression.
+ * */
 public abstract class SimpleExpression extends Element implements SyntaxElement {
     
     public SimpleExpression(final Library provider, final LanguageElement type, final String... patterns) {

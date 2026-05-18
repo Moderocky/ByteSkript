@@ -9,6 +9,7 @@ package org.byteskript.skript.api.automatic;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.FunctionalEntrySection;
 import org.byteskript.skript.api.Library;
+import org.byteskript.skript.api.note.EntrySection;
 import org.byteskript.skript.api.syntax.Section;
 import org.byteskript.skript.compiler.CommonTypes;
 import org.byteskript.skript.compiler.CompileState;
@@ -22,6 +23,10 @@ import java.lang.reflect.RecordComponent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a section generated automatically from a record definition.
+ * @see EntrySection
+ * */
 public final class GeneratedEntrySection extends Section {
     
     private final Class<Record> target;

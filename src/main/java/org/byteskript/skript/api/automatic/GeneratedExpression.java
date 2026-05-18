@@ -9,6 +9,7 @@ package org.byteskript.skript.api.automatic;
 import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.Library;
+import org.byteskript.skript.api.note.Expression;
 import org.byteskript.skript.api.syntax.SimpleExpression;
 import org.byteskript.skript.compiler.CompileState;
 import org.byteskript.skript.compiler.Context;
@@ -17,6 +18,10 @@ import org.byteskript.skript.lang.element.StandardElements;
 
 import java.lang.reflect.Method;
 
+/**
+ * Represents an expression generated automatically from a method annotated with {@link Expression}
+ * @see Expression
+ * */
 public final class GeneratedExpression extends SimpleExpression {
     
     private final Method target;

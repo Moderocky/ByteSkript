@@ -17,6 +17,10 @@ import org.byteskript.skript.lang.element.StandardElements;
 
 import java.lang.reflect.Method;
 
+/**
+ * Represents an effect generated automatically by the compiler from an annotation.
+ * @see Effect
+ * */
 public final class GeneratedEffect extends Effect {
     
     private final Method target;

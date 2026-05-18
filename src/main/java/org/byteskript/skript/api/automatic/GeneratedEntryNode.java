@@ -9,6 +9,7 @@ package org.byteskript.skript.api.automatic;
 import mx.kenzie.foundation.Type;
 import mx.kenzie.foundation.compiler.State;
 import org.byteskript.skript.api.Library;
+import org.byteskript.skript.api.note.EntryNode;
 import org.byteskript.skript.api.syntax.Element;
 import org.byteskript.skript.api.syntax.Literal;
 import org.byteskript.skript.compiler.*;
@@ -17,6 +18,10 @@ import org.byteskript.skript.lang.element.StandardElements;
 
 import java.lang.reflect.RecordComponent;
 
+/**
+ * Represents an entry node generated automatically from the field declaration of a record.
+ * @see EntryNode
+ * */
 public class GeneratedEntryNode extends Element {
     
     private final RecordComponent target;
