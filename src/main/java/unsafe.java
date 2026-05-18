@@ -6,6 +6,7 @@ import org.byteskript.skript.runtime.Skript;
 import org.byteskript.skript.runtime.UnsafeAccessor;
 import org.byteskript.skript.runtime.type.DataList;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -31,7 +32,11 @@ public class unsafe extends UnsafeAccessor {
     }
     
     public static void await_load(Class<?> type) {
-        UNSAFE.ensureClassInitialized(type);
+        try {
+            MethodHandles.lookup().ensureInitialized(type);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Failed to initialize class: " + type.getName(), e);
+        }
     }
     
     public static void register_converter(Class<Object> from, Class<Object> to, MethodAccessor<?> function) {
