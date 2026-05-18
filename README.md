@@ -7,7 +7,7 @@
 
 An experimental language based on Skript (with no pre-eminent DSL dependencies) compiled to JVM bytecode.
 
-## Visit the documentation and wiki [here](https://docs.byteskript.org).
+## Visit the documentation and wiki [here](https://docs.byteskript.valross.org).
 
 ## Get the latest compiler release [here](https://github.com/Moderocky/ByteSkript/releases).
 
