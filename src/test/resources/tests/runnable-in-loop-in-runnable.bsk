@@ -1,0 +1,9 @@
+function test:
+    trigger:
+        run a new runnable async:
+            set {foo} to 0
+            while {foo} < 5:
+                run a new runnable async:
+                    print "hi"
+                add 1 to {foo}
+        return true
