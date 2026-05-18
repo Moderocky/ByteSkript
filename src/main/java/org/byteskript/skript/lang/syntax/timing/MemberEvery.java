@@ -55,7 +55,7 @@ public class MemberEvery extends TriggerHolder {
         final MethodBuilder method = context.getBuilder().addMethod("every$" + index + "_control")
             .addModifiers(Modifier.STATIC, Modifier.PUBLIC)
             .setReturnType(CommonTypes.DURATION);
-        context.setMethod(method);
+        context.pushMethod(method);
         context.addFlag(AreaFlag.IN_TRIGGER);
         context.setState(CompileState.STATEMENT);
         super.preCompile(context, match);
@@ -72,7 +72,7 @@ public class MemberEvery extends TriggerHolder {
             .addMethod("every$" + index)
             .addModifiers(Modifier.STATIC, Modifier.PUBLIC)
             .setReturnType(CommonTypes.VOID);
-        context.setMethod(method, true);
+        context.pushMethod(method);
         context.setState(CompileState.MEMBER_BODY);
         method
             .addAnnotation(SourceData.class).setVisible(true)

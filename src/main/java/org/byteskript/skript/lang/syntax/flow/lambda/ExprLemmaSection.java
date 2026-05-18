@@ -6,6 +6,7 @@
 
 package org.byteskript.skript.lang.syntax.flow.lambda;
 
+import mx.kenzie.foundation.MethodBuilder;
 import mx.kenzie.foundation.Type;
 import org.byteskript.skript.api.note.Documentation;
 import org.byteskript.skript.api.syntax.ExtractedSection;
@@ -49,6 +50,14 @@ public class ExprLemmaSection extends ExtractedSection {
     public boolean allowAsInputFor(Type type) {
         return CommonTypes.OBJECT.equals(type) || CommonTypes.EXECUTABLE.equals(type);
     }
-    
-    
+
+    @Override
+    public MethodBuilder createExtractedMethod(Context context, Pattern.Match match) {
+        throw new UnsupportedOperationException("Not implemented.");
+    }
+
+    @Override
+    public void buildInvoker(Context context, Pattern.Match match, MethodBuilder child) {
+        throw new UnsupportedOperationException("Not implemented.");
+    }
 }

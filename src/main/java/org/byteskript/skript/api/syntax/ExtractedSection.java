@@ -25,13 +25,26 @@ public abstract class ExtractedSection extends Section {
     public ExtractedSection(Library provider, LanguageElement type, String... patterns) {
         super(provider, type, patterns);
     }
+
+    @Override
+    public void preCompile(Context context, Pattern.Match match) throws Throwable {
+        if (!context.isSectionHeader())
+            throw new ScriptCompileError(context.lineNumber(), "This syntax should have a body section, but it does not.");
+    }
     
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
-        final MethodBuilder parent = context.getTriggerMethod();
+        final MethodBuilder parent = context.getMethod();
         final ExtractionTree tree = new ExtractionTree(context.getSection(1), parent, new MultiLabel());
+        final MethodBuilder extractedMethod = createExtractedMethod(context, match);
+        buildInvoker(context, match, extractedMethod);
+        context.addSkipInstruction(unused -> context.pushMethod(extractedMethod));
         context.createTree(tree);
     }
+
+    public abstract MethodBuilder createExtractedMethod(Context context, Pattern.Match match) throws Throwable;
+
+    public abstract void buildInvoker(Context context, Pattern.Match match, MethodBuilder child) throws Throwable;
     
     @Override
     public void onSectionExit(Context context, SectionMeta meta) {
@@ -51,8 +64,7 @@ public abstract class ExtractedSection extends Section {
             method.writeCode(WriteInstruction.returnObject());
         }
         tree.close(context);
-        final MethodBuilder parent = tree.getParent();
-        context.setMethod(parent);
+        context.popMethod();
     }
     
     public final void compileInline(Context context, Pattern.Match match) throws Throwable {

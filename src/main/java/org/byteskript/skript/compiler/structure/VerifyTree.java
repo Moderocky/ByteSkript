@@ -54,7 +54,6 @@ public class VerifyTree extends ProgrammaticSplitTree {
     public void close(Context context) {
         if (end.uses.size() > 0)
             context.getMethod().writeCode(end.instruction());
-        context.setMethod(method);
     }
     
     @Override

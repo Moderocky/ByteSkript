@@ -46,7 +46,7 @@ public class MemberDictionary extends Member {
     @Override
     public void compile(Context context, Pattern.Match match) throws Throwable {
         context.addFlag(AreaFlag.IN_DICTIONARY);
-        context.setMethod(new MethodBuilder(null, "<dict>"));
+        context.pushMethod(new MethodBuilder(null, "<dict>"));
         context.setState(CompileState.CODE_BODY);
     }
     

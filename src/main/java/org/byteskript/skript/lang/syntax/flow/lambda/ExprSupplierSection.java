@@ -61,49 +61,43 @@ public class ExprSupplierSection extends ExtractedSection {
     public Type getReturnType() {
         return CommonTypes.SUPPLIER;
     }
-    
-    @Override
-    public void preCompile(Context context, Pattern.Match match) throws Throwable {
-        if (!context.isSectionHeader())
-            throw new ScriptCompileError(context.lineNumber(), "Supplier has no body section.");
-    }
-    
+
     @Override
     public boolean allowAsInputFor(Type type) {
         return CommonTypes.OBJECT.equals(type) || CommonTypes.SUPPLIER.equals(type) || CommonTypes.EXECUTABLE.equals(type);
     }
-    
+
     @Override
-    public void compile(Context context, Pattern.Match match) throws Throwable {
-        super.compile(context, match);
-        context.addInnerClass(Type.of("java/lang/invoke/MethodHandles$Lookup"), Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL);
-        final MethodBuilder method = context.getMethod();
+    public MethodBuilder createExtractedMethod(Context context, Pattern.Match match) throws Throwable {
         final int index = context.getLambdaIndex();
         context.increaseLambdaIndex();
-        final String internal = context.getType().internalName();
         final String name = "lambda$L" + index;
-        final MethodBuilder child = context.getBuilder().addMethod(name)
+        return context.getBuilder().addMethod(name)
             .setModifiers(Modifier.PUBLIC | Modifier.STATIC)
             .setReturnType(CommonTypes.OBJECT);
+    }
+
+    @Override
+    public void buildInvoker(Context context, Pattern.Match match, MethodBuilder child) throws Throwable {
+        context.addInnerClass(Type.of("java/lang/invoke/MethodHandles$Lookup"), Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL);
+
+        final String internal = context.getType().internalName();
+        final MethodBuilder method = context.getMethod();
         extractVariables(context, method, child);
         final MethodErasure target = child.getErasure();
         final MethodErasure creator = new MethodErasure(CommonTypes.SUPPLIER, "get", child.getErasure()
             .parameterTypes());
         final MethodErasure bootstrap = new MethodErasure(LambdaMetafactory.class.getMethod("metafactory", MethodHandles.Lookup.class, String.class, MethodType.class, MethodType.class, MethodHandle.class, MethodType.class));
-        this.addSkipInstruction(context, c -> c.setMethod(child));
         method.writeCode((writer, visitor) -> visitor.visitInvokeDynamicInsn("get", creator.getDescriptor(), new Handle(Opcodes.H_INVOKESTATIC, "java/lang/invoke/LambdaMetafactory", bootstrap.name(), bootstrap.getDescriptor(), false), org.objectweb.asm.Type.getType("()Ljava/lang/Object;"), new Handle(6, internal, target.name(), target.getDescriptor(), false), org.objectweb.asm.Type.getType("()Ljava/lang/Object;")));
     }
     
     public static void extractVariables(Context context, MethodBuilder method, MethodBuilder child) {
-        int i = 0;
         for (final PreVariable variable : context.getVariables()) {
             if (!variable.internal) {
                 child.addParameter(CommonTypes.OBJECT);
-                method.writeCode(variable.load(i));
+                final int slot = context.slotOf(variable);
+                method.writeCode(variable.load(slot));
             }
-            ++i;
         }
     }
-    
-    
 }

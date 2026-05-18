@@ -84,7 +84,7 @@ public class EffectWaitFor extends ControlEffect {
             .setModifiers(Modifier.PUBLIC | Modifier.STATIC | 0x00001000)
             .setReturnType(new Type(void.class));
         ExprSupplierSection.extractVariables(context, method, child);
-        context.setMethod(child);
+        context.pushMethod(child);
         final Label start = new Label(), end = new Label(), after = new Label();
         tree.metadata.put("end", end);
         tree.metadata.put("after", after);
@@ -135,8 +135,8 @@ public class EffectWaitFor extends ControlEffect {
             });
             child.writeCode(WriteInstruction.returnEmpty());
             final String internal = context.getType().internalName();
-            method = context.getTriggerMethod();
-            context.setMethod(method);
+            context.popMethod();
+            method = context.getMethod();
             final MethodErasure runnable = child.getErasure();
             final MethodErasure creator = new MethodErasure(CommonTypes.RUNNABLE, "run", child.getErasure()
                 .parameterTypes());

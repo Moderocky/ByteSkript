@@ -61,36 +61,32 @@ public class ExprRunnableSection extends ExtractedSection {
     }
     
     @Override
-    public void preCompile(Context context, Pattern.Match match) throws Throwable {
-        if (!context.isSectionHeader())
-            throw new ScriptCompileError(context.lineNumber(), "Runnable has no body section.");
-    }
-    
-    @Override
     public boolean allowAsInputFor(Type type) {
         return CommonTypes.OBJECT.equals(type) || CommonTypes.RUNNABLE.equals(type) || CommonTypes.EXECUTABLE.equals(type);
     }
-    
+
     @Override
-    public void compile(Context context, Pattern.Match match) throws Throwable {
-        super.compile(context, match);
-        context.addInnerClass(Type.of("java/lang/invoke/MethodHandles$Lookup"), Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL);
-        final MethodBuilder method = context.getMethod();
+    public MethodBuilder createExtractedMethod(Context context, Pattern.Match match) {
         final int index = context.getLambdaIndex();
         context.increaseLambdaIndex();
-        final String internal = context.getType().internalName();
         final String name = "lambda$L" + index;
-        final MethodBuilder child = context.getBuilder().addMethod(name)
+
+        return context.getBuilder().addMethod(name)
             .setModifiers(Modifier.PUBLIC | Modifier.STATIC)
             .setReturnType(new Type(void.class));
+    }
+
+    @Override
+    public void buildInvoker(Context context, Pattern.Match match, MethodBuilder child) throws NoSuchMethodException {
+        context.addInnerClass(Type.of("java/lang/invoke/MethodHandles$Lookup"), Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL);
+        final MethodBuilder method = context.getMethod();
+        final String internal = context.getType().internalName();
+
         ExprSupplierSection.extractVariables(context, method, child);
         final MethodErasure target = child.getErasure();
         final MethodErasure creator = new MethodErasure(CommonTypes.RUNNABLE, "run", child.getErasure()
             .parameterTypes());
         final MethodErasure bootstrap = new MethodErasure(LambdaMetafactory.class.getMethod("metafactory", MethodHandles.Lookup.class, String.class, MethodType.class, MethodType.class, MethodHandle.class, MethodType.class));
-        this.addSkipInstruction(context, c -> c.setMethod(child));
         method.writeCode((writer, visitor) -> visitor.visitInvokeDynamicInsn("run", creator.getDescriptor(), new Handle(Opcodes.H_INVOKESTATIC, "java/lang/invoke/LambdaMetafactory", bootstrap.name(), bootstrap.getDescriptor(), false), org.objectweb.asm.Type.getType("()V"), new Handle(6, internal, target.name(), target.getDescriptor(), false), org.objectweb.asm.Type.getType("()V")));
     }
-    
-    
 }

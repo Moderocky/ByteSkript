@@ -29,7 +29,7 @@ public abstract class TriggerHolder extends Member {
             .addModifiers(Modifier.STATIC)
             .setReturnType(returnType(context, match))
             .addParameter(parameters(context, match.matcher()));
-        context.setMethod(method, true);
+        context.pushMethod(method);
         context.setState(CompileState.MEMBER_BODY);
     }
     

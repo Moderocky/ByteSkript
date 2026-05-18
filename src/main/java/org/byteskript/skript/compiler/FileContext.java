@@ -44,8 +44,7 @@ public class FileContext extends Context {
     protected List<PreVariable> variables = new ArrayList<>();
     protected ClassBuilder writer;
     protected FieldBuilder field;
-    protected MethodBuilder method;
-    protected MethodBuilder triggerMethod;
+    protected Deque<MethodBuilder> methodStack = new ArrayDeque<>();
     protected String sourceFile;
     LanguageElement expected;
     SyntaxElement currentEffect;
@@ -204,25 +203,24 @@ public class FileContext extends Context {
 
     @Override
     public MethodBuilder getMethod() {
-        return method;
+        return methodStack.peek();
     }
-    
+
     @Override
-    public void setMethod(MethodBuilder method) {
-        this.setMethod(method, false);
+    public void pushMethod(MethodBuilder method) {
+        methodStack.push(method);
     }
-    
+
     @Override
-    public MethodBuilder getTriggerMethod() {
-        return triggerMethod;
+    public void popMethod() {
+        methodStack.pollFirst();
     }
-    
+
     @Override
-    public void setMethod(MethodBuilder method, boolean trigger) {
-        this.method = method;
-        if (trigger) this.triggerMethod = method;
+    public void clearMethods() {
+        methodStack.clear();
     }
-    
+
     @Override
     public FieldBuilder getField() {
         return field;

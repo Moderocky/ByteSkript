@@ -56,6 +56,7 @@ public class EntryVerifySection extends Section {
         context.removeFlag(AreaFlag.IN_TRIGGER);
         context.removeFlag(AreaFlag.IN_VERIFIER);
         context.setState(CompileState.MEMBER_BODY);
+        context.popMethod();
     }
     
     @Override
@@ -82,7 +83,7 @@ public class EntryVerifySection extends Section {
             .addParameter(target.getErasure().parameterTypes())
             .setReturnType(Object.class);
         method.writeCode(prepareVariables(tree));
-        context.setMethod(method, true);
+        context.pushMethod(method);
     }
     
     @Override
